@@ -1,0 +1,16 @@
+{
+  "verbose": true,
+  "ignore": [
+    "*.test.js",
+    "Migrations/*",
+    "./Scripts/*",
+    "./public/*",
+    "*.json",
+    "./Docs",
+    "*.log"
+  ],
+  "execMap": {
+    "rb": "ruby",
+    "pde": "processing --sketch={{pwd}} --run"
+  }
+}
