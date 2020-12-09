@@ -5,6 +5,15 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "esModuleInterop": true,
-    "strict": true
-  }
+    "strict": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "public",
+    "Migrations",
+    "Docs",
+    "**/*.spec.ts"
+  ]
 }
