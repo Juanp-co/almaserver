@@ -1,15 +1,13 @@
 import dotenv from 'dotenv';
-import moment from 'moment';
-import mongoose from 'mongoose';
+import { connect } from 'mongoose';
 import path from 'path';
+import { showConsoleError, showConsoleLog } from './Functions/GlobalFunctions';
 
 const pathEnv = path.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
 dotenv.config({ path: pathEnv });
 
-class Database {
-  connection: any;
-
-  constructor() {
+export async function startConnection() {
+  try {
     const dbPort: string = process.env.DDB_PORT || '';
     const dbHost: string = process.env.DDB_HOST || '';
     const dbName: string = process.env.DDB_NAME || '';
@@ -17,35 +15,32 @@ class Database {
     const dbPwd: string = process.env.DDB_PASSWORD || '';
     const dbAtlas: string = process.env.DDB_ATLAS || 'false';
 
-    let connect = '';
+    let pathDb = '';
     let dbAuthString = '';
 
     if (dbAtlas === 'true') {
-      connect = `mongodb+srv://${dbHost}`;
-      connect = connect.replace('<user>', dbUser);
-      connect = connect.replace('<password>', dbPwd);
-      connect = connect.replace('<dbname>', dbName);
-    } else {
-      if (dbUser !== '') dbAuthString = `${dbUser}:${dbPwd}@`;
+      pathDb = `mongodb+srv://${dbHost}`;
+      pathDb = pathDb.replace('<user>', dbUser);
+      pathDb = pathDb.replace('<password>', dbPwd);
+      pathDb = pathDb.replace('<dbname>', dbName);
+    } else if (dbUser !== '') dbAuthString = `${dbUser}:${dbPwd}@`;
 
-      connect = `mongodb://${dbAuthString}${encodeURIComponent(dbHost)}:${encodeURIComponent(
-        dbPort
-      )}/${encodeURIComponent(dbName)}`;
-    }
+    pathDb = `mongodb://${dbAuthString}${encodeURIComponent(dbHost)}:${encodeURIComponent(
+      dbPort
+    )}/${encodeURIComponent(dbName)}`;
 
-    this.connection = mongoose
-      .connect(connect, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-      })
-      .catch((error) => {
-        console.error(`${moment().toISOString()} - Database Connection.`);
-        console.error(error);
-        process.exit(500);
-      });
+    await connect(pathDb, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false
+    });
+
+    showConsoleLog(1, 'Database is connected.');
 
     // this.connection.set('useCreateIndex', true);
   }
+  catch (e) {
+    showConsoleError('./database', e);
+    process.exit();
+  }
 }
-
-export default new Database();

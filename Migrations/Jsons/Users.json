@@ -1,0 +1,25 @@
+[
+  {
+    "_id" : "5fcf0821fc917d476c1cf3e3",
+    "educationLevel" : null,
+    "bloodType" : true,
+    "company" : false,
+    "companyType" : null,
+    "baptized" : true,
+    "role" : "persona",
+    "created_at" : 1607403552,
+    "updated_at" : 1607409346,
+    "phone" : "3161234567",
+    "password" : "$2b$10$Uc/PlAmlGYW1xkTD4Zvw.emxdD2/2J.ybq40srKN4w8KY4sch5JTm",
+    "document" : "CC12345678",
+    "names" : "USUARIO",
+    "lastNames" : "PRUEBA",
+    "direction" : "ANY DIRECTION",
+    "securityQuestion": {
+      "questionId": "5f8608596cd607042cdbea86",
+      "answer": "$2b$10$deCPm7TgGZiwv84RsQzYbOd8V4N5m2/ZDGGxOBgoKqXYwwmNtzfZu"
+    },
+    "profession" : null,
+    "__v" : 0
+  }
+]

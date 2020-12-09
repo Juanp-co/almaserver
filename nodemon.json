@@ -1,14 +1,18 @@
 {
+  "watch": ["src"],
+  "ext": "ts",
   "verbose": true,
   "ignore": [
+    "src/**/*.spec.ts",
     "*.test.js",
-    "Migrations/*",
-    "./Scripts/*",
-    "./public/*",
+    "Migrations",
+    "dist",
+    "public/*",
     "*.json",
-    "./Docs",
+    "Docs",
     "*.log"
   ],
+  "exec": "ts-node",
   "execMap": {
     "rb": "ruby",
     "pde": "processing --sketch={{pwd}} --run"

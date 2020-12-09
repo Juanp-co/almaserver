@@ -1,10 +1,8 @@
 # ALMA API
 
-[![pipeline status](https://github.com/gaitan-app/server_gaitan/badges/master/pipeline.svg)](https://github.com/gaitan-app/server_gaitan/commits/master)
-
 ## Install
 
-* Clone this repository: `git clone https://github.com/gaitan-app/server_gaitan.git`
+* Clone this repository: `git clone https://github.com/Juanp-co/alma_back.git`
 
 * You must have MongoDB installed.
 
@@ -17,19 +15,19 @@
     # Install dependencies
     $ npm i
     
-    # Serve to development
+    # Run serve to development
     $ npm run dev
 
-    # Build for production server
+    # Build for production server and documentation
     $ npm run build
 
-    # Server to production
+    # Run server to production
     $ npm run start
 
     # Confirms that the server works in develop
     http://localhost:9000/api or https://api.url.com/api
 
-    # Generate documentation API
+    # Generate only documentation API
     $ npm run docs
 
     # Access to documentation in the broswer
@@ -58,17 +56,30 @@ And now, to send mail you must configure the credentials in your `.env` file, ju
     # emails to BCC when sending the invoice separated by comma
     BCC="" 
 
+## Users to Test
+
+    To access, you can create a new user (read documentation) or login with
+    the users to testing (run migrations previously).
+    
+    # Particular user to testing
+    user: CC12345678
+    pass: password
+
 ## Authenticated for Middleware
 
-    Add in the headers the value to check session login: 
+    Add in the headers request the value to check session: 
     req.headers['x-access-token'] = token
 
     where, token is a recived value for the login action.
 
 ## Contribute
 
-¡The contributions are always welcome! Please, first read the steps to [contribute] (https://github.com/gaitan-app/server_gaitan/blob/master/CONTRIBUTING.md). 
+¡The contributions are always welcome! Please, first read the steps to [contribute] (https://github.com/Juanp-co/alma_back/blob/master/CONTRIBUTING.md). 
+
+## More documentation about Typescript
+
+Official documentation [Typescript](https://www.typescriptlang.org). 
 
 ## More documentation about Express.js
 
-Official documentation [Express.js docs](https://expressjs.com).
+Official documentation [Express.js](https://expressjs.com).
