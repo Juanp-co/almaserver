@@ -5,7 +5,7 @@ const Validations_1 = require("../Functions/Validations");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const UsersActions_1 = require("../ActionsData/UsersActions");
 const QuestionsActions_1 = require("../ActionsData/QuestionsActions");
-async function validateRegister(data) {
+async function validateRegister(data, admin) {
     const ret = {
         phone: null,
         password: null,
@@ -19,6 +19,7 @@ async function validateRegister(data) {
         company: false,
         companyType: null,
         baptized: false,
+        role: admin ? null : 5,
         securityQuestion: {
             questionId: null,
             answer: null
@@ -114,6 +115,14 @@ async function validateRegister(data) {
         }
         else
             ret.companyType = data.companyType;
+    }
+    // role
+    if (admin) {
+        if (!Validations_1.checkIfValueIsNumber(`${data.role}`)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar un rol para el usuario.', 'role'));
+        }
+        else
+            ret.role = data.role;
     }
     return { data: ret, errors };
 }

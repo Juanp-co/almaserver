@@ -9,6 +9,10 @@ export function checkNameOrLastName(value: any): boolean {
   );
 }
 
+export function checkRole(value: any): boolean {
+  return value && /^[012345]{1}/.test(`${value}`);
+}
+
 export function checkIfValueIsNumber(value: any): boolean {
   return value && /^[0-9]{1,3}/.test(`${value}`);
 }

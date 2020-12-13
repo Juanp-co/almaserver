@@ -13,7 +13,7 @@ export default interface IUser extends Document {
   company: boolean | null;
   companyType?: number | string | null;
   baptized?: boolean | null;
-  role?: string | null;
+  role?: number | null;
   securityQuestion: IUserSecurityQuestion;
   questionId?: string | null;
   answer?: string | null;
@@ -69,8 +69,8 @@ export interface IUserSecurityQuestion {
 }
 
 export interface IUserToToken {
-  _id?: string | null;
-  userid?: string | null;
-  document?: string | null;
-  role?: string | null;
+  _id?: string|any;
+  userid?: string|any;
+  document?: IUser['document'];
+  role?: IUser['role'];
 }

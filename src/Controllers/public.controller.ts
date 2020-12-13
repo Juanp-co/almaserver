@@ -61,7 +61,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     if (!user) {
       return res.status(404).json({
-        msg: `Disculpe, pero el número de teléfono no se encuentra registrado.`
+        msg: `Disculpe, pero el número de documento no se encuentra registrado.`
       });
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "Alma API",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "API Rest documentation",
   "title": "Alma API",
   "sampleUrl": false,
@@ -8,7 +8,7 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2020-12-09T05:14:53.966Z",
+    "time": "2020-12-13T20:50:42.426Z",
     "url": "https://apidocjs.com",
     "version": "0.25.0"
   }

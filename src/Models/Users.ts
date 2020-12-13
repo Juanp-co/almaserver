@@ -25,11 +25,8 @@ const UserSchema = new Schema(
     company: { type: Boolean, default: false },
     companyType: { type: Number, default: null },
     baptized: { type: Boolean, default: false },
-    role: {
-      type: String,
-      enum: ['pastor', 'supervisor', 'lider', 'pa_esp', 'persona'],
-      default: 'persona'
-    },
+    // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona
+    role: { type: Number, default: 5 },
     securityQuestion: { type: SecurityQuestionSchema, default: { SecurityQuestionSchema } },
     created_at: { type: Number, default: setDate(), get: getDate },
     updated_at: { type: Number, default: setDate(), get: getDate }

@@ -7,6 +7,10 @@ const QuestionsSchema = new mongoose_1.Schema({
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
+QuestionsSchema.pre('save', function (next) {
+    this.updated_at = GlobalFunctions_1.setDate();
+    next();
+});
 QuestionsSchema.set('toJSON', { getters: true });
 const Whitelist = mongoose_1.model('question', QuestionsSchema);
 exports.default = Whitelist;
