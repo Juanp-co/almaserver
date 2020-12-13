@@ -104,8 +104,17 @@ function getLimitSkipSortSearch(data) {
         case 'document':
             retSort.document = v;
             break;
+        case 'lastNames':
+            retSort.lastNames = v;
+            break;
         case 'name':
             retSort.name = v;
+            break;
+        case 'names':
+            retSort.names = v;
+            break;
+        case 'role':
+            retSort.role = v;
             break;
         case 'status':
             retSort.status = v;

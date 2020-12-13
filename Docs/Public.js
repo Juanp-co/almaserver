@@ -98,7 +98,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {String} role Role del usuario.
+ * @apiSuccess (data Object) {Number} role Role del usuario.
  * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
@@ -122,7 +122,7 @@
         "company": false,
         "companyType": null,
         "baptized": true,
-        "role": "persona",
+        "role": 5,
         "securityQuestion": {
             "questionId": "5f8608596cd607042cdbea86"
         },
@@ -144,10 +144,10 @@
  * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
  * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
  *
- * @apiErrorExample {JSON} Phone not found
+ * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el número de teléfono no se encuentra registrado."
+    "msg": "Disculpe, pero el número de documento no se encuentra registrado."
 }
  *
  * @apiErrorExample {JSON} Validation fields

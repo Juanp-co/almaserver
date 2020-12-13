@@ -8,6 +8,7 @@ const fs_1 = __importDefault(require("fs"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const app_1 = __importDefault(require("./app"));
 const database_1 = require("./database");
+const AdminRouter_1 = __importDefault(require("./Routes/AdminRouter"));
 const PublicRouter_1 = __importDefault(require("./Routes/PublicRouter"));
 const UserRouter_1 = __importDefault(require("./Routes/UserRouter"));
 // vars
@@ -33,6 +34,7 @@ if (logsFile && logsFile !== 'false') {
 }
 // routes
 app_1.default.use(`/api`, PublicRouter_1.default);
+app_1.default.use(`/api/admin`, AdminRouter_1.default);
 app_1.default.use(`/api/user`, UserRouter_1.default);
 // server
 async function main() {

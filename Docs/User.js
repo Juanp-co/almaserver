@@ -14,7 +14,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {String} role Role del usuario.
+ * @apiSuccess (data Object) {Number} role Role del usuario.
  * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
@@ -38,7 +38,7 @@
         "company": true,
         "companyType": 4,
         "baptized": true,
-        "role": "persona",
+        "role": 5,
         "securityQuestion": {
             "questionId": "5f8608596cd607042cdbea86"
         },
@@ -116,7 +116,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {String} role Role del usuario.
+ * @apiSuccess (data Object) {Number} role Role del usuario.
  * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
@@ -140,7 +140,7 @@
         "company": true,
         "companyType": 4,
         "baptized": true,
-        "role": "persona",
+        "role": 5,
         "securityQuestion": {
             "questionId": "5f8608596cd607042cdbea86"
         },

@@ -17,7 +17,7 @@ import { setError } from '../Functions/GlobalFunctions';
 import { checkIfExistDocument } from '../ActionsData/UsersActions';
 import { checkIfExistQuestion } from '../ActionsData/QuestionsActions';
 
-export async function validateRegister(data: IUserRegister): Promise<{ data: IUser; errors: any }> {
+export async function validateRegister(data: IUserRegister, admin?: boolean | null): Promise<{ data: IUser; errors: any }> {
   const ret = {
     phone: null,
     password: null,
@@ -31,6 +31,7 @@ export async function validateRegister(data: IUserRegister): Promise<{ data: IUs
     company: false,
     companyType: null,
     baptized: false,
+    role: admin ? null : 5,
     securityQuestion: {
       questionId: null,
       answer: null
@@ -141,6 +142,13 @@ export async function validateRegister(data: IUserRegister): Promise<{ data: IUs
         setError('Disculpe, pero debe indicar a qué se dedica su empresa.', 'companyType')
       );
     } else ret.companyType = data.companyType;
+  }
+
+  // role
+  if (admin) {
+    if (!checkIfValueIsNumber(`${data.role}`)) {
+      errors.push(setError('Disculpe, pero debe seleccionar un rol para el usuario.', 'role'));
+    } else ret.role = data.role;
   }
 
   return { data: ret, errors };

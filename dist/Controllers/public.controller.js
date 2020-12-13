@@ -55,7 +55,7 @@ async function login(req, res) {
         const user = await Users_1.default.findOne({ document: validate.data.document }, { password: 1, document: 1, role: 1 }).exec();
         if (!user) {
             return res.status(404).json({
-                msg: `Disculpe, pero el número de teléfono no se encuentra registrado.`
+                msg: `Disculpe, pero el número de documento no se encuentra registrado.`
             });
         }
         if (!bcrypt_1.default.compareSync(`${validate.data.password}`, `${user.password}`)) {

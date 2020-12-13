@@ -11,6 +11,11 @@ const QuestionsSchema = new Schema(
   { id: false }
 );
 
+QuestionsSchema.pre<ISecurityQuestion>('save', function (next) {
+  this.updated_at = setDate();
+  next();
+});
+
 QuestionsSchema.set('toJSON', { getters: true });
 
 const Whitelist = model<ISecurityQuestion>('question', QuestionsSchema);

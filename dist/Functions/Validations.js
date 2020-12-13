@@ -1,12 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUUID = exports.isBase64 = exports.validateDateMonthAndYear = exports.validateDate = exports.validateCodeValue = exports.validateTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkNameOrLastName = void 0;
+exports.validateUUID = exports.isBase64 = exports.validateDateMonthAndYear = exports.validateDate = exports.validateCodeValue = exports.validateTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
 const mongoose_1 = require("mongoose");
 function checkNameOrLastName(value) {
     return (value &&
         /^([A-Z\u00C0-\u024F\u1E00-\u1EFF]?)+([[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]+[,.]?[ ]?|[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]+['-]]?)+$/.test(value));
 }
 exports.checkNameOrLastName = checkNameOrLastName;
+function checkRole(value) {
+    return value && /^[012345]{1}/.test(`${value}`);
+}
+exports.checkRole = checkRole;
 function checkIfValueIsNumber(value) {
     return value && /^[0-9]{1,3}/.test(`${value}`);
 }
