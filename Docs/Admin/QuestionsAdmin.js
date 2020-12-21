@@ -124,7 +124,7 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path param) {String} _id Identificador de la pregunta de seguridad.
+ * @apiParam (Path params) {String} _id Identificador de la pregunta de seguridad.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} question Detalles de la pregunta de seguridad.
@@ -179,7 +179,7 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path param) {String} _id Identificador de la pregunta de seguridad.
+ * @apiParam (Path params) {String} _id Identificador de la pregunta de seguridad.
  *
  * @apiParam {String} question Pregunta.
  *
@@ -253,7 +253,7 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path param) {String} _id Identificador de la pregunta de seguridad.
+ * @apiParam (Path params) {String} _id Identificador de la pregunta de seguridad.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  *

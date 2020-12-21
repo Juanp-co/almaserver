@@ -8,7 +8,7 @@ function validateRegister(data) {
         question: null
     };
     const errors = [];
-    if (!Validations_1.validateTitlesOrDescriptions(data.question)) {
+    if (!Validations_1.checkTitlesOrDescriptions(data.question)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la pregunta.', 'question'));
     }
     else {
@@ -29,7 +29,7 @@ function validateUpdate(data, _id) {
     else {
         ret._id = `${_id}`;
     }
-    if (!Validations_1.validateTitlesOrDescriptions(data.question)) {
+    if (!Validations_1.checkTitlesOrDescriptions(data.question)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la pregunta.', 'question'));
     }
     else {

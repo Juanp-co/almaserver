@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateSecurityQuestion = exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateRegister = void 0;
 const Validations_1 = require("../Functions/Validations");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
-const UsersActions_1 = require("../ActionsData/UsersActions");
+const UsersActions_1 = __importDefault(require("../ActionsData/UsersActions"));
 const QuestionsActions_1 = require("../ActionsData/QuestionsActions");
 async function validateRegister(data, admin) {
     const ret = {
@@ -59,7 +62,7 @@ async function validateRegister(data, admin) {
     if (!data.document || !Validations_1.checkDocument(data.document)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
     }
-    else if (await UsersActions_1.checkIfExistDocument(data.document.toUpperCase())) {
+    else if (await UsersActions_1.default(data.document.toUpperCase())) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
     }
     else {
@@ -167,7 +170,7 @@ async function validateUpdate(data, _id) {
     if (!data.document || !Validations_1.checkDocument(data.document)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
     }
-    else if (await UsersActions_1.checkIfExistDocument(data.document.toUpperCase(), _id)) {
+    else if (await UsersActions_1.default(data.document.toUpperCase(), _id)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra con otro usuario. Verifíquelo e intente nuevamente.', 'document'));
     }
     else {

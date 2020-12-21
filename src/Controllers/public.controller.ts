@@ -10,7 +10,7 @@ import Questions from '../Models/Question';
 const path = 'Controllers/public.controller';
 
 export function helloWorld(req: Request, res: Response): Response {
-  return res.status(200).json({
+  return res.json({
     msg: `Welcome to ALMA API REST.`
   });
 }
@@ -35,7 +35,7 @@ export async function register(req: Request, res: Response): Promise<Response> {
     user.securityQuestion.answer = bcrypt.hashSync(`${user.securityQuestion.answer}`, 10);
     await user.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Registro exitoso.`
     });
   } catch (error: any) {
@@ -83,7 +83,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
       });
     }
 
-    return res.status(200).json({
+    return res.json({
       msg: '¡Inicio de sesión con éxito!',
       data: await getData(user._id.toString()),
       token
@@ -98,7 +98,7 @@ export async function logout(req: Request, res: Response): Promise<Response> {
     const { token } = req.query;
     await disableTokenDB(`${token}`);
 
-    return res.status(200).json({
+    return res.json({
       msg: 'Se ha finalizado la sesión exitosamente.'
     });
   } catch (error: any) {
@@ -114,7 +114,7 @@ export async function getQuestions(req: Request, res: Response): Promise<Respons
   try {
     const questions = await Questions.find({}, { question: 1 }).exec();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Preguntas de seguridad.`,
       questions
     });

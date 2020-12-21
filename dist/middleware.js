@@ -19,6 +19,7 @@ async function validateUser(req, res, next) {
         }
         req.params.userid = `${check._id}`;
         req.body.userid = `${check._id}`;
+        req.body.userrole = check.role;
         req.query.role = `${check.role}`;
         req.query.token = token;
         return next();
@@ -47,9 +48,10 @@ async function validateAdmin(req, res, next) {
                 redirect: true
             });
         }
-        req.params.userid = check._id;
+        req.body.superadmin = check.role === 0;
         req.body.userid = check._id;
-        req.params.role = `${check.role}`;
+        req.body.userrole = check.role;
+        req.params.userid = check._id;
         req.query.token = token;
         return next();
     }

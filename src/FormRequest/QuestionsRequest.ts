@@ -1,5 +1,5 @@
 import { IQuestionRegister, IQuestionUpdate } from '../Interfaces/IQuestion';
-import { checkObjectId, validateTitlesOrDescriptions } from '../Functions/Validations';
+import { checkObjectId, checkTitlesOrDescriptions } from '../Functions/Validations';
 import { setError } from '../Functions/GlobalFunctions';
 
 export function validateRegister(data: IQuestionRegister): { data: IQuestionRegister; errors: any }  {
@@ -9,7 +9,7 @@ export function validateRegister(data: IQuestionRegister): { data: IQuestionRegi
   } as IQuestionRegister;
   const errors: any = [];
 
-  if (!validateTitlesOrDescriptions(data.question)) {
+  if (!checkTitlesOrDescriptions(data.question)) {
     errors.push(
       setError('Disculpe, pero debe indicar la pregunta.', 'question')
     )
@@ -37,7 +37,7 @@ export function validateUpdate(data: IQuestionUpdate, _id: string|null|undefined
     ret._id = `${_id}`;
   }
 
-  if (!validateTitlesOrDescriptions(data.question)) {
+  if (!checkTitlesOrDescriptions(data.question)) {
     errors.push(
       setError('Disculpe, pero debe indicar la pregunta.', 'question')
     )

@@ -14,9 +14,10 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
     let query = {
       _id: { $ne: userid }
     };
-    const { document, name, role } = req.query;
+    const { document, name } = req.query;
+    const { userrole } = req.body;
 
-    if (checkRole(role)) query = Object.assign(query, { role: Number.parseInt(`${role}`, 10) });
+    if (checkRole(userrole)) query = Object.assign(query, { role: userrole });
 
     if (document)
       query = Object.assign(
@@ -36,7 +37,7 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
 
     const totals = await Users.find(query).countDocuments().exec();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Total usuarios.`,
       totals
     });
@@ -83,7 +84,7 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
       .sort(sort)
       .exec();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Usuarios.`,
       users
     });
@@ -108,7 +109,7 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
     user.securityQuestion.answer = bcrypt.hashSync(`${user.securityQuestion.answer}`, 10);
     await user.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Se ha registrado el nuevo usuario exitosamente.`,
     });
 
@@ -138,7 +139,7 @@ export async function showUser(req: Request, res: Response): Promise<Response> {
       });
     }
 
-    return res.status(200).json({
+    return res.json({
       msg: `Detalles del usuario.`,
       user
     });
@@ -191,7 +192,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     await user.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Se han actualizado los datos del usuario exitosamente.`,
       user
     });
@@ -231,7 +232,7 @@ export async function changeRoleUser(req: Request, res: Response): Promise<Respo
     // disconnect user
     await disableTokenDBForUserId([_id]);
 
-    return res.status(200).json({
+    return res.json({
       msg: `Se asignado el nuevo rol al usuario exitosamente.`
     });
   } catch (error: any) {
@@ -260,7 +261,7 @@ export async function changeRoleUser(req: Request, res: Response): Promise<Respo
 //
 //     await user.delete();
 //
-//     return res.status(200).json({
+//     return res.json({
 //       msg: `Se ha eliminado el usuario exitosamente.`
 //     });
 //   } catch (error: any) {

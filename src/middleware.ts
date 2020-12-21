@@ -19,6 +19,7 @@ export async function validateUser(req: Request, res: Response, next: any): Prom
 
     req.params.userid = `${check._id}`;
     req.body.userid = `${check._id}`;
+    req.body.userrole = check.role;
     req.query.role = `${check.role}`;
     req.query.token = token;
 
@@ -51,9 +52,10 @@ export async function validateAdmin(req: Request, res: Response, next: any): Pro
       });
     }
 
-    req.params.userid = check._id;
+    req.body.superadmin = check.role === 0;
     req.body.userid = check._id;
-    req.params.role = `${check.role}`;
+    req.body.userrole = check.role;
+    req.params.userid = check._id;
     req.query.token = token;
 
     return next();

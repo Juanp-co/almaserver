@@ -11,7 +11,7 @@ export async function getQuestions(req: Request, res: Response): Promise<Respons
   try {
     const questions = await Questions.find({}, { __v: 0 }).exec();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Preguntas de seguridad.`,
       questions
     });
@@ -38,7 +38,7 @@ export async function getDetailsQuestion(req: Request, res: Response): Promise<R
       });
     }
 
-    return res.status(200).json({
+    return res.json({
       msg: `Detalles de la pregunta de seguridad.`,
       question
     });
@@ -61,7 +61,7 @@ export async function saveQuestions(req: Request, res: Response): Promise<Respon
     const question = new Questions(validate.data);
     await question.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Se ha registrado la pregunta de seguridad exitosamente.`,
       question
     });
@@ -94,7 +94,7 @@ export async function updateQuestions(req: Request, res: Response): Promise<Resp
     question.question = validate.data.question;
     await question.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Se han actualizado la pregunta de seguridad exitosamente.`,
       question
     });
@@ -132,7 +132,7 @@ export async function deleteQuestions(req: Request, res: Response): Promise<Resp
 
     await question.delete();
 
-    return res.status(200).json({
+    return res.json({
       msg: `Se han eliminado la pregunta de seguridad exitosamente.`
     });
   } catch (error: any) {

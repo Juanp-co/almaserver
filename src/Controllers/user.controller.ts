@@ -25,7 +25,7 @@ export async function get(req: Request, res: Response): Promise<Response> {
       return forceLogout(res, `${token}`);
     }
 
-    return res.status(200).json({
+    return res.json({
       msg: 'Datos de la sesión',
       data: user
     });
@@ -60,7 +60,7 @@ export async function update(req: Request, res: Response): Promise<Response> {
       new: true
     });
 
-    return res.status(200).json({
+    return res.json({
       msg: 'Se ha actualizado la información exitosamente.',
       data: updated
     });
@@ -99,7 +99,7 @@ export async function changePassword(req: Request, res: Response): Promise<Respo
     user.password = bcrypt.hashSync(validate.data.newPassword, 10);
     await user.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: 'Se ha actualizado su contraseña exitosamente.'
     });
   } catch (error: any) {
@@ -132,7 +132,7 @@ export async function changeSecurityQuestion(req: Request, res: Response): Promi
     user.securityQuestion.answer = bcrypt.hashSync(validate.data.answer, 10);
     await user.save();
 
-    return res.status(200).json({
+    return res.json({
       msg: 'Se ha actualizado los datos de seguridad exitosamente.'
     });
   } catch (error: any) {

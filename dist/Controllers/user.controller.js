@@ -19,7 +19,7 @@ async function get(req, res) {
             const { token } = req.query;
             return TokenActions_1.forceLogout(res, `${token}`);
         }
-        return res.status(200).json({
+        return res.json({
             msg: 'Datos de la sesión',
             data: user
         });
@@ -49,7 +49,7 @@ async function update(req, res) {
             projection: { password: 0, __v: 0, 'securityQuestion.answer': 0 },
             new: true
         });
-        return res.status(200).json({
+        return res.json({
             msg: 'Se ha actualizado la información exitosamente.',
             data: updated
         });
@@ -82,7 +82,7 @@ async function changePassword(req, res) {
         }
         user.password = bcrypt_1.default.hashSync(validate.data.newPassword, 10);
         await user.save();
-        return res.status(200).json({
+        return res.json({
             msg: 'Se ha actualizado su contraseña exitosamente.'
         });
     }
@@ -110,7 +110,7 @@ async function changeSecurityQuestion(req, res) {
         user.securityQuestion.questionId = validate.data.questionId;
         user.securityQuestion.answer = bcrypt_1.default.hashSync(validate.data.answer, 10);
         await user.save();
-        return res.status(200).json({
+        return res.json({
             msg: 'Se ha actualizado los datos de seguridad exitosamente.'
         });
     }

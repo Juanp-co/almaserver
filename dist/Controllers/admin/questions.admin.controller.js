@@ -13,7 +13,7 @@ const path = 'Controllers/admin/question.admin.controller';
 async function getQuestions(req, res) {
     try {
         const questions = await Question_1.default.find({}, { __v: 0 }).exec();
-        return res.status(200).json({
+        return res.json({
             msg: `Preguntas de seguridad.`,
             questions
         });
@@ -37,7 +37,7 @@ async function getDetailsQuestion(req, res) {
                 msg: 'Disculpe, pero la pregunta de seguridad no existe.'
             });
         }
-        return res.status(200).json({
+        return res.json({
             msg: `Detalles de la pregunta de seguridad.`,
             question
         });
@@ -58,7 +58,7 @@ async function saveQuestions(req, res) {
         }
         const question = new Question_1.default(validate.data);
         await question.save();
-        return res.status(200).json({
+        return res.json({
             msg: `Se ha registrado la pregunta de seguridad exitosamente.`,
             question
         });
@@ -86,7 +86,7 @@ async function updateQuestions(req, res) {
         }
         question.question = validate.data.question;
         await question.save();
-        return res.status(200).json({
+        return res.json({
             msg: `Se han actualizado la pregunta de seguridad exitosamente.`,
             question
         });
@@ -118,7 +118,7 @@ async function deleteQuestions(req, res) {
             });
         }
         await question.delete();
-        return res.status(200).json({
+        return res.json({
             msg: `Se han eliminado la pregunta de seguridad exitosamente.`
         });
     }

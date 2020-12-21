@@ -41,7 +41,7 @@ export function checkObjectId(value: any): boolean {
   return Types.ObjectId.isValid(value);
 }
 
-export function validateTitlesOrDescriptions(value: any): boolean {
+export function checkTitlesOrDescriptions(value: any): boolean {
   return (
     value &&
     /^[a-zA-ZÁÉÍÓÚÀÈÌÒÙàèìòùáéíóúÂÊÎÔÛâêîôûÄËÏÖÜäëïöüñÑ0-9\s.,#*?¿¡!()\-+"'/@]{5,500}/g.test(value)
@@ -52,9 +52,14 @@ export function validateCodeValue(value: any): boolean {
   return value && /^[a-zA-Z0-9\s.,#*()\-+/@]+$/g.test(value);
 }
 
-export function validateDate(value: any): boolean {
+export function checkDate(value: any): boolean {
   // validate date (YYYY-MM-DD)
-  return value && !Number.isNaN(Date.parse(value));
+  return value && /\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])*/.test(`${value}`);
+}
+
+export function checkHour(value: any): boolean {
+  // validate hour (HH:MM)
+  return value && /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(value);
 }
 
 export function validateDateMonthAndYear(value: any): boolean {

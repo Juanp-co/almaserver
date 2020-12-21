@@ -14,10 +14,23 @@ import {
   updateUser
 } from '../Controllers/admin/users.admin.controller';
 import { validateAdmin } from '../middleware';
+import getEvents, { deleteEvent, saveEvent, showEvent, updateEvent } from '../Controllers/events/events.controller';
 
 const router = Router();
 
 // ===================================================================================
+
+/*
+  Events
+*/
+router.route('/events')
+  .get(validateAdmin, getEvents)
+  .post(validateAdmin, saveEvent);
+
+router.route('/events/:_id')
+  .delete(validateAdmin, deleteEvent)
+  .get(validateAdmin, showEvent)
+  .put(validateAdmin, updateEvent);
 
 /* Questions */
 router.route('/questions')
@@ -29,7 +42,9 @@ router.route('/questions/:_id')
   .put(validateAdmin, updateQuestions)
   .delete(validateAdmin, deleteQuestions);
 
-/* Users */
+/*
+  Users
+*/
 router.route('/users')
   .get(validateAdmin, getUsers)
   .post(validateAdmin, saveUser);

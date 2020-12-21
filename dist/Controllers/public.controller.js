@@ -13,7 +13,7 @@ const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Question_1 = __importDefault(require("../Models/Question"));
 const path = 'Controllers/public.controller';
 function helloWorld(req, res) {
-    return res.status(200).json({
+    return res.json({
         msg: `Welcome to ALMA API REST.`
     });
 }
@@ -34,7 +34,7 @@ async function register(req, res) {
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
         await user.save();
-        return res.status(200).json({
+        return res.json({
             msg: `Registro exitoso.`
         });
     }
@@ -73,7 +73,7 @@ async function login(req, res) {
                 msg: '¡Ha ocurrido un error al momento de iniciar la sesión!'
             });
         }
-        return res.status(200).json({
+        return res.json({
             msg: '¡Inicio de sesión con éxito!',
             data: await UsersActions_1.getData(user._id.toString()),
             token
@@ -88,7 +88,7 @@ async function logout(req, res) {
     try {
         const { token } = req.query;
         await TokenActions_1.disableTokenDB(`${token}`);
-        return res.status(200).json({
+        return res.json({
             msg: 'Se ha finalizado la sesión exitosamente.'
         });
     }
@@ -103,7 +103,7 @@ Public actions
 async function getQuestions(req, res) {
     try {
         const questions = await Question_1.default.find({}, { question: 1 }).exec();
-        return res.status(200).json({
+        return res.json({
             msg: `Preguntas de seguridad.`,
             questions
         });

@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import {startConnection} from '../src/database';
+import Events from '../src/Models/Events';
 import Users from '../src/Models/Users';
 import Question from '../src/Models/Question';
 import Whitelist from '../src/Models/Whitelist';
@@ -19,12 +20,14 @@ async function migration() {
 
     showConsoleLog(1, 'Cargando las migraciones, espere un momento ...');
 
+    const events = await JSON.parse(fs.readFileSync(`${__dirname}/Jsons/Events.json`).toString());
     const users = await JSON.parse(fs.readFileSync(`${__dirname}/Jsons/Users.json`).toString());
     const questions = await JSON.parse(fs.readFileSync(`${__dirname}/Jsons/Questions.json`).toString());
 
     showConsoleLog(1, '==========================================================');
 
     showConsoleLog(1, 'Eliminando datos existentes en la base de datos...');
+    await Events.deleteMany({}).exec();
     await Question.deleteMany({}).exec();
     await Users.deleteMany({}).exec();
     await Whitelist.deleteMany({}).exec();
@@ -40,6 +43,11 @@ async function migration() {
 
     showConsoleLog(1, `Usuarios básicos (Admin y Ciudadano) ...`);
     await Users.insertMany(users);
+
+    showConsoleLog(1, '==========================================================');
+
+    showConsoleLog(1, `Importando eventos.`);
+    await Events.insertMany(events);
 
     showConsoleLog(1, '==========================================================');
     showConsoleLog(1, `Migración finalizada exitosamente.`);

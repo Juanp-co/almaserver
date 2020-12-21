@@ -185,7 +185,7 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path param) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del usuario.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos de la sesión.
@@ -274,7 +274,7 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path param) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del usuario.
  *
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
@@ -406,7 +406,7 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path param) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del usuario.
  *
  * @apiParam {Number} role Role para el usuario.
  *

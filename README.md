@@ -33,6 +33,25 @@
     # Access to documentation in the broswer
     http://localhost:9000/apidoc or https://api.url.com/apidoc
 
+## To merge in main's branch:
+
+NOTE: Is required run previously the `yarn add` or `npm install` to install the necessary dependencies. 
+
+To must run the following commands before to do merge in `main` branch.
+
+    # Run precommit - This check syntax, generate documentation and generate the 
+    $ npm run precommit
+    
+    # Add changes 
+    $ git add .
+
+    # Add description commit
+    $ git commit -m "YOUR DESCRIPTION"
+    
+_**Precomit** command run the following commands_: `npm run lint && npm run docs && npm run clean && tsc -p ./`
+
+Check the `package.json` file to more information.
+
 ## Required migrations 
 
 Execute the following command to generate test data.
