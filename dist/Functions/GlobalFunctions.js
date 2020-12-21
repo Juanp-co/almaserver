@@ -101,6 +101,10 @@ function getLimitSkipSortSearch(data) {
         case 'created_at':
             retSort.created_at = v;
             break;
+        case 'date':
+            // to events
+            retSort.date = v;
+            break;
         case 'document':
             retSort.document = v;
             break;

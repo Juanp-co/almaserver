@@ -261,3 +261,160 @@
     "errors": [${err}]
   }
  */
+
+/**
+ * @api {get} /api/events (04) Obtener eventos públicos.
+ * @apiVersion 0.0.4
+ * @apiName getPublicEventsPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (para obtener el rol y obtener los eventos relacionados).
+ *
+ * @apiParam (Query Params) {String} input Campo a ordenar (valor = date [requerido]).
+ * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional).
+ * @apiParam (Query Params) {String} initDate Fecha de busqueda inicial (formato: YYYY-MM-DD) (opcional).
+ * @apiParam (Query Params) {String} endDate Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Array|Object} events Listado de preguntas de seguridad.
+ *
+ * @apiSuccess (events Array Object) {String} _id ID del evento.
+ * @apiSuccess (events Array Object) {String} title Título para el evento.
+ * @apiSuccess (events Array Object) {String} date Fecha del evento.
+ * @apiSuccess (events Array Object) {String} initDate Hora de inicio del evento.
+ * @apiSuccess (events Array Object) {String} endDate Hora de finalización del evento.
+ * @apiSuccess (events Array Object) {Array|Number} toRoles Roles a los que va dirigido.
+ * @apiSuccess (events Array Object) {Object} user Información del usuario que agregó el evento.
+ *
+ * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} document Número de documento.
+ * @apiSuccess (user Object) {String} names Nombre(s).
+ * @apiSuccess (user Object) {String} lastNames Apellido(s).
+ *
+ * @apiSuccessExample {JSON} Success with data
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Eventos.",
+    "events": [
+        {
+            "_id": "5fe00cf5e2c9942e5c866453",
+            "title": "EVENTO ESPECIAL",
+            "date": "2020-01-07",
+            "initHour": "00:00",
+            "endHour": "23:00",
+            "toRoles": [
+                5
+            ],
+            "user": {
+                "_id": "5fcf0821fc917d476c1cf3e2",
+                "document": "CC123456789",
+                "names": "USUARIO",
+                "lastNames": "ADMIN"
+            }
+        },
+        .
+        .
+        .
+    ]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Eventos.",
+    "events": []
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */
+
+/**
+ * @api {get} /api/events/:_id (05) Obtener detalles de un evento público.
+ * @apiVersion 0.0.4
+ * @apiName detailsPublicEventsPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (para obtener el rol y obtener los eventos relacionados).
+ *
+ * @apiParam (Path params) {String} _id ID del evento a obtener.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} event Detalles del evento.
+ *
+ * @apiSuccess (event Object) {String} _id ID del evento.
+ * @apiSuccess (event Object) {String} title Título para el evento.
+ * @apiSuccess (event Object) {String} description Descripción del evento.
+ * @apiSuccess (event Object) {String} date Fecha del evento.
+ * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
+ * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
+ * @apiSuccess (event Object) {Array|Number} toRoles Roles a los que va dirigido.
+ * @apiSuccess (event Object) {Object} user Información del usuario que agregó el evento.
+ *
+ * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} document Número de documento.
+ * @apiSuccess (user Object) {String} names Nombre(s).
+ * @apiSuccess (user Object) {String} lastNames Apellido(s).
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Evento.",
+    "event": {
+        "_id": "5fe00cf5e2c9942e5c866453",
+        "title": "EVENTO ESPECIAL",
+        "description": "Lorem ipsum",
+        "date": "2020-01-07",
+        "initHour": "00:00",
+        "endHour": "23:00",
+        "toRoles": [
+            5
+        ],
+        "user": {
+            "_id": "5fcf0821fc917d476c1cf3e2",
+            "document": "CC123456789",
+            "names": "USUARIO",
+            "lastNames": "ADMIN"
+        }
+    }
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Not found
+ * HTTP/1.1 404 Not found
+ * {
+    "msg": "Disculpe, pero el evento seleccionado no existe."
+}
+ *
+ * @apiErrorExample {JSON} Invalid _id
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+    "msg": "Disculpe, pero el evento seleccionado incorrecto."
+}
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */

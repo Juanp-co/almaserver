@@ -58,6 +58,13 @@ export interface IUserLogin {
   password: IUser['password'];
 }
 
+export interface IUserSimpleInfo {
+  _id: string;
+  names: IUser['names'];
+  lastNames: IUser['lastNames'];
+  document: IUser['document'];
+}
+
 export interface IUserPasswords {
   password?: string | null;
   newPassword?: string | null;
@@ -69,8 +76,8 @@ export interface IUserSecurityQuestion {
 }
 
 export interface IUserToToken {
-  _id?: string|any;
-  userid?: string|any;
+  _id?: string | any;
+  userid?: string | any;
   document?: IUser['document'];
   role?: IUser['role'];
 }

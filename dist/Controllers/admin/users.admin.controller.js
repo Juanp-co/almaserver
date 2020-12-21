@@ -17,9 +17,10 @@ async function getUsersCounters(req, res) {
         let query = {
             _id: { $ne: userid }
         };
-        const { document, name, role } = req.query;
-        if (Validations_1.checkRole(role))
-            query = Object.assign(query, { role: Number.parseInt(`${role}`, 10) });
+        const { document, name } = req.query;
+        const { userrole } = req.body;
+        if (Validations_1.checkRole(userrole))
+            query = Object.assign(query, { role: userrole });
         if (document)
             query = Object.assign(query, { document: { $regex: new RegExp(`${document}`, 'i') } });
         if (Validations_1.checkNameOrLastName(name)) {
@@ -32,7 +33,7 @@ async function getUsersCounters(req, res) {
                 });
         }
         const totals = await Users_1.default.find(query).countDocuments().exec();
-        return res.status(200).json({
+        return res.json({
             msg: `Total usuarios.`,
             totals
         });
@@ -74,7 +75,7 @@ async function getUsers(req, res) {
             .limit(limit)
             .sort(sort)
             .exec();
-        return res.status(200).json({
+        return res.json({
             msg: `Usuarios.`,
             users
         });
@@ -97,7 +98,7 @@ async function saveUser(req, res) {
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
         await user.save();
-        return res.status(200).json({
+        return res.json({
             msg: `Se ha registrado el nuevo usuario exitosamente.`,
         });
     }
@@ -121,7 +122,7 @@ async function showUser(req, res) {
                 msg: 'Disculpe, pero el usuario seleccionado no existe.'
             });
         }
-        return res.status(200).json({
+        return res.json({
             msg: `Detalles del usuario.`,
             user
         });
@@ -164,7 +165,7 @@ async function updateUser(req, res) {
         user.companyType = validate.data.companyType;
         user.baptized = validate.data.baptized;
         await user.save();
-        return res.status(200).json({
+        return res.json({
             msg: `Se han actualizado los datos del usuario exitosamente.`,
             user
         });
@@ -198,7 +199,7 @@ async function changeRoleUser(req, res) {
         await user.save();
         // disconnect user
         await TokenActions_1.disableTokenDBForUserId([_id]);
-        return res.status(200).json({
+        return res.json({
             msg: `Se asignado el nuevo rol al usuario exitosamente.`
         });
     }
@@ -228,7 +229,7 @@ exports.changeRoleUser = changeRoleUser;
 //
 //     await user.delete();
 //
-//     return res.status(200).json({
+//     return res.json({
 //       msg: `Se ha eliminado el usuario exitosamente.`
 //     });
 //   } catch (error: any) {

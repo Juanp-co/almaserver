@@ -1,0 +1,107 @@
+[
+  {
+    "_id" : "5fe00cf5e2c9942e5c866453",
+    "toRoles" : [
+      0, 1, 2, 3, 4, 5
+    ],
+    "title" : "EVENTO 1",
+    "description" : "Para todos los roles",
+    "date" : 1578369600,
+    "initHour" : "00:00",
+    "endHour" : "23:00",
+    "created_at" : 1608518901,
+    "updated_at" : 1608528331,
+    "userid" : "5fcf0821fc917d476c1cf3e2",
+    "__v" : 0
+  },
+  {
+    "_id" : "5fe00cf5e2c9942e5c866454",
+    "toRoles" : [
+      0
+    ],
+    "title" : "EVENTO 2",
+    "description" : "Solo para administradores",
+    "date" : 1578369600,
+    "initHour" : "00:00",
+    "endHour" : "23:00",
+    "created_at" : 1608518901,
+    "updated_at" : 1608528331,
+    "userid" : "5fcf0821fc917d476c1cf3e2",
+    "__v" : 0
+  },
+  {
+    "_id" : "5fe00cf5e2c9942e5c866455",
+    "toRoles" : [
+      1
+    ],
+    "title" : "EVENTO 3",
+    "description" : "Solo para pastores",
+    "date" : 1578369600,
+    "initHour" : "00:00",
+    "endHour" : "23:00",
+    "created_at" : 1608518901,
+    "updated_at" : 1608528331,
+    "userid" : "5fcf0821fc917d476c1cf3e2",
+    "__v" : 0
+  },
+  {
+    "_id" : "5fe00cf5e2c9942e5c866456",
+    "toRoles" : [
+      2
+    ],
+    "title" : "EVENTO 4",
+    "description" : "Solo para supervisores",
+    "date" : 1578369600,
+    "initHour" : "00:00",
+    "endHour" : "23:00",
+    "created_at" : 1608518901,
+    "updated_at" : 1608528331,
+    "userid" : "5fcf0821fc917d476c1cf3e2",
+    "__v" : 0
+  },
+  {
+    "_id" : "5fe00cf5e2c9942e5c866457",
+    "toRoles" : [
+      3
+    ],
+    "title" : "EVENTO 5",
+    "description" : "Solo para líderes",
+    "date" : 1578369600,
+    "initHour" : "00:00",
+    "endHour" : "23:00",
+    "created_at" : 1608518901,
+    "updated_at" : 1608528331,
+    "userid" : "5fcf0821fc917d476c1cf3e2",
+    "__v" : 0
+  },
+  {
+    "_id" : "5fe00cf5e2c9942e5c866458",
+    "toRoles" : [
+      4
+    ],
+    "title" : "EVENTO 6",
+    "description" : "Solo para padres espirituales",
+    "date" : 1578369600,
+    "initHour" : "00:00",
+    "endHour" : "23:00",
+    "created_at" : 1608518901,
+    "updated_at" : 1608528331,
+    "userid" : "5fcf0821fc917d476c1cf3e2",
+    "__v" : 0
+  },
+  {
+    "_id" : "5fe00cf5e2c9942e5c866459",
+    "toRoles" : [
+      5
+    ],
+    "title" : "EVENTO 7",
+    "description" : "Solo para usuarios particulares",
+    "date" : 1578369600,
+    "initHour" : "00:00",
+    "endHour" : "23:00",
+    "created_at" : 1608518901,
+    "updated_at" : 1608528331,
+    "userid" : "5fcf0821fc917d476c1cf3e2",
+    "__v" : 0
+  }
+]

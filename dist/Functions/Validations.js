@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUUID = exports.isBase64 = exports.validateDateMonthAndYear = exports.validateDate = exports.validateCodeValue = exports.validateTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
+exports.validateUUID = exports.isBase64 = exports.validateDateMonthAndYear = exports.checkHour = exports.checkDate = exports.validateCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
 const mongoose_1 = require("mongoose");
 function checkNameOrLastName(value) {
     return (value &&
@@ -35,20 +35,25 @@ function checkObjectId(value) {
     return mongoose_1.Types.ObjectId.isValid(value);
 }
 exports.checkObjectId = checkObjectId;
-function validateTitlesOrDescriptions(value) {
+function checkTitlesOrDescriptions(value) {
     return (value &&
         /^[a-zA-ZÁÉÍÓÚÀÈÌÒÙàèìòùáéíóúÂÊÎÔÛâêîôûÄËÏÖÜäëïöüñÑ0-9\s.,#*?¿¡!()\-+"'/@]{5,500}/g.test(value));
 }
-exports.validateTitlesOrDescriptions = validateTitlesOrDescriptions;
+exports.checkTitlesOrDescriptions = checkTitlesOrDescriptions;
 function validateCodeValue(value) {
     return value && /^[a-zA-Z0-9\s.,#*()\-+/@]+$/g.test(value);
 }
 exports.validateCodeValue = validateCodeValue;
-function validateDate(value) {
+function checkDate(value) {
     // validate date (YYYY-MM-DD)
-    return value && !Number.isNaN(Date.parse(value));
+    return value && /\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])*/.test(`${value}`);
 }
-exports.validateDate = validateDate;
+exports.checkDate = checkDate;
+function checkHour(value) {
+    // validate hour (HH:MM)
+    return value && /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(value);
+}
+exports.checkHour = checkHour;
 function validateDateMonthAndYear(value) {
     // validate date (YYYY-MM-DD)
     return value && /(1[0-2]|0[1-9]|\d)-(20\d{2}|19\d{2}|0(?!0)\d|[1-9]\d)/.test(value);
