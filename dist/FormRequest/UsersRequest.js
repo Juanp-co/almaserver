@@ -7,7 +7,7 @@ exports.validateSecurityQuestion = exports.validatePasswords = exports.validateL
 const Validations_1 = require("../Functions/Validations");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const UsersActions_1 = __importDefault(require("../ActionsData/UsersActions"));
-const QuestionsActions_1 = require("../ActionsData/QuestionsActions");
+const QuestionsActions_1 = __importDefault(require("../ActionsData/QuestionsActions"));
 async function validateRegister(data, admin) {
     const ret = {
         phone: null,
@@ -86,7 +86,7 @@ async function validateRegister(data, admin) {
     if (!data.questionId || !Validations_1.checkObjectId(data.questionId)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero seleccionar una pregunta de seguridad.', 'questionId'));
     }
-    else if (!(await QuestionsActions_1.checkIfExistQuestion(data.questionId))) {
+    else if (!(await QuestionsActions_1.default(data.questionId))) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero la pregunta de seguridad seleccionada es incorrecta.', 'questionId'));
     }
     else
@@ -271,7 +271,7 @@ async function validateSecurityQuestion(data) {
     if (!data.questionId || !Validations_1.checkObjectId(data.questionId)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero seleccionar una pregunta de seguridad.', 'questionId'));
     }
-    else if (!(await QuestionsActions_1.checkIfExistQuestion(data.questionId))) {
+    else if (!(await QuestionsActions_1.default(data.questionId))) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero la pregunta de seguridad seleccionada es incorrecta.', 'questionId'));
     }
     else

@@ -6,7 +6,7 @@ import { showConsoleError, showConsoleLog } from './Functions/GlobalFunctions';
 const pathEnv = path.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
 dotenv.config({ path: pathEnv });
 
-export async function startConnection() {
+export default async function startConnection() {
   try {
     const dbPort: string = process.env.DDB_PORT || '';
     const dbHost: string = process.env.DDB_HOST || '';

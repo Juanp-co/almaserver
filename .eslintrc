@@ -20,11 +20,8 @@
     "no-await-in-loop":"off",
     "no-useless-escape":"off",
     "no-underscore-dangle":"off",
-    "no-param-reassign":"off",
     "prefer-object-spread":"off",
     "camelcase":"off",
-    "no-restricted-syntax": "error",
-    "import/prefer-default-export": "off",
     "import/first": "off"
   }
 }

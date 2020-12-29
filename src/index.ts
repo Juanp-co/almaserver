@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import moment from 'moment-timezone';
 import App from './app';
-import { startConnection } from './database';
+import startConnection from './database';
 import AdminRouter from './Routes/AdminRouter';
 import PublicRouter from './Routes/PublicRouter';
 import UserRouter from './Routes/UserRouter';

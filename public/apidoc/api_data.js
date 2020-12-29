@@ -1,7 +1,1980 @@
 define({ "api": [
   {
     "type": "post",
-    "url": "/api/admin/events/:_id",
+    "url": "/api/admin/courses",
+    "title": "(02) Crear nuevo curso.",
+    "version": "0.0.5",
+    "name": "createCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del evento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "temary",
+            "description": "<p>Listado de temas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "test",
+            "description": "<p>Listado de preguntas para las pruebas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Nombre completo del orador.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador del curso.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          }
+        ],
+        "temary Array Object": [
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video (Solo videos provenientes de Youtube).</p>"
+          }
+        ],
+        "test Array Object": [
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título o pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "extra",
+            "description": "<p>Información extra para completar la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "placeholder",
+            "description": "<p>Información que resalta el campo (solo para tipo: text | textarea).</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "inputType",
+            "description": "<p>Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "require",
+            "description": "<p>Indica si el campo es obligatorio responder.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Array|String",
+            "optional": false,
+            "field": "values",
+            "description": "<p>Listado de respuestas (Solo si 'inputType' es diferente de 'text' o 'textarea').</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "correctAnswer",
+            "description": "<p>Respuesta correcta. Solo aplica si 'values' contiene elementos.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"title\": \"CURSO 01\",\n\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n\t\"temary\": [\n        {\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n        },\n        {\n            \"title\": \"02 - Internet\",\n            \"description\": \"¿Qué es el internet y cómo se funciona?\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n        }\n    ],\n\t\"test\": [\n        {\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": null,\n            \"inputType\": \"radio\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": 0\n        },\n        {\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"inputType\": \"text\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null\n        }\n    ],\n\t\"toRoles\": [ 5 ],\n\t\"speaker\": \"Anthony Velásquez\",\n\t\"speakerPosition\": 2,\n\t\"code\": \"AAA-1111\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Detalles del evento.</p>"
+          }
+        ],
+        "course Object": [
+          {
+            "group": "course Object",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra público para los usuarios.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "draft",
+            "description": "<p>Indica si el curso se encuentra en borrador (preparación).</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Nombre completo del orador del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Number",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "temary",
+            "description": "<p>Listado de temas del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "test",
+            "description": "<p>Listado de preguntas para la prueba que deberá presentar el usuario.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del contenido del curso.</p>"
+          }
+        ],
+        "temary Array Object": [
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comentarios realizados por los usuarios.</p>"
+          }
+        ],
+        "test Array Object": [
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "extra",
+            "description": "<p>Información extra para completar la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "placeholder",
+            "description": "<p>Información que resalta el campo (en caso de ser: text | textarea).</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "require",
+            "description": "<p>Indica si el campo es obligatorio responder.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Array|String",
+            "optional": false,
+            "field": "values",
+            "description": "<p>Listado de respuestas (Solo si 'inputType' es diferente de 'text' o 'textarea').</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "correctAnswer",
+            "description": "<p>Respuesta correcta. Solo aplica si 'values' contiene elementos.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título o pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "inputType",
+            "description": "<p>Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el nuevo curso exitosamente.\",\n    \"course\": {\n        \"toRoles\": [\n            5\n        ],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"5feacc6eda2a713754f99e25\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO 01\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5feacc6eda2a713754f99e26\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            },\n            {\n                \"_id\": \"5feacc6eda2a713754f99e27\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e28\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e29\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"created_at\": \"2020-12-29 01:27:58\",\n        \"updated_at\": \"2020-12-29 01:27:58\"\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"title\",\n            \"msg\": \"Disculpe, pero indicar un título generar para el curso.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, pero indicar el nombre completo del orador del curso.\"\n        },\n        {\n            \"input\": \"code\",\n            \"msg\": \"Disculpe, pero el código indicado ya se encuentra registrado.\"\n        },\n        {\n            \"input\": \"temary\",\n            \"msg\": \"Disculpe, pero indicar el temario del curso.\"\n        },\n        {\n            \"input\": \"test\",\n            \"msg\": \"Disculpe, pero indicar las preguntas para la prueba de este curso.\"\n        },\n        {\n            \"input\": \"temary.title\",\n            \"msg\": \"Disculpe, pero todos los temas deben contener un título.\"\n        },\n        {\n            \"input\": \"temary.urlVideo\",\n            \"msg\": \"Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.\"\n        },\n        {\n            \"input\": \"test.title\",\n            \"msg\": \"Disculpe, pero todas las preguntas para la prueba deben contener un título.\"\n        },\n        {\n            \"input\": \"test.inputType\",\n            \"msg\": \"Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.\"\n        },\n        {\n            \"input\": \"test.correctAnswer\",\n            \"msg\": \"Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/courses/:_id",
+    "title": "(05) Eliminar un curso.",
+    "version": "0.0.5",
+    "name": "deleteCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha eliminado el curso exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a eliminar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/courses/:_id",
+    "title": "(03) Obtener detalles de un curso.",
+    "version": "0.0.5",
+    "name": "detailsCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Detalles del evento.</p>"
+          }
+        ],
+        "course Object": [
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario que ha creado el curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Nombre completo del orador del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Number",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "temary",
+            "description": "<p>Listado de temas del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "test",
+            "description": "<p>Listado de preguntas para la prueba que deberá presentar el usuario.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra público para los usuarios.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "draft",
+            "description": "<p>Indica si el curso se encuentra en borrador (preparación).</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del contenido del curso.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          }
+        ],
+        "temary Array Object": [
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comentarios realizados por los usuarios.</p>"
+          }
+        ],
+        "test Array Object": [
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "extra",
+            "description": "<p>Información extra para completar la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "placeholder",
+            "description": "<p>Información que resalta el campo (en caso de ser: text | textarea).</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "require",
+            "description": "<p>Indica si el campo es obligatorio responder.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Array|String",
+            "optional": false,
+            "field": "values",
+            "description": "<p>Listado de respuestas (Solo si 'inputType' es diferente de 'text' o 'textarea').</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "correctAnswer",
+            "description": "<p>Respuesta correcta. Solo aplica si 'values' contiene elementos.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título o pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "inputType",
+            "description": "<p>Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5feacc6eda2a713754f99e25\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO 01\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5feacc6eda2a713754f99e26\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            },\n            {\n                \"_id\": \"5feacc6eda2a713754f99e27\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e28\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e29\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"draft\": true,\n        \"enable\": false,\n        \"created_at\": \"2020-12-29 01:27:58\",\n        \"updated_at\": \"2020-12-29 01:27:58\"\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/courses/:_id/enable",
+    "title": "(06) Publicar un curso o removerlo.",
+    "version": "0.0.5",
+    "name": "enableCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si se publicará el curso o será removido (valores: 1 = enable | 0 = remove).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request if enable",
+        "content": "{\n    \"enable\": 1\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request if remove",
+        "content": "{\n    \"enable\": 0\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha publicado el curso exitosamente.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha retirado el curso exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid 'enable' param.",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero debe indicar si publicará o removerá el curso de la sección pública.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique el temario para este.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique las pruebas para este.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/courses",
+    "title": "(00) Obtener contador de cursos.",
+    "version": "0.0.5",
+    "name": "getCountersCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso a buscar (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso a buscar (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Totalizador de cursos.</p>"
+          }
+        ],
+        "totals Object": [
+          {
+            "group": "totals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "enables",
+            "description": "<p>Total de cursos publicados.</p>"
+          },
+          {
+            "group": "totals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "drafts",
+            "description": "<p>Total de cursos en borrador.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Total de cursos.\",\n    \"totals\": {\n        \"enables\": 0,\n        \"drafts\": 3\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/courses",
+    "title": "(01) Obtener listado de cursos.",
+    "version": "0.0.5",
+    "name": "getCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "input",
+            "description": "<p>Campo a ordenar (valor = title | code).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>Ordenado de input (1 = ASC | -1 = DESC) (Opcional si input no se enviado).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>Página a visualizar (Por defecto = 1).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>Total de resultados por página (Por defecto = 10).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso a buscar (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso a buscar (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Listado de cursos.</p>"
+          }
+        ],
+        "courses Array Object": [
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del evento.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Usuario que registró el curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Orador del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "draft",
+            "description": "<p>Indica si el curso se encuentra en modo borrador.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra disponible al público.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de registro del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del curso.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Cursos.\",\n    \"courses\": [\n        {\n            \"_id\": \"5fea3193ff37862c30b2d9a8\",\n            \"user\": {\n                \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n                \"document\": \"CC123456789\",\n                \"names\": \"USUARIO\",\n                \"lastNames\": \"ADMIN\"\n            },\n            \"speaker\": \"Anthony Velásquez\",\n            \"speakerPosition\": 2,\n            \"code\": \"AAA-1235\",\n            \"title\": \"CURSO 000001\",\n            \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n            \"toRoles\": [\n                5\n            ],\n            \"draft\": true,\n            \"enable\": false,\n            \"created_at\": \"2020-12-28 14:27:15\",\n            \"updated_at\": \"2020-12-28 14:44:37\"\n        },\n        .\n        .\n        .\n    ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Cursos.\",\n    \"events\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/courses/:_id",
+    "title": "(04) Actualizar un curso.",
+    "version": "0.0.5",
+    "name": "updateCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Nombre completo del orador.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador del curso.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del evento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "temary",
+            "description": "<p>Listado de temas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "test",
+            "description": "<p>Listado de preguntas para las pruebas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          }
+        ],
+        "temary Array Object": [
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video (Solo videos provenientes de Youtube).</p>"
+          }
+        ],
+        "test Array Object": [
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título o pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "extra",
+            "description": "<p>Información extra para completar la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "placeholder",
+            "description": "<p>Información que resalta el campo (solo para tipo: text | textarea).</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "inputType",
+            "description": "<p>Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "require",
+            "description": "<p>Indica si el campo es obligatorio responder.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Array|String",
+            "optional": false,
+            "field": "values",
+            "description": "<p>Listado de respuestas (Solo si 'inputType' es diferente de 'text' o 'textarea').</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "correctAnswer",
+            "description": "<p>Respuesta correcta. Solo aplica si 'values' contiene elementos.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"code\": \"AAA-1111\",\n    \"title\": \"INTERNET\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n    \"temary\": [\n        {\n            \"_id\": \"5feacc6eda2a713754f99e26\",\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        },\n        {\n            \"_id\": \"5feacc6eda2a713754f99e27\",\n            \"title\": \"02 - Internet\",\n            \"description\": \"¿Qué es el internet y cómo se funciona?\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        }\n    ],\n    \"test\": [\n        {\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": \"Indica tu respuesta\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e28\",\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"inputType\": \"radio\"\n        },\n        {\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e29\",\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"inputType\": \"text\"\n        }\n    ],\n    \"toRoles\": [\n        5\n    ]\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Detalles del evento.</p>"
+          }
+        ],
+        "course Object": [
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Nombre completo del orador del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Number",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "temary",
+            "description": "<p>Listado de temas del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "test",
+            "description": "<p>Listado de preguntas para la prueba que deberá presentar el usuario.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra público para los usuarios.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "draft",
+            "description": "<p>Indica si el curso se encuentra en borrador (preparación).</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del contenido del curso.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          }
+        ],
+        "temary Array Object": [
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comentarios realizados por los usuarios.</p>"
+          }
+        ],
+        "test Array Object": [
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "extra",
+            "description": "<p>Información extra para completar la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "placeholder",
+            "description": "<p>Información que resalta el campo (en caso de ser: text | textarea).</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "require",
+            "description": "<p>Indica si el campo es obligatorio responder.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Array|String",
+            "optional": false,
+            "field": "values",
+            "description": "<p>Listado de respuestas (Solo si 'inputType' es diferente de 'text' o 'textarea').</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "correctAnswer",
+            "description": "<p>Respuesta correcta. Solo aplica si 'values' contiene elementos.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título o pregunta.</p>"
+          },
+          {
+            "group": "test Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "inputType",
+            "description": "<p>Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el curso exitosamente.\",\n    \"course\": {\n        \"toRoles\": [\n            5\n        ],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"5feacc6eda2a713754f99e25\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"INTERNET\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5fead328f7bcf73dc82d8670\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            },\n            {\n                \"_id\": \"5fead328f7bcf73dc82d8671\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": 0,\n                \"_id\": \"5fead328f7bcf73dc82d8672\",\n                \"title\": \"01 - ¿Qué es el internet??????\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5fead328f7bcf73dc82d8673\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"created_at\": \"2020-12-29 01:27:58\",\n        \"updated_at\": \"2020-12-29 01:56:40\"\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Can't edit",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "The code exists",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el nuevp código ingresado ya se encuentra asignado a otro curso.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"title\",\n            \"msg\": \"Disculpe, pero indicar un título generar para el curso.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, pero indicar el nombre completo del orador del curso.\"\n        },\n        {\n            \"input\": \"code\",\n            \"msg\": \"Disculpe, pero el código indicado ya se encuentra registrado.\"\n        },\n        {\n            \"input\": \"temary\",\n            \"msg\": \"Disculpe, pero indicar el temario del curso.\"\n        },\n        {\n            \"input\": \"test\",\n            \"msg\": \"Disculpe, pero indicar las preguntas para la prueba de este curso.\"\n        },\n        {\n            \"input\": \"temary.title\",\n            \"msg\": \"Disculpe, pero todos los temas deben contener un título.\"\n        },\n        {\n            \"input\": \"temary.urlVideo\",\n            \"msg\": \"Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.\"\n        },\n        {\n            \"input\": \"test.title\",\n            \"msg\": \"Disculpe, pero todas las preguntas para la prueba deben contener un título.\"\n        },\n        {\n            \"input\": \"test.inputType\",\n            \"msg\": \"Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.\"\n        },\n        {\n            \"input\": \"test.correctAnswer\",\n            \"msg\": \"Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/events",
     "title": "(01) Crear nuevo evento.",
     "version": "0.0.4",
     "name": "createEventsAdmin",
@@ -1211,6 +3184,542 @@ define({ "api": [
         {
           "title": "Invalid _id",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el evento seleccionado incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public"
+  },
+  {
+    "type": "get",
+    "url": "/api/courses/counters",
+    "title": "(06) Obtener contador de cursos.",
+    "version": "0.0.5",
+    "name": "getCountersCoursesPublic",
+    "group": "Public",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso a buscar (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso a buscar (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Total de cursos disponibles.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Total de cursos.\",\n    \"totals\": 1\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public"
+  },
+  {
+    "type": "get",
+    "url": "/api/courses",
+    "title": "(07) Obtener listado de cursos.",
+    "version": "0.0.5",
+    "name": "getCoursesListPublic",
+    "group": "Public",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "input",
+            "description": "<p>Campo a ordenar (valor = title | code).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>Ordenado de input (1 = ASC | -1 = DESC) (Opcional si input no se enviado).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>Página a visualizar (Por defecto = 1).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>Total de resultados por página (Por defecto = 10).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso a buscar (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso a buscar (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Listado de cursos.</p>"
+          }
+        ],
+        "courses Array Object": [
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del evento.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Orador del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Cursos\",\n    \"courses\": [\n        {\n            \"_id\": \"5fea3193ff37862c30b2d9a8\",\n            \"speaker\": \"Anthony Velásquez\",\n            \"speakerPosition\": 2,\n            \"code\": \"AAA-1235\",\n            \"title\": \"CURSO 000001\",\n            \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n            \"toRoles\": [\n                5\n            ]\n        },\n        .\n        .\n        .\n    ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Cursos.\",\n    \"events\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public"
+  },
+  {
+    "type": "get",
+    "url": "/api/courses/:_id",
+    "title": "(08) Obtener detalles de un curso.",
+    "version": "0.0.5",
+    "name": "getDetailsCoursesPublic",
+    "group": "Public",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Detalles del evento.</p>"
+          }
+        ],
+        "course Object": [
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "speaker",
+            "description": "<p>Nombre completo del orador del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Number",
+            "optional": false,
+            "field": "speakerPosition",
+            "description": "<p>Cargo o posición del orador.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "temary",
+            "description": "<p>Listado de temas del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "test",
+            "description": "<p>Listado de preguntas para la prueba que deberá presentar el usuario.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Number",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
+          }
+        ],
+        "temary Array Object": [
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del tema.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video.</p>"
+          },
+          {
+            "group": "temary Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Comentarios realizados por los usuarios.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5fea3193ff37862c30b2d9a8\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1235\",\n        \"title\": \"CURSO 000001\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5fea35a53320aa1d94b65b74\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=FzdWAQBxIPM\",\n                \"comments\": []\n            }\n        ],\n        \"toRoles\": [\n            5\n        ]\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
           "type": "JSON"
         },
         {

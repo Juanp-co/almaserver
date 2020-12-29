@@ -7,7 +7,7 @@ const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const app_1 = __importDefault(require("./app"));
-const database_1 = require("./database");
+const database_1 = __importDefault(require("./database"));
 const AdminRouter_1 = __importDefault(require("./Routes/AdminRouter"));
 const PublicRouter_1 = __importDefault(require("./Routes/PublicRouter"));
 const UserRouter_1 = __importDefault(require("./Routes/UserRouter"));
@@ -38,7 +38,7 @@ app_1.default.use(`/api/admin`, AdminRouter_1.default);
 app_1.default.use(`/api/user`, UserRouter_1.default);
 // server
 async function main() {
-    database_1.startConnection();
+    database_1.default();
     await app_1.default.listen(app_1.default.get('port'));
     console.log(`===============================================`);
     console.log(`Server on port ${app_1.default.get('port')}`);

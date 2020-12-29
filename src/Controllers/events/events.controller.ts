@@ -4,7 +4,7 @@ import { getLimitSkipSortSearch, returnError } from '../../Functions/GlobalFunct
 import Events from '../../Models/Events';
 import validateRegister from '../../FormRequest/EventsRequest';
 import { checkDate, checkObjectId } from '../../Functions/Validations';
-import getListEvents, { getDetailsEvent } from '../../ActionsData/EventsActions';
+import getEventsList, { getDetailsEvent } from '../../ActionsData/EventsActions';
 
 const path = 'src/controllers/events/events.controller';
 
@@ -26,7 +26,7 @@ export default async function getEvents(req: Request, res: Response): Promise<Re
 
     return res.json({
       msg: `Eventos.`,
-      events: await getListEvents({ skip, limit, sort, endDate, query })
+      events: await getEventsList({ skip, limit, sort, endDate, query })
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getEvents`);
@@ -51,7 +51,7 @@ export async function getPublicEvents(req: Request, res: Response): Promise<Resp
 
     return res.json({
       msg: `Eventos.`,
-      events: await getListEvents({ skip, limit, sort, endDate, query })
+      events: await getEventsList({ skip, limit, sort, endDate, query })
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getEvents`);
@@ -131,7 +131,7 @@ export async function saveEvent(req: Request, res: Response): Promise<Response> 
     event.userid = req.params.userid;
     await event.save();
 
-    return res.json({
+    return res.status(201).json({
       msg: `Se ha creado el evento exitosamente.`,
       event
     });

@@ -21,6 +21,15 @@ export function checkDocument(value: any): boolean {
   return value && /^([CC|CE|PE|TI|PAS]){2,3}[0-9]{5,20}$/.test(value);
 }
 
+export function checkYoutubeUrl(value: any): boolean {
+  return value
+    && /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/.test(value);
+}
+
+export function checkInputTypeValueToTest(value: any): boolean {
+  return value && ['text', 'textarea', 'checkbox', 'radio', 'select'].indexOf(`${value}`) > -1;
+}
+
 export function checkPhone(value: any): boolean {
   return (
     value && /^[\+]?[(]?([0-9]{2})?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(value)
@@ -48,7 +57,7 @@ export function checkTitlesOrDescriptions(value: any): boolean {
   );
 }
 
-export function validateCodeValue(value: any): boolean {
+export function checkCodeValue(value: any): boolean {
   return value && /^[a-zA-Z0-9\s.,#*()\-+/@]+$/g.test(value);
 }
 
@@ -62,17 +71,17 @@ export function checkHour(value: any): boolean {
   return value && /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(value);
 }
 
-export function validateDateMonthAndYear(value: any): boolean {
+export function checkDateMonthAndYear(value: any): boolean {
   // validate date (YYYY-MM-DD)
   return value && /(1[0-2]|0[1-9]|\d)-(20\d{2}|19\d{2}|0(?!0)\d|[1-9]\d)/.test(value);
 }
 
-export function isBase64(text: string, doc = false) {
+export function checkBase64(text: string, doc = false) {
   if (doc) return text.substr(0, 40).indexOf('data:application/pdf') > -1;
   return text.substr(0, 21).indexOf('data:image/') > -1;
 }
 
-export function validateUUID(value: any): boolean {
+export function checkUUID(value: any): boolean {
   return /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[4][0-9A-Fa-f]{3}-[89AB][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12,13}$/i.test(
     value
   );

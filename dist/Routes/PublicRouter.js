@@ -4,10 +4,17 @@ const express_1 = require("express");
 const public_controller_1 = require("../Controllers/public.controller");
 const middleware_1 = require("../middleware");
 const events_controller_1 = require("../Controllers/events/events.controller");
+const courses_admin_controller_1 = require("../Controllers/admin/courses.admin.controller");
 const router = express_1.Router();
 // ===================================================================================
 /* Test api */
 router.get(`/`, public_controller_1.helloWorld);
+/*
+  Courses
+*/
+router.get(`/courses`, middleware_1.validateUser, courses_admin_controller_1.getCoursesPublic);
+router.get(`/courses/counters`, middleware_1.validateUser, courses_admin_controller_1.getCoursesCountersPublic);
+router.get(`/courses/:_id`, middleware_1.validateUser, courses_admin_controller_1.showCoursePublic);
 /*
   Events
 */

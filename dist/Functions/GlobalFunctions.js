@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.getDate = exports.setDate = exports.upperCaseFirstLettersWords = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.upperCaseFirstLettersWords = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 /*
   Console logs
@@ -56,6 +56,12 @@ function getDate(timestamp) {
     return timestamp;
 }
 exports.getDate = getDate;
+function cleanWhiteSpaces(value) {
+    if (value)
+        return value.toString().trim();
+    return null;
+}
+exports.cleanWhiteSpaces = cleanWhiteSpaces;
 function generatePassword() {
     let password = '';
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYZ123467890';
@@ -101,6 +107,9 @@ function getLimitSkipSortSearch(data) {
         case 'created_at':
             retSort.created_at = v;
             break;
+        case 'code':
+            retSort.code = v;
+            break;
         case 'date':
             // to events
             retSort.date = v;
@@ -122,6 +131,9 @@ function getLimitSkipSortSearch(data) {
             break;
         case 'status':
             retSort.status = v;
+            break;
+        case 'title':
+            retSort.title = v;
             break;
         case 'updated_at':
             retSort.updated_at = v;

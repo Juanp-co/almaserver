@@ -20,12 +20,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const questions_admin_controller_1 = require("../Controllers/admin/questions.admin.controller");
-const users_admin_controller_1 = require("../Controllers/admin/users.admin.controller");
 const middleware_1 = require("../middleware");
+const questions_admin_controller_1 = __importStar(require("../Controllers/admin/questions.admin.controller"));
+const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
 const events_controller_1 = __importStar(require("../Controllers/events/events.controller"));
+const courses_admin_controller_1 = __importStar(require("../Controllers/admin/courses.admin.controller"));
 const router = express_1.Router();
 // ===================================================================================
+/*
+  Events
+*/
+router.route('/courses')
+    .get(middleware_1.validateAdmin, courses_admin_controller_1.default)
+    .post(middleware_1.validateAdmin, courses_admin_controller_1.saveCourse);
+router.route('/courses/counters')
+    .get(middleware_1.validateAdmin, courses_admin_controller_1.getCoursesCounters);
+router.route('/courses/:_id')
+    .delete(middleware_1.validateAdmin, courses_admin_controller_1.deleteCourse)
+    .get(middleware_1.validateAdmin, courses_admin_controller_1.showCourse)
+    .put(middleware_1.validateAdmin, courses_admin_controller_1.updateCourse);
+router.route('/courses/:_id/enable')
+    .put(middleware_1.validateAdmin, courses_admin_controller_1.enableCourse);
 /*
   Events
 */
@@ -38,7 +53,7 @@ router.route('/events/:_id')
     .put(middleware_1.validateAdmin, events_controller_1.updateEvent);
 /* Questions */
 router.route('/questions')
-    .get(middleware_1.validateAdmin, questions_admin_controller_1.getQuestions)
+    .get(middleware_1.validateAdmin, questions_admin_controller_1.default)
     .post(middleware_1.validateAdmin, questions_admin_controller_1.saveQuestions);
 router.route('/questions/:_id')
     .get(middleware_1.validateAdmin, questions_admin_controller_1.getDetailsQuestion)
@@ -48,7 +63,7 @@ router.route('/questions/:_id')
   Users
 */
 router.route('/users')
-    .get(middleware_1.validateAdmin, users_admin_controller_1.getUsers)
+    .get(middleware_1.validateAdmin, users_admin_controller_1.default)
     .post(middleware_1.validateAdmin, users_admin_controller_1.saveUser);
 router.route('/users/counters')
     .get(middleware_1.validateAdmin, users_admin_controller_1.getUsersCounters);

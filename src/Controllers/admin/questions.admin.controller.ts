@@ -7,7 +7,7 @@ import { checkObjectId } from '../../Functions/Validations';
 
 const path = 'Controllers/admin/question.admin.controller';
 
-export async function getQuestions(req: Request, res: Response): Promise<Response> {
+export default async function getQuestions(req: Request, res: Response): Promise<Response> {
   try {
     const questions = await Questions.find({}, { __v: 0 }).exec();
 
@@ -61,7 +61,7 @@ export async function saveQuestions(req: Request, res: Response): Promise<Respon
     const question = new Questions(validate.data);
     await question.save();
 
-    return res.json({
+    return res.status(201).json({
       msg: `Se ha registrado la pregunta de seguridad exitosamente.`,
       question
     });

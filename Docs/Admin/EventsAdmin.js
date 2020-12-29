@@ -81,7 +81,7 @@
  */
 
 /**
- * @api {post} /api/admin/events/:_id (01) Crear nuevo evento.
+ * @api {post} /api/admin/events (01) Crear nuevo evento.
  * @apiVersion 0.0.4
  * @apiName createEventsAdmin
  * @apiGroup EventsAdmin
