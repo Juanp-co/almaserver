@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsers = exports.getUsersCounters = void 0;
+exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const UsersRequest_1 = require("../../FormRequest/UsersRequest");
@@ -11,38 +11,6 @@ const Users_1 = __importDefault(require("../../Models/Users"));
 const Validations_1 = require("../../Functions/Validations");
 const TokenActions_1 = require("../../Functions/TokenActions");
 const path = 'Controllers/admin/users.admin.controller';
-async function getUsersCounters(req, res) {
-    try {
-        const { userid } = req.params;
-        let query = {
-            _id: { $ne: userid }
-        };
-        const { document, name } = req.query;
-        const { userrole } = req.body;
-        if (Validations_1.checkRole(userrole))
-            query = Object.assign(query, { role: userrole });
-        if (document)
-            query = Object.assign(query, { document: { $regex: new RegExp(`${document}`, 'i') } });
-        if (Validations_1.checkNameOrLastName(name)) {
-            const pattern = name ? name.toString().trim().replace(' ', '|') : null;
-            if (pattern)
-                query = Object.assign(query, { $or: [
-                        { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                        { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                    ]
-                });
-        }
-        const totals = await Users_1.default.find(query).countDocuments().exec();
-        return res.json({
-            msg: `Total usuarios.`,
-            totals
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getUsersCounters`);
-    }
-}
-exports.getUsersCounters = getUsersCounters;
 async function getUsers(req, res) {
     try {
         const { userid } = req.params;
@@ -84,7 +52,39 @@ async function getUsers(req, res) {
         return GlobalFunctions_1.returnError(res, error, `${path}/getUsers`);
     }
 }
-exports.getUsers = getUsers;
+exports.default = getUsers;
+async function getUsersCounters(req, res) {
+    try {
+        const { userid } = req.params;
+        let query = {
+            _id: { $ne: userid }
+        };
+        const { document, name } = req.query;
+        const { userrole } = req.body;
+        if (Validations_1.checkRole(userrole))
+            query = Object.assign(query, { role: userrole });
+        if (document)
+            query = Object.assign(query, { document: { $regex: new RegExp(`${document}`, 'i') } });
+        if (Validations_1.checkNameOrLastName(name)) {
+            const pattern = name ? name.toString().trim().replace(' ', '|') : null;
+            if (pattern)
+                query = Object.assign(query, { $or: [
+                        { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                        { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                    ]
+                });
+        }
+        const totals = await Users_1.default.find(query).countDocuments().exec();
+        return res.json({
+            msg: `Total usuarios.`,
+            totals
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getUsersCounters`);
+    }
+}
+exports.getUsersCounters = getUsersCounters;
 async function saveUser(req, res) {
     try {
         const validate = await UsersRequest_1.validateRegister(req.body, true);
@@ -98,7 +98,7 @@ async function saveUser(req, res) {
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
         await user.save();
-        return res.json({
+        return res.status(201).json({
             msg: `Se ha registrado el nuevo usuario exitosamente.`,
         });
     }

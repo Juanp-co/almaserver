@@ -418,3 +418,202 @@
     "errors": [${err}]
   }
  */
+
+/**
+ * @api {get} /api/courses/counters (06) Obtener contador de cursos.
+ * @apiVersion 0.0.5
+ * @apiName getCountersCoursesPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | lider)
+ *
+ * @apiParam (Query Params) {String} code Código del curso a buscar (opcional).
+ * @apiParam (Query Params) {String} title Título del curso a buscar (opcional).
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Number} totals Total de cursos disponibles.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Total de cursos.",
+    "totals": 1
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */
+
+/**
+ * @api {get} /api/courses (07) Obtener listado de cursos.
+ * @apiVersion 0.0.5
+ * @apiName getCoursesListPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | lider)
+ *
+ * @apiParam (Query Params) {String} input Campo a ordenar (valor = title | code).
+ * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional si input no se enviado).
+ * @apiParam (Query Params) {Number} page Página a visualizar (Por defecto = 1).
+ * @apiParam (Query Params) {Number} limit Total de resultados por página (Por defecto = 10).
+ * @apiParam (Query Params) {String} code Código del curso a buscar (opcional).
+ * @apiParam (Query Params) {String} title Título del curso a buscar (opcional).
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Array|Object} courses Listado de cursos.
+ *
+ * @apiSuccess (courses Array Object) {String} _id ID del evento.
+ * @apiSuccess (courses Array Object) {String} speaker Orador del curso.
+ * @apiSuccess (courses Array Object) {String} speakerPosition Cargo o posición del orador.
+ * @apiSuccess (courses Array Object) {String} code Código del curso.
+ * @apiSuccess (courses Array Object) {String} title Título del curso.
+ * @apiSuccess (courses Array Object) {Array|Number} toRoles Roles a los que va dirigido el curso.
+ *
+ * @apiSuccessExample {JSON} Success with data
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Cursos",
+    "courses": [
+        {
+            "_id": "5fea3193ff37862c30b2d9a8",
+            "speaker": "Anthony Velásquez",
+            "speakerPosition": 2,
+            "code": "AAA-1235",
+            "title": "CURSO 000001",
+            "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.",
+            "toRoles": [
+                5
+            ]
+        },
+        .
+        .
+        .
+    ]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Cursos.",
+    "events": []
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */
+
+/**
+ * @api {get} /api/courses/:_id (08) Obtener detalles de un curso.
+ * @apiVersion 0.0.5
+ * @apiName getDetailsCoursesPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor | lider).
+ *
+ * @apiParam (Path params) {String} _id ID del curso.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} course Detalles del evento.
+ *
+ * @apiSuccess (course Object) {String} _id ID del curso.
+ * @apiSuccess (course Object) {String} speaker Nombre completo del orador del curso.
+ * @apiSuccess (course Object) {Number} speakerPosition Cargo o posición del orador.
+ * @apiSuccess (course Object) {String} code Código del curso.
+ * @apiSuccess (course Object) {String} title Título del curso.
+ * @apiSuccess (course Object) {String} description Descripción del curso.
+ * @apiSuccess (course Object) {Array|Object} temary Listado de temas del curso.
+ * @apiSuccess (course Object) {Array|Object} test Listado de preguntas para la prueba que deberá presentar el usuario.
+ * @apiSuccess (course Object) {Array|Number} toRoles Roles a los que va dirigido el curso.
+ *
+ * @apiSuccess (temary Array Object) {String} _id ID del tema.
+ * @apiSuccess (temary Array Object) {String} title Título del tema.
+ * @apiSuccess (temary Array Object) {String} description Descripción del tema.
+ * @apiSuccess (temary Array Object) {String} urlVideo URL del video.
+ * @apiSuccess (temary Array Object) {Array|Object} comments Comentarios realizados por los usuarios.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Curso",
+    "course": {
+        "_id": "5fea3193ff37862c30b2d9a8",
+        "speaker": "Anthony Velásquez",
+        "speakerPosition": 2,
+        "code": "AAA-1235",
+        "title": "CURSO 000001",
+        "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.",
+        "temary": [
+            {
+                "_id": "5fea35a53320aa1d94b65b74",
+                "title": "01 - Introducción",
+                "description": "Introducción al curso",
+                "urlVideo": "https://www.youtube.com/watch?v=FzdWAQBxIPM",
+                "comments": []
+            }
+        ],
+        "toRoles": [
+            5
+        ]
+    }
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Not found
+ * HTTP/1.1 404 Not found
+ * {
+    "msg": "Disculpe, pero el curso seleccionado no existe."
+}
+ *
+ * @apiErrorExample {JSON} Invalid _id
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+    "msg": "Disculpe, pero el curso seleccionado es incorrecto."
+}
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */

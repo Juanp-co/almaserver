@@ -5,7 +5,7 @@ import { checkDate } from '../Functions/Validations';
 import { IEventsList } from '../Interfaces/IEvents';
 import Events from '../Models/Events';
 
-export default async function getListEvents({ query, skip, sort, limit, endDate } : any) : Promise<IEventsList[]> {
+export default async function getEventsList({ query, skip, sort, limit, endDate } : any) : Promise<IEventsList[]> {
   const ret: IEventsList[] = [];
 
   const events = await Events.find(query, { __v: 0, description: 0 })

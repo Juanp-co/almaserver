@@ -15,7 +15,7 @@ import IUser, {
 } from '../Interfaces/IUser';
 import { setError } from '../Functions/GlobalFunctions';
 import checkIfExistDocument from '../ActionsData/UsersActions';
-import { checkIfExistQuestion } from '../ActionsData/QuestionsActions';
+import checkIfExistQuestion from '../ActionsData/QuestionsActions';
 
 export async function validateRegister(data: IUserRegister, admin?: boolean | null): Promise<{ data: IUser; errors: any }> {
   const ret = {

@@ -51,6 +51,11 @@ export function getDate(timestamp: number | null | undefined): string | any {
   return timestamp;
 }
 
+export function cleanWhiteSpaces(value: string | null): string | null {
+  if (value) return value.toString().trim();
+  return null;
+}
+
 export function generatePassword(): string {
   let password = '';
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYZ123467890';
@@ -97,6 +102,9 @@ export function getLimitSkipSortSearch(data: any): any {
     case 'created_at':
       retSort.created_at = v;
       break;
+    case 'code':
+      retSort.code = v;
+      break;
     case 'date':
       // to events
       retSort.date = v;
@@ -118,6 +126,9 @@ export function getLimitSkipSortSearch(data: any): any {
       break;
     case 'status':
       retSort.status = v;
+      break;
+    case 'title':
+      retSort.title = v;
       break;
     case 'updated_at':
       retSort.updated_at = v;

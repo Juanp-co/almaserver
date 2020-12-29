@@ -136,7 +136,7 @@ async function saveEvent(req, res) {
         const event = new Events_1.default(validate.data);
         event.userid = req.params.userid;
         await event.save();
-        return res.json({
+        return res.status(201).json({
             msg: `Se ha creado el evento exitosamente.`,
             event
         });

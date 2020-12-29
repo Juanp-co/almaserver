@@ -8,45 +8,7 @@ import { disableTokenDBForUserId } from '../../Functions/TokenActions';
 
 const path = 'Controllers/admin/users.admin.controller';
 
-export async function getUsersCounters(req: Request, res: Response): Promise<Response> {
-  try {
-    const { userid } = req.params;
-    let query = {
-      _id: { $ne: userid }
-    };
-    const { document, name } = req.query;
-    const { userrole } = req.body;
-
-    if (checkRole(userrole)) query = Object.assign(query, { role: userrole });
-
-    if (document)
-      query = Object.assign(
-        query,
-        { document: { $regex: new RegExp(`${document}`, 'i') } }
-      );
-
-    if (checkNameOrLastName(name)) {
-      const pattern = name ? name.toString().trim().replace(' ', '|') : null;
-      if (pattern)
-        query = Object.assign(query, { $or: [
-            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-          ]
-        });
-    }
-
-    const totals = await Users.find(query).countDocuments().exec();
-
-    return res.json({
-      msg: `Total usuarios.`,
-      totals
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getUsersCounters`);
-  }
-}
-
-export async function getUsers(req: Request, res: Response): Promise<Response> {
+export default async function getUsers(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
@@ -93,6 +55,44 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
   }
 }
 
+export async function getUsersCounters(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userid } = req.params;
+    let query = {
+      _id: { $ne: userid }
+    };
+    const { document, name } = req.query;
+    const { userrole } = req.body;
+
+    if (checkRole(userrole)) query = Object.assign(query, { role: userrole });
+
+    if (document)
+      query = Object.assign(
+        query,
+        { document: { $regex: new RegExp(`${document}`, 'i') } }
+      );
+
+    if (checkNameOrLastName(name)) {
+      const pattern = name ? name.toString().trim().replace(' ', '|') : null;
+      if (pattern)
+        query = Object.assign(query, { $or: [
+            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+          ]
+        });
+    }
+
+    const totals = await Users.find(query).countDocuments().exec();
+
+    return res.json({
+      msg: `Total usuarios.`,
+      totals
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getUsersCounters`);
+  }
+}
+
 export async function saveUser(req: Request, res: Response): Promise<Response> {
   try {
     const validate = await validateRegister(req.body, true);
@@ -109,7 +109,7 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
     user.securityQuestion.answer = bcrypt.hashSync(`${user.securityQuestion.answer}`, 10);
     await user.save();
 
-    return res.json({
+    return res.status(201).json({
       msg: `Se ha registrado el nuevo usuario exitosamente.`,
     });
 

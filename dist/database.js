@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.startConnection = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = require("mongoose");
 const path_1 = __importDefault(require("path"));
@@ -42,4 +41,4 @@ async function startConnection() {
         process.exit();
     }
 }
-exports.startConnection = startConnection;
+exports.default = startConnection;

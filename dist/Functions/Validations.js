@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUUID = exports.isBase64 = exports.validateDateMonthAndYear = exports.checkHour = exports.checkDate = exports.validateCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
+exports.checkUUID = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
 const mongoose_1 = require("mongoose");
 function checkNameOrLastName(value) {
     return (value &&
@@ -19,6 +19,15 @@ function checkDocument(value) {
     return value && /^([CC|CE|PE|TI|PAS]){2,3}[0-9]{5,20}$/.test(value);
 }
 exports.checkDocument = checkDocument;
+function checkYoutubeUrl(value) {
+    return value
+        && /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/.test(value);
+}
+exports.checkYoutubeUrl = checkYoutubeUrl;
+function checkInputTypeValueToTest(value) {
+    return value && ['text', 'textarea', 'checkbox', 'radio', 'select'].indexOf(`${value}`) > -1;
+}
+exports.checkInputTypeValueToTest = checkInputTypeValueToTest;
 function checkPhone(value) {
     return (value && /^[\+]?[(]?([0-9]{2})?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(value));
 }
@@ -40,10 +49,10 @@ function checkTitlesOrDescriptions(value) {
         /^[a-zA-ZÁÉÍÓÚÀÈÌÒÙàèìòùáéíóúÂÊÎÔÛâêîôûÄËÏÖÜäëïöüñÑ0-9\s.,#*?¿¡!()\-+"'/@]{5,500}/g.test(value));
 }
 exports.checkTitlesOrDescriptions = checkTitlesOrDescriptions;
-function validateCodeValue(value) {
+function checkCodeValue(value) {
     return value && /^[a-zA-Z0-9\s.,#*()\-+/@]+$/g.test(value);
 }
-exports.validateCodeValue = validateCodeValue;
+exports.checkCodeValue = checkCodeValue;
 function checkDate(value) {
     // validate date (YYYY-MM-DD)
     return value && /\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])*/.test(`${value}`);
@@ -54,18 +63,18 @@ function checkHour(value) {
     return value && /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(value);
 }
 exports.checkHour = checkHour;
-function validateDateMonthAndYear(value) {
+function checkDateMonthAndYear(value) {
     // validate date (YYYY-MM-DD)
     return value && /(1[0-2]|0[1-9]|\d)-(20\d{2}|19\d{2}|0(?!0)\d|[1-9]\d)/.test(value);
 }
-exports.validateDateMonthAndYear = validateDateMonthAndYear;
-function isBase64(text, doc = false) {
+exports.checkDateMonthAndYear = checkDateMonthAndYear;
+function checkBase64(text, doc = false) {
     if (doc)
         return text.substr(0, 40).indexOf('data:application/pdf') > -1;
     return text.substr(0, 21).indexOf('data:image/') > -1;
 }
-exports.isBase64 = isBase64;
-function validateUUID(value) {
+exports.checkBase64 = checkBase64;
+function checkUUID(value) {
     return /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[4][0-9A-Fa-f]{3}-[89AB][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12,13}$/i.test(value);
 }
-exports.validateUUID = validateUUID;
+exports.checkUUID = checkUUID;

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteQuestions = exports.updateQuestions = exports.saveQuestions = exports.getDetailsQuestion = exports.getQuestions = void 0;
+exports.deleteQuestions = exports.updateQuestions = exports.saveQuestions = exports.getDetailsQuestion = void 0;
 const Question_1 = __importDefault(require("../../Models/Question"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const QuestionsRequest_1 = require("../../FormRequest/QuestionsRequest");
@@ -22,7 +22,7 @@ async function getQuestions(req, res) {
         return GlobalFunctions_1.returnError(res, error, `${path}/getQuestions`);
     }
 }
-exports.getQuestions = getQuestions;
+exports.default = getQuestions;
 async function getDetailsQuestion(req, res) {
     try {
         const { _id } = req.params;
@@ -58,7 +58,7 @@ async function saveQuestions(req, res) {
         }
         const question = new Question_1.default(validate.data);
         await question.save();
-        return res.json({
+        return res.status(201).json({
             msg: `Se ha registrado la pregunta de seguridad exitosamente.`,
             question
         });

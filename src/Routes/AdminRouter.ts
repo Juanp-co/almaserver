@@ -1,24 +1,46 @@
 import { Router } from 'express';
-import {
+import { validateAdmin } from '../middleware';
+import getQuestions, {
   deleteQuestions, getDetailsQuestion,
-  getQuestions,
   saveQuestions, updateQuestions
 } from '../Controllers/admin/questions.admin.controller';
-import {
+import getUsers, {
   changeRoleUser,
   // deleteUser,
-  getUsers,
   getUsersCounters,
   saveUser,
   showUser,
   updateUser
 } from '../Controllers/admin/users.admin.controller';
-import { validateAdmin } from '../middleware';
 import getEvents, { deleteEvent, saveEvent, showEvent, updateEvent } from '../Controllers/events/events.controller';
+import getCourses, {
+  deleteCourse,
+  enableCourse, getCoursesCounters,
+  saveCourse, showCourse,
+  updateCourse
+} from '../Controllers/admin/courses.admin.controller';
 
 const router = Router();
 
 // ===================================================================================
+
+/*
+  Events
+*/
+router.route('/courses')
+  .get(validateAdmin, getCourses)
+  .post(validateAdmin, saveCourse);
+
+router.route('/courses/counters')
+  .get(validateAdmin, getCoursesCounters);
+
+router.route('/courses/:_id')
+  .delete(validateAdmin, deleteCourse)
+  .get(validateAdmin, showCourse)
+  .put(validateAdmin, updateCourse);
+
+router.route('/courses/:_id/enable')
+  .put(validateAdmin, enableCourse);
 
 /*
   Events

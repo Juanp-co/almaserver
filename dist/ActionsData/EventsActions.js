@@ -9,7 +9,7 @@ const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const UsersActions_1 = require("./UsersActions");
 const Validations_1 = require("../Functions/Validations");
 const Events_1 = __importDefault(require("../Models/Events"));
-async function getListEvents({ query, skip, sort, limit, endDate }) {
+async function getEventsList({ query, skip, sort, limit, endDate }) {
     const ret = [];
     const events = await Events_1.default.find(query, { __v: 0, description: 0 })
         .skip(skip)
@@ -51,7 +51,7 @@ async function getListEvents({ query, skip, sort, limit, endDate }) {
     }
     return [];
 }
-exports.default = getListEvents;
+exports.default = getEventsList;
 async function getDetailsEvent({ query }) {
     let ret = {};
     const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
