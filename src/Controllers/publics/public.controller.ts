@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { validateLogin, validateRegister } from '../FormRequest/UsersRequest';
-import Users from '../Models/Users';
-import { disableTokenDB, getAccessToken } from '../Functions/TokenActions';
-import { getData } from '../ActionsData/UsersActions';
-import { returnError } from '../Functions/GlobalFunctions';
-import Questions from '../Models/Question';
+import { validateLogin, validateRegister } from '../../FormRequest/UsersRequest';
+import Users from '../../Models/Users';
+import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
+import { getData } from '../../ActionsData/UsersActions';
+import { returnError } from '../../Functions/GlobalFunctions';
+import Questions from '../../Models/Question';
 
-const path = 'Controllers/public.controller';
+const path = 'Controllers/publics/publics.controller';
 
 export function helloWorld(req: Request, res: Response): Response {
   return res.json({

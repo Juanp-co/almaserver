@@ -1,17 +1,17 @@
 import { Router } from 'express';
+import { validateUser } from '../middleware';
 import {
   changePassword,
   changeSecurityQuestion,
   get,
   update
 } from '../Controllers/user.controller';
-import { validateUser } from '../middleware';
 
 const router = Router();
 
 // ===================================================================================
 
-/* Test api */
+/* Profile */
 
 router.route('/').get(validateUser, get).put(validateUser, update);
 router.put('/change-password', validateUser, changePassword);

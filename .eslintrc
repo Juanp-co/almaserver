@@ -18,6 +18,7 @@
     "func-names":"off",
     "no-loop-func":"off",
     "no-await-in-loop":"off",
+    "no-param-reassign":"off",
     "no-useless-escape":"off",
     "no-underscore-dangle":"off",
     "prefer-object-spread":"off",

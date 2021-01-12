@@ -19,6 +19,7 @@ const TemaryCommentsSchema = new Schema(
     comment: { type: String, require: true, set: cleanWhiteSpaces },
     answer: { type: String, default: null, set: cleanWhiteSpaces },
     likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
     created_at: { type: Number, default: setDate, get: getDate },
     updated_at: { type: Number, default: setDate, get: getDate }
   },
@@ -31,6 +32,8 @@ const TemarySchema = new Schema(
     description: { type: String, require: true },
     urlVideo: { type: String, require: true },
     comments: { type: [TemaryCommentsSchema], default: [] },
+    likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
   },
   { id: false }
 );
@@ -60,9 +63,14 @@ const CoursesSchema = new Schema(
     speakerPosition: { type: Number, require: true }, // speaker position
     code: { type: String, require: true, set: toUpper }, // course code
     title: { type: String, require: true, set: cleanWhiteSpaces },
+    banner: { type: String, default: null },
     description: { type: String, require: true, set: cleanWhiteSpaces },
+    slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true }, // content
     test: { type: [TestSchema], require: true }, // test to users
+    comments: { type: [TemaryCommentsSchema], default: [] },
+    likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
     toRoles: { type: [Number], require: true },
     enable: { type: Boolean, default: false },
     draft: { type: Boolean, default: true },
@@ -82,7 +90,6 @@ TestSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
 TemaryCommentsSchema.set('toJSON', { getters: true });
 LikesTemaryCommentsSchema.set('toJSON', { getters: true });
-CoursesSchema.set('toJSON', { getters: true });
 
 const Courses = model<ICourse>('course', CoursesSchema);
 

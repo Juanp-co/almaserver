@@ -1,18 +1,20 @@
-import { setError } from '../Functions/GlobalFunctions';
-import {checkIfValueIsNumber,
-  checkInputTypeValueToTest, checkNameOrLastName,
-  checkTitlesOrDescriptions,
-  checkYoutubeUrl
-} from '../Functions/Validations';
-import { ICourseForm } from '../Interfaces/ICourse';
 import { checkIfExistCode } from '../ActionsData/CoursesActions';
+import { setError } from '../Functions/GlobalFunctions';
+import {
+  checkIfValueIsNumber,
+  checkInputTypeValueToTest, checkNameOrLastName, checkObjectId, checkSlug,
+  checkTitlesOrDescriptions, checkYoutubeUrl
+} from '../Functions/Validations';
+import { ICourseForm, ICourseTestForm } from '../Interfaces/ICourse';
 
-export default async function validateRegister(data: ICourseForm, update: boolean): Promise<{ data: ICourseForm; errors: any }> {
+export default async function validateRegister(data: ICourseForm, update: boolean): Promise<{ data: ICourseForm; errors: any[] }> {
   const ret = {
     speaker: null,
     speakerPosition: null,
     code: null,
     title: null,
+    slug: null,
+    banner: null,
     description: null,
     temary: [],
     test: [],
@@ -30,6 +32,9 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   } else {
     ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
   }
+
+  // banner
+  ret.banner = data.banner ? data.banner.toString().trim() : data.banner;
 
   // description
   if (!data.description || !checkTitlesOrDescriptions(data.description)) {
@@ -71,6 +76,9 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   } else {
     ret.code = data.code;
   }
+
+  // slug | if exist assign
+  if (update && checkSlug(data.slug)) ret.slug = data.slug;
 
   // draft
   if (data.draft) {
@@ -195,4 +203,45 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   }
 
   return { data: ret, errors };
+}
+
+export function validateTestData(data?: ICourseTestForm[] | null) : { data: ICourseTestForm[], errors: any[] } {
+  const ret: ICourseTestForm[] = [];
+  const errors: any = [];
+
+  if (!data || data === undefined || data === null) {
+    errors.push({
+      msg: 'Disculpe, pero no se logró recibir la información de la prueba.',
+      input: 'data'
+    });
+  }
+  else {
+    const totalItems = data ? data.length : 0;
+
+    for (let i = 0; i < totalItems; i++) {
+
+      let stop = false;
+
+      if (!checkObjectId(data[i].questionId)) {
+        errors.push({
+          msg: 'Disculpe, pero una de las preguntas de la prueba es incorrecta.',
+          input: 'questionId'
+        });
+        stop = true;
+      }
+      if (data[i].answer === undefined || data[i].answer === null) {
+        errors.push({
+          msg: 'Disculpe, pero debe completar todas las respuesta de la prueba.',
+          input: 'answer'
+        });
+        stop = true;
+      }
+
+      if (stop) break;
+      else ret.push(data[i]);
+    }
+
+  }
+
+  return { data: ret, errors }
 }

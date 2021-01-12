@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateTestData = void 0;
+const CoursesActions_1 = require("../ActionsData/CoursesActions");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
-const CoursesActions_1 = require("../ActionsData/CoursesActions");
 async function validateRegister(data, update) {
     var _a, _b, _c;
     const ret = {
@@ -10,6 +11,8 @@ async function validateRegister(data, update) {
         speakerPosition: null,
         code: null,
         title: null,
+        slug: null,
+        banner: null,
         description: null,
         temary: [],
         test: [],
@@ -25,6 +28,8 @@ async function validateRegister(data, update) {
     else {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
     }
+    // banner
+    ret.banner = data.banner ? data.banner.toString().trim() : data.banner;
     // description
     if (!data.description || !Validations_1.checkTitlesOrDescriptions(data.description)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una descripción general para el curso.', 'description'));
@@ -56,6 +61,9 @@ async function validateRegister(data, update) {
     else {
         ret.code = data.code;
     }
+    // slug | if exist assign
+    if (update && Validations_1.checkSlug(data.slug))
+        ret.slug = data.slug;
     // draft
     if (data.draft) {
         ret.draft = data.draft;
@@ -152,3 +160,39 @@ async function validateRegister(data, update) {
     return { data: ret, errors };
 }
 exports.default = validateRegister;
+function validateTestData(data) {
+    const ret = [];
+    const errors = [];
+    if (!data || data === undefined || data === null) {
+        errors.push({
+            msg: 'Disculpe, pero no se logró recibir la información de la prueba.',
+            input: 'data'
+        });
+    }
+    else {
+        const totalItems = data ? data.length : 0;
+        for (let i = 0; i < totalItems; i++) {
+            let stop = false;
+            if (!Validations_1.checkObjectId(data[i].questionId)) {
+                errors.push({
+                    msg: 'Disculpe, pero una de las preguntas de la prueba es incorrecta.',
+                    input: 'questionId'
+                });
+                stop = true;
+            }
+            if (data[i].answer === undefined || data[i].answer === null) {
+                errors.push({
+                    msg: 'Disculpe, pero debe completar todas las respuesta de la prueba.',
+                    input: 'answer'
+                });
+                stop = true;
+            }
+            if (stop)
+                break;
+            else
+                ret.push(data[i]);
+        }
+    }
+    return { data: ret, errors };
+}
+exports.validateTestData = validateTestData;
