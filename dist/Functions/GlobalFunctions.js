@@ -3,8 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.upperCaseFirstLettersWords = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+exports.createSlug = exports.checkAndUploadPicture = exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.upperCaseFirstLettersWords = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
+const slug_1 = __importDefault(require("slug"));
+const Validations_1 = require("./Validations");
 /*
   Console logs
  */
@@ -148,3 +150,20 @@ function dateSpanish(timestamp) {
     return timestamp ? moment_timezone_1.default.unix(timestamp).locale('es').format('DD [de] MMMM [de] YYYY') : null;
 }
 exports.dateSpanish = dateSpanish;
+function checkAndUploadPicture(picture) {
+    if (picture) {
+        if (Validations_1.checkBase64(picture)) {
+            // CODE TO UPLOAD PICTURE
+            return null;
+        }
+        if (Validations_1.checkUrl(picture)) {
+            return picture;
+        }
+    }
+    return null;
+}
+exports.checkAndUploadPicture = checkAndUploadPicture;
+function createSlug(value) {
+    return value ? slug_1.default(value) : null;
+}
+exports.createSlug = createSlug;

@@ -5,13 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getQuestions = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const UsersRequest_1 = require("../FormRequest/UsersRequest");
-const Users_1 = __importDefault(require("../Models/Users"));
-const TokenActions_1 = require("../Functions/TokenActions");
-const UsersActions_1 = require("../ActionsData/UsersActions");
-const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
-const Question_1 = __importDefault(require("../Models/Question"));
-const path = 'Controllers/public.controller';
+const UsersRequest_1 = require("../../FormRequest/UsersRequest");
+const Users_1 = __importDefault(require("../../Models/Users"));
+const TokenActions_1 = require("../../Functions/TokenActions");
+const UsersActions_1 = require("../../ActionsData/UsersActions");
+const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
+const Question_1 = __importDefault(require("../../Models/Question"));
+const path = 'Controllers/publics/publics.controller';
 function helloWorld(req, res) {
     return res.json({
         msg: `Welcome to ALMA API REST.`

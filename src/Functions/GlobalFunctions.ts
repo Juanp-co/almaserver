@@ -1,5 +1,7 @@
 import moment from 'moment-timezone';
+import slug from 'slug';
 import { Response } from 'express';
+import { checkBase64, checkUrl } from './Validations';
 import { IInfoErrors } from '../Interfaces/IErrorResponse';
 
 /*
@@ -142,3 +144,24 @@ export function getLimitSkipSortSearch(data: any): any {
 export function dateSpanish(timestamp?: number): string | null {
   return timestamp ? moment.unix(timestamp).locale('es').format('DD [de] MMMM [de] YYYY') : null;
 }
+
+export function checkAndUploadPicture(picture: string | null): string | null {
+
+  if (picture) {
+    if (checkBase64(picture)) {
+      // CODE TO UPLOAD PICTURE
+      return null;
+    }
+    if (checkUrl(picture)) {
+      return picture;
+    }
+  }
+
+  return null;
+}
+
+export function createSlug(value: string | null) : string | null {
+  return value ? slug(value) : null;
+}
+
+

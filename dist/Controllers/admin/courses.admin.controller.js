@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.showCoursePublic = exports.getCoursesPublic = exports.getCoursesCountersPublic = exports.deleteCourse = exports.enableCourse = exports.updateCourse = exports.saveCourse = exports.showCourse = exports.getCoursesCounters = void 0;
+exports.deleteCourse = exports.enableCourse = exports.updateCourse = exports.saveCourse = exports.showCourse = exports.getCoursesCounters = void 0;
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesRequest_1 = __importDefault(require("../../FormRequest/CoursesRequest"));
@@ -122,7 +122,19 @@ async function saveCourse(req, res) {
                 errors: validate.errors
             });
         }
+        // check if exists picture
+        const picture = GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
+        // set slug value
+        if (!validate.data.slug)
+            validate.data.slug = GlobalFunctions_1.createSlug(validate.data.title);
+        // get qty registered
+        const slugQty = await CoursesActions_1.checkIfExistSlug(`${validate.data.slug}`);
+        // check if exist slug
+        if (slugQty > 0)
+            validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
+        // create
         const course = new Courses_1.default(validate.data);
+        course.banner = picture;
         course.userid = req.params.userid;
         await course.save();
         return res.status(201).json({
@@ -179,6 +191,16 @@ async function updateCourse(req, res) {
         course.toRoles = validate.data.toRoles;
         course.draft = validate.data.draft;
         course.enable = validate.data.enable;
+        // check slug
+        if (!!validate.data.slug && course.slug !== validate.data.slug) {
+            // get qty registered
+            const slugQty = await CoursesActions_1.checkIfExistSlug(`${validate.data.slug}`);
+            // check if exist slug
+            if (slugQty > 0)
+                validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
+            else
+                course.slug = validate.data.slug;
+        }
         await course.save();
         return res.json({
             msg: 'Se ha actualizado el curso exitosamente.',
@@ -273,80 +295,3 @@ async function deleteCourse(req, res) {
     }
 }
 exports.deleteCourse = deleteCourse;
-/*
-  PUBLIC
- */
-async function getCoursesCountersPublic(req, res) {
-    try {
-        const { code, title } = req.query;
-        const query = { enable: true };
-        if (code)
-            query.code = { $regex: new RegExp(`${code}`, 'i') };
-        if (title)
-            query.title = { $regex: new RegExp(`${title}`, 'i') };
-        const totals = await Courses_1.default.find(query).countDocuments().exec();
-        return res.json({
-            msg: 'Total de cursos.',
-            totals
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getCoursesCountersPublic`);
-    }
-}
-exports.getCoursesCountersPublic = getCoursesCountersPublic;
-async function getCoursesPublic(req, res) {
-    try {
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const { code, title } = req.query;
-        const { userrole } = req.body;
-        const query = { toRoles: userrole, enable: true };
-        if (code)
-            query.code = code.toString().toUpperCase();
-        if (title)
-            query.title = { $regex: new RegExp(`${title}`, 'i') };
-        const courses = await CoursesActions_1.default({
-            query,
-            limit,
-            skip,
-            sort,
-            isPublic: true
-        });
-        return res.json({
-            msg: 'Cursos',
-            courses
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getCoursesPublic`);
-    }
-}
-exports.getCoursesPublic = getCoursesPublic;
-async function showCoursePublic(req, res) {
-    try {
-        const { _id } = req.params;
-        const { userrole } = req.body;
-        if (!Validations_1.checkObjectId(_id)) {
-            return res.status(422).json({
-                msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-            });
-        }
-        const course = await CoursesActions_1.getCourseDetails({
-            query: { _id, toRoles: userrole },
-            isPublic: true
-        });
-        if (!course) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero el curso seleccionado no existe.'
-            });
-        }
-        return res.json({
-            msg: 'Curso',
-            course
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showCoursePublic`);
-    }
-}
-exports.showCoursePublic = showCoursePublic;

@@ -144,6 +144,12 @@
  * @apiName createCoursesAdmin
  * @apiGroup CoursesAdmin
  *
+ * @apiDescription El siguiente ENDPOINT es para poder crear un curso, cargando los diferentes temas a presentar al usuario,
+ * las preguntas para la prueba (examen) y demás ajustes para poder cargar y visualizar el curso.
+ *
+ * Lea detenidamente los parámetros requeridos en el servicio para poder crear el nuevo curso, cargar el contenido y sobretodo
+ * poder cargar las preguntas para las pruebas (PRESTE ATENCIÓN A ESTA).
+ *
  * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor | lider).
  *
  * @apiParam {String} title Título.

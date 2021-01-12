@@ -1,9 +1,18 @@
 import { Request, Response } from 'express';
-import { getLimitSkipSortSearch, returnError, setError } from '../../Functions/GlobalFunctions';
+import {
+  checkAndUploadPicture,
+  createSlug,
+  getLimitSkipSortSearch,
+  returnError
+} from '../../Functions/GlobalFunctions';
 import Courses from '../../Models/Courses';
 import validateRegister from '../../FormRequest/CoursesRequest';
 import { checkObjectId } from '../../Functions/Validations';
-import getCoursesList, { checkIfExistCode, getCourseDetails } from '../../ActionsData/CoursesActions';
+import getCoursesList, {
+  checkIfExistCode,
+  checkIfExistSlug,
+  getCourseDetails
+} from '../../ActionsData/CoursesActions';
 
 const path = 'src/courses.admin.controller';
 
@@ -104,7 +113,19 @@ export async function saveCourse(req: Request, res: Response) : Promise<Response
       });
     }
 
+    // check if exists picture
+    const picture: string | null = checkAndUploadPicture(validate.data.banner);
+
+    // set slug value
+    if (!validate.data.slug) validate.data.slug = createSlug(validate.data.title);
+    // get qty registered
+    const slugQty: number = await checkIfExistSlug(`${validate.data.slug}`);
+    // check if exist slug
+    if (slugQty > 0) validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
+
+    // create
     const course = new Courses(validate.data);
+    course.banner = picture;
     course.userid = req.params.userid;
     await course.save();
 
@@ -169,6 +190,16 @@ export async function updateCourse(req: Request, res: Response) : Promise<Respon
     course.toRoles = validate.data.toRoles;
     course.draft = validate.data.draft;
     course.enable = validate.data.enable;
+
+    // check slug
+    if (!!validate.data.slug && course.slug !== validate.data.slug) {
+      // get qty registered
+      const slugQty: number = await checkIfExistSlug(`${validate.data.slug}`);
+      // check if exist slug
+      if (slugQty > 0) validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
+      else course.slug = validate.data.slug;
+    }
+
     await course.save();
 
     return res.json({
@@ -273,86 +304,5 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/deleteCourse`);
-  }
-}
-
-/*
-  PUBLIC
- */
-
-export async function getCoursesCountersPublic(req: Request, res: Response) : Promise<Response>{
-  try {
-    const { code, title } = req.query;
-    const query: any = { enable: true };
-
-    if (code) query.code = { $regex: new RegExp(`${code}`, 'i')};
-    if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
-
-    const totals = await Courses.find(query).countDocuments().exec();
-
-    return res.json({
-      msg: 'Total de cursos.',
-      totals
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getCoursesCountersPublic`);
-  }
-}
-
-export async function getCoursesPublic(req: Request, res: Response) : Promise<Response>{
-  try {
-    const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const { code, title } = req.query;
-    const { userrole } = req.body;
-    const query: any = { toRoles: userrole, enable: true };
-
-    if (code) query.code = code.toString().toUpperCase();
-    if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
-
-    const courses = await getCoursesList({
-      query,
-      limit,
-      skip,
-      sort,
-      isPublic: true
-    });
-
-    return res.json({
-      msg: 'Cursos',
-      courses
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getCoursesPublic`);
-  }
-}
-
-export async function showCoursePublic(req: Request, res: Response) : Promise<Response>{
-  try {
-    const { _id } = req.params;
-    const { userrole } = req.body;
-
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    }
-
-    const course = await getCourseDetails({
-      query: { _id, toRoles: userrole },
-      isPublic: true
-    });
-
-    if (!course) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso seleccionado no existe.'
-      });
-    }
-
-    return res.json({
-      msg: 'Curso',
-      course
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/showCoursePublic`);
   }
 }

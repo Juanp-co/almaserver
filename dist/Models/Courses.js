@@ -13,6 +13,7 @@ const TemaryCommentsSchema = new mongoose_1.Schema({
     comment: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
     answer: { type: String, default: null, set: GlobalFunctions_1.cleanWhiteSpaces },
     likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
@@ -21,6 +22,8 @@ const TemarySchema = new mongoose_1.Schema({
     description: { type: String, require: true },
     urlVideo: { type: String, require: true },
     comments: { type: [TemaryCommentsSchema], default: [] },
+    likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
 }, { id: false });
 const TestSchema = new mongoose_1.Schema({
     title: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
@@ -42,9 +45,14 @@ const CoursesSchema = new mongoose_1.Schema({
     speakerPosition: { type: Number, require: true },
     code: { type: String, require: true, set: toUpper },
     title: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
+    banner: { type: String, default: null },
     description: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
+    slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true },
     test: { type: [TestSchema], require: true },
+    comments: { type: [TemaryCommentsSchema], default: [] },
+    likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
     toRoles: { type: [Number], require: true },
     enable: { type: Boolean, default: false },
     draft: { type: Boolean, default: true },
@@ -60,6 +68,5 @@ TestSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
 TemaryCommentsSchema.set('toJSON', { getters: true });
 LikesTemaryCommentsSchema.set('toJSON', { getters: true });
-CoursesSchema.set('toJSON', { getters: true });
 const Courses = mongoose_1.model('course', CoursesSchema);
 exports.default = Courses;
