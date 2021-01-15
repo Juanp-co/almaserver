@@ -1,5 +1,580 @@
 [
   {
+    "type": "get",
+    "url": "/api/admin/courses/:_id/comments",
+    "title": "(07) Obtener comentarios del curso.",
+    "version": "0.0.7",
+    "name": "commentsCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          }
+        ],
+        "Query params": [
+          {
+            "group": "Query params",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>Ordenado de los comentarios (1 = ASC | !1 = DESC).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de los comentarios.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Numero (total) de comentarios.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Listado de comentarios.</p>"
+          }
+        ],
+        "comments Array Object": [
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del comentario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Respuesta recibida (No implementado).</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del usuario comentador.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos báse del usuario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "comment",
+            "description": "<p>Comentario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "likes",
+            "description": "<p>Listado de &quot;Me gusta&quot; recibidos.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "unlikes",
+            "description": "<p>Listado de &quot;No me gusta&quot; recibidos.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del comentario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización.</p>"
+          }
+        ],
+        "likes and unlikes Array Object": [
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del registro.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos báse del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos del usuario.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Comentarios del curso.\",\n    \"data\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"totals\": 3,\n        \"comments\": [\n            {\n                \"_id\": \"5ffd56368cee8d4f7c0c8a20\",\n                \"answer\": null,\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"comment\": \"Vivamus suscipit tortor eget felis porttitor volutpat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.\",\n                \"likes\": [\n                    {\n                        \"_id\": \"5ffd577aba47443708fa9432\",\n                        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"user\": {\n                            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                            \"document\": \"CC12345678\",\n                            \"names\": \"USUARIO TRES\",\n                            \"lastNames\": \"PRUEBA TRES\"\n                        },\n                        \"created_at\": \"2021-01-12 03:02:02\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"unlikes\": [\n                    {\n                        \"_id\": \"5ffd577aba47443708fa9432\",\n                        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"user\": {\n                            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                            \"document\": \"CC12345678\",\n                            \"names\": \"USUARIO TRES\",\n                            \"lastNames\": \"PRUEBA TRES\"\n                        },\n                        \"created_at\": \"2021-01-12 03:02:02\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"created_at\": \"2021-01-12 02:56:38\",\n                \"updated_at\": \"2021-01-12 02:56:38\"\n            },\n            .\n            .\n            .\n        ]\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/courses/:_id/theme/:themeId/comments",
+    "title": "(09) Obtener comentarios de un tema.",
+    "version": "0.0.7",
+    "name": "commentsThemeCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "themeId",
+            "description": "<p>ID del tema.</p>"
+          }
+        ],
+        "Query params": [
+          {
+            "group": "Query params",
+            "type": "Number",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>Ordenado de los comentarios (1 = ASC | !1 = DESC).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de los comentarios.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "themeId",
+            "description": "<p>ID del tema.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Numero (total) de comentarios.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>Listado de comentarios.</p>"
+          }
+        ],
+        "comments Array Object": [
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del comentario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "answer",
+            "description": "<p>Respuesta recibida (No implementado).</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del usuario comentador.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos báse del usuario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "comment",
+            "description": "<p>Comentario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "likes",
+            "description": "<p>Listado de &quot;Me gusta&quot; recibidos.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "unlikes",
+            "description": "<p>Listado de &quot;No me gusta&quot; recibidos.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del comentario.</p>"
+          },
+          {
+            "group": "comments Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización.</p>"
+          }
+        ],
+        "likes and unlikes Array Object": [
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del registro.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos báse del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos del usuario.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Comentarios del tema.\",\n    \"data\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"themeId\": \"5ff8e4116f5c8648c0353e97\",\n        \"totals\": 3,\n        \"comments\": [\n            {\n                \"_id\": \"5ffd5932e679cc15ac790192\",\n                \"answer\": null,\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"comment\": \"Vivamus suscipit tortor eget felis porttitor volutpat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.\",\n                \"likes\": [\n                    {\n                        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"document\": \"CC12345678\",\n                        \"names\": \"USUARIO TRES\",\n                        \"lastNames\": \"PRUEBA TRES\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"unlikes\": [\n                    {\n                        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"document\": \"CC12345678\",\n                        \"names\": \"USUARIO TRES\",\n                        \"lastNames\": \"PRUEBA TRES\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"created_at\": \"2021-01-12 03:09:22\",\n                \"updated_at\": \"2021-01-12 03:09:22\"\n            },\n            .\n            .\n            .\n        ]\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid themeId",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el tema seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
     "type": "post",
     "url": "/api/admin/courses",
     "title": "(02) Crear nuevo curso.",
@@ -566,7 +1141,7 @@
     "type": "get",
     "url": "/api/admin/courses/:_id",
     "title": "(03) Obtener detalles de un curso.",
-    "version": "0.0.5",
+    "version": "0.0.7",
     "name": "detailsCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -610,7 +1185,7 @@
             "type": "Object",
             "optional": false,
             "field": "course",
-            "description": "<p>Detalles del evento.</p>"
+            "description": "<p>Datos del curso.</p>"
           }
         ],
         "course Object": [
@@ -626,18 +1201,18 @@
             "type": "Object|Null",
             "optional": false,
             "field": "user",
-            "description": "<p>Datos del usuario que ha creado el curso.</p>"
+            "description": "<p>Datos del usuario creador del curso.</p>"
           },
           {
             "group": "course Object",
             "type": "String",
             "optional": false,
             "field": "speaker",
-            "description": "<p>Nombre completo del orador del curso.</p>"
+            "description": "<p>Orador del curso.</p>"
           },
           {
             "group": "course Object",
-            "type": "Number",
+            "type": "String",
             "optional": false,
             "field": "speakerPosition",
             "description": "<p>Cargo o posición del orador.</p>"
@@ -660,6 +1235,20 @@
             "group": "course Object",
             "type": "String",
             "optional": false,
+            "field": "slug",
+            "description": "<p>Slug (Valor url) del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
+            "field": "banner",
+            "description": "<p>URL del banner del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "String",
+            "optional": false,
             "field": "description",
             "description": "<p>Descripción del curso.</p>"
           },
@@ -675,7 +1264,7 @@
             "type": "Array|Object",
             "optional": false,
             "field": "test",
-            "description": "<p>Listado de preguntas para la prueba que deberá presentar el usuario.</p>"
+            "description": "<p>Listado de preguntas del curso.</p>"
           },
           {
             "group": "course Object",
@@ -688,59 +1277,36 @@
             "group": "course Object",
             "type": "Boolean",
             "optional": false,
-            "field": "enable",
-            "description": "<p>Indica si el curso se encuentra público para los usuarios.</p>"
+            "field": "draft",
+            "description": "<p>Indica si el curso se encuentra en modo borrador.</p>"
           },
           {
             "group": "course Object",
             "type": "Boolean",
             "optional": false,
-            "field": "draft",
-            "description": "<p>Indica si el curso se encuentra en borrador (preparación).</p>"
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra disponible al público.</p>"
           },
           {
             "group": "course Object",
             "type": "String",
             "optional": false,
             "field": "created_at",
-            "description": "<p>Fecha de creación del curso.</p>"
+            "description": "<p>Fecha de registro del curso.</p>"
           },
           {
             "group": "course Object",
             "type": "String",
             "optional": false,
             "field": "updated_at",
-            "description": "<p>Fecha de la última actualización del contenido del curso.</p>"
-          }
-        ],
-        "user Object": [
-          {
-            "group": "user Object",
-            "type": "String",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>Fecha de la última actualización del curso.</p>"
           },
           {
-            "group": "user Object",
-            "type": "String",
+            "group": "course Object",
+            "type": "Object",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "user Object",
-            "type": "String",
-            "optional": false,
-            "field": "names",
-            "description": "<p>Nombre(s).</p>"
-          },
-          {
-            "group": "user Object",
-            "type": "String",
-            "optional": false,
-            "field": "lastNames",
-            "description": "<p>Apellido(s).</p>"
+            "field": "totals",
+            "description": "<p>Total de comentarios, 'Me gusta' y 'No me gusta'.</p>"
           }
         ],
         "temary Array Object": [
@@ -774,10 +1340,10 @@
           },
           {
             "group": "temary Array Object",
-            "type": "Array|Object",
+            "type": "Object",
             "optional": false,
-            "field": "comments",
-            "description": "<p>Comentarios realizados por los usuarios.</p>"
+            "field": "totals",
+            "description": "<p>Total de comentarios, 'Me gusta' y 'No me gusta'.</p>"
           }
         ],
         "test Array Object": [
@@ -844,12 +1410,65 @@
             "field": "inputType",
             "description": "<p>Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').</p>"
           }
+        ],
+        "totals Object": [
+          {
+            "group": "totals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalComments",
+            "description": "<p>Número (total) de comentarios.</p>"
+          },
+          {
+            "group": "totals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalLikes",
+            "description": "<p>Número (total) de 'Me gusta'.</p>"
+          },
+          {
+            "group": "totals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalUnlikes",
+            "description": "<p>Número (total) de 'No me gusta'.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5feacc6eda2a713754f99e25\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO 01\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5feacc6eda2a713754f99e26\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            },\n            {\n                \"_id\": \"5feacc6eda2a713754f99e27\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e28\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e29\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"draft\": true,\n        \"enable\": false,\n        \"created_at\": \"2020-12-29 01:27:58\",\n        \"updated_at\": \"2020-12-29 01:27:58\"\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO NUEVO 2\",\n        \"slug\": \"curso-nuevo-1\",\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e97\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"totals\": {\n                    \"totalComments\": 1,\n                    \"totalLikes\": 1,\n                    \"totalUnlikes\": 1\n                }\n            },\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e98\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"totals\": {\n                    \"totalComments\": 0,\n                    \"totalLikes\": 0,\n                    \"totalUnlikes\": 0\n                }\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": 0,\n                \"_id\": \"5ff8e4116f5c8648c0353e99\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5ff8e4116f5c8648c0353e9a\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"draft\": false,\n        \"enable\": true,\n        \"created_at\": \"2021-01-08 16:38:09\",\n        \"updated_at\": \"2021-01-12 03:09:22\",\n        \"totals\": {\n            \"totalComments\": 3,\n            \"totalLikes\": 1,\n            \"totalUnlikes\": 0\n        }\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -1332,6 +1951,20 @@
             "group": "courses Array Object",
             "type": "String",
             "optional": false,
+            "field": "slug",
+            "description": "<p>Slug (Valor url) del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "baner",
+            "description": "<p>URL de la imagen principal del curso.</p>"
+          },
+          {
+            "group": "courses Array Object",
+            "type": "String",
+            "optional": false,
             "field": "description",
             "description": "<p>Descripción del curso.</p>"
           },
@@ -1405,7 +2038,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Cursos.\",\n    \"courses\": [\n        {\n            \"_id\": \"5fea3193ff37862c30b2d9a8\",\n            \"user\": {\n                \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n                \"document\": \"CC123456789\",\n                \"names\": \"USUARIO\",\n                \"lastNames\": \"ADMIN\"\n            },\n            \"speaker\": \"Anthony Velásquez\",\n            \"speakerPosition\": 2,\n            \"code\": \"AAA-1235\",\n            \"title\": \"CURSO 000001\",\n            \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n            \"toRoles\": [\n                5\n            ],\n            \"draft\": true,\n            \"enable\": false,\n            \"created_at\": \"2020-12-28 14:27:15\",\n            \"updated_at\": \"2020-12-28 14:44:37\"\n        },\n        .\n        .\n        .\n    ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Cursos.\",\n    \"courses\": [\n        {\n            \"_id\": \"5fea3193ff37862c30b2d9a8\",\n            \"user\": {\n                \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n                \"document\": \"CC123456789\",\n                \"names\": \"USUARIO\",\n                \"lastNames\": \"ADMIN\"\n            },\n            \"speaker\": \"Anthony Velásquez\",\n            \"speakerPosition\": 2,\n            \"code\": \"AAA-1235\",\n            \"title\": \"CURSO 000001\",\n            \"slug\": \"curso-nuevo-1\",\n            \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n            \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n            \"toRoles\": [\n                5\n            ],\n            \"draft\": true,\n            \"enable\": false,\n            \"created_at\": \"2020-12-28 14:27:15\",\n            \"updated_at\": \"2020-12-28 14:44:37\"\n        },\n        .\n        .\n        .\n    ]\n}",
           "type": "JSON"
         },
         {
@@ -1454,6 +2087,461 @@
         {
           "title": "Error token",
           "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/courses/:_id/likes",
+    "title": "(08) Obtener 'Me gusta' y 'No me gusta' del curso.",
+    "version": "0.0.7",
+    "name": "likesAndUnlikesCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de los 'Me gusta' y 'No me gusta'.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalLikes",
+            "description": "<p>Numero (total) de 'Me gusta'.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalUnlikes",
+            "description": "<p>Numero (total) de 'No me gusta'.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "likes",
+            "description": "<p>Listado de 'Me gusta'.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "unlikes",
+            "description": "<p>Listado de 'No me gusta'.</p>"
+          }
+        ],
+        "likes and unlikes Array Object": [
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del registro.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos báse del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos del usuario.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"'Me gusta' y 'No me gustas' del curso.\",\n    \"data\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"totalLikes\": 3,\n        \"totalUnlikes\": 3,\n        \"likes\": [\n            {\n                \"_id\": \"5ffd4af6c149424030d7d8b3\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"created_at\": \"2021-01-12 02:08:38\"\n            },\n            .\n            .\n            .\n        ],\n        \"unlikes\": [\n            {\n                \"_id\": \"5ffd4af6c149424030d7d8b3\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"created_at\": \"2021-01-12 02:08:38\"\n            },\n            .\n            .\n            .\n        ]\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/CoursesAdmin.js",
+    "groupTitle": "CoursesAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/courses/:_id/theme/:themeId/likes",
+    "title": "(10) Obtener 'Me gusta' y 'No me gusta' de un tema.",
+    "version": "0.0.7",
+    "name": "likesAndUnlikesThemeCoursesAdmin",
+    "group": "CoursesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "themeId",
+            "description": "<p>ID del tema.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de los 'Me gusta' y 'No me gusta'.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "themeId",
+            "description": "<p>ID del tema.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalLikes",
+            "description": "<p>Numero (total) de 'Me gusta'.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalUnlikes",
+            "description": "<p>Numero (total) de 'No me gusta'.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "likes",
+            "description": "<p>Listado de 'Me gusta'.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "unlikes",
+            "description": "<p>Listado de 'No me gusta'.</p>"
+          }
+        ],
+        "likes and unlikes Array Object": [
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del registro.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos báse del usuario.</p>"
+          },
+          {
+            "group": "likes and unlikes Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos del usuario.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"'Me gusta' y 'No me gustas' del tema.\",\n    \"data\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"themeId\": \"5ff8e4116f5c8648c0353e97\",\n        \"totalLikes\": 3,\n        \"totalUnlikes\": 3,\n        \"likes\": [\n            {\n                \"_id\": \"5ffd5d0f11e3aa47f051a0dc\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"created_at\": \"2021-01-12 03:25:51\"\n            },\n            .\n            .\n            .\n        ],\n        \"unlikes\": [\n            {\n                \"_id\": \"5ffd326508f3ed208cc764bc\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"created_at\": \"2021-01-12 00:23:49\"\n            },\n            .\n            .\n            .\n        ]\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid themeId",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el tema seleccionado es incorrecto.\"\n}",
           "type": "JSON"
         },
         {

@@ -1,12 +1,17 @@
 import _ from 'lodash';
 import { getNamesUsersList } from './UsersActions';
-import { ICourseList, ICourseTemary, ICourseTemaryComments, ICourseTemaryCommentsLikes } from '../Interfaces/ICourse';
+import {
+  ICourseComments, ICourseCommentsObject,
+  ICourseList,
+  ICourseTemary,
+  ICourseLikes, ICourseLikesAndUnlikesObject
+} from '../Interfaces/ICourse';
 import Courses from '../Models/Courses';
 import { IUserSimpleInfo } from '../Interfaces/IUser';
 import { ICourseUserList } from '../Interfaces/ICourseUser';
 import CoursesUsers from '../Models/CoursesUsers';
 
-function getModelLikesAndUnlikes(data: ICourseTemaryCommentsLikes) : ICourseTemaryCommentsLikes {
+function getModelLikesAndUnlikes(data: ICourseLikes) : ICourseLikes {
   return {
     _id: data._id,
     userid: data.userid,
@@ -15,13 +20,13 @@ function getModelLikesAndUnlikes(data: ICourseTemaryCommentsLikes) : ICourseTema
   }
 }
 
-function getModelLikesAndUnlikesList(data: ICourseTemaryCommentsLikes[]) : ICourseTemaryCommentsLikes[] {
-  const ret = [] as ICourseTemaryCommentsLikes[];
+function getModelLikesAndUnlikesList(data: ICourseLikes[]) : ICourseLikes[] {
+  const ret = [] as ICourseLikes[];
   if (data.length > 0) data.forEach(d => ret.push(getModelLikesAndUnlikes(d)));
   return ret;
 }
 
-function getModelComments(data: ICourseTemaryComments) : ICourseTemaryComments {
+function getModelComments(data: ICourseComments) : ICourseComments {
   return {
     _id: data._id,
     answer: data.answer,
@@ -35,8 +40,8 @@ function getModelComments(data: ICourseTemaryComments) : ICourseTemaryComments {
   }
 }
 
-function getModelCommentsList(data: ICourseTemaryComments[]) : ICourseTemaryComments[] {
-  const ret = [] as ICourseTemaryComments[];
+function getModelCommentsList(data: ICourseComments[]) : ICourseComments[] {
+  const ret = [] as ICourseComments[];
   if (data.length > 0) data.forEach(d => ret.push(getModelComments(d)));
   return ret;
 }
@@ -56,15 +61,21 @@ function setUserDataInList(list: any[], listUsers: IUserSimpleInfo[]): any[] {
 
 // =====================================================================================================================
 
+/*
+  data: ICourseList | ICourseTemary     <= data with any this schemas
+  theme: boolean                        <= to set 'ICourseList' or 'ICourseTemary' return model
+  admin: boolean                        <= to get extra params
+  counters: boolean                     <= to get only totals of comments, likes and unlikes
+ */
 
-
-export async function getModelReturnCourseOrTheme(data: any, theme: boolean) : Promise<ICourseList | ICourseTemary | null> {
+export async function getModelReturnCourseOrTheme({ data, theme, admin, counters }: any) : Promise<ICourseList | ICourseTemary | null> {
   let ret: ICourseList | ICourseTemary | null = null;
   let listIds: any[] = [];
 
-  if (!theme) {
+  if (!theme || (!theme && admin)) {
     ret = {} as ICourseList;
     ret._id = data._id;
+    if (admin) ret.user = data.user;
     ret.speaker = data.speaker;
     ret.speakerPosition = data.speakerPosition;
     ret.code = data.code;
@@ -73,11 +84,31 @@ export async function getModelReturnCourseOrTheme(data: any, theme: boolean) : P
     ret.banner = data.banner;
     ret.description = data.description;
     ret.temary = [];
-    ret.comments = getModelCommentsList(data.comments || []);
-    ret.likes = getModelLikesAndUnlikesList(data.likes || []);
-    ret.unlikes = getModelLikesAndUnlikesList(data.unlikes || []);
+
+    if (admin) {
+      ret.test = data.test;
+      ret.toRoles = data.toRoles;
+      ret.draft = data.draft;
+      ret.enable = data.enable;
+      ret.created_at = data.created_at;
+      ret.updated_at = data.updated_at;
+    }
+
+    if (!counters) {
+      ret.comments = getModelCommentsList(data.comments || []);
+      ret.likes = getModelLikesAndUnlikesList(data.likes || []);
+      ret.unlikes = getModelLikesAndUnlikesList(data.unlikes || []);
+    }
+    else {
+      ret.totals = {
+        totalComments: data.comments ? data.comments.length : 0,
+        totalLikes: data.likes ? data.likes.length : 0,
+        totalUnlikes: data.unlikes ? data.unlikes.length : 0,
+      };
+    }
 
     const totalTemary = data.temary.length;
+
     for (let i = 0; i < totalTemary || 0; i++) {
       const dTheme = {} as ICourseTemary;
       dTheme._id = data.temary[i]._id;
@@ -85,22 +116,36 @@ export async function getModelReturnCourseOrTheme(data: any, theme: boolean) : P
       dTheme.description = data.temary[i].description;
       dTheme.urlVideo = data.temary[i].urlVideo;
 
-      if (data.temary.likes) dTheme.likes = getModelCommentsList(data.temary[i].comments || []);
-      if (data.temary.unlikes) dTheme.unlikes = getModelCommentsList(data.temary[i].comments || []);
+      if (!counters && (!!data.temary[i].comments || !!data.temary[i].likes || !!data.temary[i].unlikes)) {
+        dTheme.comments = getModelCommentsList(data.temary[i].comments || []);
+        dTheme.likes = getModelLikesAndUnlikesList(data.temary[i].likes || []);
+        dTheme.unlikes = getModelLikesAndUnlikesList(data.temary[i].unlikes || []);
+        if (data.temary.likes) dTheme.likes = getModelCommentsList(data.temary[i].comments || []);
+        if (data.temary.unlikes) dTheme.unlikes = getModelCommentsList(data.temary[i].comments || []);
 
-      listIds = listIds.concat(_.map(data.temary[i].comments, 'userid'));
-      listIds = listIds.concat(_.map(data.temary[i].comments, 'likes.userid') );
-      listIds = listIds.concat(_.map(data.temary[i].comments, 'unlikes.userid'));
-      if (dTheme.likes) listIds = listIds.concat(_.map(ret.likes, 'userid'));
-      if (dTheme.unlikes) listIds = listIds.concat(_.map(ret.unlikes, 'userid'));
+        listIds = listIds.concat(_.map(data.temary[i].comments, 'userid'));
+        listIds = listIds.concat(_.map(data.temary[i].comments, 'likes.userid') );
+        listIds = listIds.concat(_.map(data.temary[i].comments, 'unlikes.userid'));
+        if (dTheme.likes) listIds = listIds.concat(_.map(ret.likes, 'userid'));
+        if (dTheme.unlikes) listIds = listIds.concat(_.map(ret.unlikes, 'userid'));
+      }
+      else if (counters) {
+        dTheme.totals = {
+          totalComments: data.temary[i].comments ? data.temary[i].comments.length : 0,
+          totalLikes: data.temary[i].likes ? data.temary[i].likes.length : 0,
+          totalUnlikes: data.temary[i].unlikes ? data.temary[i].unlikes.length : 0,
+        }
+      }
 
       ret.temary.push(dTheme);
     }
 
     // comments
-    listIds = listIds.concat(_.map(ret.comments, 'userid'));
-    listIds = listIds.concat(_.map(ret.comments, 'likes.userid') );
-    listIds = listIds.concat(_.map(ret.comments, 'unlikes.userid'));
+    if (!counters) {
+      listIds = listIds.concat(_.map(ret.comments, 'userid'));
+      listIds = listIds.concat(_.map(ret.comments, 'likes.userid') );
+      listIds = listIds.concat(_.map(ret.comments, 'unlikes.userid'));
+    }
   }
   else {
     ret = {} as ICourseTemary;
@@ -121,29 +166,23 @@ export async function getModelReturnCourseOrTheme(data: any, theme: boolean) : P
     listIds = listIds.concat(_.map(ret.unlikes, 'userid'));
   }
 
-  const listUsers = listIds.length > 0 ? await getNamesUsersList(_.uniq(listIds)) : [];
+  if (!counters) {
+    const listUsers = listIds.length > 0 ? await getNamesUsersList(_.uniq(listIds)) : [];
 
-  if (listUsers.length > 0) {
-    if (ret.likes) ret.likes = setUserDataInList(ret.likes, listUsers);
-    if (ret.unlikes) ret.unlikes = setUserDataInList(ret.unlikes, listUsers);
-    if (ret.comments) ret.comments = setUserDataInList(ret.comments, listUsers);
-    if ('temary' in ret) ret.temary = setUserDataInList(ret.temary || [], listUsers);
+    if (listUsers.length > 0) {
+      if (ret.likes) ret.likes = setUserDataInList(ret.likes, listUsers);
+      if (ret.unlikes) ret.unlikes = setUserDataInList(ret.unlikes, listUsers);
+      if (ret.comments) ret.comments = setUserDataInList(ret.comments, listUsers);
+      if ('temary' in ret) ret.temary = setUserDataInList(ret.temary || [], listUsers);
+    }
   }
+
   return ret;
 }
 
 // =====================================================================================================================
 
-export default async function getCoursesList(
-  {
-    query,
-    skip,
-    sort,
-    limit,
-    infoUser,
-    isPublic,
-    projection,
-  } : any) : Promise<ICourseList[]> {
+export default async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, projection,} : any) : Promise<ICourseList[]> {
   const ret: ICourseList[] = [];
 
   const courses = await Courses.find(query, projection || { __v: 0 })
@@ -248,6 +287,90 @@ export async function getCourseDetails({ query, infoUser, isPublic, projection }
   return ret;
 }
 
+export async function getCommentsCourse({ query, projection, sort, theme }: any): Promise<ICourseCommentsObject | null> {
+  let ret: ICourseCommentsObject | null = null;
+
+  if (!query || Object.keys(query || {}).length === 0) return ret;
+
+  const course = await Courses.findOne(query, projection).exec();
+
+  if (!course) return ret;
+
+  ret = {
+    _id: course._id,
+    themeId: query['temary._id'],
+    totals: 0,
+    comments: []
+  } as ICourseCommentsObject;
+
+  if (theme) {
+    ret.comments = getModelCommentsList(_.orderBy(course.temary[0].comments, ['created_at'], [sort || 'desc']));
+    ret.totals = course.temary[0].comments ? course.temary[0].comments.length : 0;
+  }
+  else {
+    ret.comments = getModelCommentsList(_.orderBy(course.comments, ['created_at'], [sort || 'desc']));
+    ret.totals = course.comments ? course.comments.length : 0;
+  }
+
+  let listIds: any[] = _.map(ret.comments, 'userid');
+  if ('likes' in ret.comments) listIds = listIds.concat(_.map(ret.comments, 'likes.userid'));
+  if ('unlikes' in ret.comments) listIds = listIds.concat(_.map(ret.comments, 'unlikes.userid'));
+
+  if (listIds.length > 0) {
+    const listUsers = listIds.length > 0 ? await getNamesUsersList(_.uniq(listIds)) : [];
+    if (listUsers.length > 0) ret.comments = setUserDataInList(ret.comments, listUsers);
+  }
+
+  return ret;
+}
+
+export async function getLikesAndUnlikesCourse({ query, projection, theme }: any): Promise<ICourseLikesAndUnlikesObject | null> {
+  let ret: ICourseLikesAndUnlikesObject | null = null;
+
+  if (!query || Object.keys(query || {}).length === 0) return ret;
+
+  const course = await Courses.findOne(query, projection).exec();
+
+  if (!course) return ret;
+
+  ret = {
+    _id: course._id,
+    themeId: query['temary._id'],
+    totalLikes: 0,
+    totalUnlikes: 0,
+    likes: [],
+    unlikes: []
+  } as ICourseLikesAndUnlikesObject;
+
+  if (theme) {
+    ret.totalLikes = course.temary[0].likes ? course.temary[0].likes.length : 0;
+    ret.totalUnlikes = course.temary[0].unlikes ? course.temary[0].unlikes.length : 0;
+    ret.likes = getModelLikesAndUnlikesList(course.temary[0].likes || []);
+    ret.unlikes = getModelLikesAndUnlikesList(course.temary[0].unlikes || []);
+  }
+  else {
+    ret.totalLikes = course.likes ? course.likes.length : 0;
+    ret.totalUnlikes = course.unlikes ? course.unlikes.length : 0;
+    ret.likes = getModelLikesAndUnlikesList(course.likes || []);
+    ret.unlikes = getModelLikesAndUnlikesList(course.unlikes || []);
+  }
+
+  let listIds: any[] = [];
+
+  if ('likes' in ret) listIds = listIds.concat(_.map(ret.likes, 'userid'));
+  if ('unlikes' in ret) listIds = listIds.concat(_.map(ret.unlikes, 'userid'));
+
+  if (listIds.length > 0) {
+    const listUsers = listIds.length > 0 ? await getNamesUsersList(_.uniq(listIds)) : [];
+    if (listUsers.length > 0) {
+      ret.likes = setUserDataInList(ret.likes, listUsers);
+      ret.unlikes = setUserDataInList(ret.unlikes, listUsers);
+    }
+  }
+
+  return ret;
+}
+
 export async function checkIfExistCode(code : string) : Promise<boolean> {
   const course = await Courses.findOne({ code }, { _id: 1 }).exec();
   return !!course;
@@ -263,7 +386,7 @@ export async function checkIfExistSlug(slug : string) : Promise<number> {
   PARTICULAR USERS
  */
 
-export async function getCoursesDataUsers({ query } : any) : Promise<ICourseUserList | null> {
+export async function getCoursesDataUser({ query } : any) : Promise<ICourseUserList | null> {
   const course = await CoursesUsers.findOne(query, { __v: 0 }).exec() as ICourseUserList;
   return !course ? null : {
     _id: course._id,
