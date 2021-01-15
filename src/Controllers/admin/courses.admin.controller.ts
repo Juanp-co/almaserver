@@ -11,7 +11,10 @@ import { checkObjectId } from '../../Functions/Validations';
 import getCoursesList, {
   checkIfExistCode,
   checkIfExistSlug,
-  getCourseDetails
+  getCommentsCourse,
+  getCourseDetails,
+  getLikesAndUnlikesCourse,
+  getModelReturnCourseOrTheme
 } from '../../ActionsData/CoursesActions';
 
 const path = 'src/courses.admin.controller';
@@ -95,7 +98,12 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
 
     return res.json({
       msg: 'Curso',
-      course
+      course: await getModelReturnCourseOrTheme({
+        data: course,
+        theme: false,
+        admin: true,
+        counters: true
+      }),
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/showCourse`);
@@ -304,5 +312,96 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/deleteCourse`);
+  }
+}
+
+// =====================================================================================================================
+
+/*
+  Likes and Comments (course or theme)
+ */
+
+export async function commentsCourseOrTheme(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId } = req.params;
+    const order = req.query.sort && req.query.sort === '1' ? 'asc' :'desc';
+    const query: any = {};
+    let projection: any = {};
+
+    if (!checkObjectId(_id)) {
+      return res.status(422).json({
+        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
+      });
+    }
+
+    query._id = _id;
+
+    if (themeId) {
+      if (!checkObjectId(themeId)) {
+        return res.status(422).json({
+          msg: 'Disculpe, pero el tema seleccionado es incorrecto.'
+        });
+      }
+      query['temary._id'] = themeId;
+      projection = { 'temary.$.comments': 1 };
+    }
+    else projection = { comments: 1 };
+
+    const data = await getCommentsCourse({ query, projection, sort: order, theme: !!themeId });
+
+    if (!data) {
+      return res.status(404).json({
+        msg: 'Disculpe, pero el curso seleccionado no existe.'
+      });
+    }
+
+    return res.json({
+      msg: `Comentarios del ${themeId ? 'tema' : 'curso'}.`,
+      data
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/commentsCourse`);
+  }
+}
+
+export async function likesAndUnlikesCourseOrTheme(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId } = req.params;
+    const query: any = {};
+    let projection: any = {};
+
+    if (!checkObjectId(_id)) {
+      return res.status(422).json({
+        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
+      });
+    }
+
+    query._id = _id;
+
+    if (themeId) {
+      if (!checkObjectId(themeId)) {
+        return res.status(422).json({
+          msg: 'Disculpe, pero el tema seleccionado es incorrecto.'
+        });
+      }
+      query['temary._id'] = themeId;
+      projection = { 'temary.$': 1 };
+    }
+    else projection = { _id: 1, likes: 1, unlikes: 1 };
+
+    const data = await getLikesAndUnlikesCourse({ query, projection, theme: !!themeId });
+
+    if (!data) {
+      return res.status(404).json({
+        msg: 'Disculpe, pero el curso seleccionado no existe.'
+      });
+    }
+
+    return res.json({
+      msg: `'Me gusta' y 'No me gustas' del ${themeId ? 'tema' : 'curso'}.`,
+      data
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/likesAndUnlikesCourse`);
   }
 }

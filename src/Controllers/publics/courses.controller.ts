@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { Request, Response } from 'express';
 import getCoursesList, {
   getCourseDetails,
-  getCoursesDataUsers,
+  getCoursesDataUser,
   getModelReturnCourseOrTheme
 } from '../../ActionsData/CoursesActions';
 import { validateTestData } from '../../FormRequest/CoursesRequest';
@@ -175,11 +175,11 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
     if (!course) return returnNotFound(res, '404Course');
 
     // check and get data user course user
-    const dataCourseUser = await getCoursesDataUsers({ query: { courseId: course._id } });
+    const dataCourseUser = await getCoursesDataUser({ query: { courseId: course._id } });
 
     return res.json({
       msg: 'Curso',
-      course: await getModelReturnCourseOrTheme(course, false),
+      course: await getModelReturnCourseOrTheme({ data: course }),
       dataCourseUser: dataCourseUser || null
     });
   } catch (error: any) {
@@ -235,7 +235,7 @@ export async function showCourseTheme(req: Request, res: Response) : Promise<Res
 
     return res.json({
       msg: 'Tema',
-      theme: await getModelReturnCourseOrTheme(theme, true),
+      theme: await getModelReturnCourseOrTheme({ data: theme, theme: true }),
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/showCourseTheme`);

@@ -180,10 +180,10 @@ async function showCourse(req, res) {
         if (!course)
             return returnNotFound(res, '404Course');
         // check and get data user course user
-        const dataCourseUser = await CoursesActions_1.getCoursesDataUsers({ query: { courseId: course._id } });
+        const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { courseId: course._id } });
         return res.json({
             msg: 'Curso',
-            course: await CoursesActions_1.getModelReturnCourseOrTheme(course, false),
+            course: await CoursesActions_1.getModelReturnCourseOrTheme({ data: course }),
             dataCourseUser: dataCourseUser || null
         });
     }
@@ -237,7 +237,7 @@ async function showCourseTheme(req, res) {
         }
         return res.json({
             msg: 'Tema',
-            theme: await CoursesActions_1.getModelReturnCourseOrTheme(theme, true),
+            theme: await CoursesActions_1.getModelReturnCourseOrTheme({ data: theme, theme: true }),
         });
     }
     catch (error) {

@@ -33,14 +33,16 @@ const router = express_1.Router();
 router.route('/courses')
     .get(middleware_1.validateAdmin, courses_admin_controller_1.default)
     .post(middleware_1.validateAdmin, courses_admin_controller_1.saveCourse);
-router.route('/courses/counters')
-    .get(middleware_1.validateAdmin, courses_admin_controller_1.getCoursesCounters);
+router.get('/courses/counters', middleware_1.validateAdmin, courses_admin_controller_1.getCoursesCounters);
 router.route('/courses/:_id')
     .delete(middleware_1.validateAdmin, courses_admin_controller_1.deleteCourse)
     .get(middleware_1.validateAdmin, courses_admin_controller_1.showCourse)
     .put(middleware_1.validateAdmin, courses_admin_controller_1.updateCourse);
-router.route('/courses/:_id/enable')
-    .put(middleware_1.validateAdmin, courses_admin_controller_1.enableCourse);
+router.get('/courses/:_id/comments', middleware_1.validateAdmin, courses_admin_controller_1.commentsCourseOrTheme);
+router.put('/courses/:_id/enable', middleware_1.validateAdmin, courses_admin_controller_1.enableCourse);
+router.get('/courses/:_id/likes', middleware_1.validateAdmin, courses_admin_controller_1.likesAndUnlikesCourseOrTheme);
+router.get('/courses/:_id/theme/:themeId/comments', middleware_1.validateAdmin, courses_admin_controller_1.commentsCourseOrTheme);
+router.get('/courses/:_id/theme/:themeId/likes', middleware_1.validateAdmin, courses_admin_controller_1.likesAndUnlikesCourseOrTheme);
 /*
   Events
 */
@@ -65,12 +67,10 @@ router.route('/questions/:_id')
 router.route('/users')
     .get(middleware_1.validateAdmin, users_admin_controller_1.default)
     .post(middleware_1.validateAdmin, users_admin_controller_1.saveUser);
-router.route('/users/counters')
-    .get(middleware_1.validateAdmin, users_admin_controller_1.getUsersCounters);
+router.get('/users/counters', middleware_1.validateAdmin, users_admin_controller_1.getUsersCounters);
 router.route('/users/:_id')
     .get(middleware_1.validateAdmin, users_admin_controller_1.showUser)
     .put(middleware_1.validateAdmin, users_admin_controller_1.updateUser);
 // .delete(validateAdmin, deleteUser);
-router.route('/users/:_id/role')
-    .put(middleware_1.validateAdmin, users_admin_controller_1.changeRoleUser);
+router.put('/users/:_id/role', middleware_1.validateAdmin, users_admin_controller_1.changeRoleUser);
 exports.default = router;

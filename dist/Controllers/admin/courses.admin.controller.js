@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCourse = exports.enableCourse = exports.updateCourse = exports.saveCourse = exports.showCourse = exports.getCoursesCounters = void 0;
+exports.likesAndUnlikesCourseOrTheme = exports.commentsCourseOrTheme = exports.deleteCourse = exports.enableCourse = exports.updateCourse = exports.saveCourse = exports.showCourse = exports.getCoursesCounters = void 0;
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesRequest_1 = __importDefault(require("../../FormRequest/CoursesRequest"));
@@ -105,7 +105,12 @@ async function showCourse(req, res) {
         }
         return res.json({
             msg: 'Curso',
-            course
+            course: await CoursesActions_1.getModelReturnCourseOrTheme({
+                data: course,
+                theme: false,
+                admin: true,
+                counters: true
+            }),
         });
     }
     catch (error) {
@@ -295,3 +300,84 @@ async function deleteCourse(req, res) {
     }
 }
 exports.deleteCourse = deleteCourse;
+// =====================================================================================================================
+/*
+  Likes and Comments (course or theme)
+ */
+async function commentsCourseOrTheme(req, res) {
+    try {
+        const { _id, themeId } = req.params;
+        const order = req.query.sort && req.query.sort === '1' ? 'asc' : 'desc';
+        const query = {};
+        let projection = {};
+        if (!Validations_1.checkObjectId(_id)) {
+            return res.status(422).json({
+                msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
+            });
+        }
+        query._id = _id;
+        if (themeId) {
+            if (!Validations_1.checkObjectId(themeId)) {
+                return res.status(422).json({
+                    msg: 'Disculpe, pero el tema seleccionado es incorrecto.'
+                });
+            }
+            query['temary._id'] = themeId;
+            projection = { 'temary.$.comments': 1 };
+        }
+        else
+            projection = { comments: 1 };
+        const data = await CoursesActions_1.getCommentsCourse({ query, projection, sort: order, theme: !!themeId });
+        if (!data) {
+            return res.status(404).json({
+                msg: 'Disculpe, pero el curso seleccionado no existe.'
+            });
+        }
+        return res.json({
+            msg: `Comentarios del ${themeId ? 'tema' : 'curso'}.`,
+            data
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/commentsCourse`);
+    }
+}
+exports.commentsCourseOrTheme = commentsCourseOrTheme;
+async function likesAndUnlikesCourseOrTheme(req, res) {
+    try {
+        const { _id, themeId } = req.params;
+        const query = {};
+        let projection = {};
+        if (!Validations_1.checkObjectId(_id)) {
+            return res.status(422).json({
+                msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
+            });
+        }
+        query._id = _id;
+        if (themeId) {
+            if (!Validations_1.checkObjectId(themeId)) {
+                return res.status(422).json({
+                    msg: 'Disculpe, pero el tema seleccionado es incorrecto.'
+                });
+            }
+            query['temary._id'] = themeId;
+            projection = { 'temary.$': 1 };
+        }
+        else
+            projection = { _id: 1, likes: 1, unlikes: 1 };
+        const data = await CoursesActions_1.getLikesAndUnlikesCourse({ query, projection, theme: !!themeId });
+        if (!data) {
+            return res.status(404).json({
+                msg: 'Disculpe, pero el curso seleccionado no existe.'
+            });
+        }
+        return res.json({
+            msg: `'Me gusta' y 'No me gustas' del ${themeId ? 'tema' : 'curso'}.`,
+            data
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/likesAndUnlikesCourse`);
+    }
+}
+exports.likesAndUnlikesCourseOrTheme = likesAndUnlikesCourseOrTheme;

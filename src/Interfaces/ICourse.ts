@@ -1,21 +1,28 @@
 import { Document } from 'mongoose';
 import { IUserSimpleInfo } from './IUser';
 
-export interface ICourseTemaryCommentsLikes {
+export interface ICourseTotals {
+  totalLikes: number;
+  totalUnlikes: number;
+  totalComments: number;
+}
+
+export interface ICourseLikes {
   _id?: any;
   userid: string | null;
   user?: IUserSimpleInfo | null;
   created_at?: string | number;
 }
 
-export interface ICourseTemaryComments {
+export interface ICourseComments {
   _id?: any;
   userid: string | null;
   user?: IUserSimpleInfo | null;
   comment: string | null;
   answer?: string | null;
-  likes: ICourseTemaryCommentsLikes[];
-  unlikes: ICourseTemaryCommentsLikes[];
+  likes: ICourseLikes[];
+  unlikes: ICourseLikes[];
+  totals?: ICourseTotals;
   created_at?: string | number;
   updated_at?: string | number;
 }
@@ -25,9 +32,26 @@ export interface ICourseTemary {
   title?: string | null;
   description?: string | null;
   urlVideo?: string | null;
-  comments: ICourseTemaryComments[];
-  likes?: ICourseTemaryCommentsLikes[];
-  unlikes?: ICourseTemaryCommentsLikes[];
+  comments: ICourseComments[];
+  likes?: ICourseLikes[];
+  unlikes?: ICourseLikes[];
+  totals?: ICourseTotals;
+}
+
+export interface ICourseCommentsObject {
+  _id?: any;
+  themeId?: any;
+  comments: ICourseComments[];
+  totals?: number;
+}
+
+export interface ICourseLikesAndUnlikesObject {
+  _id?: any;
+  themeId?: any;
+  likes: ICourseLikes[];
+  unlikes: ICourseLikes[];
+  totalLikes?: number;
+  totalUnlikes?: number;
 }
 
 export interface ICourseTest {
@@ -53,9 +77,9 @@ export default interface ICourse extends Document {
   slug: string | null;
   temary: ICourseTemary[];
   test: ICourseTest[];
-  comments: ICourseTemaryComments[];
-  likes?: ICourseTemaryCommentsLikes[];
-  unlikes?: ICourseTemaryCommentsLikes[];
+  comments: ICourseComments[];
+  likes?: ICourseLikes[];
+  unlikes?: ICourseLikes[];
   toRoles: number[];
   draft?: boolean;
   enable: boolean;
@@ -97,6 +121,7 @@ export interface ICourseList {
   toRoles: ICourse['toRoles'],
   draft?: ICourse['draft'],
   enable?: ICourse['enable'],
+  totals?: ICourseTotals;
   created_at?: ICourse['created_at'],
   updated_at?: ICourse['updated_at'],
 }
