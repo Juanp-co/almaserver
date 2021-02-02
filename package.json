@@ -1,6 +1,6 @@
 {
   "name": "alma_backend",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "API to ALMA App.",
   "main": "./dist/index.js",
   "scripts": {

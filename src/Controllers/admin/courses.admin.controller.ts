@@ -17,7 +17,7 @@ import getCoursesList, {
   getModelReturnCourseOrTheme
 } from '../../ActionsData/CoursesActions';
 
-const path = 'src/courses.admin.controller';
+const path = 'src/admin/courses.admin.controller';
 
 export default async function getCourses(req: Request, res: Response) : Promise<Response>{
   try {

@@ -25,6 +25,12 @@ import getCourses, {
   showCourse,
   updateCourse
 } from '../Controllers/admin/courses.admin.controller';
+import getGroups, {
+  addOrRemoveMembersGroup,
+  deleteGroup,
+  getGroupsCounters,
+  saveGroup, showGroup, updateGroup
+} from '../Controllers/admin/groups.admin.controller';
 
 const router = Router();
 
@@ -71,6 +77,21 @@ router.route('/questions/:_id')
   .get(validateAdmin, getDetailsQuestion)
   .put(validateAdmin, updateQuestions)
   .delete(validateAdmin, deleteQuestions);
+
+/*
+  Groups
+*/
+router.route('/groups')
+  .get(validateAdmin, getGroups)
+  .post(validateAdmin, saveGroup);
+router.get('/groups/counters', validateAdmin, getGroupsCounters);
+
+router.route('/groups/:_id')
+  .get(validateAdmin, showGroup)
+  .put(validateAdmin, updateGroup)
+  .delete(validateAdmin, deleteGroup);
+
+router.put('/groups/:_id/members/:action', validateAdmin, addOrRemoveMembersGroup);
 
 /*
   Users

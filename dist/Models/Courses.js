@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const getPlaceHolder = (value) => value || 'Indica tu respuesta';
-const toUpper = (value) => value ? value.toUpperCase() : null;
 const LikesTemaryCommentsSchema = new mongoose_1.Schema({
     userid: { type: String, require: true },
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
@@ -43,7 +42,7 @@ const CoursesSchema = new mongoose_1.Schema({
     userid: { type: String, require: true },
     speaker: { type: String, require: true },
     speakerPosition: { type: Number, require: true },
-    code: { type: String, require: true, set: toUpper },
+    code: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
     title: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
     banner: { type: String, default: null },
     description: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
