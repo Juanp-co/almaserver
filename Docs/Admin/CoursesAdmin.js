@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/admin/courses (00) Obtener contador de cursos.
+ * @api {get} /api/admin/courses/counters (00) Obtener contador de cursos.
  * @apiVersion 0.0.5
  * @apiName getCountersCoursesAdmin
  * @apiGroup CoursesAdmin
@@ -62,14 +62,14 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Array|Object} courses Listado de cursos.
  *
- * @apiSuccess (courses Array Object) {String} _id ID del evento.
+ * @apiSuccess (courses Array Object) {String} _id ID del curso.
  * @apiSuccess (courses Array Object) {Object|Null} user Usuario que registró el curso.
  * @apiSuccess (courses Array Object) {String} speaker Orador del curso.
  * @apiSuccess (courses Array Object) {String} speakerPosition Cargo o posición del orador.
  * @apiSuccess (courses Array Object) {String} code Código del curso.
  * @apiSuccess (courses Array Object) {String} title Título del curso.
  * @apiSuccess (courses Array Object) {String} slug Slug (Valor url) del curso.
- * @apiSuccess (courses Array Object) {String} baner URL de la imagen principal del curso.
+ * @apiSuccess (courses Array Object) {String} banner URL de la imagen principal del curso.
  * @apiSuccess (courses Array Object) {String} description Descripción del curso.
  * @apiSuccess (courses Array Object) {Array|Number} toRoles Roles a los que va dirigido el curso.
  * @apiSuccess (courses Array Object) {Boolean} draft Indica si el curso se encuentra en modo borrador.
@@ -157,7 +157,7 @@
  * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor | lider).
  *
  * @apiParam {String} title Título.
- * @apiParam {String} description Descripción del evento.
+ * @apiParam {String} description Descripción del curso.
  * @apiParam {Array|Object} temary Listado de temas.
  * @apiParam {Array|Object} test Listado de preguntas para las pruebas.
  * @apiParam {Array|Number} toRoles Roles a los que va dirigido el curso.
@@ -228,7 +228,7 @@
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object} course Detalles del evento.
+ * @apiSuccess {Object} course Detalles del curso.
  *
  * @apiSuccess (course Object) {Array|Number} toRoles Roles a los que va dirigido el curso.
  * @apiSuccess (course Object) {Boolean} enable Indica si el curso se encuentra público para los usuarios.
@@ -581,7 +581,7 @@
  * @apiParam {String} speakerPosition Cargo o posición del orador del curso.
  * @apiParam {String} code Código del curso.
  * @apiParam {String} title Título.
- * @apiParam {String} description Descripción del evento.
+ * @apiParam {String} description Descripción del curso.
  * @apiParam {Array|Object} temary Listado de temas.
  * @apiParam {Array|Object} test Listado de preguntas para las pruebas.
  * @apiParam {Array|Number} toRoles Roles a los que va dirigido el curso.
@@ -657,7 +657,7 @@
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object} course Detalles del evento.
+ * @apiSuccess {Object} course Detalles del cruso.
  *
  * @apiSuccess (course Object) {String} _id ID del curso.
  * @apiSuccess (course Object) {String} speaker Nombre completo del orador del curso.
@@ -970,6 +970,7 @@
     "msg": "¡Error en los parámetros!",
     "errors": [
         {
+            "input": "temary",
             "msg": "Disculpe, para poder publicar el curso es necesario que indique el temario para este."
         },
         {

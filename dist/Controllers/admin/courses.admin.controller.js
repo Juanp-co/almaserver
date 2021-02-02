@@ -28,7 +28,7 @@ const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesRequest_1 = __importDefault(require("../../FormRequest/CoursesRequest"));
 const Validations_1 = require("../../Functions/Validations");
 const CoursesActions_1 = __importStar(require("../../ActionsData/CoursesActions"));
-const path = 'src/courses.admin.controller';
+const path = 'src/admin/courses.admin.controller';
 async function getCourses(req, res) {
     try {
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);

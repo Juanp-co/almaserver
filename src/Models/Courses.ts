@@ -1,9 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { setDate, getDate, cleanWhiteSpaces } from '../Functions/GlobalFunctions';
+import { setDate, getDate, cleanWhiteSpaces, toUpperValue } from '../Functions/GlobalFunctions';
 import ICourse from '../Interfaces/ICourse';
 
 const getPlaceHolder = (value: string | null) => value || 'Indica tu respuesta';
-const toUpper = (value: string | null) => value ? value.toUpperCase() : null;
 
 const LikesTemaryCommentsSchema = new Schema(
   {
@@ -61,7 +60,7 @@ const CoursesSchema = new Schema(
     userid: { type: String, require: true }, // userid creator
     speaker: { type: String, require: true }, // speaker fullname
     speakerPosition: { type: Number, require: true }, // speaker position
-    code: { type: String, require: true, set: toUpper }, // course code
+    code: { type: String, require: true, set: toUpperValue }, // course code
     title: { type: String, require: true, set: cleanWhiteSpaces },
     banner: { type: String, default: null },
     description: { type: String, require: true, set: cleanWhiteSpaces },

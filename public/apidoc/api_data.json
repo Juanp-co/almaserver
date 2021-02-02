@@ -610,7 +610,7 @@
             "type": "String",
             "optional": false,
             "field": "description",
-            "description": "<p>Descripción del evento.</p>"
+            "description": "<p>Descripción del curso.</p>"
           },
           {
             "group": "Parameter",
@@ -760,7 +760,7 @@
             "type": "Object",
             "optional": false,
             "field": "course",
-            "description": "<p>Detalles del evento.</p>"
+            "description": "<p>Detalles del curso.</p>"
           }
         ],
         "course Object": [
@@ -1671,7 +1671,7 @@
         },
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique el temario para este.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique las pruebas para este.\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"temary\",\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique el temario para este.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique las pruebas para este.\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -1686,7 +1686,7 @@
   },
   {
     "type": "get",
-    "url": "/api/admin/courses",
+    "url": "/api/admin/courses/counters",
     "title": "(00) Obtener contador de cursos.",
     "version": "0.0.5",
     "name": "getCountersCoursesAdmin",
@@ -1910,7 +1910,7 @@
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del evento.</p>"
+            "description": "<p>ID del curso.</p>"
           },
           {
             "group": "courses Array Object",
@@ -1958,7 +1958,7 @@
             "group": "courses Array Object",
             "type": "String",
             "optional": false,
-            "field": "baner",
+            "field": "banner",
             "description": "<p>URL de la imagen principal del curso.</p>"
           },
           {
@@ -2619,7 +2619,7 @@
             "type": "String",
             "optional": false,
             "field": "description",
-            "description": "<p>Descripción del evento.</p>"
+            "description": "<p>Descripción del curso.</p>"
           },
           {
             "group": "Parameter",
@@ -2748,7 +2748,7 @@
             "type": "Object",
             "optional": false,
             "field": "course",
-            "description": "<p>Detalles del evento.</p>"
+            "description": "<p>Detalles del cruso.</p>"
           }
         ],
         "course Object": [
@@ -7245,6 +7245,1367 @@
     },
     "filename": "Docs/Admin/EventsAdmin.js",
     "groupTitle": "EventsAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/groups/:_id/members/add",
+    "title": "(06) Agregar miembros al grupo.",
+    "version": "0.0.8",
+    "name": "addMembersGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Array|String",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de IDs de los usuarios a agregar al grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"members\": [\n        \"5fcf0821fc917d476c1cf3e3\"\n    ]\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "notInserts[notInserts]",
+            "description": "<p>Listado de miembros no agregados (en caso de aplicar).</p>"
+          }
+        ],
+        "notInserts Array Object": [
+          {
+            "group": "notInserts Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "notInserts Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "notInserts Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "notInserts Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el listado de miembros exitosamente.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success, but nothing to add",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"¡Nada que actualizar!\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success, but some members wasn't added",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el listado de miembros exitosamente. Algunos miembros no lograron ser agregados porque ya pertenecen a otro grupo.\",\n    \"notInserts\": [\n        {\n            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n            \"document\": \"CC12345678\",\n            \"names\": \"USUARIO TRES\",\n            \"lastNames\": \"PRUEBA TRES\"\n        }\n    ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error action",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero no se logró determinar la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error IDs users",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero alguno de los usuarios seleccionados son incorrectos.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero los datos enviados son incorrectos.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Empty data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n).\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/groups",
+    "title": "(02) Crear nuevo grupo.",
+    "version": "0.0.8",
+    "name": "createGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"name\": \"Familia Rodriguez\",\n    \"code\": \"VEL-001\"\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without code",
+        "content": "{\n    \"name\": \"Familia Rodriguez\",\n    \"code\": null\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Detalles del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de miembros (vacío).</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del contenido del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del usuario que creó el grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"members\": [],\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"VEL-001\",\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success with auto-code",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"members\": [],\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"GROUP-1\",\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"name\",\n            \"msg\": \"Disculpe, pero debe indicar un nombre para el grupo.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "The code exists",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el código indicado ya se encuentra asignado a otro grupo.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/groups/:_id",
+    "title": "(05) Eliminar un grupo.",
+    "version": "0.0.8",
+    "name": "deleteGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha eliminado el grupo exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/groups/:_id",
+    "title": "(03) Obtener detalles de un grupo.",
+    "version": "0.0.8",
+    "name": "detailsGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Datos del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario creador del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de miembros pertenecientes al grupo</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de registro del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del grupo.</p>"
+          }
+        ],
+        "members Array Object": [
+          {
+            "group": "members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Grupo\",\n    \"group\": {\n        \"_id\": \"6018e503e02a45115407e82f\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"members\": [\n            {\n                \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                \"document\": \"CC12345678\",\n                \"names\": \"USUARIO TRES\",\n                \"lastNames\": \"PRUEBA TRES\"\n            },\n            .\n            .\n            .\n        ],\n        \"created_at\": \"2021-02-02 00:37:07\",\n        \"updated_at\": \"2021-02-02 02:16:16\"\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/groups/counters",
+    "title": "(00) Obtener contador de grupos.",
+    "version": "0.0.8",
+    "name": "getCountersGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo a buscar (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo a buscar (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Total de grupos registrados.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Total de grupos\",\n    \"totals\": 2\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/groups",
+    "title": "(01) Obtener listado de grupos.",
+    "version": "0.0.8",
+    "name": "getGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "input",
+            "description": "<p>Campo a ordenar (valor = name | code).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>Ordenado de input (1 = ASC | -1 = DESC) (Opcional si input no se enviado).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>Página a visualizar (Por defecto = 1).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>Total de resultados por página (Por defecto = 10).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>Listado de grupos.</p>"
+          }
+        ],
+        "groups Array Object": [
+          {
+            "group": "groups Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "groups Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del grupo.</p>"
+          },
+          {
+            "group": "groups Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          },
+          {
+            "group": "groups Array Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalMembers",
+            "description": "<p>Total de miembros.</p>"
+          },
+          {
+            "group": "groups Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de registro del grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Grupos\",\n    \"groups\": [\n        {\n            \"_id\": \"6018fbe959529c4068b62af5\",\n            \"name\": \"FAMILIA RODRIGUEZ\",\n            \"code\": \"VEL-001\",\n            \"totalMembers\": 0,\n            \"created_at\": \"2021-02-02 02:14:49\"\n        },\n        {\n            \"_id\": \"6018e503e02a45115407e82f\",\n            \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n            \"code\": \"AAA-001\",\n            \"totalMembers\": 1,\n            \"created_at\": \"2021-02-02 00:37:07\"\n        },\n        .\n        .\n        .\n    ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Cursos.\",\n    \"groups\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/groups/:_id/members/remove",
+    "title": "(07) Remover miembros del grupo.",
+    "version": "0.0.8",
+    "name": "removeMembersGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Array|String",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de IDs de los usuarios a remover del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"members\": [\n        \"5fcf0821fc917d476c1cf3e3\"\n    ]\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el listado de miembros exitosamente.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success, but nothing to remove",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"¡Nada que actualizar!\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error action",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero no se logró determinar la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error IDs users",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero alguno de los usuarios seleccionados son incorrectos.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero los datos enviados son incorrectos.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Empty data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n).\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/groups/:_id",
+    "title": "(04) Actualizar un grupo.",
+    "version": "0.0.8",
+    "name": "updateGroupsAdmin",
+    "group": "GroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor | lider).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"name\": \"Familia Rodriguez\",\n    \"code\": \"AAA-001\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Detalles del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de registro del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"_id\": \"6018e503e02a45115407e82f\",\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"created_at\": \"2021-02-02 00:37:07\",\n        \"updated_at\": \"2021-02-02 02:16:16\"\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "The code exists",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el código indicado ya se encuentra asignado a otro grupo.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"name\",\n            \"msg\": \"Disculpe, pero debe indicar un nombre para el grupo.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/Groups.js",
+    "groupTitle": "GroupsAdmin"
   },
   {
     "type": "get",

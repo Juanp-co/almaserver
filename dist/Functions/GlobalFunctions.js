@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSlug = exports.checkAndUploadPicture = exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.upperCaseFirstLettersWords = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+exports.createSlug = exports.checkAndUploadPicture = exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const slug_1 = __importDefault(require("slug"));
 const Validations_1 = require("./Validations");
@@ -48,6 +48,10 @@ function upperCaseFirstLettersWords(words) {
     return ret.length > 0 ? ret.trim() : null;
 }
 exports.upperCaseFirstLettersWords = upperCaseFirstLettersWords;
+function toUpperValue(value) {
+    return value ? value.toUpperCase() : null;
+}
+exports.toUpperValue = toUpperValue;
 function setDate() {
     return moment_timezone_1.default().tz('America/Bogota').unix();
 }

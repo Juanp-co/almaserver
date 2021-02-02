@@ -44,6 +44,10 @@ export function upperCaseFirstLettersWords(words: string): string | null {
   return ret.length > 0 ? ret.trim() : null;
 }
 
+export function toUpperValue(value: string | null) : string | null {
+   return value ? value.toUpperCase() : null;
+}
+
 export function setDate(): number {
   return moment().tz('America/Bogota').unix();
 }
