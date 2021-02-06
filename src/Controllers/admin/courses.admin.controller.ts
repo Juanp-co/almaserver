@@ -1,13 +1,4 @@
 import { Request, Response } from 'express';
-import {
-  checkAndUploadPicture,
-  createSlug,
-  getLimitSkipSortSearch,
-  returnError
-} from '../../Functions/GlobalFunctions';
-import Courses from '../../Models/Courses';
-import validateRegister from '../../FormRequest/CoursesRequest';
-import { checkObjectId } from '../../Functions/Validations';
 import getCoursesList, {
   checkIfExistCode,
   checkIfExistSlug,
@@ -16,8 +7,31 @@ import getCoursesList, {
   getLikesAndUnlikesCourse,
   getModelReturnCourseOrTheme
 } from '../../ActionsData/CoursesActions';
+import {
+  checkAndUploadPicture,
+  createSlug,
+  getLimitSkipSortSearch,
+  returnError, returnErrorParams
+} from '../../Functions/GlobalFunctions';
+import validateRegister from '../../FormRequest/CoursesRequest';
+import { checkObjectId } from '../../Functions/Validations';
+import Courses from '../../Models/Courses';
 
 const path = 'src/admin/courses.admin.controller';
+
+function return404(res: Response) : Response {
+  return res.status(404).json({
+    msg: 'Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.',
+  });
+}
+
+function returnErrorId(res: Response, theme = false) : Response {
+  return res.status(422).json({
+    msg: `Disculpe, pero el ${theme ? 'tema' : 'curso'} seleccionado es incorrecto.`,
+  });
+}
+
+// =====================================================================================================================
 
 export default async function getCourses(req: Request, res: Response) : Promise<Response>{
   try {
@@ -79,22 +93,14 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) returnErrorId(res);
 
     const course = await getCourseDetails({
       query: { _id },
       infoUser: true
     });
 
-    if (!course) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso seleccionado no existe.'
-      });
-    }
+    if (!course) return return404(res);
 
     return res.json({
       msg: 'Curso',
@@ -114,15 +120,7 @@ export async function saveCourse(req: Request, res: Response) : Promise<Response
   try {
     const validate = await validateRegister(req.body, false);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
-
-    // check if exists picture
-    const picture: string | null = checkAndUploadPicture(validate.data.banner);
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     // set slug value
     if (!validate.data.slug) validate.data.slug = createSlug(validate.data.title);
@@ -133,7 +131,7 @@ export async function saveCourse(req: Request, res: Response) : Promise<Response
 
     // create
     const course = new Courses(validate.data);
-    course.banner = picture;
+    course.banner = await checkAndUploadPicture(validate.data.banner);
     course.userid = req.params.userid;
     await course.save();
 
@@ -150,28 +148,17 @@ export async function updateCourse(req: Request, res: Response) : Promise<Respon
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) returnErrorId(res);
 
     const validate = await validateRegister(req.body, true);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    const course = await Courses.findOne({ _id }, { __v: 0 }).exec();
+    const course = await Courses.findOne(
+      { _id }, { __v: 0, comments: 0, likes: 0, unlikes: 0, userid: 0 }
+    ).exec();
 
-    if (!course) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso a actualizar no existe.'
-      });
-    }
+    if (!course) return return404(res);
 
     if (course.enable) {
       return res.status(422).json({
@@ -190,11 +177,13 @@ export async function updateCourse(req: Request, res: Response) : Promise<Respon
 
     course.title = validate.data.title;
     course.description = validate.data.description;
+    course.banner = await checkAndUploadPicture(validate.data.banner);
     course.code = validate.data.code;
     course.speaker = validate.data.speaker;
     course.speakerPosition = validate.data.speakerPosition;
     course.temary = validate.data.temary;
     course.test = validate.data.test;
+    course.levels = validate.data.levels;
     course.toRoles = validate.data.toRoles;
     course.draft = validate.data.draft;
     course.enable = validate.data.enable;
@@ -224,11 +213,7 @@ export async function enableCourse(req: Request, res: Response) : Promise<Respon
     const { _id } = req.params;
     const { enable } = req.body;
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) returnErrorId(res);
 
     if (!/[01]{1}/.test(enable)) {
       return res.status(422).json({
@@ -236,17 +221,21 @@ export async function enableCourse(req: Request, res: Response) : Promise<Respon
       });
     }
 
-    const course = await Courses.findOne({ _id }, { temary: 1, test: 1, draft: 1, enable: 1 }).exec();
+    const course = await Courses.findOne(
+      { _id },
+      { toRoles: 1, temary: 1, test: 1, draft: 1, enable: 1 }
+    ).exec();
 
-    if (!course) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso a actualizar no existe.'
-      });
-    }
+    if (!course) return return404(res);
 
     if (enable === 1) {
       if (course.draft) {
         const errors = [];
+        if (course.toRoles.length === 0) {
+          errors.push({
+            msg: 'Disculpe, para publicar el curso es necesario que indique a que grupo de usuarios va dirigido.'
+          });
+        }
         if (course.temary.length === 0) {
           errors.push({
             msg: 'Disculpe, para publicar el curso es necesario que indique el temario para este.'
@@ -254,16 +243,11 @@ export async function enableCourse(req: Request, res: Response) : Promise<Respon
         }
         if (course.test.length === 0) {
           errors.push({
-            msg: 'Disculpe, para publicar el curso es necesario que indique las pruebas para este.'
+            msg: 'Disculpe, para publicar el curso es necesario que indique las pruebas (examen) para este.'
           });
         }
 
-        if (errors.length > 0) {
-          return res.status(422).json({
-            msg: '¡Error en los parámetros!',
-            errors
-          });
-        }
+        if (errors.length > 0) return returnErrorParams(res, errors);
       }
     }
 
@@ -287,19 +271,11 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) returnErrorId(res);
 
     const course = await Courses.findOne({ _id }).exec();
 
-    if (!course) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso a eliminar no existe.'
-      });
-    }
+    if (!course) return return404(res);
 
     /*
       FALTA VALIDACIÓN PARA VERIFICAR QUE USUARIOS NO POSEAN EL CURSO EN SUS REGISTROS
@@ -328,20 +304,13 @@ export async function commentsCourseOrTheme(req: Request, res: Response) : Promi
     const query: any = {};
     let projection: any = {};
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) returnErrorId(res);
 
     query._id = _id;
 
     if (themeId) {
-      if (!checkObjectId(themeId)) {
-        return res.status(422).json({
-          msg: 'Disculpe, pero el tema seleccionado es incorrecto.'
-        });
-      }
+      if (!checkObjectId(themeId)) returnErrorId(res, true);
+
       query['temary._id'] = themeId;
       projection = { 'temary.$.comments': 1 };
     }
@@ -349,11 +318,7 @@ export async function commentsCourseOrTheme(req: Request, res: Response) : Promi
 
     const data = await getCommentsCourse({ query, projection, sort: order, theme: !!themeId });
 
-    if (!data) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso seleccionado no existe.'
-      });
-    }
+    if (!data) return return404(res);
 
     return res.json({
       msg: `Comentarios del ${themeId ? 'tema' : 'curso'}.`,
@@ -370,20 +335,13 @@ export async function likesAndUnlikesCourseOrTheme(req: Request, res: Response) 
     const query: any = {};
     let projection: any = {};
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) returnErrorId(res);
 
     query._id = _id;
 
     if (themeId) {
-      if (!checkObjectId(themeId)) {
-        return res.status(422).json({
-          msg: 'Disculpe, pero el tema seleccionado es incorrecto.'
-        });
-      }
+      if (!checkObjectId(themeId)) returnErrorId(res, true);
+
       query['temary._id'] = themeId;
       projection = { 'temary.$': 1 };
     }
@@ -391,11 +349,7 @@ export async function likesAndUnlikesCourseOrTheme(req: Request, res: Response) 
 
     const data = await getLikesAndUnlikesCourse({ query, projection, theme: !!themeId });
 
-    if (!data) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso seleccionado no existe.'
-      });
-    }
+    if (!data) return return404(res);
 
     return res.json({
       msg: `'Me gusta' y 'No me gustas' del ${themeId ? 'tema' : 'curso'}.`,

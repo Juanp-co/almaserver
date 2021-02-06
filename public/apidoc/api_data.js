@@ -3,7 +3,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/courses/:_id/comments",
     "title": "(07) Obtener comentarios del curso.",
-    "version": "0.0.7",
+    "version": "0.0.9",
     "name": "commentsCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -259,7 +259,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -281,7 +281,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/courses/:_id/theme/:themeId/comments",
     "title": "(09) Obtener comentarios de un tema.",
-    "version": "0.0.7",
+    "version": "0.0.9",
     "name": "commentsThemeCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -551,7 +551,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -578,7 +578,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/admin/courses",
     "title": "(02) Crear nuevo curso.",
-    "version": "0.0.5",
+    "version": "0.0.9",
     "name": "createCoursesAdmin",
     "group": "CoursesAdmin",
     "description": "<p>El siguiente ENDPOINT es para poder crear un curso, cargando los diferentes temas a presentar al usuario, las preguntas para la prueba (examen) y demás ajustes para poder cargar y visualizar el curso.</p> <p>Lea detenidamente los parámetros requeridos en el servicio para poder crear el nuevo curso, cargar el contenido y sobretodo poder cargar las preguntas para las pruebas (PRESTE ATENCIÓN A ESTA).</p>",
@@ -614,17 +614,17 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Array|Object",
+            "type": "String",
             "optional": false,
-            "field": "temary",
-            "description": "<p>Listado de temas.</p>"
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Array|Object",
+            "type": "String|Null",
             "optional": false,
-            "field": "test",
-            "description": "<p>Listado de preguntas para las pruebas.</p>"
+            "field": "banner",
+            "description": "<p>Base64 o URL de la imagen a cargar.</p>"
           },
           {
             "group": "Parameter",
@@ -649,10 +649,24 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Array|String",
             "optional": false,
-            "field": "code",
-            "description": "<p>Código del curso.</p>"
+            "field": "levels",
+            "description": "<p>IDs de los cursos previos (Opcional).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "temary",
+            "description": "<p>Listado de temas (Opcional puede enviarse vacío).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "test",
+            "description": "<p>Listado de preguntas para las pruebas (Opcional puede enviarse vacío).</p>"
           }
         ],
         "temary Array Object": [
@@ -740,8 +754,18 @@ define({ "api": [
     },
     "examples": [
       {
-        "title": "Example JSON Request",
-        "content": "{\n\t\"title\": \"CURSO 01\",\n\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n\t\"temary\": [\n        {\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n        },\n        {\n            \"title\": \"02 - Internet\",\n            \"description\": \"¿Qué es el internet y cómo se funciona?\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n        }\n    ],\n\t\"test\": [\n        {\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": null,\n            \"inputType\": \"radio\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": 0\n        },\n        {\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"inputType\": \"text\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null\n        }\n    ],\n\t\"toRoles\": [ 5 ],\n\t\"speaker\": \"Anthony Velásquez\",\n\t\"speakerPosition\": 2,\n\t\"code\": \"AAA-1111\"\n}",
+        "title": "Example JSON Request without levels",
+        "content": "{\n    \"title\": \"CURSO NUEVO\",\n    \"code\": \"AAA-0001\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n    \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"levels\": [],\n    \"toRoles\": [ 5 ],\n    \"temary\": [\n        {\n            \"_id\": \"5feacc6eda2a713754f99e26\",\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        },\n        {\n            \"_id\": \"5feacc6eda2a713754f99e27\",\n            \"title\": \"02 - Internet\",\n            \"description\": \"¿Qué es el internet y cómo se funciona?\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        }\n    ],\n    \"test\": [\n        {\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": \"Indica tu respuesta\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": 0,\n            \"_id\": \"5feacc6eda2a713754f99e28\",\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"inputType\": \"radio\"\n        },\n        {\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e29\",\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"inputType\": \"text\"\n        }\n    ]\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request with levels",
+        "content": "{\n    \"title\": \"CURSO NUEVO\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n    \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"code\": \"AAA-0002\",\n    \"levels\": [ \"5ff8d0c1fd462643e42df1f6\", ... ],\n    \"toRoles\": [ 5 ],\n    \"temary\": [\n        {\n            \"_id\": \"5feacc6eda2a713754f99e26\",\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        },\n        .\n        .\n        .\n    ],\n    \"test\": [\n        {\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": \"Indica tu respuesta\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": 0,\n            \"_id\": \"5feacc6eda2a713754f99e28\",\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"inputType\": \"radio\"\n        },\n        {\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e29\",\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"inputType\": \"text\"\n        }\n    ]\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without toRoles, banner, levels, temary and test",
+        "content": "{\n    \"title\": \"CURSO NUEVO\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n    \"banner\": null,\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"code\": \"AAA-0002\",\n    \"levels\": [],\n    \"toRoles\": [],\n    \"temary\": [],\n    \"test\": []\n}",
         "type": "JSON"
       }
     ],
@@ -764,6 +788,20 @@ define({ "api": [
           }
         ],
         "course Object": [
+          {
+            "group": "course Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "banner",
+            "description": "<p>URL de la imagen del curso.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "levels",
+            "description": "<p>Listado de cursos previos.</p>"
+          },
           {
             "group": "course Object",
             "type": "Array|Number",
@@ -961,8 +999,13 @@ define({ "api": [
       },
       "examples": [
         {
-          "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el nuevo curso exitosamente.\",\n    \"course\": {\n        \"toRoles\": [\n            5\n        ],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"5feacc6eda2a713754f99e25\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO 01\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5feacc6eda2a713754f99e26\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            },\n            {\n                \"_id\": \"5feacc6eda2a713754f99e27\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e28\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5feacc6eda2a713754f99e29\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"created_at\": \"2020-12-29 01:27:58\",\n        \"updated_at\": \"2020-12-29 01:27:58\"\n    }\n}",
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el curso exitosamente.\",\n    \"course\": {\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"levels\": [\n            \"5ff8d0c1fd462643e42df1f6\"\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"601e48e6f9fd624dccb74beb\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-0002\",\n        \"title\": \"CURSO NUEVO\",\n        \"slug\": \"curso-nuevo-actualizado\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n        \"temary\": [\n            {\n                \"_id\": \"601e4929f9fd624dccb74bf0\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": [],\n                \"likes\": [],\n                \"unlikes\": []\n            },\n            {\n                \"_id\": \"601e4929f9fd624dccb74bf1\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": [],\n                \"likes\": [],\n                \"unlikes\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": 0,\n                \"_id\": \"601e4929f9fd624dccb74bf2\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"601e4929f9fd624dccb74bf3\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"created_at\": \"2021-02-06 02:44:38\",\n        \"updated_at\": \"2021-02-06 02:45:45\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without toRoles, banner, levels, temary and test",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el curso exitosamente.\",\n    \"course\": {\n        \"banner\": null,\n        \"levels\": [],\n        \"toRoles\": [],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"601e48e6f9fd624dccb74beb\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-0002\",\n        \"title\": \"CURSO NUEVO\",\n        \"slug\": \"curso-nuevo-actualizado\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n        \"temary\": [],\n        \"test\": [],\n        \"created_at\": \"2021-02-06 02:44:38\",\n        \"updated_at\": \"2021-02-06 02:45:45\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -1010,7 +1053,7 @@ define({ "api": [
         },
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"title\",\n            \"msg\": \"Disculpe, pero indicar un título generar para el curso.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, pero indicar el nombre completo del orador del curso.\"\n        },\n        {\n            \"input\": \"code\",\n            \"msg\": \"Disculpe, pero el código indicado ya se encuentra registrado.\"\n        },\n        {\n            \"input\": \"temary\",\n            \"msg\": \"Disculpe, pero indicar el temario del curso.\"\n        },\n        {\n            \"input\": \"test\",\n            \"msg\": \"Disculpe, pero indicar las preguntas para la prueba de este curso.\"\n        },\n        {\n            \"input\": \"temary.title\",\n            \"msg\": \"Disculpe, pero todos los temas deben contener un título.\"\n        },\n        {\n            \"input\": \"temary.urlVideo\",\n            \"msg\": \"Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.\"\n        },\n        {\n            \"input\": \"test.title\",\n            \"msg\": \"Disculpe, pero todas las preguntas para la prueba deben contener un título.\"\n        },\n        {\n            \"input\": \"test.inputType\",\n            \"msg\": \"Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.\"\n        },\n        {\n            \"input\": \"test.correctAnswer\",\n            \"msg\": \"Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"title\",\n            \"msg\": \"Disculpe, pero indicar un título generar para el curso.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, pero indicar el nombre completo del orador del curso.\"\n        },\n        {\n            \"input\": \"code\",\n            \"msg\": \"Disculpe, pero el código indicado ya se encuentra registrado.\"\n        },\n        {\n            \"input\": \"temary\",\n            \"msg\": \"Disculpe, pero indicar el temario del curso.\"\n        },\n        {\n            \"input\": \"test\",\n            \"msg\": \"Disculpe, pero indicar las preguntas para la prueba de este curso.\"\n        },\n        {\n            \"input\": \"levels\",\n            \"msg\": \"Disculpe, pero alguno de los cursos previos seleccionados es incorrecto.\"\n        },\n        {\n            \"input\": \"levels\",\n            \"msg\": \"Disculpe, pero alguno de los cursos previos seleccionados no existen.\"\n        },\n        {\n            \"input\": \"temary.title\",\n            \"msg\": \"Disculpe, pero todos los temas deben contener un título.\"\n        },\n        {\n            \"input\": \"temary.urlVideo\",\n            \"msg\": \"Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.\"\n        },\n        {\n            \"input\": \"test.title\",\n            \"msg\": \"Disculpe, pero todas las preguntas para la prueba deben contener un título.\"\n        },\n        {\n            \"input\": \"test.inputType\",\n            \"msg\": \"Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.\"\n        },\n        {\n            \"input\": \"test.correctAnswer\",\n            \"msg\": \"Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -1027,7 +1070,7 @@ define({ "api": [
     "type": "delete",
     "url": "/api/admin/courses/:_id",
     "title": "(05) Eliminar un curso.",
-    "version": "0.0.5",
+    "version": "0.0.9",
     "name": "deleteCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -1119,7 +1162,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a eliminar no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -1141,7 +1184,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/courses/:_id",
     "title": "(03) Obtener detalles de un curso.",
-    "version": "0.0.7",
+    "version": "0.0.9",
     "name": "detailsCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -1263,6 +1306,13 @@ define({ "api": [
             "group": "course Object",
             "type": "Array|Object",
             "optional": false,
+            "field": "levels",
+            "description": "<p>Listado de cursos que el usuario debe visualizar antes.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
             "field": "test",
             "description": "<p>Listado de preguntas del curso.</p>"
           },
@@ -1344,6 +1394,29 @@ define({ "api": [
             "optional": false,
             "field": "totals",
             "description": "<p>Total de comentarios, 'Me gusta' y 'No me gusta'.</p>"
+          }
+        ],
+        "levels Array Object": [
+          {
+            "group": "levels Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso previo.</p>"
+          },
+          {
+            "group": "levels Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso previo.</p>"
+          },
+          {
+            "group": "levels Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug del curso previo.</p>"
           }
         ],
         "test Array Object": [
@@ -1468,7 +1541,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO NUEVO 2\",\n        \"slug\": \"curso-nuevo-1\",\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e97\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"totals\": {\n                    \"totalComments\": 1,\n                    \"totalLikes\": 1,\n                    \"totalUnlikes\": 1\n                }\n            },\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e98\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"totals\": {\n                    \"totalComments\": 0,\n                    \"totalLikes\": 0,\n                    \"totalUnlikes\": 0\n                }\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": 0,\n                \"_id\": \"5ff8e4116f5c8648c0353e99\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5ff8e4116f5c8648c0353e9a\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"draft\": false,\n        \"enable\": true,\n        \"created_at\": \"2021-01-08 16:38:09\",\n        \"updated_at\": \"2021-01-12 03:09:22\",\n        \"totals\": {\n            \"totalComments\": 3,\n            \"totalLikes\": 1,\n            \"totalUnlikes\": 0\n        }\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO NUEVO 2\",\n        \"slug\": \"curso-nuevo-1\",\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e97\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"totals\": {\n                    \"totalComments\": 1,\n                    \"totalLikes\": 1,\n                    \"totalUnlikes\": 1\n                }\n            },\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e98\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"totals\": {\n                    \"totalComments\": 0,\n                    \"totalLikes\": 0,\n                    \"totalUnlikes\": 0\n                }\n            }\n        ],\n        \"levels\": [\n            {\n                \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n                \"title\": \"CURSO NUEVO 2\",\n                \"slug\": \"curso-nuevo-1\"\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": 0,\n                \"_id\": \"5ff8e4116f5c8648c0353e99\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5ff8e4116f5c8648c0353e9a\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"draft\": false,\n        \"enable\": true,\n        \"created_at\": \"2021-01-08 16:38:09\",\n        \"updated_at\": \"2021-01-12 03:09:22\",\n        \"totals\": {\n            \"totalComments\": 3,\n            \"totalLikes\": 1,\n            \"totalUnlikes\": 0\n        }\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -1516,7 +1589,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -1538,7 +1611,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/admin/courses/:_id/enable",
     "title": "(06) Publicar un curso o removerlo.",
-    "version": "0.0.5",
+    "version": "0.0.9",
     "name": "enableCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -1656,7 +1729,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -1670,8 +1743,8 @@ define({ "api": [
           "type": "JSON"
         },
         {
-          "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"temary\",\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique el temario para este.\"\n        },\n        {\n            \"input\": \"speaker\",\n            \"msg\": \"Disculpe, para poder publicar el curso es necesario que indique las pruebas para este.\"\n        }\n    ]\n  }",
+          "title": "Fails validations",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"msg\": \"Disculpe, para publicar el curso es necesario que indique a que grupo de usuarios va dirigido.\"\n        },\n        {\n            \"msg\": \"Disculpe, para publicar el curso es necesario que indique el temario para este.\"\n        },\n        {\n            \"msg\": \"Disculpe, para publicar el curso es necesario que indique las pruebas (examen) para este.\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -2103,7 +2176,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/courses/:_id/likes",
     "title": "(08) Obtener 'Me gusta' y 'No me gusta' del curso.",
-    "version": "0.0.7",
+    "version": "0.0.9",
     "name": "likesAndUnlikesCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -2299,7 +2372,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -2321,7 +2394,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/courses/:_id/theme/:themeId/likes",
     "title": "(10) Obtener 'Me gusta' y 'No me gusta' de un tema.",
-    "version": "0.0.7",
+    "version": "0.0.9",
     "name": "likesAndUnlikesThemeCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -2531,7 +2604,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -2558,7 +2631,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/admin/courses/:_id",
     "title": "(04) Actualizar un curso.",
-    "version": "0.0.5",
+    "version": "0.0.9",
     "name": "updateCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -2590,6 +2663,41 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug del curso (Generado automáticamente al crear, en caso de no modificar, enviar tal cual).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del curso.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "banner",
+            "description": "<p>Base64 o URL de la imagen a cargar.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "speaker",
             "description": "<p>Nombre completo del orador.</p>"
           },
@@ -2602,45 +2710,31 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Array|Number",
             "optional": false,
-            "field": "code",
-            "description": "<p>Código del curso.</p>"
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el curso.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Array|String",
             "optional": false,
-            "field": "title",
-            "description": "<p>Título.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "description",
-            "description": "<p>Descripción del curso.</p>"
+            "field": "levels",
+            "description": "<p>IDs de los cursos previos (Opcional).</p>"
           },
           {
             "group": "Parameter",
             "type": "Array|Object",
             "optional": false,
             "field": "temary",
-            "description": "<p>Listado de temas.</p>"
+            "description": "<p>Listado de temas (Opcional puede enviarse vacío).</p>"
           },
           {
             "group": "Parameter",
             "type": "Array|Object",
             "optional": false,
             "field": "test",
-            "description": "<p>Listado de preguntas para las pruebas.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Array|Number",
-            "optional": false,
-            "field": "toRoles",
-            "description": "<p>Roles a los que va dirigido el curso.</p>"
+            "description": "<p>Listado de preguntas para las pruebas (Opcional puede enviarse vacío).</p>"
           }
         ],
         "temary Array Object": [
@@ -2729,7 +2823,17 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"code\": \"AAA-1111\",\n    \"title\": \"INTERNET\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n    \"temary\": [\n        {\n            \"_id\": \"5feacc6eda2a713754f99e26\",\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        },\n        {\n            \"_id\": \"5feacc6eda2a713754f99e27\",\n            \"title\": \"02 - Internet\",\n            \"description\": \"¿Qué es el internet y cómo se funciona?\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        }\n    ],\n    \"test\": [\n        {\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": \"Indica tu respuesta\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e28\",\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"inputType\": \"radio\"\n        },\n        {\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e29\",\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"inputType\": \"text\"\n        }\n    ],\n    \"toRoles\": [\n        5\n    ]\n}",
+        "content": "{\n    \"title\": \"CURSO NUEVO\",\n    \"slug\": \"curso-nuevo-actualizado\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n    \"code\": \"AAA-0002\",\n    \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"levels\": [\"5ff8d0c1fd462643e42df1f6\"],\n    \"toRoles\": [\n        5\n    ],\n    \"temary\": [\n        {\n            \"_id\": \"5feacc6eda2a713754f99e26\",\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        },\n        {\n            \"_id\": \"5feacc6eda2a713754f99e27\",\n            \"title\": \"02 - Internet\",\n            \"description\": \"¿Qué es el internet y cómo se funciona?\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        }\n    ],\n    \"test\": [\n        {\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": \"Indica tu respuesta\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": 0,\n            \"_id\": \"5feacc6eda2a713754f99e28\",\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"inputType\": \"radio\"\n        },\n        {\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e29\",\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"inputType\": \"text\"\n        }\n    ]\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request with levels",
+        "content": "{\n    \"title\": \"CURSO NUEVO\",\n    \"slug\": \"curso-nuevo-actualizado\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n    \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"code\": \"AAA-0002\",\n    \"levels\": [ \"5ff8d0c1fd462643e42df1f6\", ... ],\n    \"toRoles\": [ 5 ],\n    \"temary\": [\n        {\n            \"_id\": \"5feacc6eda2a713754f99e26\",\n            \"title\": \"01 - Introducción\",\n            \"description\": \"Introducción al curso\",\n            \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n            \"comments\": []\n        },\n        .\n        .\n        .\n    ],\n    \"test\": [\n        {\n            \"description\": \"Seleccione una opción\",\n            \"extra\": null,\n            \"placeholder\": \"Indica tu respuesta\",\n            \"require\": true,\n            \"values\": [\n                \"Una red de redes interconectada\",\n                \"Una estúfa\",\n                \"Una computador\",\n                \"Una reunión de amigos\"\n            ],\n            \"correctAnswer\": 0,\n            \"_id\": \"5feacc6eda2a713754f99e28\",\n            \"title\": \"01 - ¿Qué es el internet?\",\n            \"inputType\": \"radio\"\n        },\n        {\n            \"description\": \"Indique una respuesta\",\n            \"extra\": null,\n            \"placeholder\": \"Indique una respuesta\",\n            \"require\": true,\n            \"values\": [],\n            \"correctAnswer\": null,\n            \"_id\": \"5feacc6eda2a713754f99e29\",\n            \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n            \"inputType\": \"text\"\n        }\n    ]\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without toRoles, banner, levels, temary and test",
+        "content": "{\n    \"title\": \"CURSO NUEVO\",\n    \"slug\": \"curso-nuevo-actualizado\",\n    \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n    \"banner\": null,\n    \"speaker\": \"Anthony Velásquez\",\n    \"speakerPosition\": 2,\n    \"code\": \"AAA-0002\",\n    \"levels\": [],\n    \"toRoles\": [],\n    \"temary\": [],\n    \"test\": []\n}",
         "type": "JSON"
       }
     ],
@@ -2980,7 +3084,12 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el curso exitosamente.\",\n    \"course\": {\n        \"toRoles\": [\n            5\n        ],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"5feacc6eda2a713754f99e25\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"INTERNET\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5fead328f7bcf73dc82d8670\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            },\n            {\n                \"_id\": \"5fead328f7bcf73dc82d8671\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": 0,\n                \"_id\": \"5fead328f7bcf73dc82d8672\",\n                \"title\": \"01 - ¿Qué es el internet??????\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"5fead328f7bcf73dc82d8673\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"created_at\": \"2020-12-29 01:27:58\",\n        \"updated_at\": \"2020-12-29 01:56:40\"\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el curso exitosamente.\",\n    \"course\": {\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"levels\": [\n            \"5ff8d0c1fd462643e42df1f6\"\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"601e48e6f9fd624dccb74beb\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-0002\",\n        \"title\": \"CURSO NUEVO\",\n        \"slug\": \"curso-nuevo-actualizado\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n        \"temary\": [\n            {\n                \"_id\": \"601e4929f9fd624dccb74bf0\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": [],\n                \"likes\": [],\n                \"unlikes\": []\n            },\n            {\n                \"_id\": \"601e4929f9fd624dccb74bf1\",\n                \"title\": \"02 - Internet\",\n                \"description\": \"¿Qué es el internet y cómo se funciona?\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\",\n                \"comments\": [],\n                \"likes\": [],\n                \"unlikes\": []\n            }\n        ],\n        \"test\": [\n            {\n                \"description\": \"Seleccione una opción\",\n                \"extra\": null,\n                \"placeholder\": \"Indica tu respuesta\",\n                \"require\": true,\n                \"values\": [\n                    \"Una red de redes interconectada\",\n                    \"Una estúfa\",\n                    \"Una computador\",\n                    \"Una reunión de amigos\"\n                ],\n                \"correctAnswer\": 0,\n                \"_id\": \"601e4929f9fd624dccb74bf2\",\n                \"title\": \"01 - ¿Qué es el internet?\",\n                \"inputType\": \"radio\"\n            },\n            {\n                \"description\": \"Indique una respuesta\",\n                \"extra\": null,\n                \"placeholder\": \"Indique una respuesta\",\n                \"require\": true,\n                \"values\": [],\n                \"correctAnswer\": null,\n                \"_id\": \"601e4929f9fd624dccb74bf3\",\n                \"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n                \"inputType\": \"text\"\n            }\n        ],\n        \"comments\": [],\n        \"likes\": [],\n        \"unlikes\": [],\n        \"created_at\": \"2021-02-06 02:44:38\",\n        \"updated_at\": \"2021-02-06 02:45:45\"\n    }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success witout temary and tests",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el curso exitosamente.\",\n    \"course\": {\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"levels\": [\n            \"5ff8d0c1fd462643e42df1f6\"\n        ],\n        \"toRoles\": [\n            5\n        ],\n        \"enable\": false,\n        \"draft\": true,\n        \"_id\": \"601e48e6f9fd624dccb74beb\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-0002\",\n        \"title\": \"CURSO NUEVO\",\n        \"slug\": \"curso-nuevo-actualizado\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n        \"temary\": [],\n        \"test\": [],\n        \"created_at\": \"2021-02-06 02:44:38\",\n        \"updated_at\": \"2021-02-06 02:45:45\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -3028,7 +3137,7 @@ define({ "api": [
         },
         {
           "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso a actualizar no existe.\"\n}",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
         },
         {
@@ -4181,7 +4290,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/courses/:slug",
     "title": "(02) Obtener detalles de un curso.",
-    "version": "0.0.6",
+    "version": "0.0.9",
     "name": "getDetailsCourses",
     "group": "Courses",
     "header": {
@@ -4303,6 +4412,13 @@ define({ "api": [
             "group": "course Object",
             "type": "Array|Object",
             "optional": false,
+            "field": "levels",
+            "description": "<p>Listado de cursos que el usuario debe visualizar antes.</p>"
+          },
+          {
+            "group": "course Object",
+            "type": "Array|Object",
+            "optional": false,
             "field": "comments",
             "description": "<p>Listado de comentarios.</p>"
           },
@@ -4393,6 +4509,29 @@ define({ "api": [
             "optional": false,
             "field": "urlVideo",
             "description": "<p>URL del video.</p>"
+          }
+        ],
+        "levels Array Object": [
+          {
+            "group": "levels Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso previo.</p>"
+          },
+          {
+            "group": "levels Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso previo.</p>"
+          },
+          {
+            "group": "levels Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug del curso previo.</p>"
           }
         ],
         "comments Array Object": [
@@ -4524,7 +4663,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO NUEVO 2\",\n        \"slug\": \"curso-nuevo-1\",\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e97\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n            },\n            .\n            .\n            .\n        ],\n        \"comments\": [\n            {\n                \"_id\": \"5ffa8946751a3923e00d1b58\",\n                \"answer\": null,\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"comment\": \"2222222222222222222222222222222222222222222\",\n                \"likes\": [\n                    {\n                        \"_id\": \"5ffa89ca90ec7523986daf6a\",\n                        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"user\": {\n                            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                            \"document\": \"CC12345678\",\n                            \"names\": \"USUARIO TRES\",\n                            \"lastNames\": \"PRUEBA TRES\"\n                        },\n                        \"created_at\": \"2021-01-09 23:59:54\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"unlikes\": [\n                    {\n                        \"_id\": \"5ffa89ca90ec7523986daf6a\",\n                        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"user\": {\n                            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                            \"document\": \"CC12345678\",\n                            \"names\": \"USUARIO TRES\",\n                            \"lastNames\": \"PRUEBA TRES\"\n                        },\n                        \"created_at\": \"2021-01-09 23:59:54\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"created_at\": \"2021-01-09 23:57:42\",\n                \"updated_at\": \"2021-01-09 23:57:42\"\n            },\n            .\n            .\n            .\n        ],\n        \"likes\": [\n            {\n                \"_id\": \"5ffd2b0bca99de399451f35c\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": null,\n                \"created_at\": \"2021-01-11 23:52:27\"\n            },\n            .\n            .\n            .\n        ],\n        \"unlikes\": [\n            {\n                \"_id\": \"5ffd2b0bca99de399451f35c\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": null,\n                \"created_at\": \"2021-01-11 23:52:27\"\n            },\n            .\n            .\n            .\n        ]\n    },\n    \"dataCourseUser\": {\n        \"_id\": \"5ff9ef04a066c04bb08373bc\",\n        \"temary\": [\n            {\n                \"view\": 1,\n                \"date\": \"2021-01-12 00:29:29\",\n                \"temaryId\": \"5ff8e4116f5c8648c0353e97\"\n            },\n            .\n            .\n            .\n        ],\n        \"tests\": [\n            {\n                \"_id\": \"5ffa9d937b716f448cb70266\",\n                \"points\": \"50\",\n                \"date\": \"2021-01-10 01:24:19\"\n            },\n            .\n            .\n            .\n        ],\n        \"approved\": true,\n        \"created_at\": \"2021-01-09 12:59:32\",\n        \"updated_at\": \"2021-01-12 00:29:29\"\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Curso\",\n    \"course\": {\n        \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n        \"speaker\": \"Anthony Velásquez\",\n        \"speakerPosition\": 2,\n        \"code\": \"AAA-1111\",\n        \"title\": \"CURSO NUEVO 2\",\n        \"slug\": \"curso-nuevo-1\",\n        \"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n        \"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\",\n        \"temary\": [\n            {\n                \"_id\": \"5ff8e4116f5c8648c0353e97\",\n                \"title\": \"01 - Introducción\",\n                \"description\": \"Introducción al curso\",\n                \"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n            },\n            .\n            .\n            .\n        ],\n        \"levels\": [\n            {\n                \"_id\": \"5ff8d0c1fd462643e42df1f6\",\n                \"title\": \"CURSO NUEVO 2\",\n                \"slug\": \"curso-nuevo-1\"\n            }\n        ],\n        \"comments\": [\n            {\n                \"_id\": \"5ffa8946751a3923e00d1b58\",\n                \"answer\": null,\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": {\n                    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                    \"document\": \"CC12345678\",\n                    \"names\": \"USUARIO TRES\",\n                    \"lastNames\": \"PRUEBA TRES\"\n                },\n                \"comment\": \"2222222222222222222222222222222222222222222\",\n                \"likes\": [\n                    {\n                        \"_id\": \"5ffa89ca90ec7523986daf6a\",\n                        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"user\": {\n                            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                            \"document\": \"CC12345678\",\n                            \"names\": \"USUARIO TRES\",\n                            \"lastNames\": \"PRUEBA TRES\"\n                        },\n                        \"created_at\": \"2021-01-09 23:59:54\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"unlikes\": [\n                    {\n                        \"_id\": \"5ffa89ca90ec7523986daf6a\",\n                        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                        \"user\": {\n                            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                            \"document\": \"CC12345678\",\n                            \"names\": \"USUARIO TRES\",\n                            \"lastNames\": \"PRUEBA TRES\"\n                        },\n                        \"created_at\": \"2021-01-09 23:59:54\"\n                    },\n                    .\n                    .\n                    .\n                ],\n                \"created_at\": \"2021-01-09 23:57:42\",\n                \"updated_at\": \"2021-01-09 23:57:42\"\n            },\n            .\n            .\n            .\n        ],\n        \"likes\": [\n            {\n                \"_id\": \"5ffd2b0bca99de399451f35c\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": null,\n                \"created_at\": \"2021-01-11 23:52:27\"\n            },\n            .\n            .\n            .\n        ],\n        \"unlikes\": [\n            {\n                \"_id\": \"5ffd2b0bca99de399451f35c\",\n                \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n                \"user\": null,\n                \"created_at\": \"2021-01-11 23:52:27\"\n            },\n            .\n            .\n            .\n        ]\n    },\n    \"dataCourseUser\": {\n        \"_id\": \"5ff9ef04a066c04bb08373bc\",\n        \"temary\": [\n            {\n                \"view\": 1,\n                \"date\": \"2021-01-12 00:29:29\",\n                \"temaryId\": \"5ff8e4116f5c8648c0353e97\"\n            },\n            .\n            .\n            .\n        ],\n        \"tests\": [\n            {\n                \"_id\": \"5ffa9d937b716f448cb70266\",\n                \"points\": \"50\",\n                \"date\": \"2021-01-10 01:24:19\"\n            },\n            .\n            .\n            .\n        ],\n        \"approved\": true,\n        \"created_at\": \"2021-01-09 12:59:32\",\n        \"updated_at\": \"2021-01-12 00:29:29\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -4793,7 +4932,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/courses/:slug/theme/:themeId",
     "title": "(07) Obtener un tema.",
-    "version": "0.0.6",
+    "version": "0.0.9",
     "name": "getThemeCourses",
     "group": "Courses",
     "header": {
@@ -5112,6 +5251,11 @@ define({ "api": [
         {
           "title": "Invalid _id",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el tema seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not complete previous courses",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.\"\n}",
           "type": "JSON"
         },
         {

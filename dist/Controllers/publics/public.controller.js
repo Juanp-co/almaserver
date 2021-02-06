@@ -24,12 +24,8 @@ Actions Users
 async function register(req, res) {
     try {
         const validate = await UsersRequest_1.validateRegister(req.body);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = new Users_1.default(validate.data);
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
@@ -46,12 +42,8 @@ exports.register = register;
 async function login(req, res) {
     try {
         const validate = UsersRequest_1.validateLogin(req.body);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = await Users_1.default.findOne({ document: validate.data.document }, { password: 1, document: 1, role: 1 }).exec();
         if (!user) {
             return res.status(404).json({

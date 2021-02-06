@@ -77,6 +77,7 @@ export default interface ICourse extends Document {
   slug: string | null;
   temary: ICourseTemary[];
   test: ICourseTest[];
+  levels: string[];
   comments: ICourseComments[];
   likes?: ICourseLikes[];
   unlikes?: ICourseLikes[];
@@ -97,9 +98,16 @@ export interface ICourseForm {
   slug: ICourse['slug'];
   temary: ICourse['temary'];
   test: ICourse['test'];
+  levels: ICourse['levels'];
   toRoles: ICourse['toRoles'];
   enable: ICourse['enable'];
   draft?: ICourse['draft'];
+}
+
+export interface ICourseReference {
+  _id: any;
+  title: ICourse['title'];
+  slug: ICourse['slug'];
 }
 
 export interface ICourseList {
@@ -115,6 +123,7 @@ export interface ICourseList {
   description?: ICourse['description'],
   temary?: ICourse['temary'],
   test?: ICourse['test'],
+  levels?: ICourseReference[] | ICourse['levels'] | any[],
   comments?: ICourse['comments'],
   likes?: ICourse['likes'],
   unlikes?: ICourse['unlikes'],

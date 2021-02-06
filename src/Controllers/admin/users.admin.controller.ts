@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { getLimitSkipSortSearch, returnError } from '../../Functions/GlobalFunctions';
+import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { validateRegister, validateUpdate } from '../../FormRequest/UsersRequest';
 import Users from '../../Models/Users';
 import { checkNameOrLastName, checkObjectId, checkRole } from '../../Functions/Validations';
@@ -97,12 +97,7 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
   try {
     const validate = await validateRegister(req.body, true);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = new Users(validate.data);
     user.password = bcrypt.hashSync(user.password, 10);
@@ -160,12 +155,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     const validate = await validateUpdate(req.body, _id);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = await Users.findOne(
       { _id },

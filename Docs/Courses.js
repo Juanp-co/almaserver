@@ -112,7 +112,7 @@
 
 /**
  * @api {get} /api/courses/:slug (02) Obtener detalles de un curso.
- * @apiVersion 0.0.6
+ * @apiVersion 0.0.9
  * @apiName getDetailsCourses
  * @apiGroup Courses
  *
@@ -133,6 +133,7 @@
  * @apiSuccess (course Object) {String} banner Imagen del curso.
  * @apiSuccess (course Object) {String} description Descripción del curso.
  * @apiSuccess (course Object) {Array|Object} temary Listado de temas del curso.
+ * @apiSuccess (course Object) {Array|Object} levels Listado de cursos que el usuario debe visualizar antes.
  * @apiSuccess (course Object) {Array|Object} comments Listado de comentarios.
  * @apiSuccess (course Object) {Array|Object} likes Listado de "Me gusta" recibidos.
  * @apiSuccess (course Object) {Array|Object} unlikes Listado de "No me gusta" recibidos.
@@ -148,6 +149,10 @@
  * @apiSuccess (temary Array Object) {String} title Título del tema.
  * @apiSuccess (temary Array Object) {String} description Descripción del tema.
  * @apiSuccess (temary Array Object) {String} urlVideo URL del video.
+ *
+ * @apiSuccess (levels Array Object) {String} _id ID del curso previo.
+ * @apiSuccess (levels Array Object) {String} title Título del curso previo.
+ * @apiSuccess (levels Array Object) {String} slug Slug del curso previo.
  *
  * @apiSuccess (comments Array Object) {String} _id ID del comentario.
  * @apiSuccess (comments Array Object) {String|Null} answer Respuesta recibida (No implementado).
@@ -192,6 +197,13 @@
             .
             .
             .
+        ],
+        "levels": [
+            {
+                "_id": "5ff8d0c1fd462643e42df1f6",
+                "title": "CURSO NUEVO 2",
+                "slug": "curso-nuevo-1"
+            }
         ],
         "comments": [
             {
@@ -763,7 +775,7 @@
 
 /**
  * @api {get} /api/courses/:slug/theme/:themeId (07) Obtener un tema.
- * @apiVersion 0.0.6
+ * @apiVersion 0.0.9
  * @apiName getThemeCourses
  * @apiGroup Courses
  *
@@ -938,6 +950,12 @@
  * HTTP/1.1 422 Unprocessable Entity
  * {
     "msg": "Disculpe, pero el tema seleccionado es incorrecto."
+}
+ *
+ * @apiErrorExample {JSON} Not complete previous courses
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+    "msg": "Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este."
 }
  *
  * @apiErrorExample {JSON} Error internal server

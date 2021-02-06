@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCoursesDataUser = exports.checkIfExistSlug = exports.checkIfExistCode = exports.getLikesAndUnlikesCourse = exports.getCommentsCourse = exports.getCourseDetails = exports.getModelReturnCourseOrTheme = void 0;
+exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfExistCode = exports.getLikesAndUnlikesCourse = exports.getCommentsCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const Courses_1 = __importDefault(require("../Models/Courses"));
@@ -79,6 +79,7 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters }) {
         ret.banner = data.banner;
         ret.description = data.description;
         ret.temary = [];
+        ret.levels = data.levels;
         if (admin) {
             ret.test = data.test;
             ret.toRoles = data.toRoles;
@@ -174,6 +175,13 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters }) {
 }
 exports.getModelReturnCourseOrTheme = getModelReturnCourseOrTheme;
 // =====================================================================================================================
+async function getPreviousIdsCourses(listIds) {
+    return listIds.length > 0 ?
+        await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, slug: 1 }).exec()
+        :
+            [];
+}
+exports.getPreviousIdsCourses = getPreviousIdsCourses;
 async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, projection, }) {
     const ret = [];
     const courses = await Courses_1.default.find(query, projection || { __v: 0 })
@@ -243,6 +251,7 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             description: course.description,
             temary: course.temary,
             test: course.test,
+            levels: await getPreviousIdsCourses(course.levels),
             comments: course.comments,
             likes: course.likes,
             unlikes: course.unlikes,
@@ -357,6 +366,22 @@ async function checkIfExistSlug(slug) {
     return Courses_1.default.find({ slug }).countDocuments().exec();
 }
 exports.checkIfExistSlug = checkIfExistSlug;
+async function checkPreviousIdsCourses(listIds) {
+    if (listIds.length > 0) {
+        const exist = await Courses_1.default.find({ _id: { $in: listIds } }).countDocuments().exec();
+        return exist === listIds.length;
+    }
+    return false;
+}
+exports.checkPreviousIdsCourses = checkPreviousIdsCourses;
+async function checkIfUserApprovedPreviousCourses(listIds) {
+    if (listIds.length > 0) {
+        const totals = await Courses_1.default.find({ _id: { $in: listIds }, approved: { $eq: true } }).countDocuments().exec();
+        return totals === listIds.length;
+    }
+    return false;
+}
+exports.checkIfUserApprovedPreviousCourses = checkIfUserApprovedPreviousCourses;
 // =====================================================================================================================
 /*
   PARTICULAR USERS

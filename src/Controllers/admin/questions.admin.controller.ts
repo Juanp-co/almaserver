@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Questions from '../../Models/Question';
-import { returnError } from '../../Functions/GlobalFunctions';
+import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { validateRegister, validateUpdate } from '../../FormRequest/QuestionsRequest';
 import Users from '../../Models/Users';
 import { checkObjectId } from '../../Functions/Validations';
@@ -51,12 +51,7 @@ export async function saveQuestions(req: Request, res: Response): Promise<Respon
   try {
     const validate = validateRegister(req.body);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const question = new Questions(validate.data);
     await question.save();
@@ -76,12 +71,7 @@ export async function updateQuestions(req: Request, res: Response): Promise<Resp
     const { _id } = req.params;
     const validate = validateUpdate(req.body, _id);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const question = await Questions.findOne({_id}, { __v: 0 }).exec();
 

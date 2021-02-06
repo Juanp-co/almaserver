@@ -88,12 +88,8 @@ exports.getUsersCounters = getUsersCounters;
 async function saveUser(req, res) {
     try {
         const validate = await UsersRequest_1.validateRegister(req.body, true);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = new Users_1.default(validate.data);
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
@@ -141,12 +137,8 @@ async function updateUser(req, res) {
             });
         }
         const validate = await UsersRequest_1.validateUpdate(req.body, _id);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = await Users_1.default.findOne({ _id }, { __v: 0, password: 0, 'securityQuestion.answer': 0 }).exec();
         if (!user) {
             return res.status(404).json({

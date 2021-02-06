@@ -50,12 +50,8 @@ exports.getDetailsQuestion = getDetailsQuestion;
 async function saveQuestions(req, res) {
     try {
         const validate = QuestionsRequest_1.validateRegister(req.body);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const question = new Question_1.default(validate.data);
         await question.save();
         return res.status(201).json({
@@ -72,12 +68,8 @@ async function updateQuestions(req, res) {
     try {
         const { _id } = req.params;
         const validate = QuestionsRequest_1.validateUpdate(req.body, _id);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const question = await Question_1.default.findOne({ _id }, { __v: 0 }).exec();
         if (!question) {
             return res.status(404).json({
