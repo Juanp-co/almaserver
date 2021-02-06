@@ -127,12 +127,8 @@ exports.showPublicEvent = showPublicEvent;
 async function saveEvent(req, res) {
     try {
         const validate = EventsRequest_1.default(req.body);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const event = new Events_1.default(validate.data);
         event.userid = req.params.userid;
         await event.save();
@@ -158,12 +154,8 @@ async function updateEvent(req, res) {
             });
         }
         const validate = EventsRequest_1.default(req.body);
-        if (validate.errors.length > 0) {
-            return res.status(422).json({
-                msg: '¡Error en los parametros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (event) {
             event.title = validate.data.title;

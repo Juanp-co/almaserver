@@ -67,6 +67,7 @@ const CoursesSchema = new Schema(
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true }, // content
     test: { type: [TestSchema], require: true }, // test to users
+    levels: { type: [String], default: [] }, // levels required
     comments: { type: [TemaryCommentsSchema], default: [] },
     likes: { type: [LikesTemaryCommentsSchema], default: [] },
     unlikes: { type: [LikesTemaryCommentsSchema], default: [] },

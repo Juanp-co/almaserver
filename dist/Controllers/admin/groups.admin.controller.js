@@ -45,12 +45,6 @@ function returnErrorId(res) {
         msg: 'Disculpe, pero el grupo seleccionado es incorrecto.',
     });
 }
-function returnErrorParams(res, errors) {
-    return res.status(422).json({
-        msg: '¡Error en los parámetros!',
-        errors
-    });
-}
 // =================================================================================================
 async function getGroups(req, res) {
     try {
@@ -138,7 +132,7 @@ async function saveGroup(req, res) {
     try {
         const validate = GroupsRequest_1.default(req.body);
         if (validate.errors.length > 0)
-            returnErrorParams(res, validate.errors);
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         // check if exist code
         if (validate.data.code) {
             const check = await Groups_1.default.find({ code: validate.data.code }).countDocuments().exec();
@@ -170,7 +164,7 @@ async function updateGroup(req, res) {
             return returnErrorId(res);
         const validate = GroupsRequest_1.default(req.body);
         if (validate.errors.length > 0)
-            returnErrorParams(res, validate.errors);
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const group = await Groups_1.default.findOne({ _id }, { members: 0, __v: 0, userid: 0 }).exec();
         if (!group)
             return return404(res);
@@ -207,7 +201,7 @@ async function addOrRemoveMembersGroup(req, res) {
         }
         const validate = GroupsRequest_1.validateIdsMembers(req.body);
         if (validate.errors.length > 0)
-            returnErrorParams(res, validate.errors);
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         if (validate.data.members.length === 0)
             return res.status(200).json({ msg: '¡Nada que actualizar!' });
         const group = await Groups_1.default.findOne({ _id }, { members: 1 }).exec();

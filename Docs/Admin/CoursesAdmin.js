@@ -144,7 +144,7 @@
 
 /**
  * @api {post} /api/admin/courses (02) Crear nuevo curso.
- * @apiVersion 0.0.5
+ * @apiVersion 0.0.9
  * @apiName createCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -158,12 +158,14 @@
  *
  * @apiParam {String} title Título.
  * @apiParam {String} description Descripción del curso.
- * @apiParam {Array|Object} temary Listado de temas.
- * @apiParam {Array|Object} test Listado de preguntas para las pruebas.
+ * @apiParam {String} code Código del curso.
+ * @apiParam {String|Null} banner Base64 o URL de la imagen a cargar.
  * @apiParam {Array|Number} toRoles Roles a los que va dirigido el curso.
  * @apiParam {String} speaker Nombre completo del orador.
  * @apiParam {String} speakerPosition Cargo o posición del orador del curso.
- * @apiParam {String} code Código del curso.
+ * @apiParam {Array|String} levels IDs de los cursos previos (Opcional).
+ * @apiParam {Array|Object} temary Listado de temas (Opcional puede enviarse vacío).
+ * @apiParam {Array|Object} test Listado de preguntas para las pruebas (Opcional puede enviarse vacío).
  *
  * @apiParam (temary Array Object) {String} title Título del tema.
  * @apiParam (temary Array Object) {String} description Descripción del tema.
@@ -178,29 +180,37 @@
  * @apiParam (test Array Object) {Array|String} values Listado de respuestas (Solo si 'inputType' es diferente de 'text' o 'textarea').
  * @apiParam (test Array Object) {Number|Null} correctAnswer Respuesta correcta. Solo aplica si 'values' contiene elementos.
  *
- * @apiExample {JSON} Example JSON Request
+ * @apiExample {JSON} Example JSON Request without levels
  * {
-	"title": "CURSO 01",
-	"description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.",
-	"temary": [
+    "title": "CURSO NUEVO",
+    "code": "AAA-0001",
+    "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+    "banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+    "speaker": "Anthony Velásquez",
+    "speakerPosition": 2,
+    "levels": [],
+    "toRoles": [ 5 ],
+    "temary": [
         {
+            "_id": "5feacc6eda2a713754f99e26",
             "title": "01 - Introducción",
             "description": "Introducción al curso",
-            "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s"
+            "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
+            "comments": []
         },
         {
+            "_id": "5feacc6eda2a713754f99e27",
             "title": "02 - Internet",
             "description": "¿Qué es el internet y cómo se funciona?",
-            "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s"
+            "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
+            "comments": []
         }
     ],
-	"test": [
+    "test": [
         {
-            "title": "01 - ¿Qué es el internet?",
             "description": "Seleccione una opción",
             "extra": null,
-            "placeholder": null,
-            "inputType": "radio",
+            "placeholder": "Indica tu respuesta",
             "require": true,
             "values": [
                 "Una red de redes interconectada",
@@ -208,28 +218,97 @@
                 "Una computador",
                 "Una reunión de amigos"
             ],
-            "correctAnswer": 0
+            "correctAnswer": 0,
+            "_id": "5feacc6eda2a713754f99e28",
+            "title": "01 - ¿Qué es el internet?",
+            "inputType": "radio"
         },
         {
-            "title": "02 - ¿Cuál es el objetivo de internet?",
             "description": "Indique una respuesta",
             "extra": null,
             "placeholder": "Indique una respuesta",
-            "inputType": "text",
             "require": true,
             "values": [],
-            "correctAnswer": null
+            "correctAnswer": null,
+            "_id": "5feacc6eda2a713754f99e29",
+            "title": "02 - ¿Cuál es el objetivo de internet?",
+            "inputType": "text"
         }
+    ]
+}
+ *
+ * @apiExample {JSON} Example JSON Request with levels
+ * {
+    "title": "CURSO NUEVO",
+    "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+    "banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+    "speaker": "Anthony Velásquez",
+    "speakerPosition": 2,
+    "code": "AAA-0002",
+    "levels": [ "5ff8d0c1fd462643e42df1f6", ... ],
+    "toRoles": [ 5 ],
+    "temary": [
+        {
+            "_id": "5feacc6eda2a713754f99e26",
+            "title": "01 - Introducción",
+            "description": "Introducción al curso",
+            "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
+            "comments": []
+        },
+        .
+        .
+        .
     ],
-	"toRoles": [ 5 ],
-	"speaker": "Anthony Velásquez",
-	"speakerPosition": 2,
-	"code": "AAA-1111"
+    "test": [
+        {
+            "description": "Seleccione una opción",
+            "extra": null,
+            "placeholder": "Indica tu respuesta",
+            "require": true,
+            "values": [
+                "Una red de redes interconectada",
+                "Una estúfa",
+                "Una computador",
+                "Una reunión de amigos"
+            ],
+            "correctAnswer": 0,
+            "_id": "5feacc6eda2a713754f99e28",
+            "title": "01 - ¿Qué es el internet?",
+            "inputType": "radio"
+        },
+        {
+            "description": "Indique una respuesta",
+            "extra": null,
+            "placeholder": "Indique una respuesta",
+            "require": true,
+            "values": [],
+            "correctAnswer": null,
+            "_id": "5feacc6eda2a713754f99e29",
+            "title": "02 - ¿Cuál es el objetivo de internet?",
+            "inputType": "text"
+        }
+    ]
+}
+ *
+ * @apiExample {JSON} Example JSON Request without toRoles, banner, levels, temary and test
+ * {
+    "title": "CURSO NUEVO",
+    "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+    "banner": null,
+    "speaker": "Anthony Velásquez",
+    "speakerPosition": 2,
+    "code": "AAA-0002",
+    "levels": [],
+    "toRoles": [],
+    "temary": [],
+    "test": []
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} course Detalles del curso.
  *
+ * @apiSuccess (course Object) {String|Null} banner URL de la imagen del curso.
+ * @apiSuccess (course Object) {Array|Object} levels Listado de cursos previos.
  * @apiSuccess (course Object) {Array|Number} toRoles Roles a los que va dirigido el curso.
  * @apiSuccess (course Object) {Boolean} enable Indica si el curso se encuentra público para los usuarios.
  * @apiSuccess (course Object) {Boolean} draft Indica si el curso se encuentra en borrador (preparación).
@@ -260,36 +339,45 @@
  * @apiSuccess (test Array Object) {String} title Título o pregunta.
  * @apiSuccess (test Array Object) {String} inputType Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').
  *
- * @apiSuccessExample {JSON} Success
+ * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
  * {
-    "msg": "Se ha creado el nuevo curso exitosamente.",
+    "msg": "Se ha actualizado el curso exitosamente.",
     "course": {
+        "banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+        "levels": [
+            "5ff8d0c1fd462643e42df1f6"
+        ],
         "toRoles": [
             5
         ],
         "enable": false,
         "draft": true,
-        "_id": "5feacc6eda2a713754f99e25",
+        "_id": "601e48e6f9fd624dccb74beb",
         "speaker": "Anthony Velásquez",
         "speakerPosition": 2,
-        "code": "AAA-1111",
-        "title": "CURSO 01",
-        "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.",
+        "code": "AAA-0002",
+        "title": "CURSO NUEVO",
+        "slug": "curso-nuevo-actualizado",
+        "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
         "temary": [
             {
-                "_id": "5feacc6eda2a713754f99e26",
+                "_id": "601e4929f9fd624dccb74bf0",
                 "title": "01 - Introducción",
                 "description": "Introducción al curso",
                 "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
-                "comments": []
+                "comments": [],
+                "likes": [],
+                "unlikes": []
             },
             {
-                "_id": "5feacc6eda2a713754f99e27",
+                "_id": "601e4929f9fd624dccb74bf1",
                 "title": "02 - Internet",
                 "description": "¿Qué es el internet y cómo se funciona?",
                 "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
-                "comments": []
+                "comments": [],
+                "likes": [],
+                "unlikes": []
             }
         ],
         "test": [
@@ -304,8 +392,8 @@
                     "Una computador",
                     "Una reunión de amigos"
                 ],
-                "correctAnswer": null,
-                "_id": "5feacc6eda2a713754f99e28",
+                "correctAnswer": 0,
+                "_id": "601e4929f9fd624dccb74bf2",
                 "title": "01 - ¿Qué es el internet?",
                 "inputType": "radio"
             },
@@ -316,13 +404,38 @@
                 "require": true,
                 "values": [],
                 "correctAnswer": null,
-                "_id": "5feacc6eda2a713754f99e29",
+                "_id": "601e4929f9fd624dccb74bf3",
                 "title": "02 - ¿Cuál es el objetivo de internet?",
                 "inputType": "text"
             }
         ],
-        "created_at": "2020-12-29 01:27:58",
-        "updated_at": "2020-12-29 01:27:58"
+        "created_at": "2021-02-06 02:44:38",
+        "updated_at": "2021-02-06 02:45:45",
+        "userid": "5fcf0821fc917d476c1cf3e2"
+    }
+}
+ *
+ * @apiSuccessExample {JSON} Success without toRoles, banner, levels, temary and test
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Se ha actualizado el curso exitosamente.",
+    "course": {
+        "banner": null,
+        "levels": [],
+        "toRoles": [],
+        "enable": false,
+        "draft": true,
+        "_id": "601e48e6f9fd624dccb74beb",
+        "speaker": "Anthony Velásquez",
+        "speakerPosition": 2,
+        "code": "AAA-0002",
+        "title": "CURSO NUEVO",
+        "slug": "curso-nuevo-actualizado",
+        "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+        "temary": [],
+        "test": [],
+        "created_at": "2021-02-06 02:44:38",
+        "updated_at": "2021-02-06 02:45:45"
     }
 }
  *
@@ -363,6 +476,14 @@
             "msg": "Disculpe, pero indicar las preguntas para la prueba de este curso."
         },
         {
+            "input": "levels",
+            "msg": "Disculpe, pero alguno de los cursos previos seleccionados es incorrecto."
+        },
+        {
+            "input": "levels",
+            "msg": "Disculpe, pero alguno de los cursos previos seleccionados no existen."
+        },
+        {
             "input": "temary.title",
             "msg": "Disculpe, pero todos los temas deben contener un título."
         },
@@ -395,7 +516,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id (03) Obtener detalles de un curso.
- * @apiVersion 0.0.7
+ * @apiVersion 0.0.9
  * @apiName detailsCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -416,6 +537,7 @@
  * @apiSuccess (course Object) {String} banner URL del banner del curso.
  * @apiSuccess (course Object) {String} description Descripción del curso.
  * @apiSuccess (course Object) {Array|Object} temary Listado de temas del curso.
+ * @apiSuccess (course Object) {Array|Object} levels Listado de cursos que el usuario debe visualizar antes.
  * @apiSuccess (course Object) {Array|Object} test Listado de preguntas del curso.
  * @apiSuccess (course Object) {Array|Number} toRoles Roles a los que va dirigido el curso.
  * @apiSuccess (course Object) {Boolean} draft Indica si el curso se encuentra en modo borrador.
@@ -429,6 +551,10 @@
  * @apiSuccess (temary Array Object) {String} description Descripción del tema.
  * @apiSuccess (temary Array Object) {String} urlVideo URL del video.
  * @apiSuccess (temary Array Object) {Object} totals Total de comentarios, 'Me gusta' y 'No me gusta'.
+ *
+ * @apiSuccess (levels Array Object) {String} _id ID del curso previo.
+ * @apiSuccess (levels Array Object) {String} title Título del curso previo.
+ * @apiSuccess (levels Array Object) {String} slug Slug del curso previo.
  *
  * @apiSuccess (test Array Object) {String} description Descripción de la pregunta.
  * @apiSuccess (test Array Object) {String|Null} extra Información extra para completar la pregunta.
@@ -492,6 +618,13 @@
                 }
             }
         ],
+        "levels": [
+            {
+                "_id": "5ff8d0c1fd462643e42df1f6",
+                "title": "CURSO NUEVO 2",
+                "slug": "curso-nuevo-1"
+            }
+        ],
         "test": [
             {
                 "description": "Seleccione una opción",
@@ -550,7 +683,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso seleccionado no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id
@@ -569,7 +702,7 @@
 
 /**
  * @api {put} /api/admin/courses/:_id (04) Actualizar un curso.
- * @apiVersion 0.0.5
+ * @apiVersion 0.0.9
  * @apiName updateCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -577,14 +710,17 @@
  *
  * @apiParam (Path params) {String} _id ID del curso.
  *
+ * @apiParam {String} title Título.
+ * @apiParam {String} slug Slug del curso (Generado automáticamente al crear, en caso de no modificar, enviar tal cual).
+ * @apiParam {String} description Descripción del curso.
+ * @apiParam {String} code Código del curso.
+ * @apiParam {String|Null} banner Base64 o URL de la imagen a cargar.
  * @apiParam {String} speaker Nombre completo del orador.
  * @apiParam {String} speakerPosition Cargo o posición del orador del curso.
- * @apiParam {String} code Código del curso.
- * @apiParam {String} title Título.
- * @apiParam {String} description Descripción del curso.
- * @apiParam {Array|Object} temary Listado de temas.
- * @apiParam {Array|Object} test Listado de preguntas para las pruebas.
  * @apiParam {Array|Number} toRoles Roles a los que va dirigido el curso.
+ * @apiParam {Array|String} levels IDs de los cursos previos (Opcional).
+ * @apiParam {Array|Object} temary Listado de temas (Opcional puede enviarse vacío).
+ * @apiParam {Array|Object} test Listado de preguntas para las pruebas (Opcional puede enviarse vacío).
  *
  * @apiParam (temary Array Object) {String} title Título del tema.
  * @apiParam (temary Array Object) {String} description Descripción del tema.
@@ -601,11 +737,17 @@
  *
  * @apiExample {JSON} Example JSON Request
  * {
+    "title": "CURSO NUEVO",
+    "slug": "curso-nuevo-actualizado",
+    "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+    "code": "AAA-0002",
+    "banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
     "speaker": "Anthony Velásquez",
     "speakerPosition": 2,
-    "code": "AAA-1111",
-    "title": "INTERNET",
-    "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.",
+    "levels": ["5ff8d0c1fd462643e42df1f6"],
+    "toRoles": [
+        5
+    ],
     "temary": [
         {
             "_id": "5feacc6eda2a713754f99e26",
@@ -634,7 +776,7 @@
                 "Una computador",
                 "Una reunión de amigos"
             ],
-            "correctAnswer": null,
+            "correctAnswer": 0,
             "_id": "5feacc6eda2a713754f99e28",
             "title": "01 - ¿Qué es el internet?",
             "inputType": "radio"
@@ -650,10 +792,76 @@
             "title": "02 - ¿Cuál es el objetivo de internet?",
             "inputType": "text"
         }
-    ],
-    "toRoles": [
-        5
     ]
+}
+ *
+ * @apiExample {JSON} Example JSON Request with levels
+ * {
+    "title": "CURSO NUEVO",
+    "slug": "curso-nuevo-actualizado",
+    "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+    "banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+    "speaker": "Anthony Velásquez",
+    "speakerPosition": 2,
+    "code": "AAA-0002",
+    "levels": [ "5ff8d0c1fd462643e42df1f6", ... ],
+    "toRoles": [ 5 ],
+    "temary": [
+        {
+            "_id": "5feacc6eda2a713754f99e26",
+            "title": "01 - Introducción",
+            "description": "Introducción al curso",
+            "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
+            "comments": []
+        },
+        .
+        .
+        .
+    ],
+    "test": [
+        {
+            "description": "Seleccione una opción",
+            "extra": null,
+            "placeholder": "Indica tu respuesta",
+            "require": true,
+            "values": [
+                "Una red de redes interconectada",
+                "Una estúfa",
+                "Una computador",
+                "Una reunión de amigos"
+            ],
+            "correctAnswer": 0,
+            "_id": "5feacc6eda2a713754f99e28",
+            "title": "01 - ¿Qué es el internet?",
+            "inputType": "radio"
+        },
+        {
+            "description": "Indique una respuesta",
+            "extra": null,
+            "placeholder": "Indique una respuesta",
+            "require": true,
+            "values": [],
+            "correctAnswer": null,
+            "_id": "5feacc6eda2a713754f99e29",
+            "title": "02 - ¿Cuál es el objetivo de internet?",
+            "inputType": "text"
+        }
+    ]
+}
+ *
+ * @apiExample {JSON} Example JSON Request without toRoles, banner, levels, temary and test
+ * {
+    "title": "CURSO NUEVO",
+    "slug": "curso-nuevo-actualizado",
+    "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+    "banner": null,
+    "speaker": "Anthony Velásquez",
+    "speakerPosition": 2,
+    "code": "AAA-0002",
+    "levels": [],
+    "toRoles": [],
+    "temary": [],
+    "test": []
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -699,31 +907,40 @@
  * {
     "msg": "Se ha actualizado el curso exitosamente.",
     "course": {
+        "banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+        "levels": [
+            "5ff8d0c1fd462643e42df1f6"
+        ],
         "toRoles": [
             5
         ],
         "enable": false,
         "draft": true,
-        "_id": "5feacc6eda2a713754f99e25",
+        "_id": "601e48e6f9fd624dccb74beb",
         "speaker": "Anthony Velásquez",
         "speakerPosition": 2,
-        "code": "AAA-1111",
-        "title": "INTERNET",
-        "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.",
+        "code": "AAA-0002",
+        "title": "CURSO NUEVO",
+        "slug": "curso-nuevo-actualizado",
+        "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
         "temary": [
             {
-                "_id": "5fead328f7bcf73dc82d8670",
+                "_id": "601e4929f9fd624dccb74bf0",
                 "title": "01 - Introducción",
                 "description": "Introducción al curso",
                 "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
-                "comments": []
+                "comments": [],
+                "likes": [],
+                "unlikes": []
             },
             {
-                "_id": "5fead328f7bcf73dc82d8671",
+                "_id": "601e4929f9fd624dccb74bf1",
                 "title": "02 - Internet",
                 "description": "¿Qué es el internet y cómo se funciona?",
                 "urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s",
-                "comments": []
+                "comments": [],
+                "likes": [],
+                "unlikes": []
             }
         ],
         "test": [
@@ -739,8 +956,8 @@
                     "Una reunión de amigos"
                 ],
                 "correctAnswer": 0,
-                "_id": "5fead328f7bcf73dc82d8672",
-                "title": "01 - ¿Qué es el internet??????",
+                "_id": "601e4929f9fd624dccb74bf2",
+                "title": "01 - ¿Qué es el internet?",
                 "inputType": "radio"
             },
             {
@@ -750,13 +967,44 @@
                 "require": true,
                 "values": [],
                 "correctAnswer": null,
-                "_id": "5fead328f7bcf73dc82d8673",
+                "_id": "601e4929f9fd624dccb74bf3",
                 "title": "02 - ¿Cuál es el objetivo de internet?",
                 "inputType": "text"
             }
         ],
-        "created_at": "2020-12-29 01:27:58",
-        "updated_at": "2020-12-29 01:56:40"
+        "comments": [],
+        "likes": [],
+        "unlikes": [],
+        "created_at": "2021-02-06 02:44:38",
+        "updated_at": "2021-02-06 02:45:45"
+    }
+}
+ *
+ * @apiSuccessExample {JSON} Success witout temary and tests
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Se ha actualizado el curso exitosamente.",
+    "course": {
+        "banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+        "levels": [
+            "5ff8d0c1fd462643e42df1f6"
+        ],
+        "toRoles": [
+            5
+        ],
+        "enable": false,
+        "draft": true,
+        "_id": "601e48e6f9fd624dccb74beb",
+        "speaker": "Anthony Velásquez",
+        "speakerPosition": 2,
+        "code": "AAA-0002",
+        "title": "CURSO NUEVO",
+        "slug": "curso-nuevo-actualizado",
+        "description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
+        "temary": [],
+        "test": [],
+        "created_at": "2021-02-06 02:44:38",
+        "updated_at": "2021-02-06 02:45:45"
     }
 }
  *
@@ -774,7 +1022,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso a actualizar no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id
@@ -853,7 +1101,7 @@
 
 /**
  * @api {delete} /api/admin/courses/:_id (05) Eliminar un curso.
- * @apiVersion 0.0.5
+ * @apiVersion 0.0.9
  * @apiName deleteCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -883,7 +1131,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso a eliminar no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id
@@ -902,7 +1150,7 @@
 
 /**
  * @api {put} /api/admin/courses/:_id/enable (06) Publicar un curso o removerlo.
- * @apiVersion 0.0.5
+ * @apiVersion 0.0.9
  * @apiName enableCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -949,7 +1197,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso a actualizar no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id
@@ -964,18 +1212,19 @@
     "msg": "Disculpe, pero debe indicar si publicará o removerá el curso de la sección pública."
 }
  *
- * @apiErrorExample {JSON} Validation fields
+ * @apiErrorExample {JSON} Fails validations
  * HTTP/1.1 422 Unprocessable Entity
  * {
     "msg": "¡Error en los parámetros!",
     "errors": [
         {
-            "input": "temary",
-            "msg": "Disculpe, para poder publicar el curso es necesario que indique el temario para este."
+            "msg": "Disculpe, para publicar el curso es necesario que indique a que grupo de usuarios va dirigido."
         },
         {
-            "input": "speaker",
-            "msg": "Disculpe, para poder publicar el curso es necesario que indique las pruebas para este."
+            "msg": "Disculpe, para publicar el curso es necesario que indique el temario para este."
+        },
+        {
+            "msg": "Disculpe, para publicar el curso es necesario que indique las pruebas (examen) para este."
         }
     ]
   }
@@ -990,7 +1239,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id/comments (07) Obtener comentarios del curso.
- * @apiVersion 0.0.7
+ * @apiVersion 0.0.9
  * @apiName commentsCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -1102,7 +1351,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso a actualizar no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id
@@ -1121,7 +1370,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id/likes (08) Obtener 'Me gusta' y 'No me gusta' del curso.
- * @apiVersion 0.0.7
+ * @apiVersion 0.0.9
  * @apiName likesAndUnlikesCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -1205,7 +1454,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso a actualizar no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id
@@ -1224,7 +1473,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id/theme/:themeId/comments (09) Obtener comentarios de un tema.
- * @apiVersion 0.0.7
+ * @apiVersion 0.0.9
  * @apiName commentsThemeCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -1329,7 +1578,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso a actualizar no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id
@@ -1354,7 +1603,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id/theme/:themeId/likes (10) Obtener 'Me gusta' y 'No me gusta' de un tema.
- * @apiVersion 0.0.7
+ * @apiVersion 0.0.9
  * @apiName likesAndUnlikesThemeCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -1441,7 +1690,7 @@
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el curso a actualizar no existe."
+    "msg": "Disculpe, pero el curso seleccionado no existe o no se encuentra disponible."
 }
  *
  * @apiErrorExample {JSON} Invalid _id

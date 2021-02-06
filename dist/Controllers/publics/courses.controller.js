@@ -70,13 +70,17 @@ function returnNotFound(res, code) {
             return res.status(422).json({
                 msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
             });
+        case 'wasNotPreviousCourse':
+            return res.status(422).json({
+                msg: `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`
+            });
         case 'wasRealized':
             return res.status(422).json({
                 msg: `Disculpe, pero ya has realizado esta acción anteriormente.`
             });
         default:
             return res.status(500).json({
-                msg: 'Ha ocurrido un error al momento de obtener la respuesta a notificar'
+                msg: 'Respuesta no determinada.'
             });
     }
 }
@@ -203,7 +207,7 @@ async function showCourseTheme(req, res) {
         const course = await CoursesActions_1.getCourseDetails({
             query: { slug, enable: true },
             isPublic: true,
-            projection: { temary: 1 }
+            projection: { temary: 1, levels: 1 }
         });
         if (!course)
             return returnNotFound(res, '404Course');
@@ -211,6 +215,12 @@ async function showCourseTheme(req, res) {
         const myCourse = await CoursesUsers_1.default.findOne({ courseId: course._id }, { temary: 1 }).exec();
         if (!myCourse)
             return returnNotFound(res, '404CourseUser');
+        // check if previous courses is approved
+        if (course.levels
+            && course.levels.length > 0
+            && !(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
+            return returnNotFound(res, 'wasNotPreviousCourse');
+        }
         // get theme
         const theme = lodash_1.default.find(course.temary, v => v._id.toString() === _id);
         if (!theme)
@@ -569,12 +579,8 @@ async function evaluateTestCourse(req, res) {
     try {
         const { slug, userid } = req.params;
         const validate = CoursesRequest_1.validateTestData(req.body.data || []);
-        if (validate.errors.length > 0) {
-            return res.status(404).json({
-                msg: '¡Error en los parámetros!',
-                errors: validate.errors
-            });
-        }
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const course = await Courses_1.default.findOne({ slug, enable: true, }, { 'test': 1 }).exec();
         if (!course)
             return returnNotFound(res, '404Course');

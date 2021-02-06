@@ -49,6 +49,7 @@ const CoursesSchema = new mongoose_1.Schema({
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true },
     test: { type: [TestSchema], require: true },
+    levels: { type: [String], default: [] },
     comments: { type: [TemaryCommentsSchema], default: [] },
     likes: { type: [LikesTemaryCommentsSchema], default: [] },
     unlikes: { type: [LikesTemaryCommentsSchema], default: [] },

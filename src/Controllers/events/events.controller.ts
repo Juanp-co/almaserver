@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 import { Request, Response } from 'express';
-import { getLimitSkipSortSearch, returnError } from '../../Functions/GlobalFunctions';
+import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import Events from '../../Models/Events';
 import validateRegister from '../../FormRequest/EventsRequest';
 import { checkDate, checkObjectId } from '../../Functions/Validations';
@@ -120,12 +120,7 @@ export async function saveEvent(req: Request, res: Response): Promise<Response> 
   try {
     const validate = validateRegister(req.body);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const event = new Events(validate.data);
     event.userid = req.params.userid;
@@ -155,12 +150,7 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
 
     const validate = validateRegister(req.body);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const event = await Events.findOne(query, { __v: 0 }).exec();
 

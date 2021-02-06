@@ -1,13 +1,14 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
 import getCoursesList, {
+  checkIfUserApprovedPreviousCourses,
   getCourseDetails,
   getCoursesDataUser,
   getModelReturnCourseOrTheme
 } from '../../ActionsData/CoursesActions';
 import { validateTestData } from '../../FormRequest/CoursesRequest';
 import { checkObjectId, checkSlug, checkTitlesOrDescriptions } from '../../Functions/Validations';
-import { setDate, getLimitSkipSortSearch, returnError } from '../../Functions/GlobalFunctions';
+import { setDate, getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { ICourseList } from '../../Interfaces/ICourse';
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
@@ -54,13 +55,17 @@ function returnNotFound(res: Response, code: string | null) : Response {
       return res.status(422).json({
         msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
       });
+    case 'wasNotPreviousCourse':
+      return res.status(422).json({
+        msg: `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`
+      });
     case 'wasRealized':
       return res.status(422).json({
         msg: `Disculpe, pero ya has realizado esta acción anteriormente.`
       });
     default:
       return res.status(500).json({
-        msg: 'Ha ocurrido un error al momento de obtener la respuesta a notificar'
+        msg: 'Respuesta no determinada.'
       });
   }
 }
@@ -198,13 +203,22 @@ export async function showCourseTheme(req: Request, res: Response) : Promise<Res
     const course = await getCourseDetails({
       query: { slug, enable: true },
       isPublic: true,
-      projection: { temary: 1 }
+      projection: { temary: 1, levels: 1 }
     });
     if (!course) return returnNotFound(res, '404Course');
 
     // check if the course belonging to user
     const myCourse = await CoursesUsers.findOne({ courseId: course._id }, { temary: 1 }).exec();
     if (!myCourse) return returnNotFound(res, '404CourseUser');
+
+    // check if previous courses is approved
+    if (
+      course.levels
+      && course.levels.length > 0
+      && !(await checkIfUserApprovedPreviousCourses(_.map(course.levels, '_id')))
+    ) {
+      return returnNotFound(res, 'wasNotPreviousCourse');
+    }
 
     // get theme
     const theme = _.find(course.temary, v => v._id.toString() === _id);
@@ -575,12 +589,7 @@ export async function evaluateTestCourse(req: Request, res: Response) : Promise<
     const { slug, userid } = req.params;
     const validate = validateTestData(req.body.data || []);
 
-    if (validate.errors.length > 0) {
-      return res.status(404).json({
-        msg: '¡Error en los parámetros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const course = await Courses.findOne({ slug, enable: true, }, { 'test': 1 }).exec();
     if (!course) return returnNotFound(res, '404Course');

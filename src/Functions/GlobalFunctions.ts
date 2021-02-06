@@ -32,6 +32,13 @@ export function returnError(res: Response, error: any, path: string) {
   });
 }
 
+export function returnErrorParams(res: Response, errors: any[]) : Response {
+  return res.status(422).json({
+    msg: '¡Error en los parámetros!',
+    errors
+  });
+}
+
 // =================================================================================================
 
 export function upperCaseFirstLettersWords(words: string): string | null {
@@ -149,8 +156,7 @@ export function dateSpanish(timestamp?: number): string | null {
   return timestamp ? moment.unix(timestamp).locale('es').format('DD [de] MMMM [de] YYYY') : null;
 }
 
-export function checkAndUploadPicture(picture: string | null): string | null {
-
+export async function checkAndUploadPicture(picture: string | null): Promise<string | null> {
   if (picture) {
     if (checkBase64(picture)) {
       // CODE TO UPLOAD PICTURE

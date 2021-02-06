@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateTestData = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const CoursesActions_1 = require("../ActionsData/CoursesActions");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
@@ -16,6 +20,7 @@ async function validateRegister(data, update) {
         description: null,
         temary: [],
         test: [],
+        levels: [],
         toRoles: [],
         enable: false,
         draft: true,
@@ -29,7 +34,7 @@ async function validateRegister(data, update) {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
     }
     // banner
-    ret.banner = data.banner ? data.banner.toString().trim() : data.banner;
+    ret.banner = data.banner ? data.banner.toString().trim() : null;
     // description
     if (!data.description || !Validations_1.checkTitlesOrDescriptions(data.description)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una descripción general para el curso.', 'description'));
@@ -65,8 +70,8 @@ async function validateRegister(data, update) {
     if (update && Validations_1.checkSlug(data.slug))
         ret.slug = data.slug;
     // draft
-    if (data.draft) {
-        ret.draft = data.draft;
+    if (!data.draft) {
+        ret.draft = false;
         if (!data.temary || typeof data.temary !== 'object' || data.temary.length === 0) {
             errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar el temario del curso.', 'temary'));
         }
@@ -75,7 +80,7 @@ async function validateRegister(data, update) {
         }
     }
     // temary
-    if (data.temary.length > 0) {
+    if (data.temary && data.temary.length > 0) {
         const { temary } = data;
         const totalsTemary = temary.length;
         let error = false;
@@ -104,7 +109,7 @@ async function validateRegister(data, update) {
         }
     }
     // test
-    if (data.test.length > 0) {
+    if (data.test && data.test.length > 0) {
         const { test } = data;
         const totalsTemary = test.length;
         let error = false;
@@ -150,11 +155,34 @@ async function validateRegister(data, update) {
                 });
         }
     }
-    // toRoles
-    if (!data.toRoles || typeof data.toRoles !== 'object' || data.toRoles.length === 0) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar los roles a los que será dirigido el curso.', 'toRoles'));
+    // levels
+    if (data.levels && data.levels.length > 0) {
+        const { levels } = data;
+        const totalsLvl = levels.length;
+        for (let i = 0; i < totalsLvl; i++) {
+            if (!Validations_1.checkObjectId(levels[i])) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero alguno de los cursos previos seleccionados es incorrecto.', 'levels'));
+                break;
+            }
+            else
+                ret.levels.push(levels[i].trim());
+        }
+        if (ret.levels.length > 0 && !await CoursesActions_1.checkPreviousIdsCourses(ret.levels)) {
+            ret.levels = lodash_1.default.uniq(ret.levels);
+            if (ret.levels.length > 0 && !(await CoursesActions_1.checkPreviousIdsCourses(ret.levels))) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero alguno de los cursos previos seleccionados no existen.', 'levels'));
+            }
+        }
     }
-    else {
+    // toRoles
+    // if (!data.toRoles || typeof data.toRoles !== 'object' || data.toRoles.length === 0) {
+    //   errors.push(
+    //     setError('Disculpe, pero debe seleccionar los roles a los que será dirigido el curso.', 'toRoles')
+    //   );
+    // } else {
+    //   ret.toRoles = data.toRoles;
+    // }
+    if (data.toRoles && data.toRoles.length > 0) {
         ret.toRoles = data.toRoles;
     }
     return { data: ret, errors };

@@ -1,4 +1,5 @@
-import { checkIfExistCode } from '../ActionsData/CoursesActions';
+import _ from 'lodash';
+import { checkIfExistCode, checkPreviousIdsCourses } from '../ActionsData/CoursesActions';
 import { setError } from '../Functions/GlobalFunctions';
 import {
   checkIfValueIsNumber,
@@ -18,6 +19,7 @@ export default async function validateRegister(data: ICourseForm, update: boolea
     description: null,
     temary: [],
     test: [],
+    levels: [],
     toRoles: [],
     enable: false,
     draft: true,
@@ -34,7 +36,7 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   }
 
   // banner
-  ret.banner = data.banner ? data.banner.toString().trim() : data.banner;
+  ret.banner = data.banner ? data.banner.toString().trim() : null;
 
   // description
   if (!data.description || !checkTitlesOrDescriptions(data.description)) {
@@ -81,8 +83,8 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   if (update && checkSlug(data.slug)) ret.slug = data.slug;
 
   // draft
-  if (data.draft) {
-    ret.draft = data.draft;
+  if (!data.draft) {
+    ret.draft = false;
 
     if (!data.temary || typeof data.temary !== 'object' || data.temary.length === 0) {
       errors.push(
@@ -97,8 +99,8 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   }
 
   // temary
-  if (data.temary.length > 0) {
-    const {temary} = data;
+  if (data.temary && data.temary.length > 0) {
+    const { temary } = data;
     const totalsTemary = temary.length;
     let error = false;
 
@@ -133,8 +135,8 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   }
 
   // test
-  if (data.test.length > 0) {
-    const {test} = data;
+  if (data.test && data.test.length > 0) {
+    const { test } = data;
     const totalsTemary = test.length;
     let error = false;
 
@@ -193,12 +195,40 @@ export default async function validateRegister(data: ICourseForm, update: boolea
     }
   }
 
+  // levels
+  if (data.levels && data.levels.length > 0) {
+    const { levels } = data;
+    const totalsLvl = levels.length;
+
+    for (let i = 0; i < totalsLvl; i++) {
+      if (!checkObjectId(levels[i])) {
+        errors.push(
+          setError('Disculpe, pero alguno de los cursos previos seleccionados es incorrecto.', 'levels')
+        );
+        break;
+      }
+      else ret.levels.push(levels[i].trim());
+    }
+
+    if (ret.levels.length > 0 && !await checkPreviousIdsCourses(ret.levels)) {
+      ret.levels = _.uniq(ret.levels);
+      if (ret.levels.length > 0 && !(await checkPreviousIdsCourses(ret.levels))) {
+        errors.push(
+          setError('Disculpe, pero alguno de los cursos previos seleccionados no existen.', 'levels')
+        );
+      }
+    }
+  }
+
   // toRoles
-  if (!data.toRoles || typeof data.toRoles !== 'object' || data.toRoles.length === 0) {
-    errors.push(
-      setError('Disculpe, pero debe seleccionar los roles a los que será dirigido el curso.', 'toRoles')
-    );
-  } else {
+  // if (!data.toRoles || typeof data.toRoles !== 'object' || data.toRoles.length === 0) {
+  //   errors.push(
+  //     setError('Disculpe, pero debe seleccionar los roles a los que será dirigido el curso.', 'toRoles')
+  //   );
+  // } else {
+  //   ret.toRoles = data.toRoles;
+  // }
+  if (data.toRoles && data.toRoles.length > 0) {
     ret.toRoles = data.toRoles;
   }
 

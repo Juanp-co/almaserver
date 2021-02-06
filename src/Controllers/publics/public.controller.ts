@@ -4,7 +4,7 @@ import { validateLogin, validateRegister } from '../../FormRequest/UsersRequest'
 import Users from '../../Models/Users';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import { getData } from '../../ActionsData/UsersActions';
-import { returnError } from '../../Functions/GlobalFunctions';
+import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import Questions from '../../Models/Question';
 
 const path = 'Controllers/publics/publics.controller';
@@ -23,12 +23,7 @@ export async function register(req: Request, res: Response): Promise<Response> {
   try {
     const validate = await validateRegister(req.body);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = new Users(validate.data);
     user.password = bcrypt.hashSync(user.password, 10);
@@ -47,12 +42,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
   try {
     const validate = validateLogin(req.body);
 
-    if (validate.errors.length > 0) {
-      return res.status(422).json({
-        msg: '¡Error en los parametros!',
-        errors: validate.errors
-      });
-    }
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = await Users.findOne(
       { document: validate.data.document },

@@ -4,7 +4,7 @@ import {
   ICourseComments, ICourseCommentsObject,
   ICourseList,
   ICourseTemary,
-  ICourseLikes, ICourseLikesAndUnlikesObject
+  ICourseLikes, ICourseLikesAndUnlikesObject, ICourseReference
 } from '../Interfaces/ICourse';
 import Courses from '../Models/Courses';
 import { IUserSimpleInfo } from '../Interfaces/IUser';
@@ -84,6 +84,7 @@ export async function getModelReturnCourseOrTheme({ data, theme, admin, counters
     ret.banner = data.banner;
     ret.description = data.description;
     ret.temary = [];
+    ret.levels = data.levels;
 
     if (admin) {
       ret.test = data.test;
@@ -182,6 +183,16 @@ export async function getModelReturnCourseOrTheme({ data, theme, admin, counters
 
 // =====================================================================================================================
 
+export async function getPreviousIdsCourses(listIds: any[]) : Promise<ICourseReference[]> {
+  return listIds.length > 0 ?
+    await Courses.find(
+      { _id: { $in: listIds } },
+      { _id: 1, title: 1, slug: 1 }
+      ).exec() as ICourseReference[]
+    :
+    [];
+}
+
 export default async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, projection,} : any) : Promise<ICourseList[]> {
   const ret: ICourseList[] = [];
 
@@ -189,7 +200,7 @@ export default async function getCoursesList({ query, skip, sort, limit, infoUse
     .skip(skip)
     .limit(limit)
     .sort(sort)
-    .exec() as ICourseList[];
+    .exec();
 
   if (courses.length > 0) {
     let users: IUserSimpleInfo[] = [];
@@ -243,7 +254,7 @@ export default async function getCoursesList({ query, skip, sort, limit, infoUse
 export async function getCourseDetails({ query, infoUser, isPublic, projection } : any) : Promise<ICourseList | null> {
   let ret: ICourseList | null = null;
 
-  const course = await Courses.findOne(query, projection || { __v: 0 }).exec() as ICourseList;
+  const course = await Courses.findOne(query, projection || { __v: 0 }).exec();
 
   if (course) {
     ret = {
@@ -258,6 +269,7 @@ export async function getCourseDetails({ query, infoUser, isPublic, projection }
       description: course.description,
       temary: course.temary,
       test: course.test,
+      levels: await getPreviousIdsCourses(course.levels),
       comments: course.comments,
       likes: course.likes,
       unlikes: course.unlikes,
@@ -378,6 +390,22 @@ export async function checkIfExistCode(code : string) : Promise<boolean> {
 
 export async function checkIfExistSlug(slug : string) : Promise<number> {
   return Courses.find({ slug }).countDocuments().exec();
+}
+
+export async function checkPreviousIdsCourses(listIds: string[]) : Promise<boolean> {
+  if (listIds.length > 0) {
+    const exist = await Courses.find({ _id: { $in: listIds } }).countDocuments().exec();
+    return exist === listIds.length
+  }
+  return false;
+}
+
+export async function checkIfUserApprovedPreviousCourses(listIds: any[]) : Promise<boolean> {
+  if (listIds.length > 0) {
+    const totals = await Courses.find({ _id: { $in: listIds }, approved: { $eq: true } }).countDocuments().exec();
+    return totals === listIds.length;
+  }
+  return false;
 }
 
 // =====================================================================================================================

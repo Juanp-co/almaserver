@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import validateRegister, { validateIdsMembers } from '../../FormRequest/GroupsRequest';
 import Groups from '../../Models/Groups';
 import { IGroupsDetails, IGroupsList } from '../../Interfaces/IGroups';
-import { getLimitSkipSortSearch, returnError } from '../../Functions/GlobalFunctions';
+import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
 import { getNamesUsersList } from '../../ActionsData/UsersActions';
 import { IUserSimpleInfo } from '../../Interfaces/IUser';
@@ -25,13 +25,6 @@ function returnExistCode(res: Response) : Response {
 function returnErrorId(res: Response) : Response {
   return res.status(422).json({
     msg: 'Disculpe, pero el grupo seleccionado es incorrecto.',
-  });
-}
-
-function returnErrorParams(res: Response, errors: any[]) : Response {
-  return res.status(422).json({
-    msg: '¡Error en los parámetros!',
-    errors
   });
 }
 
@@ -129,7 +122,7 @@ export async function saveGroup(req: Request, res: Response) : Promise<Response>
   try {
     const validate = validateRegister(req.body);
 
-    if (validate.errors.length > 0) returnErrorParams(res, validate.errors);
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     // check if exist code
     if (validate.data.code) {
@@ -163,7 +156,7 @@ export async function updateGroup(req: Request, res: Response) : Promise<Respons
 
     const validate = validateRegister(req.body);
 
-    if (validate.errors.length > 0) returnErrorParams(res, validate.errors);
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const group = await Groups.findOne({ _id }, { members: 0, __v: 0, userid: 0 }).exec();
 
@@ -206,7 +199,7 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
 
     const validate = validateIdsMembers(req.body);
 
-    if (validate.errors.length > 0) returnErrorParams(res, validate.errors);
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     if (validate.data.members.length === 0)
       return res.status(200).json({ msg: '¡Nada que actualizar!' });
