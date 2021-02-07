@@ -23,6 +23,7 @@
     "no-underscore-dangle":"off",
     "prefer-object-spread":"off",
     "camelcase":"off",
-    "import/first": "off"
+    "import/first": "off",
+    "no-restricted-syntax": "off"
   }
 }

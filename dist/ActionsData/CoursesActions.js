@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfExistCode = exports.getLikesAndUnlikesCourse = exports.getCommentsCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = void 0;
+exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfExistCode = exports.getLikesAndUnlikesCourse = exports.getCommentsCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const Courses_1 = __importDefault(require("../Models/Courses"));
@@ -56,14 +56,28 @@ function setUserDataInList(list, listUsers) {
     }
     return list;
 }
+function getModelReturnContent(data, allData = false) {
+    if (!data)
+        return null;
+    const ret = {
+        _id: data._id,
+        title: data.title,
+    };
+    if (allData) {
+        ret.description = data.description;
+        ret.urlVideo = data.urlVideo;
+    }
+    return ret;
+}
+exports.getModelReturnContent = getModelReturnContent;
 // =====================================================================================================================
 /*
-  data: ICourseList | ICourseTemary     <= data with any this schemas
-  theme: boolean                        <= to set 'ICourseList' or 'ICourseTemary' return model
-  admin: boolean                        <= to get extra params
-  counters: boolean                     <= to get only totals of comments, likes and unlikes
+  data: ICourseList | ICourseTemary | ICourseContent      <= data with any this schemas
+  theme: boolean                                          <= to set 'ICourseList' or 'ICourseTemary' return model
+  admin: boolean                                          <= to get extra params
+  counters: boolean                                       <= to get only totals of comments, likes and unlikes
  */
-async function getModelReturnCourseOrTheme({ data, theme, admin, counters }) {
+async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showContent }) {
     let ret = null;
     let listIds = [];
     if (!theme || (!theme && admin)) {
@@ -81,7 +95,7 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters }) {
         ret.temary = [];
         ret.levels = data.levels;
         if (admin) {
-            ret.test = data.test;
+            // ret.test = data.test;
             ret.toRoles = data.toRoles;
             ret.draft = data.draft;
             ret.enable = data.enable;
@@ -100,37 +114,24 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters }) {
                 totalUnlikes: data.unlikes ? data.unlikes.length : 0,
             };
         }
-        const totalTemary = data.temary.length;
+        const { temary } = data;
+        const totalTemary = temary.length;
         for (let i = 0; i < totalTemary || 0; i++) {
             const dTheme = {};
-            dTheme._id = data.temary[i]._id;
-            dTheme.title = data.temary[i].title;
-            dTheme.description = data.temary[i].description;
-            dTheme.urlVideo = data.temary[i].urlVideo;
-            if (!counters && (!!data.temary[i].comments || !!data.temary[i].likes || !!data.temary[i].unlikes)) {
-                dTheme.comments = getModelCommentsList(data.temary[i].comments || []);
-                dTheme.likes = getModelLikesAndUnlikesList(data.temary[i].likes || []);
-                dTheme.unlikes = getModelLikesAndUnlikesList(data.temary[i].unlikes || []);
-                if (data.temary.likes)
-                    dTheme.likes = getModelCommentsList(data.temary[i].comments || []);
-                if (data.temary.unlikes)
-                    dTheme.unlikes = getModelCommentsList(data.temary[i].comments || []);
-                listIds = listIds.concat(lodash_1.default.map(data.temary[i].comments, 'userid'));
-                listIds = listIds.concat(lodash_1.default.map(data.temary[i].comments, 'likes.userid'));
-                listIds = listIds.concat(lodash_1.default.map(data.temary[i].comments, 'unlikes.userid'));
-                if (dTheme.likes)
-                    listIds = listIds.concat(lodash_1.default.map(ret.likes, 'userid'));
-                if (dTheme.unlikes)
-                    listIds = listIds.concat(lodash_1.default.map(ret.unlikes, 'userid'));
+            const { content } = temary[i];
+            dTheme._id = temary[i]._id;
+            dTheme.title = temary[i].title;
+            dTheme.description = temary[i].description || null;
+            dTheme.content = [];
+            if (admin)
+                dTheme.test = temary[i].test;
+            const totalsContent = content.length || 0;
+            for (let j = 0; j < totalsContent; j++) {
+                const dContent = getModelReturnContent(content[j], admin);
+                if (dContent)
+                    dTheme.content.push(dContent);
             }
-            else if (counters) {
-                dTheme.totals = {
-                    totalComments: data.temary[i].comments ? data.temary[i].comments.length : 0,
-                    totalLikes: data.temary[i].likes ? data.temary[i].likes.length : 0,
-                    totalUnlikes: data.temary[i].unlikes ? data.temary[i].unlikes.length : 0,
-                };
-            }
-            ret.temary.push(dTheme);
+            ret.temary.push(dTheme); // add in temary
         }
         // comments
         if (!counters) {
@@ -141,19 +142,21 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters }) {
     }
     else {
         ret = {};
-        ret._id = data._id;
-        ret.title = data.title;
-        ret.description = data.description;
-        ret.urlVideo = data.urlVideo;
-        ret.comments = getModelCommentsList(data.comments || []);
-        ret.likes = getModelLikesAndUnlikesList(data.likes || []);
-        ret.unlikes = getModelLikesAndUnlikesList(data.unlikes || []);
-        if (ret.comments) {
-            listIds = listIds.concat(lodash_1.default.map(ret.comments, 'userid'));
-            if ('likes' in ret.comments)
-                listIds = listIds.concat(lodash_1.default.map(ret.comments, 'likes.userid'));
-            if ('unlikes' in ret.comments)
-                listIds = listIds.concat(lodash_1.default.map(ret.comments, 'unlikes.userid'));
+        const temary = data.temary[0];
+        ret._id = temary._id;
+        ret.title = temary.title;
+        ret.description = temary.description || null;
+        ret.content = [];
+        // ret.test = [];
+        ret.comments = getModelCommentsList(temary.comments || []);
+        ret.likes = getModelLikesAndUnlikesList(temary.likes || []);
+        ret.unlikes = getModelLikesAndUnlikesList(temary.unlikes || []);
+        if (temary && showContent) {
+            for (let i = 0; i < temary.content.length; i++) {
+                const dContent = getModelReturnContent(temary.content[i], true);
+                if (dContent)
+                    ret.content.push(dContent);
+            }
         }
         listIds = listIds.concat(lodash_1.default.map(ret.likes, 'userid'));
         listIds = listIds.concat(lodash_1.default.map(ret.unlikes, 'userid'));
@@ -161,14 +164,13 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters }) {
     if (!counters) {
         const listUsers = listIds.length > 0 ? await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(listIds)) : [];
         if (listUsers.length > 0) {
+            // if ('content' in ret) ret.content = setUserDataInList(ret.content || [], listUsers);
             if (ret.likes)
                 ret.likes = setUserDataInList(ret.likes, listUsers);
             if (ret.unlikes)
                 ret.unlikes = setUserDataInList(ret.unlikes, listUsers);
             if (ret.comments)
                 ret.comments = setUserDataInList(ret.comments, listUsers);
-            if ('temary' in ret)
-                ret.temary = setUserDataInList(ret.temary || [], listUsers);
         }
     }
     return ret;
@@ -250,7 +252,6 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             banner: course.banner,
             description: course.description,
             temary: course.temary,
-            test: course.test,
             levels: await getPreviousIdsCourses(course.levels),
             comments: course.comments,
             likes: course.likes,
@@ -262,7 +263,7 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             updated_at: course.updated_at,
         };
         if (isPublic) {
-            delete ret.test;
+            // delete ret.test;
             delete ret.draft;
             delete ret.enable;
             delete ret.created_at;
@@ -281,27 +282,25 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
     return ret;
 }
 exports.getCourseDetails = getCourseDetails;
-async function getCommentsCourse({ query, projection, sort, theme }) {
+async function getCommentsCourse({ query, projection, sort }) {
     let ret = null;
+    let contentId;
     if (!query || Object.keys(query || {}).length === 0)
         return ret;
+    if (query.contentId) {
+        contentId = query.contentId;
+        delete query.contentId;
+    }
     const course = await Courses_1.default.findOne(query, projection).exec();
     if (!course)
         return ret;
     ret = {
         _id: course._id,
         themeId: query['temary._id'],
-        totals: 0,
-        comments: []
+        contentId,
+        comments: course.comments ? getModelCommentsList(lodash_1.default.orderBy(course.comments, ['created_at'], [sort || 'desc'])) : [],
+        totals: course.comments ? course.comments.length : 0,
     };
-    if (theme) {
-        ret.comments = getModelCommentsList(lodash_1.default.orderBy(course.temary[0].comments, ['created_at'], [sort || 'desc']));
-        ret.totals = course.temary[0].comments ? course.temary[0].comments.length : 0;
-    }
-    else {
-        ret.comments = getModelCommentsList(lodash_1.default.orderBy(course.comments, ['created_at'], [sort || 'desc']));
-        ret.totals = course.comments ? course.comments.length : 0;
-    }
     let listIds = lodash_1.default.map(ret.comments, 'userid');
     if ('likes' in ret.comments)
         listIds = listIds.concat(lodash_1.default.map(ret.comments, 'likes.userid'));
@@ -317,26 +316,26 @@ async function getCommentsCourse({ query, projection, sort, theme }) {
 exports.getCommentsCourse = getCommentsCourse;
 async function getLikesAndUnlikesCourse({ query, projection, theme }) {
     let ret = null;
+    let contentId;
     if (!query || Object.keys(query || {}).length === 0)
         return ret;
+    if (query.contentId) {
+        contentId = query.contentId;
+        delete query.contentId;
+    }
     const course = await Courses_1.default.findOne(query, projection).exec();
     if (!course)
         return ret;
     ret = {
         _id: course._id,
         themeId: query['temary._id'],
+        contentId,
         totalLikes: 0,
         totalUnlikes: 0,
         likes: [],
         unlikes: []
     };
-    if (theme) {
-        ret.totalLikes = course.temary[0].likes ? course.temary[0].likes.length : 0;
-        ret.totalUnlikes = course.temary[0].unlikes ? course.temary[0].unlikes.length : 0;
-        ret.likes = getModelLikesAndUnlikesList(course.temary[0].likes || []);
-        ret.unlikes = getModelLikesAndUnlikesList(course.temary[0].unlikes || []);
-    }
-    else {
+    if (!theme) {
         ret.totalLikes = course.likes ? course.likes.length : 0;
         ret.totalUnlikes = course.unlikes ? course.unlikes.length : 0;
         ret.likes = getModelLikesAndUnlikesList(course.likes || []);
@@ -391,7 +390,6 @@ async function getCoursesDataUser({ query }) {
     return !course ? null : {
         _id: course._id,
         temary: course.temary || [],
-        tests: course.tests,
         approved: course.approved,
         created_at: course.created_at,
         updated_at: course.updated_at,

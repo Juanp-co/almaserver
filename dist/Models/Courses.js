@@ -16,13 +16,10 @@ const TemaryCommentsSchema = new mongoose_1.Schema({
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
-const TemarySchema = new mongoose_1.Schema({
+const ContentSchema = new mongoose_1.Schema({
     title: { type: String, require: true },
     description: { type: String, require: true },
-    urlVideo: { type: String, require: true },
-    comments: { type: [TemaryCommentsSchema], default: [] },
-    likes: { type: [LikesTemaryCommentsSchema], default: [] },
-    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
+    urlVideo: { type: String, require: true }
 }, { id: false });
 const TestSchema = new mongoose_1.Schema({
     title: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
@@ -38,6 +35,15 @@ const TestSchema = new mongoose_1.Schema({
     values: { type: [String], default: 'Indica tu respuesta' },
     correctAnswer: { type: Number, default: null },
 }, { id: false });
+const TemarySchema = new mongoose_1.Schema({
+    title: { type: String, require: true },
+    description: { type: String, require: true },
+    content: { type: [ContentSchema], require: true },
+    test: { type: [TestSchema], require: true },
+    comments: { type: [TemaryCommentsSchema], default: [] },
+    likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
+}, { id: false });
 const CoursesSchema = new mongoose_1.Schema({
     userid: { type: String, require: true },
     speaker: { type: String, require: true },
@@ -48,7 +54,7 @@ const CoursesSchema = new mongoose_1.Schema({
     description: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true },
-    test: { type: [TestSchema], require: true },
+    // test: { type: [TestSchema], require: true }, // test to users
     levels: { type: [String], default: [] },
     comments: { type: [TemaryCommentsSchema], default: [] },
     likes: { type: [LikesTemaryCommentsSchema], default: [] },
@@ -64,7 +70,8 @@ CoursesSchema.pre('save', function (next) {
     next();
 });
 CoursesSchema.set('toJSON', { getters: true });
-TestSchema.set('toJSON', { getters: true });
+// TestSchema.set('toJSON', { getters: true });
+ContentSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
 TemaryCommentsSchema.set('toJSON', { getters: true });
 LikesTemaryCommentsSchema.set('toJSON', { getters: true });

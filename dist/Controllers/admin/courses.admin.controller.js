@@ -23,11 +23,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.likesAndUnlikesCourseOrTheme = exports.commentsCourseOrTheme = exports.deleteCourse = exports.enableCourse = exports.updateCourse = exports.saveCourse = exports.showCourse = exports.getCoursesCounters = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const CoursesActions_1 = __importStar(require("../../ActionsData/CoursesActions"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const CoursesRequest_1 = __importDefault(require("../../FormRequest/CoursesRequest"));
 const Validations_1 = require("../../Functions/Validations");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
+const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const path = 'src/admin/courses.admin.controller';
 function return404(res) {
     return res.status(404).json({
@@ -159,7 +161,7 @@ async function updateCourse(req, res) {
         const validate = await CoursesRequest_1.default(req.body, true);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const course = await Courses_1.default.findOne({ _id }, { __v: 0, comments: 0, likes: 0, unlikes: 0, userid: 0 }).exec();
+        const course = await Courses_1.default.findOne({ _id }).exec();
         if (!course)
             return return404(res);
         if (course.enable) {
@@ -181,8 +183,48 @@ async function updateCourse(req, res) {
         course.code = validate.data.code;
         course.speaker = validate.data.speaker;
         course.speakerPosition = validate.data.speakerPosition;
-        course.temary = validate.data.temary;
-        course.test = validate.data.test;
+        const totalTemary = validate.data.temary.length || 0;
+        for (let i = 0; i < totalTemary; i++) {
+            if (validate.data.temary[i]._id) {
+                const indexT = lodash_1.default.findIndex(course.temary, t => t._id.toString() === validate.data.temary[i]._id);
+                if (indexT > -1) {
+                    course.temary[indexT].title = validate.data.temary[i].title;
+                    course.temary[indexT].description = validate.data.temary[i].description;
+                    const { content, test } = validate.data.temary[i];
+                    for (const c of content) {
+                        if (c && c._id) {
+                            const indexC = lodash_1.default.findIndex(course.temary[indexT].content, co => co._id.toString() === co._id);
+                            if (indexC > -1) {
+                                course.temary[indexT].content[indexC].title = c.title;
+                                course.temary[indexT].content[indexC].description = c.description;
+                                course.temary[indexT].content[indexC].urlVideo = c.urlVideo;
+                            }
+                        }
+                        else
+                            course.temary[indexT].content.push(c);
+                    }
+                    for (const t of test) {
+                        if (t && t._id) {
+                            const indexTest = lodash_1.default.findIndex(course.temary[indexT].test, te => te._id.toString() === t._id);
+                            if (indexTest > -1) {
+                                course.temary[indexT].test[indexTest].title = t.title || null;
+                                course.temary[indexT].test[indexTest].description = t.description || null;
+                                course.temary[indexT].test[indexTest].placeholder = t.placeholder || null;
+                                course.temary[indexT].test[indexTest].extra = t.extra || null;
+                                course.temary[indexT].test[indexTest].inputType = t.inputType;
+                                course.temary[indexT].test[indexTest].values = t.values;
+                                course.temary[indexT].test[indexTest].require = t.require;
+                                course.temary[indexT].test[indexTest].correctAnswer = t.correctAnswer;
+                            }
+                        }
+                        else
+                            course.temary[indexT].test.push(t);
+                    }
+                }
+            }
+            else
+                course.temary.push(validate.data.temary[i]);
+        }
         course.levels = validate.data.levels;
         course.toRoles = validate.data.toRoles;
         course.draft = validate.data.draft;
@@ -235,18 +277,17 @@ async function enableCourse(req, res) {
                         msg: 'Disculpe, para publicar el curso es necesario que indique el temario para este.'
                     });
                 }
-                if (course.test.length === 0) {
-                    errors.push({
-                        msg: 'Disculpe, para publicar el curso es necesario que indique las pruebas (examen) para este.'
-                    });
-                }
                 if (errors.length > 0)
                     return GlobalFunctions_1.returnErrorParams(res, errors);
             }
         }
-        /*
-          FALTA VALIDACIÓN PARA VERIFICAR QUE USUARIOS NO POSEAN EL CURSO EN SUS REGISTROS
-         */
+        else {
+            const exists = await CoursesUsers_1.default.find({ courseId: _id }).countDocuments().exec();
+            if (exists > 0)
+                return res.status(422).json({
+                    msg: 'Disculpe, pero el curso no puede ser deshabilitado. Los usuarios ya poseen el curso en sus listados.',
+                });
+        }
         course.enable = enable === 1;
         course.draft = !course.enable;
         await course.save();
@@ -267,9 +308,11 @@ async function deleteCourse(req, res) {
         const course = await Courses_1.default.findOne({ _id }).exec();
         if (!course)
             return return404(res);
-        /*
-          FALTA VALIDACIÓN PARA VERIFICAR QUE USUARIOS NO POSEAN EL CURSO EN SUS REGISTROS
-         */
+        const exists = await CoursesUsers_1.default.find({ courseId: _id }).countDocuments().exec();
+        if (exists > 0)
+            return res.status(422).json({
+                msg: 'Disculpe, pero el curso no puede ser eliminado. Los usuarios ya poseen el curso en sus listados.',
+            });
         await course.delete();
         return res.json({
             msg: 'Se ha eliminado el curso exitosamente.'

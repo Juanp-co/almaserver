@@ -27,11 +27,35 @@ export interface ICourseComments {
   updated_at?: string | number;
 }
 
-export interface ICourseTemary {
+export interface ICourseTest {
+  _id?: any;
+  title: string | null;
+  description: string | null;
+  extra: string | null;
+  placeholder: string | null;
+  inputType: string;
+  require: boolean;
+  values: string[];
+  correctAnswer: number | null;
+}
+
+export interface ICourseContent {
   _id?: any;
   title?: string | null;
   description?: string | null;
   urlVideo?: string | null;
+  // comments: ICourseComments[];
+  // likes?: ICourseLikes[];
+  // unlikes?: ICourseLikes[];
+  // totals?: ICourseTotals;
+}
+
+export interface ICourseTemary {
+  _id?: any,
+  title: string | null,
+  description?: string | null,
+  content: ICourseContent[],
+  test: ICourseTest[],
   comments: ICourseComments[];
   likes?: ICourseLikes[];
   unlikes?: ICourseLikes[];
@@ -54,18 +78,6 @@ export interface ICourseLikesAndUnlikesObject {
   totalUnlikes?: number;
 }
 
-export interface ICourseTest {
-  _id?: any;
-  title: string | null;
-  description: string | null;
-  extra: string | null;
-  placeholder: string | null;
-  inputType: string;
-  require: boolean;
-  values: string[];
-  correctAnswer: number | null;
-}
-
 export default interface ICourse extends Document {
   userid: string | null;
   speaker: string | null;
@@ -76,7 +88,7 @@ export default interface ICourse extends Document {
   description: string | null;
   slug: string | null;
   temary: ICourseTemary[];
-  test: ICourseTest[];
+  // test: ICourseTest[];
   levels: string[];
   comments: ICourseComments[];
   likes?: ICourseLikes[];
@@ -97,7 +109,7 @@ export interface ICourseForm {
   description: ICourse['description'];
   slug: ICourse['slug'];
   temary: ICourse['temary'];
-  test: ICourse['test'];
+  // test: ICourse['test'];
   levels: ICourse['levels'];
   toRoles: ICourse['toRoles'];
   enable: ICourse['enable'];
@@ -122,7 +134,7 @@ export interface ICourseList {
   banner: ICourse['banner'],
   description?: ICourse['description'],
   temary?: ICourse['temary'],
-  test?: ICourse['test'],
+  // test?: ICourse['test'],
   levels?: ICourseReference[] | ICourse['levels'] | any[],
   comments?: ICourse['comments'],
   likes?: ICourse['likes'],

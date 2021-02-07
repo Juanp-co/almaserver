@@ -19,7 +19,7 @@ async function validateRegister(data, update) {
         banner: null,
         description: null,
         temary: [],
-        test: [],
+        // test: [],
         levels: [],
         toRoles: [],
         enable: false,
@@ -70,13 +70,10 @@ async function validateRegister(data, update) {
     if (update && Validations_1.checkSlug(data.slug))
         ret.slug = data.slug;
     // draft
-    if (!data.draft) {
+    if (update && !data.draft) {
         ret.draft = false;
         if (!data.temary || typeof data.temary !== 'object' || data.temary.length === 0) {
             errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar el temario del curso.', 'temary'));
-        }
-        if (!data.test || typeof data.test !== 'object' || data.test.length === 0) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar las preguntas para la prueba de este curso.', 'test'));
         }
     }
     // temary
@@ -85,74 +82,110 @@ async function validateRegister(data, update) {
         const totalsTemary = temary.length;
         let error = false;
         for (let i = 0; i < totalsTemary; i++) {
-            if (!Validations_1.checkTitlesOrDescriptions(temary[i].title)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero todos los temas deben contener un título.', 'temary.title'));
+            const { description, content, test, title, _id } = temary[i];
+            const item = {
+                _id: null,
+                title: null,
+                description: null,
+                content: [],
+                test: [],
+                comments: []
+            };
+            if (_id && Validations_1.checkObjectId(_id))
+                item._id = _id;
+            if (!Validations_1.checkTitlesOrDescriptions(title)) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un título para el tema.', 'temary.title'));
                 error = true;
             }
-            if (!Validations_1.checkTitlesOrDescriptions(temary[i].description)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero todos los temas deben contener una descripción.', 'temary.description'));
+            else
+                item.title = title ? title.toString().trim() : title;
+            if (description && !Validations_1.checkHtmlContent(description)) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero la descripción para este tema es incorrecta.', 'temary.description'));
                 error = true;
             }
-            if (!Validations_1.checkYoutubeUrl(temary[i].urlVideo)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.', 'temary.urlVideo'));
-                error = true;
+            else
+                item.description = description ? description.toString().trim() : null;
+            // check content of temary
+            if (!error && content && content.length > 0) {
+                const totalsContent = content.length;
+                for (let j = 0; j < totalsContent; j++) {
+                    if (!Validations_1.checkTitlesOrDescriptions(content[j].title)) {
+                        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un título para el contenido.', 'content.title'));
+                        error = true;
+                    }
+                    // if (!checkHtmlContent(content[j].description) || !checkTitlesOrDescriptions(content[j].description)) {
+                    if (content[j].description && !Validations_1.checkHtmlContent(content[j].description)) {
+                        errors.push(GlobalFunctions_1.setError('Disculpe, pero la descripción ingresada para el contenido es incorrecta.', 'content.description'));
+                        error = true;
+                    }
+                    if (content[j].urlVideo && !Validations_1.checkYoutubeUrl(content[j].urlVideo)) {
+                        errors.push(GlobalFunctions_1.setError('Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.', 'content.urlVideo'));
+                        error = true;
+                    }
+                    if (error)
+                        break;
+                    else
+                        item.content.push({
+                            _id: content[j]._id,
+                            title: content[j].title ? (_a = content[j].title) === null || _a === void 0 ? void 0 : _a.toString().trim() : null,
+                            description: content[j].description ? (_b = content[j].description) === null || _b === void 0 ? void 0 : _b.toString().trim() : null,
+                            urlVideo: content[j].urlVideo ? (_c = content[j].urlVideo) === null || _c === void 0 ? void 0 : _c.toString().trim() : null,
+                        });
+                }
             }
+            // check test of temary
+            if (!error && test && test.length > 0) {
+                const totalsTest = test.length || 0;
+                for (let j = 0; j < totalsTest; j++) {
+                    if (!Validations_1.checkTitlesOrDescriptions(test[j].title)) {
+                        errors.push(GlobalFunctions_1.setError('Disculpe, pero todas las preguntas para la prueba deben contener un título.', 'test.title'));
+                        error = true;
+                    }
+                    if (!Validations_1.checkHtmlContent(test[j].description)) {
+                        errors.push(GlobalFunctions_1.setError('Disculpe, pero todas las preguntas para la prueba deben contener una descripción.', 'test.description'));
+                        error = true;
+                    }
+                    if (!Validations_1.checkInputTypeValueToTest(test[j].inputType)) {
+                        errors.push(GlobalFunctions_1.setError('Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.', 'test.inputType'));
+                        error = true;
+                    }
+                    if (['select', 'radio', 'checkbox'].indexOf(`${test[j].inputType}`) > -1) {
+                        if (['select', 'radio', 'checkbox'].indexOf(`${test[j].inputType}`) > -1 && test[j].values && test[j].values.length === 0) {
+                            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar los valores para los campos la prueba.', 'test.values'));
+                            error = true;
+                        }
+                        if (!/[0-9]{1,2}/.test(`${test[j].correctAnswer}`)) {
+                            errors.push(GlobalFunctions_1.setError('Disculpe, pero las preguntas que contengan un tipo de campo \'Lista, Checkbox o Radio\' deben contener una respuesta.', 'test.correctAnswer'));
+                            error = true;
+                        }
+                        else if (test[j].values.length > 0 && !!test[j].values[test[j].correctAnswer || -1]) {
+                            errors.push(GlobalFunctions_1.setError('Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.', 'test.values'));
+                            error = true;
+                        }
+                    }
+                    if (error)
+                        break;
+                    else
+                        item.test.push({
+                            _id: test[j]._id,
+                            title: test[j].title || null,
+                            description: test[j].description || null,
+                            placeholder: test[j].placeholder || null,
+                            extra: test[j].extra || null,
+                            inputType: test[j].inputType ? test[j].inputType.toString().toLowerCase() : test[j].inputType,
+                            values: test[j].values || [],
+                            require: test[j].require || false,
+                            correctAnswer: test[j].correctAnswer,
+                        });
+                }
+                if (error)
+                    break;
+            }
+            // push data
             if (error)
                 break;
             else
-                ret.temary.push({
-                    title: temary[i].title ? (_a = temary[i].title) === null || _a === void 0 ? void 0 : _a.toString().trim() : null,
-                    description: temary[i].description ? (_b = temary[i].description) === null || _b === void 0 ? void 0 : _b.toString().trim() : null,
-                    urlVideo: temary[i].urlVideo ? (_c = temary[i].urlVideo) === null || _c === void 0 ? void 0 : _c.toString().trim() : null,
-                    comments: []
-                });
-        }
-    }
-    // test
-    if (data.test && data.test.length > 0) {
-        const { test } = data;
-        const totalsTemary = test.length;
-        let error = false;
-        for (let i = 0; i < totalsTemary; i++) {
-            if (!Validations_1.checkTitlesOrDescriptions(test[i].title)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero todas las preguntas para la prueba deben contener un título.', 'test.title'));
-                error = true;
-            }
-            if (!Validations_1.checkTitlesOrDescriptions(test[i].description)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero todas las preguntas para la prueba deben contener una descripción.', 'test.description'));
-                error = true;
-            }
-            if (!Validations_1.checkInputTypeValueToTest(test[i].inputType)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.', 'test.inputType'));
-                error = true;
-            }
-            if (['select', 'radio', 'checkbox'].indexOf(`${test[i].inputType}`) > -1) {
-                if (['select', 'radio', 'checkbox'].indexOf(`${test[i].inputType}`) > -1 && test[i].values && test[i].values.length === 0) {
-                    errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar los valores para los campos la prueba.', 'test.values'));
-                    error = true;
-                }
-                if (!/[0-9]{1,2}/.test(`${test[i].correctAnswer}`)) {
-                    errors.push(GlobalFunctions_1.setError('Disculpe, pero las preguntas que contengan un tipo de campo \'Lista, Checkbox o Radio\' deben contener una respuesta.', 'test.correctAnswer'));
-                    error = true;
-                }
-                else if (test[i].values.length > 0 && !!test[i].values[test[i].correctAnswer || -1]) {
-                    errors.push(GlobalFunctions_1.setError('Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.', 'test.values'));
-                    error = true;
-                }
-            }
-            if (error)
-                break;
-            else
-                ret.test.push({
-                    title: test[i].title || null,
-                    description: test[i].description || null,
-                    placeholder: test[i].placeholder || null,
-                    extra: test[i].extra || null,
-                    inputType: test[i].inputType ? test[i].inputType.toString().toLowerCase() : test[i].inputType,
-                    values: test[i].values || [],
-                    require: test[i].require || false,
-                    correctAnswer: test[i].correctAnswer,
-                });
+                ret.temary.push(item);
         }
     }
     // levels
