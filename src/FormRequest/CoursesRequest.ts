@@ -2,11 +2,12 @@ import _ from 'lodash';
 import { checkIfExistCode, checkPreviousIdsCourses } from '../ActionsData/CoursesActions';
 import { setError } from '../Functions/GlobalFunctions';
 import {
+  checkHtmlContent,
   checkIfValueIsNumber,
   checkInputTypeValueToTest, checkNameOrLastName, checkObjectId, checkSlug,
   checkTitlesOrDescriptions, checkYoutubeUrl
 } from '../Functions/Validations';
-import { ICourseForm, ICourseTestForm } from '../Interfaces/ICourse';
+import { ICourseForm, ICourseTemary, ICourseTestForm } from '../Interfaces/ICourse';
 
 export default async function validateRegister(data: ICourseForm, update: boolean): Promise<{ data: ICourseForm; errors: any[] }> {
   const ret = {
@@ -18,7 +19,7 @@ export default async function validateRegister(data: ICourseForm, update: boolea
     banner: null,
     description: null,
     temary: [],
-    test: [],
+    // test: [],
     levels: [],
     toRoles: [],
     enable: false,
@@ -83,17 +84,12 @@ export default async function validateRegister(data: ICourseForm, update: boolea
   if (update && checkSlug(data.slug)) ret.slug = data.slug;
 
   // draft
-  if (!data.draft) {
+  if (update && !data.draft) {
     ret.draft = false;
 
     if (!data.temary || typeof data.temary !== 'object' || data.temary.length === 0) {
       errors.push(
         setError('Disculpe, pero indicar el temario del curso.', 'temary')
-      );
-    }
-    if (!data.test || typeof data.test !== 'object' || data.test.length === 0) {
-      errors.push(
-        setError('Disculpe, pero indicar las preguntas para la prueba de este curso.', 'test')
       );
     }
   }
@@ -105,93 +101,132 @@ export default async function validateRegister(data: ICourseForm, update: boolea
     let error = false;
 
     for (let i = 0; i < totalsTemary; i++) {
-      if (!checkTitlesOrDescriptions(temary[i].title)) {
-        errors.push(
-          setError('Disculpe, pero todos los temas deben contener un título.', 'temary.title')
-        );
-        error = true;
-      }
-      if (!checkTitlesOrDescriptions(temary[i].description)) {
-        errors.push(
-          setError('Disculpe, pero todos los temas deben contener una descripción.', 'temary.description')
-        );
-        error = true;
-      }
-      if (!checkYoutubeUrl(temary[i].urlVideo)) {
-        errors.push(
-          setError('Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.', 'temary.urlVideo')
-        );
-        error = true;
-      }
-
-      if (error) break;
-      else ret.temary.push({
-        title: temary[i].title ? temary[i].title?.toString().trim() : null,
-        description: temary[i].description ? temary[i].description?.toString().trim() : null,
-        urlVideo: temary[i].urlVideo ? temary[i].urlVideo?.toString().trim() : null,
+      const { description, content, test, title, _id } = temary[i];
+      const item = {
+        _id: null,
+        title: null,
+        description: null,
+        content: [],
+        test: [],
         comments: []
-      });
-    }
-  }
+      } as ICourseTemary;
 
-  // test
-  if (data.test && data.test.length > 0) {
-    const { test } = data;
-    const totalsTemary = test.length;
-    let error = false;
+      if (_id && checkObjectId(_id)) item._id = _id;
 
-    for (let i = 0; i < totalsTemary; i++) {
-      if (!checkTitlesOrDescriptions(test[i].title)) {
+      if (!checkTitlesOrDescriptions(title)) {
         errors.push(
-          setError('Disculpe, pero todas las preguntas para la prueba deben contener un título.', 'test.title')
+          setError('Disculpe, pero debe indicar un título para el tema.', 'temary.title')
         );
         error = true;
       }
-      if (!checkTitlesOrDescriptions(test[i].description)) {
+      else item.title = title ? title.toString().trim() : title;
+
+      if (description && !checkHtmlContent(description)) {
         errors.push(
-          setError('Disculpe, pero todas las preguntas para la prueba deben contener una descripción.', 'test.description')
+          setError('Disculpe, pero la descripción para este tema es incorrecta.', 'temary.description')
         );
         error = true;
       }
-      if (!checkInputTypeValueToTest(test[i].inputType)) {
-        errors.push(
-          setError('Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.', 'test.inputType')
-        );
-        error = true;
+      else item.description = description ? description.toString().trim() : null;
+
+      // check content of temary
+      if (!error && content && content.length > 0) {
+        const totalsContent = content.length;
+        for (let j = 0; j < totalsContent; j++) {
+          if (!checkTitlesOrDescriptions(content[j].title)) {
+            errors.push(
+              setError('Disculpe, pero debe indicar un título para el contenido.', 'content.title')
+            );
+            error = true;
+          }
+          // if (!checkHtmlContent(content[j].description) || !checkTitlesOrDescriptions(content[j].description)) {
+          if (content[j].description && !checkHtmlContent(content[j].description)) {
+            errors.push(
+              setError('Disculpe, pero la descripción ingresada para el contenido es incorrecta.', 'content.description')
+            );
+            error = true;
+          }
+          if (content[j].urlVideo && !checkYoutubeUrl(content[j].urlVideo)) {
+            errors.push(
+              setError('Disculpe, pero las URL permitidas para los videos deben pertenecer a Youtube.', 'content.urlVideo')
+            );
+            error = true;
+          }
+
+          if (error) break;
+          else item.content.push({
+            _id: content[j]._id,
+            title: content[j].title ? content[j].title?.toString().trim() : null,
+            description: content[j].description ? content[j].description?.toString().trim() : null,
+            urlVideo: content[j].urlVideo ? content[j].urlVideo?.toString().trim() : null,
+          });
+        }
       }
 
-      if (['select', 'radio', 'checkbox'].indexOf(`${test[i].inputType}`) > -1) {
-        if (['select', 'radio', 'checkbox'].indexOf(`${test[i].inputType}`) > -1 && test[i].values && test[i].values.length === 0) {
-          errors.push(
-            setError('Disculpe, pero debe indicar los valores para los campos la prueba.', 'test.values')
-          );
-          error = true;
+      // check test of temary
+      if (!error && test && test.length > 0) {
+        const totalsTest = test.length || 0;
+        for (let j = 0; j < totalsTest; j++) {
+          if (!checkTitlesOrDescriptions(test[j].title)) {
+            errors.push(
+              setError('Disculpe, pero todas las preguntas para la prueba deben contener un título.', 'test.title')
+            );
+            error = true;
+          }
+          if (!checkHtmlContent(test[j].description)) {
+            errors.push(
+              setError('Disculpe, pero todas las preguntas para la prueba deben contener una descripción.', 'test.description')
+            );
+            error = true;
+          }
+          if (!checkInputTypeValueToTest(test[j].inputType)) {
+            errors.push(
+              setError('Disculpe, todas las preguntas deben contener un tipo de campo para los formularios.', 'test.inputType')
+            );
+            error = true;
+          }
+
+          if (['select', 'radio', 'checkbox'].indexOf(`${test[j].inputType}`) > -1) {
+            if (['select', 'radio', 'checkbox'].indexOf(`${test[j].inputType}`) > -1 && test[j].values && test[j].values.length === 0) {
+              errors.push(
+                setError('Disculpe, pero debe indicar los valores para los campos la prueba.', 'test.values')
+              );
+              error = true;
+            }
+            if (!/[0-9]{1,2}/.test(`${test[j].correctAnswer}`)) {
+              errors.push(
+                setError('Disculpe, pero las preguntas que contengan un tipo de campo \'Lista, Checkbox o Radio\' deben contener una respuesta.', 'test.correctAnswer')
+              );
+              error = true;
+            }
+            else if (test[j].values.length > 0 && !!test[j].values[test[j].correctAnswer || -1]) {
+              errors.push(
+                setError('Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.', 'test.values')
+              );
+              error = true;
+            }
+          }
+
+          if (error) break;
+          else item.test.push({
+            _id: test[j]._id,
+            title: test[j].title || null,
+            description: test[j].description || null,
+            placeholder: test[j].placeholder || null,
+            extra: test[j].extra || null,
+            inputType: test[j].inputType ? test[j].inputType.toString().toLowerCase() : test[j].inputType,
+            values: test[j].values || [],
+            require: test[j].require || false,
+            correctAnswer: test[j].correctAnswer,
+          });
         }
-        if (!/[0-9]{1,2}/.test(`${test[i].correctAnswer}`)) {
-          errors.push(
-            setError('Disculpe, pero las preguntas que contengan un tipo de campo \'Lista, Checkbox o Radio\' deben contener una respuesta.', 'test.correctAnswer')
-          );
-          error = true;
-        }
-        else if (test[i].values.length > 0 && !!test[i].values[test[i].correctAnswer || -1]) {
-          errors.push(
-            setError('Disculpe, pero la respuesta para una de las pregunta no coindiden con opciones indicadas.', 'test.values')
-          );
-          error = true;
-        }
+
+        if (error) break;
       }
 
+      // push data
       if (error) break;
-      else ret.test.push({
-        title: test[i].title || null,
-        description: test[i].description || null,
-        placeholder: test[i].placeholder || null,
-        extra: test[i].extra || null,
-        inputType: test[i].inputType ? test[i].inputType.toString().toLowerCase() : test[i].inputType,
-        values: test[i].values || [],
-        require: test[i].require || false,
-        correctAnswer: test[i].correctAnswer,
-      });
+      else ret.temary.push(item);
     }
   }
 

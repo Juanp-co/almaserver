@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
+exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
 const mongoose_1 = require("mongoose");
 function checkNameOrLastName(value) {
     return (value &&
@@ -83,6 +83,10 @@ function checkSlug(value) {
 }
 exports.checkSlug = checkSlug;
 function checkUUID(value) {
-    return /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[4][0-9A-Fa-f]{3}-[89AB][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12,13}$/i.test(value);
+    return value && /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[4][0-9A-Fa-f]{3}-[89AB][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12,13}$/i.test(`${value}`);
 }
 exports.checkUUID = checkUUID;
+function checkHtmlContent(value) {
+    return value && /<(\"[^\"]*\"|'[^']*'|[^'\">])*>$/gim.test(`${value}`);
+}
+exports.checkHtmlContent = checkHtmlContent;

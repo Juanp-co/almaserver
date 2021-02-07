@@ -40,14 +40,17 @@ router.post('/courses/:slug/add', middleware_1.validateUser, courses_controller_
 router.post('/courses/:slug/like', middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourse);
 router.post('/courses/:slug/comment', middleware_1.validateUser, courses_controller_1.commentCourse);
 router.post('/courses/:slug/comment/:_id/like', middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseComment);
+router.get(`/courses/:slug/theme/:_id`, middleware_1.validateUser, courses_controller_1.showCourseContentTheme); // get theme
 // get test
-router.route('/courses/:slug/test')
-    .get(middleware_1.validateUser, courses_controller_1.getTestCourse)
-    .post(middleware_1.validateUser, courses_controller_1.evaluateTestCourse);
-router.get(`/courses/:slug/theme/:_id`, middleware_1.validateUser, courses_controller_1.showCourseTheme); // get theme
+router.route('/courses/:slug/theme/:_id/test')
+    .get(middleware_1.validateUser, courses_controller_1.getTest)
+    .post(middleware_1.validateUser, courses_controller_1.evaluateTest);
 // comment and like comments
 router.post(`/courses/:slug/theme/:_id/comment`, middleware_1.validateUser, courses_controller_1.commentCourseTheme);
 router.post(`/courses/:slug/theme/:_id/comment/:commentId/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseThemeComment);
+router.get(`/courses/:slug/theme/:_id/content/:contentId`, middleware_1.validateUser, courses_controller_1.showCourseContent); // get content
+router.post(`/courses/:slug/theme/:_id/content/:contentId/comment`, middleware_1.validateUser, courses_controller_1.commentCourseTheme);
+router.post(`/courses/:slug/theme/:_id/content/:contentId/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseThemeComment);
 router.post(`/courses/:slug/theme/:_id/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeTheme);
 /*
   Events

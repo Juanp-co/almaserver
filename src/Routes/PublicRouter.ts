@@ -11,14 +11,13 @@ import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.c
 import getCourses, {
   addCourseUser,
   commentCourse,
-  commentCourseTheme, evaluateTestCourse,
+  commentCourseTheme, evaluateTest,
   getCoursesCounters,
-  getTestCourse,
+  getTest,
   likeOrUnlikeCourse, likeOrUnlikeCourseComment,
   likeOrUnlikeCourseThemeComment, likeOrUnlikeTheme,
   // qualifyCourse,
-  showCourse,
-  showCourseTheme
+  showCourse, showCourseContent, showCourseContentTheme
 } from '../Controllers/publics/courses.controller';
 
 const router = Router();
@@ -41,14 +40,17 @@ router.post('/courses/:slug/add', validateUser, addCourseUser); // add course to
 router.post('/courses/:slug/like', validateUser, likeOrUnlikeCourse);
 router.post('/courses/:slug/comment', validateUser, commentCourse);
 router.post('/courses/:slug/comment/:_id/like', validateUser,  likeOrUnlikeCourseComment);
+router.get(`/courses/:slug/theme/:_id`, validateUser, showCourseContentTheme);// get theme
 // get test
-router.route('/courses/:slug/test')
-  .get(validateUser, getTestCourse)
-  .post(validateUser, evaluateTestCourse);
-router.get(`/courses/:slug/theme/:_id`, validateUser, showCourseTheme);// get theme
+router.route('/courses/:slug/theme/:_id/test')
+  .get(validateUser, getTest)
+  .post(validateUser, evaluateTest);
 // comment and like comments
 router.post(`/courses/:slug/theme/:_id/comment`, validateUser, commentCourseTheme);
 router.post(`/courses/:slug/theme/:_id/comment/:commentId/like`, validateUser, likeOrUnlikeCourseThemeComment);
+router.get(`/courses/:slug/theme/:_id/content/:contentId`, validateUser, showCourseContent); // get content
+router.post(`/courses/:slug/theme/:_id/content/:contentId/comment`, validateUser, commentCourseTheme);
+router.post(`/courses/:slug/theme/:_id/content/:contentId/like`, validateUser, likeOrUnlikeCourseThemeComment);
 router.post(`/courses/:slug/theme/:_id/like`, validateUser, likeOrUnlikeTheme);
 
 /*

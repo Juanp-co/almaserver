@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Request, Response } from 'express';
 import getCoursesList, {
   checkIfExistCode,
@@ -16,6 +17,7 @@ import {
 import validateRegister from '../../FormRequest/CoursesRequest';
 import { checkObjectId } from '../../Functions/Validations';
 import Courses from '../../Models/Courses';
+import CoursesUsers from '../../Models/CoursesUsers';
 
 const path = 'src/admin/courses.admin.controller';
 
@@ -155,7 +157,7 @@ export async function updateCourse(req: Request, res: Response) : Promise<Respon
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const course = await Courses.findOne(
-      { _id }, { __v: 0, comments: 0, likes: 0, unlikes: 0, userid: 0 }
+      { _id },
     ).exec();
 
     if (!course) return return404(res);
@@ -181,8 +183,53 @@ export async function updateCourse(req: Request, res: Response) : Promise<Respon
     course.code = validate.data.code;
     course.speaker = validate.data.speaker;
     course.speakerPosition = validate.data.speakerPosition;
-    course.temary = validate.data.temary;
-    course.test = validate.data.test;
+
+    const totalTemary = validate.data.temary.length || 0;
+
+    for (let i = 0; i < totalTemary; i++) {
+      if (validate.data.temary[i]._id) {
+        const indexT = _.findIndex(course.temary, t => t._id.toString() === validate.data.temary[i]._id);
+
+        if (indexT > -1) {
+          course.temary[indexT].title = validate.data.temary[i].title;
+          course.temary[indexT].description = validate.data.temary[i].description;
+          const { content, test } = validate.data.temary[i];
+
+          for (const c of content) {
+            if (c && c._id) {
+              const indexC = _.findIndex(course.temary[indexT].content, co => co._id.toString() === co._id);
+              if (indexC > -1) {
+                course.temary[indexT].content[indexC].title = c.title;
+                course.temary[indexT].content[indexC].description = c.description;
+                course.temary[indexT].content[indexC].urlVideo = c.urlVideo;
+              }
+            }
+            else course.temary[indexT].content.push(c);
+          }
+
+          for (const t of test) {
+            if (t && t._id) {
+              const indexTest = _.findIndex(course.temary[indexT].test, te => te._id.toString() === t._id);
+              if (indexTest > -1) {
+                course.temary[indexT].test[indexTest].title = t.title || null;
+                course.temary[indexT].test[indexTest].description = t.description || null;
+                course.temary[indexT].test[indexTest].placeholder = t.placeholder || null;
+                course.temary[indexT].test[indexTest].extra = t.extra || null;
+                course.temary[indexT].test[indexTest].inputType = t.inputType;
+                course.temary[indexT].test[indexTest].values = t.values;
+                course.temary[indexT].test[indexTest].require = t.require;
+                course.temary[indexT].test[indexTest].correctAnswer = t.correctAnswer;
+              }
+            }
+            else course.temary[indexT].test.push(t);
+          }
+        }
+      }
+      else course.temary.push(validate.data.temary[i]);
+    }
+
+
+
     course.levels = validate.data.levels;
     course.toRoles = validate.data.toRoles;
     course.draft = validate.data.draft;
@@ -241,19 +288,16 @@ export async function enableCourse(req: Request, res: Response) : Promise<Respon
             msg: 'Disculpe, para publicar el curso es necesario que indique el temario para este.'
           });
         }
-        if (course.test.length === 0) {
-          errors.push({
-            msg: 'Disculpe, para publicar el curso es necesario que indique las pruebas (examen) para este.'
-          });
-        }
-
         if (errors.length > 0) return returnErrorParams(res, errors);
       }
     }
-
-    /*
-      FALTA VALIDACIÓN PARA VERIFICAR QUE USUARIOS NO POSEAN EL CURSO EN SUS REGISTROS
-     */
+    else {
+      const exists = await CoursesUsers.find({ courseId: _id }).countDocuments().exec();
+      if (exists > 0)
+        return res.status(422).json({
+          msg: 'Disculpe, pero el curso no puede ser deshabilitado. Los usuarios ya poseen el curso en sus listados.',
+        });
+    }
 
     course.enable = enable === 1;
     course.draft = !course.enable;
@@ -277,9 +321,12 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
 
     if (!course) return return404(res);
 
-    /*
-      FALTA VALIDACIÓN PARA VERIFICAR QUE USUARIOS NO POSEAN EL CURSO EN SUS REGISTROS
-     */
+    const exists = await CoursesUsers.find({ courseId: _id }).countDocuments().exec();
+
+    if (exists > 0)
+      return res.status(422).json({
+        msg: 'Disculpe, pero el curso no puede ser eliminado. Los usuarios ya poseen el curso en sus listados.',
+      });
 
     await course.delete();
 
@@ -310,8 +357,8 @@ export async function commentsCourseOrTheme(req: Request, res: Response) : Promi
 
     if (themeId) {
       if (!checkObjectId(themeId)) returnErrorId(res, true);
-
       query['temary._id'] = themeId;
+
       projection = { 'temary.$.comments': 1 };
     }
     else projection = { comments: 1 };
@@ -341,7 +388,6 @@ export async function likesAndUnlikesCourseOrTheme(req: Request, res: Response) 
 
     if (themeId) {
       if (!checkObjectId(themeId)) returnErrorId(res, true);
-
       query['temary._id'] = themeId;
       projection = { 'temary.$': 1 };
     }

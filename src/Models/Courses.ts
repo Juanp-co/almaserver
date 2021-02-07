@@ -25,14 +25,11 @@ const TemaryCommentsSchema = new Schema(
   { id: false }
 );
 
-const TemarySchema = new Schema(
+const ContentSchema = new Schema(
   {
     title: { type: String, require: true },
     description: { type: String, require: true },
-    urlVideo: { type: String, require: true },
-    comments: { type: [TemaryCommentsSchema], default: [] },
-    likes: { type: [LikesTemaryCommentsSchema], default: [] },
-    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
+    urlVideo: { type: String, require: true }
   },
   { id: false }
 );
@@ -55,6 +52,19 @@ const TestSchema = new Schema(
   { id: false }
 );
 
+const TemarySchema = new Schema(
+  {
+    title: { type: String, require: true },
+    description: { type: String, require: true },
+    content: { type: [ContentSchema], require: true },
+    test: { type: [TestSchema], require: true },
+    comments: { type: [TemaryCommentsSchema], default: [] },
+    likes: { type: [LikesTemaryCommentsSchema], default: [] },
+    unlikes: { type: [LikesTemaryCommentsSchema], default: [] },
+  },
+  { id: false }
+);
+
 const CoursesSchema = new Schema(
   {
     userid: { type: String, require: true }, // userid creator
@@ -66,7 +76,7 @@ const CoursesSchema = new Schema(
     description: { type: String, require: true, set: cleanWhiteSpaces },
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true }, // content
-    test: { type: [TestSchema], require: true }, // test to users
+    // test: { type: [TestSchema], require: true }, // test to users
     levels: { type: [String], default: [] }, // levels required
     comments: { type: [TemaryCommentsSchema], default: [] },
     likes: { type: [LikesTemaryCommentsSchema], default: [] },
@@ -86,7 +96,8 @@ CoursesSchema.pre<ICourse>('save', function (next) {
 });
 
 CoursesSchema.set('toJSON', { getters: true });
-TestSchema.set('toJSON', { getters: true });
+// TestSchema.set('toJSON', { getters: true });
+ContentSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
 TemaryCommentsSchema.set('toJSON', { getters: true });
 LikesTemaryCommentsSchema.set('toJSON', { getters: true });
