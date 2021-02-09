@@ -6,9 +6,9 @@ import {
   ICourseTemary,
   ICourseLikes, ICourseLikesAndUnlikesObject, ICourseReference, ICourseContent
 } from '../Interfaces/ICourse';
-import Courses from '../Models/Courses';
-import { IUserSimpleInfo } from '../Interfaces/IUser';
 import { ICourseUserList } from '../Interfaces/ICourseUser';
+import { IUserSimpleInfo } from '../Interfaces/IUser';
+import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
 
 function getModelLikesAndUnlikes(data: ICourseLikes) : ICourseLikes {

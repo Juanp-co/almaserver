@@ -70,6 +70,7 @@ CoursesSchema.pre('save', function (next) {
     next();
 });
 CoursesSchema.set('toJSON', { getters: true });
+CoursesSchema.index({ slug: 1 });
 // TestSchema.set('toJSON', { getters: true });
 ContentSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });

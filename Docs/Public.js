@@ -1,6 +1,6 @@
 /**
  * @api {post} /api/register (00) Registro de usuario.
- * @apiVersion 0.0.2
+ * @apiVersion 0.0.11
  * @apiName registerPublic
  * @apiGroup Public
  *
@@ -18,8 +18,9 @@
  * @apiParam {String} questionId ID de la pregunta de seguridad (obtenido desde API).
  * @apiParam {String} answer Respuesta de seguridad.
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
+ * @apiParam {String|Null} referred Número de documento del referido (Opcional)
  *
- * @apiExample {JSON} Example JSON Request
+ * @apiExample {JSON} Example JSON Request with Referred
  * {
     "phone": "3161234567",
     "password": "password",
@@ -34,13 +35,33 @@
     "companyType": null,
     "questionId": "5f8608596cd607042cdbea86",
     "answer": "respuesta",
-    "baptized": true
+    "baptized": true,
+    "referred": "CC12345678"
+}
+ *
+ * @apiExample {JSON} Example JSON Request without Referred
+ * {
+    "phone": "3161234567",
+    "password": "password",
+    "names": "Usuario",
+    "lastNames": "Prueba",
+    "direction": "any direction",
+    "document": "CC12345678",
+    "educationLevel": null,
+    "profession": null,
+    "bloodType": 1,
+    "company": false,
+    "companyType": null,
+    "questionId": "5f8608596cd607042cdbea86",
+    "answer": "respuesta",
+    "baptized": true,
+    "referred": "CC12345678"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Registro exitoso.",
 }

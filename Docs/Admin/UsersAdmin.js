@@ -101,7 +101,7 @@
 
 /**
  * @api {post} /api/admin/users (02) Crear nuevo usuario.
- * @apiVersion 0.0.3
+ * @apiVersion 0.0.11
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -143,7 +143,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Se ha registrado el nuevo usuario exitosamente.",
 }
@@ -450,6 +450,146 @@
  * HTTP/1.1 422 Unprocessable Entity
  * {
     "msg": "Disculpe, pero el rol seleccionado es incorrecto."
+}
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */
+
+/**
+ * @api {get} /api/admin/users/:_id/referrals (06) Obtener listado de referidos de un usuario.
+ * @apiVersion 0.0.11
+ * @apiName getReferralsUsersListAdmin
+ * @apiGroup UsersAdmin
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (admin).
+ *
+ * @apiParam (Path params) {String} _id ID del usuario.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} data Datos del usuario y listado de referidos.
+ *
+ * @apiSuccess {Object} user Datos del usuario.
+ * @apiSuccess {Number} totals Total de referidos.
+ * @apiSuccess {Array|Object} members Listado de referidos del usuario.
+ *
+ * @apiSuccess (user Object) {String|Null} referred Datos del usuario referido.
+ * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} document Número de documento.
+ * @apiSuccess (user Object) {String} names Nombres.
+ * @apiSuccess (user Object) {String} lastNames Apellidos.
+ *
+ * @apiSuccess (referred Object and members Array Object) {String} _id ID del usuario.
+ * @apiSuccess (referred Object and members Array Object) {String} document Número de documento.
+ * @apiSuccess (referred Object and members Array Object) {String} names Nombres.
+ * @apiSuccess (referred Object and members Array Object) {String} lastNames Apellidos.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Listado de referidos.",
+	"data": {
+		"user": {
+			"referred": {
+				"_id": "6022194c88342006d4a700f3",
+				"document": "CC12345675",
+				"names": "ANTHONY",
+				"lastNames": "VELÁSQUEZ"
+			},
+			"_id": "5fcf0821fc917d476c1cf3e3",
+			"document": "CC12345678",
+			"names": "USUARIO TRES",
+			"lastNames": "PRUEBA TRES"
+		},
+		"totals": 1,
+		"members": [
+			{
+				"user": {
+					"_id": "6022194c88342006d4a700f3",
+					"document": "CC12345675",
+					"names": "ANTHONY",
+					"lastNames": "VELÁSQUEZ"
+				},
+				"totalsReferrals": 1
+			}
+		]
+	}
+}
+ *
+ * @apiSuccessExample {JSON} Success without members
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Listado de referidos.",
+	"data": {
+		"user": {
+			"referred": {
+				"_id": "6022194c88342006d4a700f3",
+				"document": "CC12345675",
+				"names": "ANTHONY",
+				"lastNames": "VELÁSQUEZ"
+			},
+			"_id": "5fcf0821fc917d476c1cf3e3",
+			"document": "CC12345678",
+			"names": "USUARIO TRES",
+			"lastNames": "PRUEBA TRES"
+		},
+		"totals": 0,
+		"members": []
+	}
+}
+ *
+ * @apiSuccessExample {JSON} Success without referred data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Listado de referidos.",
+	"data": {
+		"user": {
+			"referred": null,
+			"_id": "5fcf0821fc917d476c1cf3e3",
+			"document": "CC12345678",
+			"names": "USUARIO TRES",
+			"lastNames": "PRUEBA TRES"
+		},
+		"totals": 1,
+		"members": [
+			{
+				"user": {
+					"_id": "6022194c88342006d4a700f3",
+					"document": "CC12345675",
+					"names": "ANTHONY",
+					"lastNames": "VELÁSQUEZ"
+				},
+				"totalsReferrals": 1
+			}
+		]
+	}
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Not found
+ * HTTP/1.1 404 Not found
+ * {
+    "msg": "Disculpe, pero el usuario a seleccionado no existe."
+}
+ *
+ * @apiErrorExample {JSON} Invalid _id
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+    "msg": "Disculpe, pero el usuario seleccionado es incorrecto."
 }
  *
  * @apiErrorExample {JSON} Error internal server

@@ -1,10 +1,10 @@
 import moment from 'moment-timezone';
 import { Request, Response } from 'express';
-import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
-import Events from '../../Models/Events';
-import validateRegister from '../../FormRequest/EventsRequest';
-import { checkDate, checkObjectId } from '../../Functions/Validations';
 import getEventsList, { getDetailsEvent } from '../../ActionsData/EventsActions';
+import validateRegister from '../../FormRequest/EventsRequest';
+import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import { checkDate, checkObjectId } from '../../Functions/Validations';
+import Events from '../../Models/Events';
 
 const path = 'src/controllers/events/events.controller';
 

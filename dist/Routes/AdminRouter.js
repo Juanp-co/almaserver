@@ -18,14 +18,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../middleware");
-const questions_admin_controller_1 = __importStar(require("../Controllers/admin/questions.admin.controller"));
-const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
-const events_controller_1 = __importStar(require("../Controllers/events/events.controller"));
 const courses_admin_controller_1 = __importStar(require("../Controllers/admin/courses.admin.controller"));
+const events_controller_1 = __importStar(require("../Controllers/events/events.controller"));
 const groups_admin_controller_1 = __importStar(require("../Controllers/admin/groups.admin.controller"));
+const questions_admin_controller_1 = __importStar(require("../Controllers/admin/questions.admin.controller"));
+const referrals_admin_controller_1 = __importDefault(require("../Controllers/admin/referrals.admin.controller"));
+const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
 const router = express_1.Router();
 // ===================================================================================
 /*
@@ -85,5 +89,6 @@ router.route('/users/:_id')
     .get(middleware_1.validateAdmin, users_admin_controller_1.showUser)
     .put(middleware_1.validateAdmin, users_admin_controller_1.updateUser);
 // .delete(validateAdmin, deleteUser);
+router.get('/users/:_id/referrals', middleware_1.validateAdmin, referrals_admin_controller_1.default);
 router.put('/users/:_id/role', middleware_1.validateAdmin, users_admin_controller_1.changeRoleUser);
 exports.default = router;

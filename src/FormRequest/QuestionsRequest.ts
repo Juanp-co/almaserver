@@ -1,6 +1,6 @@
-import { IQuestionRegister, IQuestionUpdate } from '../Interfaces/IQuestion';
 import { checkObjectId, checkTitlesOrDescriptions } from '../Functions/Validations';
 import { setError } from '../Functions/GlobalFunctions';
+import { IQuestionRegister, IQuestionUpdate } from '../Interfaces/IQuestion';
 
 export function validateRegister(data: IQuestionRegister): { data: IQuestionRegister; errors: any }  {
 

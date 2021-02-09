@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteQuestions = exports.updateQuestions = exports.saveQuestions = exports.getDetailsQuestion = void 0;
 const Question_1 = __importDefault(require("../../Models/Question"));
-const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const QuestionsRequest_1 = require("../../FormRequest/QuestionsRequest");
-const Users_1 = __importDefault(require("../../Models/Users"));
+const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
+const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'Controllers/admin/question.admin.controller';
 async function getQuestions(req, res) {
     try {

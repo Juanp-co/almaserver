@@ -488,7 +488,7 @@
 
 /**
  * @api {post} /api/courses/:slug (03) Agergar un curso al listado del usuario.
- * @apiVersion 0.0.10
+ * @apiVersion 0.0.11
  * @apiName addCourseUser
  * @apiGroup Courses
  *
@@ -524,7 +524,7 @@
  * @apiSuccess (tests Array Object) {String} date Fecha de presentación.
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
 	"msg": "Se ha agregado el curso exitosamente.",
 	"added": {
@@ -605,7 +605,7 @@
 
 /**
  * @api {post} /api/courses/:slug/like (04) "Me gusta" o "No me gusta" a un curso.
- * @apiVersion 0.0.6
+ * @apiVersion 0.0.11
  * @apiName likeOrUnlikeCourse
  * @apiGroup Courses
  *
@@ -638,7 +638,7 @@
  * @apiSuccess (like or unlike Object) {String} created_at Fecha de registro.
  *
  * @apiSuccessExample {JSON} Success (like)
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Me gusta agregado exitosamente.",
     "data": {
@@ -651,7 +651,7 @@
 }
  *
  * @apiSuccessExample {JSON} Success (unlike)
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "No me gusta agregado exitosamente.",
     "data": {
@@ -716,7 +716,7 @@
 
 /**
  * @api {post} /api/courses/:slug/comment (05) Comentar un curso.
- * @apiVersion 0.0.6
+ * @apiVersion 0.0.11
  * @apiName commentCourse
  * @apiGroup Courses
  *
@@ -753,7 +753,7 @@
  * @apiSuccess (user Object) {String} lastNames Apellidos del usuario.
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Se ha agregado el comentario exitosamente.",
     "comment": {
@@ -815,7 +815,7 @@
 
 /**
  * @api {post} /api/courses/:slug/comment/:commentId/like (06) "Me gusta" o "No me gusta" a un comentario de un curso.
- * @apiVersion 0.0.10
+ * @apiVersion 0.0.11
  * @apiName likeOrUnlikeCommentCourse
  * @apiGroup Courses
  *
@@ -849,7 +849,7 @@
  * @apiSuccess (like or unlike Object) {String} created_at Fecha de registro.
  *
  * @apiSuccessExample {JSON} Success (like)
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Me gusta agregado exitosamente.",
     "data": {
@@ -862,7 +862,7 @@
 }
  *
  * @apiSuccessExample {JSON} Success (unlike)
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "No me gusta agregado exitosamente.",
     "data": {
@@ -1260,7 +1260,7 @@
 
 /**
  * @api {post} /api/courses/:slug/theme/:themeId/comment (09) Comentar un tema.
- * @apiVersion 0.0.6
+ * @apiVersion 0.0.11
  * @apiName commentThemeCourse
  * @apiGroup Courses
  *
@@ -1298,7 +1298,7 @@
  * @apiSuccess (user Object) {String} lastNames Apellidos del usuario.
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Se ha agregado el comentario exitosamente.",
     "comment": {
@@ -1372,7 +1372,7 @@
 
 /**
  * @api {post} /api/courses/:slug/theme/:themeId/like (10) "Me gusta" o "No me gusta" a un tema.
- * @apiVersion 0.0.6
+ * @apiVersion 0.0.11
  * @apiName likeOrUnlikeThemeCourse
  * @apiGroup Courses
  *
@@ -1406,7 +1406,7 @@
  * @apiSuccess (like or unlike Object) {String} created_at Fecha de registro.
  *
  * @apiSuccessExample {JSON} Success (like)
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Me gusta agregado exitosamente.",
     "data": {
@@ -1496,7 +1496,7 @@
 
 /**
  * @api {post} /api/courses/:slug/theme/:themeId/comment/:commentId/like (11) "Me gusta" o "No me gusta" a un comentario de un tema.
- * @apiVersion 0.0.6
+ * @apiVersion 0.0.11
  * @apiName likeOrUnlikeCommentThemeCourse
  * @apiGroup Courses
  *
@@ -1531,7 +1531,7 @@
  * @apiSuccess (like or unlike Object) {String} created_at Fecha de registro.
  *
  * @apiSuccessExample {JSON} Success (like)
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Me gusta agregado exitosamente.",
     "data": {

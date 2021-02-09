@@ -5,9 +5,9 @@ import {
   validateSecurityQuestion,
   validateUpdate
 } from '../FormRequest/UsersRequest';
-import Users from '../Models/Users';
-import { forceLogout } from '../Functions/TokenActions';
 import { returnError, returnErrorParams } from '../Functions/GlobalFunctions';
+import { forceLogout } from '../Functions/TokenActions';
+import Users from '../Models/Users';
 
 const path = 'Controllers/user.controller';
 
@@ -16,7 +16,7 @@ export async function get(req: Request, res: Response): Promise<Response> {
     const { userid } = req.params;
     const user = await Users.findOne(
       { _id: userid },
-      { __v: 0, password: 0, 'securityQuestion.answer': 0 }
+      { __v: 0, password: 0, 'securityQuestion.answer': 0, referred: 0 }
     ).exec();
 
     if (!user) {

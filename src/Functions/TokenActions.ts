@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import Whitelist from '../Models/Whitelist';
 import { IUserToToken } from '../Interfaces/IUser';
 import IWhitelist from '../Interfaces/IWhitelist';
+import Whitelist from '../Models/Whitelist';
 
 export async function checkTokenDB(token?: string): Promise<boolean> {
   const exits = await Whitelist.findOne({ token, status: true }, { _id: 1 }).exec();

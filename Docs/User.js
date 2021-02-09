@@ -316,3 +316,62 @@
     "errors": [${err}]
   }
  */
+
+/**
+ * @api {get} /api/user/referrals (04) Obtener listado de referidos.
+ * @apiVersion 0.0.11
+ * @apiName getReferralsUser
+ * @apiGroup User
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Array|Object} referrals Listado de referidos del usuario.
+ *
+ * @apiSuccess (referrals Array Object) {String} _id ID del usuario.
+ * @apiSuccess (referrals Array Object) {String} document Número de documento.
+ * @apiSuccess (referrals Array Object) {String} names Nombres.
+ * @apiSuccess (referrals Array Object) {String} lastNames Apellidos.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Mis referidos.",
+	"referrals": [
+		{
+			"_id": "6022194c88342006d4a700f3",
+			"document": "CC12345675",
+			"names": "ANTHONY",
+			"lastNames": "VELÁSQUEZ"
+		},
+		.
+		.
+		.
+	]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Mis referidos.",
+	"referrals": []
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */

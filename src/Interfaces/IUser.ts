@@ -15,8 +15,7 @@ export default interface IUser extends Document {
   baptized?: boolean | null;
   role?: number | null;
   securityQuestion: IUserSecurityQuestion;
-  questionId?: string | null;
-  answer?: string | null;
+  referred?: string | null;
   created_at?: number | null;
   updated_at?: number | null;
 }
@@ -35,8 +34,10 @@ export interface IUserRegister {
   companyType: IUser['companyType'];
   baptized: IUser['baptized'];
   role: IUser['role'];
-  questionId: IUser['questionId'];
-  answer: IUser['answer'];
+  referred: string | null;
+  questionId?: string | null;
+  answer?: string | null;
+  securityQuestion: IUser['securityQuestion'];
 }
 
 export interface IUserUpdate {
@@ -63,6 +64,7 @@ export interface IUserSimpleInfo {
   names: IUser['names'];
   lastNames: IUser['lastNames'];
   document: IUser['document'];
+  referred?: IUserSimpleInfo | null;
 }
 
 export interface IUserPasswords {

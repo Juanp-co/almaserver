@@ -1,5 +1,4 @@
 import { Document } from 'mongoose';
-import { IUserSimpleInfo } from './IUser';
 import { ICourseList } from './ICourse';
 
 export interface ICourseUserTest {

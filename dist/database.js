@@ -25,16 +25,18 @@ async function startConnection() {
             pathDb = pathDb.replace('<password>', dbPwd);
             pathDb = pathDb.replace('<dbname>', dbName);
         }
-        else if (dbUser !== '')
-            dbAuthString = `${dbUser}:${dbPwd}@`;
-        pathDb = `mongodb://${dbAuthString}${encodeURIComponent(dbHost)}:${encodeURIComponent(dbPort)}/${encodeURIComponent(dbName)}`;
+        else {
+            if (dbUser !== '')
+                dbAuthString = `${dbUser}:${dbPwd}@`;
+            pathDb = `mongodb://${dbAuthString}${encodeURIComponent(dbHost)}:${encodeURIComponent(dbPort)}/${encodeURIComponent(dbName)}`;
+        }
         await mongoose_1.connect(pathDb, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: false
+            useFindAndModify: false,
+            useCreateIndex: true
         });
         GlobalFunctions_1.showConsoleLog(1, 'Database is connected.');
-        // this.connection.set('useCreateIndex', true);
     }
     catch (e) {
         GlobalFunctions_1.showConsoleError('./database', e);

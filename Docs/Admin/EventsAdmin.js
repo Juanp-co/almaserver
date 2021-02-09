@@ -82,7 +82,7 @@
 
 /**
  * @api {post} /api/admin/events (01) Crear nuevo evento.
- * @apiVersion 0.0.4
+ * @apiVersion 0.0.11
  * @apiName createEventsAdmin
  * @apiGroup EventsAdmin
  *
@@ -125,7 +125,7 @@
  * @apiSuccess (user Object) {String} lastNames Apellido(s).
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Se ha creado el evento exitosamente.",
     "event": {

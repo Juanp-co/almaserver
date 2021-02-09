@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateIdsMembers = void 0;
 const lodash_1 = __importDefault(require("lodash"));
-const Validations_1 = require("../Functions/Validations");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
+const Validations_1 = require("../Functions/Validations");
 function validateRegister(data) {
     const ret = {
         name: '',

@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
+import { getNamesUsersList } from '../../ActionsData/UsersActions';
 import validateRegister, { validateIdsMembers } from '../../FormRequest/GroupsRequest';
-import Groups from '../../Models/Groups';
-import { IGroupsDetails, IGroupsList } from '../../Interfaces/IGroups';
 import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
-import { getNamesUsersList } from '../../ActionsData/UsersActions';
+import { IGroupsDetails, IGroupsList } from '../../Interfaces/IGroups';
 import { IUserSimpleInfo } from '../../Interfaces/IUser';
+import Groups from '../../Models/Groups';
 
 const path = 'src/admin/groups.admin.controller';
 

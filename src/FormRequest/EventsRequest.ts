@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
-import { IEventsRegisterOrUpdate } from '../Interfaces/IEvents';
 import { setError } from '../Functions/GlobalFunctions';
 import { checkDate, checkHour, checkTitlesOrDescriptions } from '../Functions/Validations';
+import { IEventsRegisterOrUpdate } from '../Interfaces/IEvents';
 
 export default function validateRegister(
   data: IEventsRegisterOrUpdate,

@@ -6,6 +6,7 @@ import {
   get,
   update
 } from '../Controllers/user.controller';
+import getReferrals from '../Controllers/publics/referrals.controller';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ const router = Router();
 router.route('/').get(validateUser, get).put(validateUser, update);
 router.put('/change-password', validateUser, changePassword);
 router.put('/change-question', validateUser, changeSecurityQuestion);
+router.get('/referrals', validateUser, getReferrals);
 
 export default router;

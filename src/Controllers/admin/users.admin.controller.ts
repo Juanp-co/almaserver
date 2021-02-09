@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { validateRegister, validateUpdate } from '../../FormRequest/UsersRequest';
-import Users from '../../Models/Users';
-import { checkNameOrLastName, checkObjectId, checkRole } from '../../Functions/Validations';
+import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
+import { checkNameOrLastName, checkObjectId, checkRole } from '../../Functions/Validations';
+import Users from '../../Models/Users';
 
 const path = 'Controllers/admin/users.admin.controller';
 

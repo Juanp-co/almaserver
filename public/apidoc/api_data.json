@@ -593,7 +593,7 @@
     "type": "post",
     "url": "/api/admin/courses",
     "title": "(02) Crear nuevo curso.",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "name": "createCoursesAdmin",
     "group": "CoursesAdmin",
     "description": "<p>El siguiente ENDPOINT es para poder crear un curso, cargando los diferentes temas a presentar al usuario, las preguntas para la prueba (examen) y demás ajustes para poder cargar y visualizar el curso.</p> <p>Lea detenidamente los parámetros requeridos en el servicio para poder crear el nuevo curso, cargar el contenido y sobretodo poder cargar las preguntas para las pruebas (PRESTE ATENCIÓN A ESTA).</p>",
@@ -1045,12 +1045,12 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha creado el nuevo curso exitosamente.\",\n\t\"course\": {\n\t\t\"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n\t\t\"levels\": [],\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n\t\t\"enable\": false,\n\t\t\"draft\": true,\n\t\t\"_id\": \"601fbab782fea34e787d449b\",\n\t\t\"speaker\": \"Anthony Velásquez\",\n\t\t\"speakerPosition\": 2,\n\t\t\"code\": \"AAA-0004\",\n\t\t\"title\": \"CURSO POR EDITAR\",\n\t\t\"slug\": \"curso-por-editar-2\",\n\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n\t\t\"temary\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"601fbab782fea34e787d449c\",\n\t\t\t\t\"title\": \"Introducción\",\n\t\t\t\t\"description\": null,\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d449d\",\n\t\t\t\t\t\t\"title\": \"Contenido 1\",\n\t\t\t\t\t\t\"description\": \"<p>Contenido 01</p>\",\n\t\t\t\t\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d449e\",\n\t\t\t\t\t\t\"title\": \"Contenido 2\",\n\t\t\t\t\t\t\"description\": \"<p>Contenido 02</p>\"\n\t\t\t\t\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n\t\t\t\t\t},\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t],\n\t\t\t\t\"test\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"<p>Seleccione una opción</p>\",\n\t\t\t\t\t\t\"extra\": null,\n\t\t\t\t\t\t\"placeholder\": \"Indica tu respuesta\",\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [\n\t\t\t\t\t\t\t\"Una red de redes interconectada\",\n\t\t\t\t\t\t\t\"Una estúfa\",\n\t\t\t\t\t\t\t\"Una computador\",\n\t\t\t\t\t\t\t\"Una reunión de amigos\"\n\t\t\t\t\t\t],\n\t\t\t\t\t\t\"correctAnswer\": 0,\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d44a1\",\n\t\t\t\t\t\t\"title\": \"01 - ¿Qué es el internet?\",\n\t\t\t\t\t\t\"inputType\": \"radio\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"<p>Indique una respuesta</p>\",\n\t\t\t\t\t\t\"extra\": null,\n\t\t\t\t\t\t\"placeholder\": \"Indique una respuesta\",\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [],\n\t\t\t\t\t\t\"correctAnswer\": null,\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d44a2\",\n\t\t\t\t\t\t\"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n\t\t\t\t\t\t\"inputType\": \"text\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"comments\": [],\n\t\t\t\t\"likes\": [],\n\t\t\t\t\"unlikes\": []\n\t\t\t}\n\t\t],\n\t\t\"comments\": [],\n\t\t\"likes\": [],\n\t\t\"unlikes\": [],\n\t\t\"created_at\": \"2021-02-07 05:02:31\",\n\t\t\"updated_at\": \"2021-02-07 05:02:31\"\n\t}\n}",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha creado el nuevo curso exitosamente.\",\n\t\"course\": {\n\t\t\"banner\": \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png\",\n\t\t\"levels\": [],\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n\t\t\"enable\": false,\n\t\t\"draft\": true,\n\t\t\"_id\": \"601fbab782fea34e787d449b\",\n\t\t\"speaker\": \"Anthony Velásquez\",\n\t\t\"speakerPosition\": 2,\n\t\t\"code\": \"AAA-0004\",\n\t\t\"title\": \"CURSO POR EDITAR\",\n\t\t\"slug\": \"curso-por-editar-2\",\n\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n\t\t\"temary\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"601fbab782fea34e787d449c\",\n\t\t\t\t\"title\": \"Introducción\",\n\t\t\t\t\"description\": null,\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d449d\",\n\t\t\t\t\t\t\"title\": \"Contenido 1\",\n\t\t\t\t\t\t\"description\": \"<p>Contenido 01</p>\",\n\t\t\t\t\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d449e\",\n\t\t\t\t\t\t\"title\": \"Contenido 2\",\n\t\t\t\t\t\t\"description\": \"<p>Contenido 02</p>\"\n\t\t\t\t\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n\t\t\t\t\t},\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t],\n\t\t\t\t\"test\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"<p>Seleccione una opción</p>\",\n\t\t\t\t\t\t\"extra\": null,\n\t\t\t\t\t\t\"placeholder\": \"Indica tu respuesta\",\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [\n\t\t\t\t\t\t\t\"Una red de redes interconectada\",\n\t\t\t\t\t\t\t\"Una estúfa\",\n\t\t\t\t\t\t\t\"Una computador\",\n\t\t\t\t\t\t\t\"Una reunión de amigos\"\n\t\t\t\t\t\t],\n\t\t\t\t\t\t\"correctAnswer\": 0,\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d44a1\",\n\t\t\t\t\t\t\"title\": \"01 - ¿Qué es el internet?\",\n\t\t\t\t\t\t\"inputType\": \"radio\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"<p>Indique una respuesta</p>\",\n\t\t\t\t\t\t\"extra\": null,\n\t\t\t\t\t\t\"placeholder\": \"Indique una respuesta\",\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [],\n\t\t\t\t\t\t\"correctAnswer\": null,\n\t\t\t\t\t\t\"_id\": \"601fbab782fea34e787d44a2\",\n\t\t\t\t\t\t\"title\": \"02 - ¿Cuál es el objetivo de internet?\",\n\t\t\t\t\t\t\"inputType\": \"text\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"comments\": [],\n\t\t\t\t\"likes\": [],\n\t\t\t\t\"unlikes\": []\n\t\t\t}\n\t\t],\n\t\t\"comments\": [],\n\t\t\"likes\": [],\n\t\t\"unlikes\": [],\n\t\t\"created_at\": \"2021-02-07 05:02:31\",\n\t\t\"updated_at\": \"2021-02-07 05:02:31\"\n\t}\n}",
           "type": "JSON"
         },
         {
           "title": "Success without toRoles, banner, levels and temary",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha creado el nuevo curso exitosamente.\",\n\t\"course\": {\n\t\t\"banner\": null,\n\t\t\"levels\": [],\n\t\t\"toRoles\": [],\n\t\t\"enable\": false,\n\t\t\"draft\": true,\n\t\t\"_id\": \"601fbab782fea34e787d449b\",\n\t\t\"speaker\": \"Anthony Velásquez\",\n\t\t\"speakerPosition\": 2,\n\t\t\"code\": \"AAA-0004\",\n\t\t\"title\": \"CURSO POR EDITAR\",\n\t\t\"slug\": \"curso-por-editar-2\",\n\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n\t\t\"temary\": [],\n\t\t\"comments\": [],\n\t\t\"likes\": [],\n\t\t\"unlikes\": [],\n\t\t\"created_at\": \"2021-02-07 05:02:31\",\n\t\t\"updated_at\": \"2021-02-07 05:02:31\"\n\t}\n}",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha creado el nuevo curso exitosamente.\",\n\t\"course\": {\n\t\t\"banner\": null,\n\t\t\"levels\": [],\n\t\t\"toRoles\": [],\n\t\t\"enable\": false,\n\t\t\"draft\": true,\n\t\t\"_id\": \"601fbab782fea34e787d449b\",\n\t\t\"speaker\": \"Anthony Velásquez\",\n\t\t\"speakerPosition\": 2,\n\t\t\"code\": \"AAA-0004\",\n\t\t\"title\": \"CURSO POR EDITAR\",\n\t\t\"slug\": \"curso-por-editar-2\",\n\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n\t\t\"temary\": [],\n\t\t\"comments\": [],\n\t\t\"likes\": [],\n\t\t\"unlikes\": [],\n\t\t\"created_at\": \"2021-02-07 05:02:31\",\n\t\t\"updated_at\": \"2021-02-07 05:02:31\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -3306,7 +3306,7 @@
     "type": "post",
     "url": "/api/courses/:slug",
     "title": "(03) Agergar un curso al listado del usuario.",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "name": "addCourseUser",
     "group": "Courses",
     "header": {
@@ -3505,7 +3505,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha agregado el curso exitosamente.\",\n\t\"added\": {\n\t\t\"approved\": false,\n\t\t\"_id\": \"601fb09edec8a05c800602b8\",\n\t\t\"userid\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"courseId\": \"601f09f99775034e10510fa2\",\n\t\t\"temary\": [\n\t\t\t{\n\t\t\t\t\"view\": 0,\n\t\t\t\t\"date\": null,\n\t\t\t\t\"approved\": false,\n\t\t\t\t\"approvedDate\": null,\n\t\t\t\t\"temaryId\": \"601f09f99775034e10510fa3\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"view\": 0,\n\t\t\t\t\t\t\"date\": null,\n\t\t\t\t\t\t\"contentId\": \"601f09f99775034e10510fa4\"\n\t\t\t\t\t},\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t],\n\t\t\t\t\"test\": []\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-07 04:19:26\",\n\t\t\"updated_at\": \"2021-02-07 04:19:26\"\n\t}\n}",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha agregado el curso exitosamente.\",\n\t\"added\": {\n\t\t\"approved\": false,\n\t\t\"_id\": \"601fb09edec8a05c800602b8\",\n\t\t\"userid\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"courseId\": \"601f09f99775034e10510fa2\",\n\t\t\"temary\": [\n\t\t\t{\n\t\t\t\t\"view\": 0,\n\t\t\t\t\"date\": null,\n\t\t\t\t\"approved\": false,\n\t\t\t\t\"approvedDate\": null,\n\t\t\t\t\"temaryId\": \"601f09f99775034e10510fa3\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"view\": 0,\n\t\t\t\t\t\t\"date\": null,\n\t\t\t\t\t\t\"contentId\": \"601f09f99775034e10510fa4\"\n\t\t\t\t\t},\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t],\n\t\t\t\t\"test\": []\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-07 04:19:26\",\n\t\t\"updated_at\": \"2021-02-07 04:19:26\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -3585,7 +3585,7 @@
     "type": "post",
     "url": "/api/courses/:slug/comment",
     "title": "(05) Comentar un curso.",
-    "version": "0.0.6",
+    "version": "0.0.11",
     "name": "commentCourse",
     "group": "Courses",
     "header": {
@@ -3770,7 +3770,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha agregado el comentario exitosamente.\",\n    \"comment\": {\n        \"answer\": null,\n        \"_id\": \"5ffd56368cee8d4f7c0c8a20\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n        \"comment\": \"Vivamus suscipit tortor eget felis porttitor volutpat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.\",\n        \"likes\": [],\n        \"unlikes\": [],\n        \"created_at\": \"2021-01-12 02:56:38\",\n        \"updated_at\": \"2021-01-12 02:56:38\"\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha agregado el comentario exitosamente.\",\n    \"comment\": {\n        \"answer\": null,\n        \"_id\": \"5ffd56368cee8d4f7c0c8a20\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n        \"comment\": \"Vivamus suscipit tortor eget felis porttitor volutpat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.\",\n        \"likes\": [],\n        \"unlikes\": [],\n        \"created_at\": \"2021-01-12 02:56:38\",\n        \"updated_at\": \"2021-01-12 02:56:38\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -3857,7 +3857,7 @@
     "type": "post",
     "url": "/api/courses/:slug/theme/:themeId/comment",
     "title": "(09) Comentar un tema.",
-    "version": "0.0.6",
+    "version": "0.0.11",
     "name": "commentThemeCourse",
     "group": "Courses",
     "header": {
@@ -4049,7 +4049,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha agregado el comentario exitosamente.\",\n    \"comment\": {\n        \"answer\": null,\n        \"_id\": \"5ffd5932e679cc15ac790192\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n        \"comment\": \"Vivamus suscipit tortor eget felis porttitor volutpat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.\",\n        \"likes\": [],\n        \"unlikes\": [],\n        \"created_at\": \"2021-01-12 02:56:38\",\n        \"updated_at\": \"2021-01-12 02:56:38\"\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha agregado el comentario exitosamente.\",\n    \"comment\": {\n        \"answer\": null,\n        \"_id\": \"5ffd5932e679cc15ac790192\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n        \"comment\": \"Vivamus suscipit tortor eget felis porttitor volutpat. Sed porttitor lectus nibh. Vivamus suscipit tortor eget felis porttitor volutpat. Quisque velit nisi, pretium ut lacinia in, elementum id enim.\",\n        \"likes\": [],\n        \"unlikes\": [],\n        \"created_at\": \"2021-01-12 02:56:38\",\n        \"updated_at\": \"2021-01-12 02:56:38\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -5880,7 +5880,7 @@
     "type": "post",
     "url": "/api/courses/:slug/comment/:commentId/like",
     "title": "(06) \"Me gusta\" o \"No me gusta\" a un comentario de un curso.",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "name": "likeOrUnlikeCommentCourse",
     "group": "Courses",
     "header": {
@@ -6003,12 +6003,12 @@
       "examples": [
         {
           "title": "Success (like)",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
           "type": "JSON"
         },
         {
           "title": "Success (unlike)",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"No me gusta agregado exitosamente.\",\n    \"data\": {\n        \"unlike\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"No me gusta agregado exitosamente.\",\n    \"data\": {\n        \"unlike\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -6110,7 +6110,7 @@
     "type": "post",
     "url": "/api/courses/:slug/theme/:themeId/comment/:commentId/like",
     "title": "(11) \"Me gusta\" o \"No me gusta\" a un comentario de un tema.",
-    "version": "0.0.6",
+    "version": "0.0.11",
     "name": "likeOrUnlikeCommentThemeCourse",
     "group": "Courses",
     "header": {
@@ -6240,7 +6240,7 @@
       "examples": [
         {
           "title": "Success (like)",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
           "type": "JSON"
         },
         {
@@ -6357,7 +6357,7 @@
     "type": "post",
     "url": "/api/courses/:slug/like",
     "title": "(04) \"Me gusta\" o \"No me gusta\" a un curso.",
-    "version": "0.0.6",
+    "version": "0.0.11",
     "name": "likeOrUnlikeCourse",
     "group": "Courses",
     "header": {
@@ -6473,12 +6473,12 @@
       "examples": [
         {
           "title": "Success (like)",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
           "type": "JSON"
         },
         {
           "title": "Success (unlike)",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"No me gusta agregado exitosamente.\",\n    \"data\": {\n        \"unlike\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"No me gusta agregado exitosamente.\",\n    \"data\": {\n        \"unlike\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -6570,7 +6570,7 @@
     "type": "post",
     "url": "/api/courses/:slug/theme/:themeId/like",
     "title": "(10) \"Me gusta\" o \"No me gusta\" a un tema.",
-    "version": "0.0.6",
+    "version": "0.0.11",
     "name": "likeOrUnlikeThemeCourse",
     "group": "Courses",
     "header": {
@@ -6693,7 +6693,7 @@
       "examples": [
         {
           "title": "Success (like)",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Me gusta agregado exitosamente.\",\n    \"data\": {\n        \"like\": {\n            \"_id\": \"5ffd4af6c149424030d7d8b3\",\n            \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n            \"created_at\": \"2021-01-12 02:08:38\"\n        }\n    }\n}",
           "type": "JSON"
         },
         {
@@ -7009,7 +7009,7 @@
     "type": "post",
     "url": "/api/admin/events",
     "title": "(01) Crear nuevo evento.",
-    "version": "0.0.4",
+    "version": "0.0.11",
     "name": "createEventsAdmin",
     "group": "EventsAdmin",
     "header": {
@@ -7190,7 +7190,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el evento exitosamente.\",\n    \"event\": {\n        \"toRoles\": [\n            5\n        ],\n        \"_id\": \"5fe00cf5e2c9942e5c866453\",\n        \"title\": \"EVENTO NUEVO\",\n        \"description\": \"description\",\n        \"date\": \"2020-07-07\",\n        \"initHour\": \"00:00\",\n        \"endHour\": \"00:00\",\n        \"created_at\": \"2020-12-20 21:48:21\",\n        \"updated_at\": \"2020-12-20 21:48:21\",\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha creado el evento exitosamente.\",\n    \"event\": {\n        \"toRoles\": [\n            5\n        ],\n        \"_id\": \"5fe00cf5e2c9942e5c866453\",\n        \"title\": \"EVENTO NUEVO\",\n        \"description\": \"description\",\n        \"date\": \"2020-07-07\",\n        \"initHour\": \"00:00\",\n        \"endHour\": \"00:00\",\n        \"created_at\": \"2020-12-20 21:48:21\",\n        \"updated_at\": \"2020-12-20 21:48:21\",\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -8221,7 +8221,7 @@
     "type": "post",
     "url": "/api/admin/groups",
     "title": "(02) Crear nuevo grupo.",
-    "version": "0.0.8",
+    "version": "0.0.11",
     "name": "createGroupsAdmin",
     "group": "GroupsAdmin",
     "header": {
@@ -8342,12 +8342,12 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"members\": [],\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"VEL-001\",\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"members\": [],\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"VEL-001\",\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
           "type": "JSON"
         },
         {
           "title": "Success with auto-code",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"members\": [],\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"GROUP-1\",\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"members\": [],\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"GROUP-1\",\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -10251,7 +10251,7 @@
     "type": "post",
     "url": "/api/register",
     "title": "(00) Registro de usuario.",
-    "version": "0.0.2",
+    "version": "0.0.11",
     "name": "registerPublic",
     "group": "Public",
     "parameter": {
@@ -10354,14 +10354,26 @@
             "optional": false,
             "field": "baptized",
             "description": "<p>Indica si se ha bautizado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "referred",
+            "description": "<p>Número de documento del referido (Opcional)</p>"
           }
         ]
       }
     },
     "examples": [
       {
-        "title": "Example JSON Request",
-        "content": "{\n    \"phone\": \"3161234567\",\n    \"password\": \"password\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345678\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"questionId\": \"5f8608596cd607042cdbea86\",\n    \"answer\": \"respuesta\",\n    \"baptized\": true\n}",
+        "title": "Example JSON Request with Referred",
+        "content": "{\n    \"phone\": \"3161234567\",\n    \"password\": \"password\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345678\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"questionId\": \"5f8608596cd607042cdbea86\",\n    \"answer\": \"respuesta\",\n    \"baptized\": true,\n    \"referred\": \"CC12345678\"\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without Referred",
+        "content": "{\n    \"phone\": \"3161234567\",\n    \"password\": \"password\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345678\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"questionId\": \"5f8608596cd607042cdbea86\",\n    \"answer\": \"respuesta\",\n    \"baptized\": true,\n    \"referred\": \"CC12345678\"\n}",
         "type": "JSON"
       }
     ],
@@ -10380,7 +10392,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Registro exitoso.\",\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Registro exitoso.\",\n}",
           "type": "JSON"
         }
       ]
@@ -10440,7 +10452,7 @@
     "type": "post",
     "url": "/api/admin/questions",
     "title": "(01) Agregar nueva pregunta de seguridad",
-    "version": "0.0.3",
+    "version": "0.0.11",
     "name": "createQuestionsAdmin",
     "group": "QuestionsAdmin",
     "header": {
@@ -10471,7 +10483,7 @@
     },
     "examples": [
       {
-        "title": "{",
+        "title": "Example JSON Request",
         "content": "{\n    \"question\": \"¿Cuál es su color favorito?\"\n}",
         "type": "JSON"
       }
@@ -10528,7 +10540,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha registrado la pregunta de seguridad exitosamente.\",\n    \"question\": {\n        \"_id\": \"5fd65964404e8c2654e37de4\",\n        \"question\": \"¿Cuál es su color favorito?\",\n        \"created_at\": \"2020-12-13 13:11:48\",\n        \"updated_at\": \"2020-12-13 13:11:48\"\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha registrado la pregunta de seguridad exitosamente.\",\n    \"question\": {\n        \"_id\": \"5fd65964404e8c2654e37de4\",\n        \"question\": \"¿Cuál es su color favorito?\",\n        \"created_at\": \"2020-12-13 13:11:48\",\n        \"updated_at\": \"2020-12-13 13:11:48\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -11021,7 +11033,7 @@
     },
     "examples": [
       {
-        "title": "{",
+        "title": "Example JSON Request",
         "content": "{\n    \"question\": \"¿Cuál es su color favorito de mi hijo(a)?\"\n}",
         "type": "JSON"
       }
@@ -11591,6 +11603,139 @@
         {
           "title": "Success",
           "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Datos de la sesión\",\n    \"data\": {\n        \"educationLevel\": 0,\n        \"bloodType\": 5,\n        \"company\": true,\n        \"companyType\": 4,\n        \"baptized\": true,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-08 13:43:16\",\n        \"updated_at\": \"2020-12-08 21:34:22\",\n        \"_id\": \"5fcfc945f4647b4c200cca05\",\n        \"phone\": \"3161234568\",\n        \"document\": \"CC12345677\",\n        \"names\": \"USUARIO\",\n        \"lastNames\": \"PRUEBA\",\n        \"direction\": \"any direction\",\n        \"profession\": 44\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/User.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/referrals",
+    "title": "(04) Obtener listado de referidos.",
+    "version": "0.0.11",
+    "name": "getReferralsUser",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "referrals",
+            "description": "<p>Listado de referidos del usuario.</p>"
+          }
+        ],
+        "referrals Array Object": [
+          {
+            "group": "referrals Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "referrals Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referrals Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "referrals Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"document\": \"CC12345675\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referrals\": []\n}",
           "type": "JSON"
         }
       ]
@@ -12421,7 +12566,7 @@
     "type": "post",
     "url": "/api/admin/users",
     "title": "(02) Crear nuevo usuario.",
-    "version": "0.0.3",
+    "version": "0.0.11",
     "name": "createUsersAdmin",
     "group": "UsersAdmin",
     "parameter": {
@@ -12557,7 +12702,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha registrado el nuevo usuario exitosamente.\",\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha registrado el nuevo usuario exitosamente.\",\n}",
           "type": "JSON"
         }
       ]
@@ -12840,6 +12985,225 @@
         {
           "title": "Not found",
           "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el usuario seleccionado no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el usuario seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/UsersAdmin.js",
+    "groupTitle": "UsersAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/users/:_id/referrals",
+    "title": "(06) Obtener listado de referidos de un usuario.",
+    "version": "0.0.11",
+    "name": "getReferralsUsersListAdmin",
+    "group": "UsersAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del usuario y listado de referidos.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Total de referidos.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de referidos del usuario.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "referred",
+            "description": "<p>Datos del usuario referido.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          }
+        ],
+        "referred Object and members Array Object": [
+          {
+            "group": "referred Object and members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "referred Object and members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referred Object and members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "referred Object and members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos.\",\n\t\"data\": {\n\t\t\"user\": {\n\t\t\t\"referred\": {\n\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t},\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\"lastNames\": \"PRUEBA TRES\"\n\t\t},\n\t\t\"totals\": 1,\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"user\": {\n\t\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t\t},\n\t\t\t\t\"totalsReferrals\": 1\n\t\t\t}\n\t\t]\n\t}\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without members",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos.\",\n\t\"data\": {\n\t\t\"user\": {\n\t\t\t\"referred\": {\n\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t},\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\"lastNames\": \"PRUEBA TRES\"\n\t\t},\n\t\t\"totals\": 0,\n\t\t\"members\": []\n\t}\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without referred data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos.\",\n\t\"data\": {\n\t\t\"user\": {\n\t\t\t\"referred\": null,\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\"lastNames\": \"PRUEBA TRES\"\n\t\t},\n\t\t\"totals\": 1,\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"user\": {\n\t\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t\t},\n\t\t\t\t\"totalsReferrals\": 1\n\t\t\t}\n\t\t]\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el usuario a seleccionado no existe.\"\n}",
           "type": "JSON"
         },
         {

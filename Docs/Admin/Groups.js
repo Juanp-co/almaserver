@@ -115,7 +115,7 @@
 
 /**
  * @api {post} /api/admin/groups (02) Crear nuevo grupo.
- * @apiVersion 0.0.8
+ * @apiVersion 0.0.11
  * @apiName createGroupsAdmin
  * @apiGroup GroupsAdmin
  *
@@ -147,7 +147,7 @@
  * @apiSuccess (group Object) {String} userid ID del usuario que creó el grupo.
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Se ha creado el grupo exitosamente.",
     "group": {
@@ -161,7 +161,7 @@
     }
 }
  * @apiSuccessExample {JSON} Success with auto-code
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Se ha creado el grupo exitosamente.",
     "group": {
