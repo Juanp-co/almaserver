@@ -20,10 +20,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const public_controller_1 = require("../Controllers/publics/public.controller");
 const middleware_1 = require("../middleware");
-const events_controller_1 = require("../Controllers/events/events.controller");
 const courses_controller_1 = __importStar(require("../Controllers/publics/courses.controller"));
+const events_controller_1 = require("../Controllers/events/events.controller");
+const public_controller_1 = require("../Controllers/publics/public.controller");
 const router = express_1.Router();
 // ===================================================================================
 /* Test api */

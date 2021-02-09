@@ -1,20 +1,5 @@
 import { Router } from 'express';
 import { validateAdmin } from '../middleware';
-import getQuestions, {
-  deleteQuestions,
-  getDetailsQuestion,
-  saveQuestions,
-  updateQuestions
-} from '../Controllers/admin/questions.admin.controller';
-import getUsers, {
-  changeRoleUser,
-  // deleteUser,
-  getUsersCounters,
-  saveUser,
-  showUser,
-  updateUser
-} from '../Controllers/admin/users.admin.controller';
-import getEvents, { deleteEvent, saveEvent, showEvent, updateEvent } from '../Controllers/events/events.controller';
 import getCourses, {
   commentsCourseOrTheme,
   deleteCourse,
@@ -25,12 +10,28 @@ import getCourses, {
   showCourse,
   updateCourse
 } from '../Controllers/admin/courses.admin.controller';
+import getEvents, { deleteEvent, saveEvent, showEvent, updateEvent } from '../Controllers/events/events.controller';
 import getGroups, {
   addOrRemoveMembersGroup,
   deleteGroup,
   getGroupsCounters,
   saveGroup, showGroup, updateGroup
 } from '../Controllers/admin/groups.admin.controller';
+import getQuestions, {
+  deleteQuestions,
+  getDetailsQuestion,
+  saveQuestions,
+  updateQuestions
+} from '../Controllers/admin/questions.admin.controller';
+import getReferrals from '../Controllers/admin/referrals.admin.controller';
+import getUsers, {
+  changeRoleUser,
+  // deleteUser,
+  getUsersCounters,
+  saveUser,
+  showUser,
+  updateUser
+} from '../Controllers/admin/users.admin.controller';
 
 const router = Router();
 
@@ -107,6 +108,7 @@ router.route('/users/:_id')
   .put(validateAdmin, updateUser);
   // .delete(validateAdmin, deleteUser);
 
+router.get('/users/:_id/referrals', validateAdmin, getReferrals);
 router.put('/users/:_id/role', validateAdmin, changeRoleUser);
 
 export default router;

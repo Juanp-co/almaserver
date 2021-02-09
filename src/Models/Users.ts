@@ -28,6 +28,7 @@ const UserSchema = new Schema(
     // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona
     role: { type: Number, default: 5 },
     securityQuestion: { type: SecurityQuestionSchema, default: { SecurityQuestionSchema } },
+    referred: { type: String, default: null },
     created_at: { type: Number, default: setDate(), get: getDate },
     updated_at: { type: Number, default: setDate(), get: getDate }
   },

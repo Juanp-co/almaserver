@@ -1,3 +1,6 @@
+import checkIfExistDocument, { getIdUserFromDocument } from '../ActionsData/UsersActions';
+import checkIfExistQuestion from '../ActionsData/QuestionsActions';
+import { setError } from '../Functions/GlobalFunctions';
 import {
   checkDocument,
   checkIfValueIsNumber,
@@ -13,11 +16,8 @@ import IUser, {
   IUserSecurityQuestion,
   IUserUpdate
 } from '../Interfaces/IUser';
-import { setError } from '../Functions/GlobalFunctions';
-import checkIfExistDocument from '../ActionsData/UsersActions';
-import checkIfExistQuestion from '../ActionsData/QuestionsActions';
 
-export async function validateRegister(data: IUserRegister, admin?: boolean | null): Promise<{ data: IUser; errors: any }> {
+export async function validateRegister(data: IUserRegister, admin?: boolean | null): Promise<{ data: IUserRegister; errors: any }> {
   const ret = {
     phone: null,
     password: null,
@@ -35,8 +35,9 @@ export async function validateRegister(data: IUserRegister, admin?: boolean | nu
     securityQuestion: {
       questionId: null,
       answer: null
-    }
-  } as IUser;
+    },
+    referred: null
+  } as IUserRegister;
   const errors: any = [];
 
   // phone
@@ -44,9 +45,7 @@ export async function validateRegister(data: IUserRegister, admin?: boolean | nu
     errors.push(
       setError('Disculpe, pero debe asegurarse de indicar su número de teléfono.', 'phone')
     );
-  } else {
-    ret.phone = data.phone;
-  }
+  } else ret.phone = data.phone;
 
   // password
   if (!data.password || !checkPassword(data.password)) {
@@ -57,25 +56,19 @@ export async function validateRegister(data: IUserRegister, admin?: boolean | nu
         'password'
       )
     );
-  } else {
-    ret.password = data.password;
-  }
+  } else ret.password = data.password;
 
   // names
   if (!data.names || !checkNameOrLastName(data.names)) {
     errors.push(setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
-  } else {
-    ret.names = data.names.toUpperCase();
-  }
+  } else ret.names = data.names.toUpperCase();
 
   // lastNames
   if (!data.lastNames || !checkNameOrLastName(data.lastNames)) {
     errors.push(
       setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames')
     );
-  } else {
-    ret.lastNames = data.lastNames.toUpperCase();
-  }
+  } else ret.lastNames = data.lastNames.toUpperCase();
 
   // document
   if (!data.document || !checkDocument(data.document)) {
@@ -89,23 +82,17 @@ export async function validateRegister(data: IUserRegister, admin?: boolean | nu
         'document'
       )
     );
-  } else {
-    ret.document = data.document.toUpperCase();
-  }
+  } else ret.document = data.document.toUpperCase();
 
   // direction
   if (!data.direction) {
     errors.push(setError('Disculpe, pero debe indicar su dirección.', 'direction'));
-  } else {
-    ret.direction = data.direction;
-  }
+  } else ret.direction = data.direction;
 
   // bloodType
   if (!checkIfValueIsNumber(`${data.bloodType}`)) {
     errors.push(setError('Disculpe, pero debe indicar su tipo de sangre.', 'bloodType'));
-  } else {
-    ret.bloodType = data.bloodType;
-  }
+  } else ret.bloodType = data.bloodType;
 
   // questionId
   if (!data.questionId || !checkObjectId(data.questionId)) {
@@ -149,6 +136,12 @@ export async function validateRegister(data: IUserRegister, admin?: boolean | nu
     if (!checkIfValueIsNumber(`${data.role}`)) {
       errors.push(setError('Disculpe, pero debe seleccionar un rol para el usuario.', 'role'));
     } else ret.role = data.role;
+  }
+
+  // role
+  if (data.referred && checkDocument(`${data.referred}`)) {
+    ret.referred = await getIdUserFromDocument(data.referred); // get _id referred
+    console.log('referred', ret.referred);
   }
 
   return { data: ret, errors };

@@ -5,12 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getQuestions = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const UsersRequest_1 = require("../../FormRequest/UsersRequest");
-const Users_1 = __importDefault(require("../../Models/Users"));
-const TokenActions_1 = require("../../Functions/TokenActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
+const UsersRequest_1 = require("../../FormRequest/UsersRequest");
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
+const TokenActions_1 = require("../../Functions/TokenActions");
 const Question_1 = __importDefault(require("../../Models/Question"));
+const Referrals_1 = __importDefault(require("../../Models/Referrals"));
+const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'Controllers/publics/publics.controller';
 function helloWorld(req, res) {
     return res.json({
@@ -30,7 +31,26 @@ async function register(req, res) {
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
         await user.save();
-        return res.json({
+        // create referrals document
+        const referrals = new Referrals_1.default({
+            _id: user._id
+        });
+        await referrals.save();
+        // check if exist referred and update
+        if (user.referred) {
+            // find the principal referrals document
+            let ref = await Referrals_1.default.findOne({ _id: user.referred }).exec();
+            if (ref)
+                ref.members.push(user._id.toString());
+            else {
+                ref = new Referrals_1.default({
+                    _id: user.referred,
+                    members: [user._id.toString()]
+                });
+            }
+            await ref.save();
+        }
+        return res.status(201).json({
             msg: `Registro exitoso.`
         });
     }

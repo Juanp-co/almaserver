@@ -46,7 +46,7 @@
 
 /**
  * @api {post} /api/admin/questions (01) Agregar nueva pregunta de seguridad
- * @apiVersion 0.0.3
+ * @apiVersion 0.0.11
  * @apiName createQuestionsAdmin
  * @apiGroup QuestionsAdmin
  *
@@ -54,7 +54,7 @@
  *
  * @apiParam {String} question Pregunta.
  *
- * @apiExample {JSON}
+ * @apiExample {JSON} Example JSON Request
  * {
     "question": "¿Cuál es su color favorito?"
 }
@@ -68,7 +68,7 @@
  * @apiSuccess (question Object) {String} updated_at Última fecha de actualización.
  *
  * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
     "msg": "Se ha registrado la pregunta de seguridad exitosamente.",
     "question": {
@@ -183,7 +183,7 @@
  *
  * @apiParam {String} question Pregunta.
  *
- * @apiExample {JSON}
+ * @apiExample {JSON} Example JSON Request
  * {
     "question": "¿Cuál es su color favorito de mi hijo(a)?"
 }

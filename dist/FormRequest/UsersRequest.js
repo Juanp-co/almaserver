@@ -1,13 +1,32 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateSecurityQuestion = exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateRegister = void 0;
-const Validations_1 = require("../Functions/Validations");
-const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
-const UsersActions_1 = __importDefault(require("../ActionsData/UsersActions"));
+const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
 const QuestionsActions_1 = __importDefault(require("../ActionsData/QuestionsActions"));
+const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
+const Validations_1 = require("../Functions/Validations");
 async function validateRegister(data, admin) {
     const ret = {
         phone: null,
@@ -26,38 +45,35 @@ async function validateRegister(data, admin) {
         securityQuestion: {
             questionId: null,
             answer: null
-        }
+        },
+        referred: null
     };
     const errors = [];
     // phone
     if (!data.phone || !Validations_1.checkPhone(data.phone)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de teléfono.', 'phone'));
     }
-    else {
+    else
         ret.phone = data.phone;
-    }
     // password
     if (!data.password || !Validations_1.checkPassword(data.password)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
             'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.', 'password'));
     }
-    else {
+    else
         ret.password = data.password;
-    }
     // names
     if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
     }
-    else {
+    else
         ret.names = data.names.toUpperCase();
-    }
     // lastNames
     if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
     }
-    else {
+    else
         ret.lastNames = data.lastNames.toUpperCase();
-    }
     // document
     if (!data.document || !Validations_1.checkDocument(data.document)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
@@ -65,23 +81,20 @@ async function validateRegister(data, admin) {
     else if (await UsersActions_1.default(data.document.toUpperCase())) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
     }
-    else {
+    else
         ret.document = data.document.toUpperCase();
-    }
     // direction
     if (!data.direction) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su dirección.', 'direction'));
     }
-    else {
+    else
         ret.direction = data.direction;
-    }
     // bloodType
     if (!Validations_1.checkIfValueIsNumber(`${data.bloodType}`)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su tipo de sangre.', 'bloodType'));
     }
-    else {
+    else
         ret.bloodType = data.bloodType;
-    }
     // questionId
     if (!data.questionId || !Validations_1.checkObjectId(data.questionId)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero seleccionar una pregunta de seguridad.', 'questionId'));
@@ -126,6 +139,11 @@ async function validateRegister(data, admin) {
         }
         else
             ret.role = data.role;
+    }
+    // role
+    if (data.referred && Validations_1.checkDocument(`${data.referred}`)) {
+        ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred); // get _id referred
+        console.log('referred', ret.referred);
     }
     return { data: ret, errors };
 }

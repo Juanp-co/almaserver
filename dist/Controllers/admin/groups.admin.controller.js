@@ -24,11 +24,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteGroup = exports.addOrRemoveMembersGroup = exports.updateGroup = exports.saveGroup = exports.showGroup = exports.getGroupsCounters = void 0;
 const lodash_1 = __importDefault(require("lodash"));
+const UsersActions_1 = require("../../ActionsData/UsersActions");
 const GroupsRequest_1 = __importStar(require("../../FormRequest/GroupsRequest"));
-const Groups_1 = __importDefault(require("../../Models/Groups"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
-const UsersActions_1 = require("../../ActionsData/UsersActions");
+const Groups_1 = __importDefault(require("../../Models/Groups"));
 const path = 'src/admin/groups.admin.controller';
 function return404(res) {
     return res.status(404).json({

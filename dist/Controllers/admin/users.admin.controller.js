@@ -5,11 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const UsersRequest_1 = require("../../FormRequest/UsersRequest");
-const Users_1 = __importDefault(require("../../Models/Users"));
-const Validations_1 = require("../../Functions/Validations");
+const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const TokenActions_1 = require("../../Functions/TokenActions");
+const Validations_1 = require("../../Functions/Validations");
+const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'Controllers/admin/users.admin.controller';
 async function getUsers(req, res) {
     try {

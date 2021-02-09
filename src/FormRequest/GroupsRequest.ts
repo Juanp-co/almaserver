@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { IGroupsForm, IGroupsMembersIdsForm } from '../Interfaces/IGroups';
-import { checkObjectId, checkTitlesOrDescriptions } from '../Functions/Validations';
 import { setError } from '../Functions/GlobalFunctions';
+import { checkObjectId, checkTitlesOrDescriptions } from '../Functions/Validations';
+import { IGroupsForm, IGroupsMembersIdsForm } from '../Interfaces/IGroups';
 
 export default function validateRegister(data: IGroupsForm) : { data: IGroupsForm; errors: any } {
   const ret = {

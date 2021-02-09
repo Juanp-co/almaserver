@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { validateLogin, validateRegister } from '../../FormRequest/UsersRequest';
-import Users from '../../Models/Users';
-import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import { getData } from '../../ActionsData/UsersActions';
+import { validateLogin, validateRegister } from '../../FormRequest/UsersRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import Questions from '../../Models/Question';
+import Referrals from '../../Models/Referrals';
+import Users from '../../Models/Users';
 
 const path = 'Controllers/publics/publics.controller';
 
@@ -30,7 +31,27 @@ export async function register(req: Request, res: Response): Promise<Response> {
     user.securityQuestion.answer = bcrypt.hashSync(`${user.securityQuestion.answer}`, 10);
     await user.save();
 
-    return res.json({
+    // create referrals document
+    const referrals = new Referrals({
+      _id: user._id
+    });
+    await referrals.save();
+
+    // check if exist referred and update
+    if (user.referred) {
+      // find the principal referrals document
+      let ref = await Referrals.findOne({ _id: user.referred }).exec();
+      if (ref) ref.members.push(user._id.toString());
+      else {
+        ref = new Referrals({
+          _id: user.referred,
+          members: [user._id.toString()]
+        });
+      }
+      await ref.save();
+    }
+
+    return res.status(201).json({
       msg: `Registro exitoso.`
     });
   } catch (error: any) {

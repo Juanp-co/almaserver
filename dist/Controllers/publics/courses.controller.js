@@ -26,8 +26,8 @@ exports.evaluateTest = exports.getTest = exports.likeOrUnlikeCourseThemeComment 
 const lodash_1 = __importDefault(require("lodash"));
 const CoursesActions_1 = __importStar(require("../../ActionsData/CoursesActions"));
 const CoursesRequest_1 = require("../../FormRequest/CoursesRequest");
-const Validations_1 = require("../../Functions/Validations");
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
+const Validations_1 = require("../../Functions/Validations");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const path = 'src/Controllers/publics/courses.controller';

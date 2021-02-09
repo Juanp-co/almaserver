@@ -23,21 +23,23 @@ export default async function startConnection() {
       pathDb = pathDb.replace('<user>', dbUser);
       pathDb = pathDb.replace('<password>', dbPwd);
       pathDb = pathDb.replace('<dbname>', dbName);
-    } else if (dbUser !== '') dbAuthString = `${dbUser}:${dbPwd}@`;
+    }
+    else {
+      if (dbUser !== '') dbAuthString = `${dbUser}:${dbPwd}@`;
 
-    pathDb = `mongodb://${dbAuthString}${encodeURIComponent(dbHost)}:${encodeURIComponent(
-      dbPort
-    )}/${encodeURIComponent(dbName)}`;
+      pathDb = `mongodb://${dbAuthString}${encodeURIComponent(dbHost)}:${encodeURIComponent(
+        dbPort
+      )}/${encodeURIComponent(dbName)}`;
+    }
 
     await connect(pathDb, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
+      useCreateIndex: true
     });
 
     showConsoleLog(1, 'Database is connected.');
-
-    // this.connection.set('useCreateIndex', true);
   }
   catch (e) {
     showConsoleError('./database', e);

@@ -1,13 +1,5 @@
 import { Router } from 'express';
-import {
-  helloWorld,
-  login,
-  logout,
-  register,
-  getQuestions
-} from '../Controllers/publics/public.controller';
 import { validateUser } from '../middleware';
-import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.controller';
 import getCourses, {
   addCourseUser,
   commentCourse,
@@ -19,6 +11,14 @@ import getCourses, {
   // qualifyCourse,
   showCourse, showCourseContent, showCourseContentTheme
 } from '../Controllers/publics/courses.controller';
+import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.controller';
+import {
+  helloWorld,
+  login,
+  logout,
+  register,
+  getQuestions
+} from '../Controllers/publics/public.controller';
 
 const router = Router();
 

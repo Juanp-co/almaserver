@@ -144,7 +144,7 @@
 
 /**
  * @api {post} /api/admin/courses (02) Crear nuevo curso.
- * @apiVersion 0.0.10
+ * @apiVersion 0.0.11
  * @apiName createCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -368,7 +368,7 @@
  * @apiSuccess (test Array Object) {String} inputType Tipo de campo para la pregunta (valores: 'text' | 'textarea' | 'checkbox' | 'radio' | 'select').
  *
  * @apiSuccessExample {JSON} Success with data
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
 	"msg": "Se ha creado el nuevo curso exitosamente.",
 	"course": {
@@ -451,7 +451,7 @@
 }
  *
  * @apiSuccessExample {JSON} Success without toRoles, banner, levels and temary
- * HTTP/1.1 200 Success
+ * HTTP/1.1 201 Created
  * {
 	"msg": "Se ha creado el nuevo curso exitosamente.",
 	"course": {

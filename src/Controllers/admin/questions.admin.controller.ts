@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import Questions from '../../Models/Question';
-import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { validateRegister, validateUpdate } from '../../FormRequest/QuestionsRequest';
-import Users from '../../Models/Users';
+import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
+import Users from '../../Models/Users';
 
 const path = 'Controllers/admin/question.admin.controller';
 

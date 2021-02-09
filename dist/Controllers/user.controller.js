@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.changeSecurityQuestion = exports.changePassword = exports.update = exports.get = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersRequest_1 = require("../FormRequest/UsersRequest");
-const Users_1 = __importDefault(require("../Models/Users"));
-const TokenActions_1 = require("../Functions/TokenActions");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
+const TokenActions_1 = require("../Functions/TokenActions");
+const Users_1 = __importDefault(require("../Models/Users"));
 const path = 'Controllers/user.controller';
 async function get(req, res) {
     try {
         const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, { __v: 0, password: 0, 'securityQuestion.answer': 0 }).exec();
+        const user = await Users_1.default.findOne({ _id: userid }, { __v: 0, password: 0, 'securityQuestion.answer': 0, referred: 0 }).exec();
         if (!user) {
             // logout
             const { token } = req.query;
