@@ -143,7 +143,6 @@ async function validateRegister(data, admin) {
     // role
     if (data.referred && Validations_1.checkDocument(`${data.referred}`)) {
         ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred); // get _id referred
-        console.log('referred', ret.referred);
     }
     return { data: ret, errors };
 }

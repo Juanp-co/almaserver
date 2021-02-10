@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { getNamesUsersList } from '../ActionsData/UsersActions';
 import {
   validatePasswords,
   validateSecurityQuestion,
@@ -10,9 +9,6 @@ import {
 import { returnError, returnErrorParams } from '../Functions/GlobalFunctions';
 import { forceLogout } from '../Functions/TokenActions';
 import { checkObjectId } from '../Functions/Validations';
-import { IUserSimpleInfo } from '../Interfaces/IUser';
-import Groups from '../Models/Groups';
-import Referrals from '../Models/Referrals';
 import Users from '../Models/Users';
 import CoursesUsers from '../Models/CoursesUsers';
 import Courses from '../Models/Courses';
@@ -152,62 +148,5 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getCourses`);
-  }
-}
-
-export async function getGroup(req: Request, res: Response): Promise<Response> {
-  try {
-    const { userid } = req.params;
-
-    if (!checkObjectId(userid)) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    const data = await Groups.findOne({ members: userid }).exec();
-
-    return res.json({
-      msg: 'Mi grupo familiar',
-      group: !data ?
-        null :
-        {
-          _id: data._id,
-          name: data.name,
-          code: data.code,
-          members: await getNamesUsersList(
-            _.uniq(data.members || []),
-            { names: 1, lastNames: 1, direction: 1 }
-          ),
-          created_at: data.created_at,
-          updated_at: data.updated_at,
-        }
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getGroup`);
-  }
-}
-
-export async function getReferrals(req: Request, res: Response): Promise<Response> {
-  try {
-    const { userid } = req.params;
-    let referrals: IUserSimpleInfo[] = [];
-
-    if (!checkObjectId(userid)) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    const data = await Referrals.findOne({ _id: userid }, { members: 1 }).exec();
-
-    if (data) referrals = await getNamesUsersList(data.members);
-
-    return res.json({
-      msg: `Mis referidos.`,
-      referrals
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getReferrals`);
   }
 }
