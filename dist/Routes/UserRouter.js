@@ -1,8 +1,29 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../middleware");
 const user_controller_1 = require("../Controllers/user.controller");
+const groups_controller_1 = __importStar(require("../Controllers/publics/groups.controller"));
+const referrals_controller_1 = require("../Controllers/publics/referrals.controller");
 const router = express_1.Router();
 // ===================================================================================
 /* Profile */
@@ -10,6 +31,14 @@ router.route('/').get(middleware_1.validateUser, user_controller_1.get).put(midd
 router.put('/change-password', middleware_1.validateUser, user_controller_1.changePassword);
 router.put('/change-question', middleware_1.validateUser, user_controller_1.changeSecurityQuestion);
 router.get('/courses', middleware_1.validateUser, user_controller_1.getCourses);
-router.get('/group', middleware_1.validateUser, user_controller_1.getGroup);
-router.get('/referrals', middleware_1.validateUser, user_controller_1.getReferrals);
+/*
+  Group
+ */
+router.get('/group', middleware_1.validateUser, groups_controller_1.default);
+router.get('/group/:_id', middleware_1.validateUser, groups_controller_1.getMemberGroup);
+/*
+  Referrals
+ */
+router.get('/referrals', middleware_1.validateUser, referrals_controller_1.getReferrals);
+router.get('/referrals/:_id', middleware_1.validateUser, referrals_controller_1.getMemberReferred);
 exports.default = router;

@@ -3,16 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReferrals = exports.getGroup = exports.getCourses = exports.changeSecurityQuestion = exports.changePassword = exports.update = exports.get = void 0;
+exports.getCourses = exports.changeSecurityQuestion = exports.changePassword = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const UsersActions_1 = require("../ActionsData/UsersActions");
 const UsersRequest_1 = require("../FormRequest/UsersRequest");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const TokenActions_1 = require("../Functions/TokenActions");
 const Validations_1 = require("../Functions/Validations");
-const Groups_1 = __importDefault(require("../Models/Groups"));
-const Referrals_1 = __importDefault(require("../Models/Referrals"));
 const Users_1 = __importDefault(require("../Models/Users"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const Courses_1 = __importDefault(require("../Models/Courses"));
@@ -132,53 +129,3 @@ async function getCourses(req, res) {
     }
 }
 exports.getCourses = getCourses;
-async function getGroup(req, res) {
-    try {
-        const { userid } = req.params;
-        if (!Validations_1.checkObjectId(userid)) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        const data = await Groups_1.default.findOne({ members: userid }).exec();
-        return res.json({
-            msg: 'Mi grupo familiar',
-            group: !data ?
-                null :
-                {
-                    _id: data._id,
-                    name: data.name,
-                    code: data.code,
-                    members: await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(data.members || []), { names: 1, lastNames: 1, direction: 1 }),
-                    created_at: data.created_at,
-                    updated_at: data.updated_at,
-                }
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getGroup`);
-    }
-}
-exports.getGroup = getGroup;
-async function getReferrals(req, res) {
-    try {
-        const { userid } = req.params;
-        let referrals = [];
-        if (!Validations_1.checkObjectId(userid)) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        const data = await Referrals_1.default.findOne({ _id: userid }, { members: 1 }).exec();
-        if (data)
-            referrals = await UsersActions_1.getNamesUsersList(data.members);
-        return res.json({
-            msg: `Mis referidos.`,
-            referrals
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReferrals`);
-    }
-}
-exports.getReferrals = getReferrals;

@@ -141,7 +141,6 @@ export async function validateRegister(data: IUserRegister, admin?: boolean | nu
   // role
   if (data.referred && checkDocument(`${data.referred}`)) {
     ret.referred = await getIdUserFromDocument(data.referred); // get _id referred
-    console.log('referred', ret.referred);
   }
 
   return { data: ret, errors };
