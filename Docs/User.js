@@ -375,3 +375,134 @@
     "errors": [${err}]
   }
  */
+
+/**
+ * @api {get} /api/user/group (05) Obtener datos del grupo familiar.
+ * @apiVersion 0.0.12
+ * @apiName getFamilyGroupUser
+ * @apiGroup User
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object|Null} group Datos del grupo familiar del usuario.
+ *
+ * @apiSuccess (group Object) {String} _id ID del grupo.
+ * @apiSuccess (group Object) {String} name Nombre del grupo.
+ * @apiSuccess (group Object) {String} code Código del grupo.
+ * @apiSuccess (group Object) {Array|Object} members Listado de miembros pertenecientes al grupo.
+ * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
+ * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
+ *
+ * @apiSuccess (members Array Object) {String} _id ID del usuario.
+ * @apiSuccess (members Array Object) {String} names Nombre(s).
+ * @apiSuccess (members Array Object) {String} lastNames Apellido(s).
+ * @apiSuccess (members Array Object) {String} direction Dirección del usuario.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Mi grupo familiar",
+	"group": {
+		"_id": "6018e503e02a45115407e82f",
+		"name": "FAMILIA VELASQUEZ RODRIGUEZ",
+		"code": "AAA-001",
+		"members": [
+			{
+				"_id": "5fcf0821fc917d476c1cf3e3",
+				"names": "USUARIO TRES",
+				"lastNames": "PRUEBA TRES",
+				"direction": "any direction"
+			}
+		],
+		"created_at": "2021-02-02 00:37:07",
+		"updated_at": "2021-02-02 02:45:50"
+	}
+}
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Mi grupo familiar",
+	"group": null
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */
+
+/**
+ * @api {get} /api/user/courses (06) Obtener cursos de un usuario.
+ * @apiVersion 0.0.12
+ * @apiName getCoursesListUser
+ * @apiGroup User
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} courses Listado de curso del usuario.
+ *
+ * @apiSuccess (courses Array Object) {String|Null} banner URL del banner del curso.
+ * @apiSuccess (courses Array Object) {String} _id ID del curso.
+ * @apiSuccess (courses Array Object) {String} title Título del curso.
+ * @apiSuccess (courses Array Object) {String} slug Slug (Valor url) del curso.
+ * @apiSuccess (courses Array Object) {String|Null} description Descripción del curso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Mis cursos.",
+	"courses": [
+		{
+			"banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+			"_id": "5ff8d0c1fd462643e42df1f6",
+			"title": "CURSO NUEVO 2",
+			"slug": "curso-nuevo-1",
+			"description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada."
+		},
+		.
+		.
+		.
+	]
+}
+ *
+ * @apiSuccessExample {JSON} Success without courses
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Mis cursos.",
+	"courses": []
+}
+ *
+ * @apiError {String} msg Mensaje general.
+ * @apiError {Array|Object} errors Listado de errores a mostrar.
+ * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Error token
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
+  }
+ *
+ * @apiErrorExample {JSON} Error internal server
+ * HTTP/1.1 500 Internal Error Server
+ * {
+    "msg": "Ha ocurrido un error inesperado.",
+    "errors": [${err}]
+  }
+ */
