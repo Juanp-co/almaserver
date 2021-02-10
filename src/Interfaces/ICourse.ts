@@ -44,10 +44,6 @@ export interface ICourseContent {
   title?: string | null;
   description?: string | null;
   urlVideo?: string | null;
-  // comments: ICourseComments[];
-  // likes?: ICourseLikes[];
-  // unlikes?: ICourseLikes[];
-  // totals?: ICourseTotals;
 }
 
 export interface ICourseTemary {
@@ -145,6 +141,14 @@ export interface ICourseList {
   totals?: ICourseTotals;
   created_at?: ICourse['created_at'],
   updated_at?: ICourse['updated_at'],
+}
+
+export interface ICourseSimpleList {
+  _id: any;
+  title: ICourse['title'],
+  slug: ICourse['slug'],
+  banner: ICourse['banner'],
+  description?: ICourse['description'],
 }
 
 export interface ICourseTestForm {

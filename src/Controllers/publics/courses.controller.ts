@@ -22,82 +22,80 @@ import CoursesUsers from '../../Models/CoursesUsers';
 const path = 'src/Controllers/publics/courses.controller';
 
 function returnNotFound(res: Response, code: string | null) : Response {
-  switch (code) {
-    case '404Content':
-      return res.status(404).json({
-        msg: 'Disculpe, pero el contenido seleccionado no existe o ya no se encuentra disponible.'
-      });
-    case '404Course':
-      return res.status(404).json({
-        msg: 'Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.'
-      });
-    case '404Comment':
-      return res.status(404).json({
-        msg: 'Disculpe, pero el comentario no existe o no se encuentra disponible.'
-      });
-    case '404CourseUser':
-      return res.status(404).json({
-        msg: 'Disculpe, pero no ha registrado el curso en su listado.',
-        addCourse: true // to add course
-      });
-    case '404GetDataTemaryUser':
-      return res.status(404).json({
-        msg: 'Disculpe, pero no se logró encontrar la relación de la prueba en su cuenta.'
-      });
-    case '404Theme':
-      return res.status(404).json({
-        msg: 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.'
-      });
-    case 'errorCommentId':
-      return res.status(422).json({
-        msg: 'Disculpe, pero el comentario seleccionado es incorrecto.'
-      });
-    case 'errorComment':
-      return res.status(422).json({
-        msg:
-          'Disculpe, pero el comentario debe cumplir con los siguientes parámetros: 1. Letras o números (az-AZ 0-9) y los siguientes caracteres especiales: .,#*?¿¡!()\\-+"\'/@.'
-      });
-    case 'errorGroupId':
-      return res.status(422).json({
-        msg: 'Disculpe, pero el grupo seleccionado es incorrecto.'
-      });
-    case 'errorThemeId':
-      return res.status(422).json({
-        msg: 'Disculpe, pero el tema seleccionado es incorrecto.'
-      });
-    case 'errorContentId':
-      return res.status(422).json({
-        msg: 'Disculpe, pero el contenido seleccionado es incorrecto.'
-      });
-    case 'like':
-      return res.status(422).json({
-        msg: 'Disculpe, pero no se determinó la acción a realizar.'
-      });
-    case 'slug':
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso seleccionado es incorrecto.'
-      });
-    case 'wasNotPreviousCourse':
-      return res.status(422).json({
-        msg: `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`
-      });
-    case 'wasRealized':
-      return res.status(422).json({
-        msg: `Disculpe, pero ya has realizado esta acción anteriormente.`
-      });
-    case 'wasRealizedAllTest':
-      return res.status(422).json({
-        msg: `Disculpe, pero ya ha aprobado todos los exámenes de este curso.`
-      });
-    case 'wasRealizedTest':
-      return res.status(422).json({
-        msg: `Disculpe, pero ya ha aprobado este examen anteriormente.`
-      });
-    default:
-      return res.status(500).json({
-        msg: 'Respuesta no determinada.'
-      });
+  const ret: any = { msg: 'Respuesta no determinada.' };
+  let statusCode = 500;
+
+  if (code === '404Content') {
+    ret.msg = 'Disculpe, pero el contenido seleccionado no existe o ya no se encuentra disponible.';
+    statusCode = 404;
   }
+  else if (code === '404Course') {
+    ret.msg = 'Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.';
+    statusCode = 404;
+  }
+  else if (code === '404Comment') {
+    ret.msg = 'Disculpe, pero el comentario no existe o no se encuentra disponible.';
+    statusCode = 404;
+  }
+  else if (code === '404CourseUser') {
+    ret.msg = 'Disculpe, pero no ha registrado el curso en su listado.';
+    statusCode = 404;
+    ret.addCourse = true;
+  }
+  else if (code === '404GetDataTemaryUser') {
+    ret.msg = 'Disculpe, pero no se logró encontrar la relación de la prueba en su cuenta.';
+    statusCode = 404;
+  }
+  else if (code === '404Theme') {
+    ret.msg = 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.';
+    statusCode = 404;
+  }
+  else if (code === 'errorCommentId') {
+    ret.msg = 'Disculpe, pero el comentario seleccionado es incorrecto.';
+    statusCode = 422;
+  }
+  else if (code === 'errorComment') {
+    ret.msg = 'Disculpe, pero el comentario debe cumplir con los siguientes parámetros: 1. Letras o números (az-AZ 0-9) y los siguientes caracteres especiales: .,#*?¿¡!()\\-+"\'/@.';
+    statusCode = 422;
+  }
+  else if (code === 'errorGroupId') {
+    ret.msg = 'Disculpe, pero el grupo seleccionado es incorrecto.';
+    statusCode = 422;
+  }
+  else if (code === 'errorThemeId') {
+    ret.msg = 'Disculpe, pero el tema seleccionado es incorrecto.';
+    statusCode = 422;
+  }
+  else if (code === 'errorContentId') {
+    ret.msg = 'Disculpe, pero el contenido seleccionado es incorrecto.';
+    statusCode = 422;
+  }
+  else if (code === 'like') {
+    ret.msg = 'Disculpe, pero no se determinó la acción a realizar.';
+    statusCode = 422;
+  }
+  else if (code === 'slug') {
+    ret.msg = 'Disculpe, pero el curso seleccionado es incorrecto.';
+    statusCode = 422;
+  }
+  else if (code === 'wasNotPreviousCourse') {
+    ret.msg = `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`;
+    statusCode = 422
+  }
+  else if (code === 'wasRealized') {
+    ret.msg = `Disculpe, pero ya has realizado esta acción anteriormente.`;
+    statusCode = 422;
+  }
+  else if (code === 'wasRealizedAllTest') {
+    ret.msg = `Disculpe, pero ya ha aprobado todos los exámenes de este curso.`;
+    statusCode = 422;
+  }
+  else if (code === 'wasRealizedTest') {
+    ret.msg = `Disculpe, pero ya ha aprobado este examen anteriormente.`;
+    statusCode = 422;
+  }
+
+  return res.status(statusCode).json(ret);
 }
 
 // =====================================================================================================================
@@ -166,9 +164,6 @@ export async function addCourseUser(req: Request, res: Response) : Promise<Respo
         msg: 'Disculpe, pero ya tiene disponible este curso en su cuenta.'
       });
     }
-
-    // get temary list ids
-    // const temaryIds: string[] = _.map(courseExist ? courseExist.temary : [], '_id');
 
     if (courseExist.temary && courseExist.temary.length === 0) {
       return res.status(404).json({
@@ -321,22 +316,15 @@ export async function showCourseContent(req: Request, res: Response) : Promise<R
         const index2 = _.findIndex(myCourse.temary[index].content, c => c.contentId === prevContentId);
 
         if (index2 > -1) {
-          if (myCourse.temary[index].content[index2].view !== 2) {
-            myCourse.temary[index].content[index2].view = 2;
-          }
+          if (myCourse.temary[index].content[index2].view !== 2) myCourse.temary[index].content[index2].view = 2;
           myCourse.temary[index].content[index2].date = setDate();
         }
 
-        if (myCourse.temary[index].view !== 2) {
-          myCourse.temary[index].view = 2;
-        }
+        if (myCourse.temary[index].view !== 2) myCourse.temary[index].view = 2;
         myCourse.temary[index].date = setDate();
         await myCourse.save();
 
-        previous = {
-          prevThemeId,
-          prevContentId
-        }
+        previous = { prevThemeId, prevContentId }
       }
     }
 
@@ -347,14 +335,10 @@ export async function showCourseContent(req: Request, res: Response) : Promise<R
       const index4 = _.findIndex(myCourse.temary[index3].content, c => c.contentId === contentId);
 
       if (index4 > -1) {
-        if (myCourse.temary[index3].content[index4].view !== 2) {
-          myCourse.temary[index3].content[index4].view = 1;
-        }
+        if (myCourse.temary[index3].content[index4].view !== 2) myCourse.temary[index3].content[index4].view = 1;
         myCourse.temary[index3].content[index4].date = setDate();
       }
-      if (myCourse.temary[index3].view !== 2) {
-        myCourse.temary[index3].view = 1;
-      }
+      if (myCourse.temary[index3].view !== 2) myCourse.temary[index3].view = 1;
       myCourse.temary[index3].date = setDate();
       await myCourse.save();
     }
@@ -410,10 +394,7 @@ export async function likeOrUnlikeCourse(req: Request, res: Response) : Promise<
     }
     else return returnNotFound(res, 'wasRealized');
 
-    await Courses.updateOne(
-      { _id: course._id },
-      { $set: { likes: course.likes, unlikes: course.unlikes } }
-    ).exec();
+    await Courses.updateOne({ _id: course._id }, { $set: { likes: course.likes, unlikes: course.unlikes } }).exec();
 
     return res.status(201).json({
       msg: `${like ? 'Me gusta' : 'No me gusta'} agregado exitosamente.`,
@@ -441,12 +422,7 @@ export async function commentCourse(req: Request, res: Response) : Promise<Respo
     if (!course.comments) course.comments = [];
 
     // add comment
-    course.comments.push({
-      userid,
-      comment,
-      likes: [],
-      unlikes: []
-    });
+    course.comments.push({ userid, comment, likes: [], unlikes: [] });
 
     // save
     await course.save();
@@ -546,9 +522,7 @@ export async function likeOrUnlikeTheme(req: Request, res: Response) : Promise<R
       ret = { like: course.temary[index].likes[course.temary[index].likes.length - 1] };
     }
     else if (!like && _.findIndex(course.temary[index].unlikes, (u: any) => u.userid === userid) === -1) {
-      if (course.temary[index].unlikes){
-        course.temary[index].unlikes.push({ userid });
-      }
+      if (course.temary[index].unlikes) course.temary[index].unlikes.push({ userid });
       // remove like in case if exists
       course.temary[index].likes = _.filter(course.temary[index].likes, u => u.userid !== userid);
       ret = { unlike: course.temary[index].unlikes[course.temary[index].unlikes.length - 1] }
@@ -740,9 +714,7 @@ export async function getTest(req: Request, res: Response) : Promise<Response> {
 export async function evaluateTest(req: Request, res: Response) : Promise<Response> {
   try {
     const { slug, _id, userid } = req.params;
-
-    // points to test
-    let points = 0;
+    let points = 0; // points to test
 
     if (!checkSlug(slug)) return returnNotFound(res, 'slug');
     if (!checkObjectId(_id)) return returnNotFound(res, 'errorThemeId');
@@ -809,7 +781,6 @@ export async function evaluateTest(req: Request, res: Response) : Promise<Respon
       average,
       approved
     });
-
   } catch (error: any) {
     return returnError(res, error, `${path}/evaluateTest`);
   }
