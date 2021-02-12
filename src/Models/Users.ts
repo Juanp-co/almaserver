@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import IUser from '../Interfaces/IUser';
-import { getDate, setDate } from '../Functions/GlobalFunctions';
+import { getDate, setDate, toUpperValue } from '../Functions/GlobalFunctions';
 
 const SecurityQuestionSchema = new Schema(
   {
@@ -13,15 +13,18 @@ const SecurityQuestionSchema = new Schema(
 
 const UserSchema = new Schema(
   {
+    document: { type: String, require: true, unique: true },
+    email: { type: String, require: true, unique: true },
     phone: { type: String, require: true },
     password: { type: String, require: true },
-    names: { type: String, require: true },
-    lastNames: { type: String, require: true },
-    document: { type: String, require: true },
-    direction: { type: String, require: true },
-    profession: { type: Number, require: true },
+    names: { type: String, require: true, set: toUpperValue },
+    lastNames: { type: String, require: true, set: toUpperValue },
+    gender: { type: Number, default: null },
+    birthday: { type: String, default: null },
+    civilStatus: { type: Number, default: null },
     educationLevel: { type: Number, default: null },
-    bloodType: { type: Number, default: false },
+    profession: { type: Number, default: null },
+    bloodType: { type: Number, default: null },
     company: { type: Boolean, default: false },
     companyType: { type: Number, default: null },
     baptized: { type: Boolean, default: false },
@@ -29,6 +32,10 @@ const UserSchema = new Schema(
     role: { type: Number, default: 5 },
     securityQuestion: { type: SecurityQuestionSchema, default: { SecurityQuestionSchema } },
     referred: { type: String, default: null },
+    department: { type: Number, default: null },
+    city: { type: Number, default: null },
+    locality: { type: String, default: null, set: toUpperValue },
+    direction: { type: String, default: null, set: toUpperValue },
     created_at: { type: Number, default: setDate(), get: getDate },
     updated_at: { type: Number, default: setDate(), get: getDate }
   },

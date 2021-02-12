@@ -9,6 +9,14 @@ export default async function checkIfExistDocument(document?: string, _id?: stri
     : false;
 }
 
+export async function checkIfExistEmail(email?: string, _id?: string | null): Promise<boolean> {
+  return email ?
+    (await Users.find({ email, _id: { $ne: _id } })
+      .countDocuments()
+      .exec()) > 0
+    : false;
+}
+
 export async function getData(_id?: string, projection: any | null = null): Promise<IUser | null> {
   return _id ?
     Users.findOne({ _id }, projection || { __v: 0, password: 0, 'securityQuestion.answer': 0 }).exec()

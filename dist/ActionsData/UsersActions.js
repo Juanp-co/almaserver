@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getIdUserFromDocument = exports.getNamesUsersList = exports.getData = void 0;
+exports.getIdUserFromDocument = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
 const Users_1 = __importDefault(require("../Models/Users"));
 async function checkIfExistDocument(document, _id) {
     return document ?
@@ -13,6 +13,14 @@ async function checkIfExistDocument(document, _id) {
         : false;
 }
 exports.default = checkIfExistDocument;
+async function checkIfExistEmail(email, _id) {
+    return email ?
+        (await Users_1.default.find({ email, _id: { $ne: _id } })
+            .countDocuments()
+            .exec()) > 0
+        : false;
+}
+exports.checkIfExistEmail = checkIfExistEmail;
 async function getData(_id, projection = null) {
     return _id ?
         Users_1.default.findOne({ _id }, projection || { __v: 0, password: 0, 'securityQuestion.answer': 0 }).exec()

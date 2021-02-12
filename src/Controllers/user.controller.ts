@@ -50,7 +50,16 @@ export async function update(req: Request, res: Response): Promise<Response> {
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const updated = await Users.findByIdAndUpdate(userid, validate.data, {
-      projection: { password: 0, __v: 0, 'securityQuestion.answer': 0, referred: 0 },
+      projection: {
+        document: 0,
+        password: 0,
+        __v: 0,
+        securityQuestion: 0,
+        created_at: 0,
+        updated_at: 0,
+        role: 0,
+        referred: 0,
+      },
       new: true
     });
 

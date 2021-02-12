@@ -1,13 +1,14 @@
-import checkIfExistDocument, { getIdUserFromDocument } from '../ActionsData/UsersActions';
+import checkIfExistDocument, { checkIfExistEmail, getIdUserFromDocument } from '../ActionsData/UsersActions';
 import checkIfExistQuestion from '../ActionsData/QuestionsActions';
 import { setError } from '../Functions/GlobalFunctions';
 import {
-  checkDocument,
+  checkDate,
+  checkDocument, checkEmail,
   checkIfValueIsNumber,
   checkNameOrLastName,
   checkObjectId,
   checkPassword,
-  checkPhone
+  checkPhone, checkTitlesOrDescriptions
 } from '../Functions/Validations';
 import IUser, {
   IUserLogin,
@@ -146,39 +147,56 @@ export async function validateRegister(data: IUserRegister, admin?: boolean | nu
   return { data: ret, errors };
 }
 
-export async function validateUpdate(
-  data: IUserUpdate,
-  _id: string
-): Promise<{ data: IUser; errors: any }> {
+export async function validateUpdate(data: IUserUpdate, _id: string): Promise<{ data: IUser; errors: any }> {
   const ret = {
     phone: null,
-    document: null,
+    email: null,
+    // document: null,
     names: null,
     lastNames: null,
-    direction: null,
+    gender: null,
+    birthday: null,
+    civilStatus: null,
     educationLevel: null,
     profession: null,
     bloodType: null,
     company: false,
     companyType: null,
-    baptized: false
+    baptized: false,
+    department: null,
+    city: null,
+    locality: null,
+    direction: null,
   } as IUser;
   const errors: any = [];
 
-  // phone
-  if (!data.phone || !checkPhone(data.phone)) {
+  // email
+  if (!data.email || !checkEmail(data.email)) {
     errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su número de teléfono.', 'phone')
+      setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email')
+    );
+  } else if (await checkIfExistEmail(data.email.toLowerCase(), _id)) {
+    errors.push(
+      setError(
+        'Disculpe, pero el número de emailo ya se encuentra con otro usuario. Verifíquelo e intente nuevamente.',
+        'email'
+      )
     );
   } else {
-    ret.phone = data.phone;
+    ret.email = data.email.toLowerCase();
   }
+
+  // phone
+  if (!checkPhone(data.phone)) {
+    errors.push(setError('Disculpe, pero debe indicar su número de teléfono. Sólo se permiten números (0-9).', 'phone'));
+  }
+  else ret.phone = data.phone?.trim() || null;
 
   // names
   if (!data.names || !checkNameOrLastName(data.names)) {
     errors.push(setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
   } else {
-    ret.names = data.names.toUpperCase();
+    ret.names = data.names.trim();
   }
 
   // lastNames
@@ -187,54 +205,78 @@ export async function validateUpdate(
       setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames')
     );
   } else {
-    ret.lastNames = data.lastNames.toUpperCase();
+    ret.lastNames = data.lastNames.trim();
   }
 
-  // document
-  if (!data.document || !checkDocument(data.document)) {
-    errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document')
-    );
-  } else if (await checkIfExistDocument(data.document.toUpperCase(), _id)) {
-    errors.push(
-      setError(
-        'Disculpe, pero el número de documento ya se encuentra con otro usuario. Verifíquelo e intente nuevamente.',
-        'document'
-      )
-    );
-  } else {
-    ret.document = data.document.toUpperCase();
+  // birthday
+  if (data.birthday) {
+    if (!checkDate(`${data.birthday}`)) {
+      errors.push(setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+    } else {
+      ret.birthday = data.birthday?.trim().toUpperCase() || null;
+    }
   }
 
-  // direction
-  if (!data.direction) {
-    errors.push(setError('Disculpe, pero debe indicar su dirección.', 'direction'));
-  } else {
-    ret.direction = data.direction;
+  // educationLevel
+  if (!checkIfValueIsNumber(`${data.educationLevel}`)) {
+    errors.push(setError('Disculpe, pero debe indicar su nivel educativo.', 'educationLevel'));
   }
+  else ret.educationLevel = data.educationLevel;
+
+  // profession
+  if (!checkIfValueIsNumber(`${data.profession}`)) {
+    errors.push(setError('Disculpe, pero debe indicar su profesión.', 'profession'));
+  }
+  else ret.profession = data.profession;
 
   // bloodType
   if (!checkIfValueIsNumber(`${data.bloodType}`)) {
     errors.push(setError('Disculpe, pero debe indicar su tipo de sangre.', 'bloodType'));
-  } else {
-    ret.bloodType = data.bloodType;
   }
+  else ret.bloodType = data.bloodType;
 
-  // educationLevel
-  if (checkIfValueIsNumber(`${data.educationLevel}`)) ret.educationLevel = data.educationLevel;
+  // gender
+  if (!checkIfValueIsNumber(`${data.gender}`)) {
+    errors.push(setError('Disculpe, pero debe indicar su sexo.', 'gender'));
+  }
+  else ret.gender = data.gender;
 
-  // profession
-  if (checkIfValueIsNumber(`${data.profession}`)) ret.profession = data.profession;
+  // civilStatus
+  if (!checkIfValueIsNumber(`${data.civilStatus}`)) {
+    errors.push(setError('Disculpe, pero debe indicar su estado civil.', 'civilStatus'));
+  }
+  else ret.civilStatus = data.civilStatus;
 
-  // bloodType
-  if (data.bloodType) ret.bloodType = data.bloodType;
+  // department
+  if (!checkIfValueIsNumber(`${data.department}`)) {
+    errors.push(setError('Disculpe, pero debe indicar el departamento de residencia.', 'department'));
+  }
+  else ret.department = data.department || null;
+
+  // city
+  if (!checkIfValueIsNumber(`${data.city}`)) {
+    errors.push(setError('Disculpe, pero debe indicar la ciudad de residencia.', 'city'));
+  }
+  else ret.city = data.city || null;
+
+  // locality
+  if (!data.locality || !checkTitlesOrDescriptions(`${data.locality}`)) {
+    errors.push(setError('Disculpe, pero debe indicar el nombre del barrio o localidad en la que reside.', 'locality'));
+  }
+  else ret.locality = data.locality || null;
+
+  // direction
+  if (!data.direction || !checkTitlesOrDescriptions(`${data.direction}`)) {
+    errors.push(setError('Disculpe, pero debe indicar su dirección.', 'direction'));
+  }
+  else ret.direction = data.direction || null;
 
   // baptized
   if (data.baptized) ret.baptized = data.baptized;
 
-  // bloodType
+  // company
   if (data.company) {
-    ret.company = data.company;
+    ret.company = true;
 
     // companyType
     if (!checkIfValueIsNumber(`${data.companyType}`)) {
