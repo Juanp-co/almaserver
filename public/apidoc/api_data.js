@@ -12504,7 +12504,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/user",
     "title": "(01) Actualizar datos del perfil.",
-    "version": "0.0.2",
+    "version": "0.0.14",
     "name": "registerUser",
     "group": "User",
     "header": {
@@ -12523,6 +12523,13 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -12546,35 +12553,42 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
+            "field": "gender",
+            "description": "<p>ID (index array) del sexo.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento del identidad.</p>"
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento (YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number|Null",
+            "type": "Number",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (index array) del estado civil.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
             "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (index array) Nivel educativo.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number|Null",
+            "type": "Number",
             "optional": false,
             "field": "profession",
             "description": "<p>ID (index array) de la profesión.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number|Null",
+            "type": "Number",
             "optional": false,
             "field": "bloodType",
             "description": "<p>ID (index array) del tipo de sangre.</p>"
@@ -12591,7 +12605,7 @@ define({ "api": [
             "type": "Number|Null",
             "optional": false,
             "field": "companyType",
-            "description": "<p>Tipo de empresa en caso de que posea.</p>"
+            "description": "<p>ID (index array) del tipo de empresa en caso de que posea.</p>"
           },
           {
             "group": "Parameter",
@@ -12599,6 +12613,34 @@ define({ "api": [
             "optional": false,
             "field": "baptized",
             "description": "<p>Indica si se ha bautizado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "department",
+            "description": "<p>ID (index array)del departamento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (index array)de la ciudad.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Nombre del barrio o vereda.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
           }
         ]
       }
@@ -12606,7 +12648,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"phone\": \"3161234568\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345677\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true\n}",
+        "content": "{\n    \"email\": \"user@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Pedro\",\n    \"lastNames\": \"Pérez\",\n    \"gender\": 0,\n    \"birthday\": \"1994-07-07\",\n    \"civilStatus\": 0,\n    \"educationLevel\": 0,\n    \"profession\": 90,\n    \"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"NOMBRE DE LA LOCALIDAD\",\n    \"direction\": \"MI DIRECCIÓN\"\n}",
         "type": "JSON"
       }
     ],
@@ -12631,14 +12673,35 @@ define({ "api": [
         "data Object": [
           {
             "group": "data Object",
-            "type": "Number|Null",
+            "type": "Boolean",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
             "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (array index) del nivel educativo.</p>"
           },
           {
             "group": "data Object",
-            "type": "Number|Null",
+            "type": "Number",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
             "optional": false,
             "field": "bloodType",
             "description": "<p>ID (array index) del tipo de sangre.</p>"
@@ -12668,29 +12731,29 @@ define({ "api": [
             "group": "data Object",
             "type": "Number",
             "optional": false,
-            "field": "role",
-            "description": "<p>Role del usuario.</p>"
+            "field": "department",
+            "description": "<p>ID (array index) del departamento de residencia.</p>"
           },
           {
             "group": "data Object",
-            "type": "Object",
+            "type": "Number",
             "optional": false,
-            "field": "securityQuestion",
-            "description": "<p>Datos de la pregunta de seguridad.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
-            "field": "created_at",
-            "description": "<p>Fecha de registro.</p>"
+            "field": "city",
+            "description": "<p>ID (array index) de la ciudad de residencia.</p>"
           },
           {
             "group": "data Object",
             "type": "String",
             "optional": false,
-            "field": "updated_at",
-            "description": "<p>Fecha de la última actualización del perfil.</p>"
+            "field": "locality",
+            "description": "<p>Nombre del barrio o localidad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección de residencia.</p>"
           },
           {
             "group": "data Object",
@@ -12710,13 +12773,6 @@ define({ "api": [
             "group": "data Object",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
             "field": "names",
             "description": "<p>Nombres.</p>"
           },
@@ -12729,17 +12785,17 @@ define({ "api": [
           },
           {
             "group": "data Object",
-            "type": "String",
-            "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
-          },
-          {
-            "group": "data Object",
             "type": "Number|Null",
             "optional": false,
             "field": "profession",
             "description": "<p>ID (array index) de la profesión.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
           }
         ],
         "securityQuestion Object": [
@@ -12755,7 +12811,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado la información exitosamente.\",\n    \"data\": {\n        \"educationLevel\": 0,\n        \"bloodType\": 5,\n        \"company\": true,\n        \"companyType\": 4,\n        \"baptized\": true,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-08 13:43:16\",\n        \"updated_at\": \"2020-12-08 21:34:22\",\n        \"_id\": \"5fcfc945f4647b4c200cca05\",\n        \"phone\": \"584121490198\",\n        \"document\": \"CC12345677\",\n        \"names\": \"ANTHONY TERCERO\",\n        \"lastNames\": \"VELÁSQUEZ\",\n        \"direction\": \"any direction\",\n        \"profession\": 44\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 0,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"NOMBRE DE LA LOCALIDAD\",\n\t\t\"direction\": \"MI DIRECCIÓN\",\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"PEDRO\",\n\t\t\"lastNames\": \"PÉREZ\",\n\t\t\"profession\": 90,\n\t\t\"email\": \"user@example.com\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -12803,7 +12859,7 @@ define({ "api": [
         },
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra con otro usuario. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"questionId\",\n            \"msg\": \"Disculpe, pero seleccionar una pregunta de seguridad.\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"email\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su correo electrónico.\"\n        },\n        {\n            \"input\": \"phone\",\n            \"msg\": \"Disculpe, pero debe indicar su número de teléfono. Sólo se permiten números (0-9).\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        },\n        .\n        .\n        .\n    ]\n  }",
           "type": "JSON"
         },
         {

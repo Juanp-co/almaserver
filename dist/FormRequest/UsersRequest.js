@@ -148,80 +148,127 @@ async function validateRegister(data, admin) {
 }
 exports.validateRegister = validateRegister;
 async function validateUpdate(data, _id) {
+    var _a, _b;
     const ret = {
         phone: null,
-        document: null,
+        email: null,
+        // document: null,
         names: null,
         lastNames: null,
-        direction: null,
+        gender: null,
+        birthday: null,
+        civilStatus: null,
         educationLevel: null,
         profession: null,
         bloodType: null,
         company: false,
         companyType: null,
-        baptized: false
+        baptized: false,
+        department: null,
+        city: null,
+        locality: null,
+        direction: null,
     };
     const errors = [];
-    // phone
-    if (!data.phone || !Validations_1.checkPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de teléfono.', 'phone'));
+    // email
+    if (!data.email || !Validations_1.checkEmail(data.email)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
+    }
+    else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase(), _id)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de emailo ya se encuentra con otro usuario. Verifíquelo e intente nuevamente.', 'email'));
     }
     else {
-        ret.phone = data.phone;
+        ret.email = data.email.toLowerCase();
     }
+    // phone
+    if (!Validations_1.checkPhone(data.phone)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su número de teléfono. Sólo se permiten números (0-9).', 'phone'));
+    }
+    else
+        ret.phone = ((_a = data.phone) === null || _a === void 0 ? void 0 : _a.trim()) || null;
     // names
     if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
     }
     else {
-        ret.names = data.names.toUpperCase();
+        ret.names = data.names.trim();
     }
     // lastNames
     if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
     }
     else {
-        ret.lastNames = data.lastNames.toUpperCase();
+        ret.lastNames = data.lastNames.trim();
     }
-    // document
-    if (!data.document || !Validations_1.checkDocument(data.document)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+    // birthday
+    if (data.birthday) {
+        if (!Validations_1.checkDate(`${data.birthday}`)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+        }
+        else {
+            ret.birthday = ((_b = data.birthday) === null || _b === void 0 ? void 0 : _b.trim().toUpperCase()) || null;
+        }
     }
-    else if (await UsersActions_1.default(data.document.toUpperCase(), _id)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra con otro usuario. Verifíquelo e intente nuevamente.', 'document'));
+    // educationLevel
+    if (!Validations_1.checkIfValueIsNumber(`${data.educationLevel}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su nivel educativo.', 'educationLevel'));
     }
-    else {
-        ret.document = data.document.toUpperCase();
+    else
+        ret.educationLevel = data.educationLevel;
+    // profession
+    if (!Validations_1.checkIfValueIsNumber(`${data.profession}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su profesión.', 'profession'));
     }
-    // direction
-    if (!data.direction) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su dirección.', 'direction'));
-    }
-    else {
-        ret.direction = data.direction;
-    }
+    else
+        ret.profession = data.profession;
     // bloodType
     if (!Validations_1.checkIfValueIsNumber(`${data.bloodType}`)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su tipo de sangre.', 'bloodType'));
     }
-    else {
+    else
         ret.bloodType = data.bloodType;
+    // gender
+    if (!Validations_1.checkIfValueIsNumber(`${data.gender}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su sexo.', 'gender'));
     }
-    // educationLevel
-    if (Validations_1.checkIfValueIsNumber(`${data.educationLevel}`))
-        ret.educationLevel = data.educationLevel;
-    // profession
-    if (Validations_1.checkIfValueIsNumber(`${data.profession}`))
-        ret.profession = data.profession;
-    // bloodType
-    if (data.bloodType)
-        ret.bloodType = data.bloodType;
+    else
+        ret.gender = data.gender;
+    // civilStatus
+    if (!Validations_1.checkIfValueIsNumber(`${data.civilStatus}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su estado civil.', 'civilStatus'));
+    }
+    else
+        ret.civilStatus = data.civilStatus;
+    // department
+    if (!Validations_1.checkIfValueIsNumber(`${data.department}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el departamento de residencia.', 'department'));
+    }
+    else
+        ret.department = data.department || null;
+    // city
+    if (!Validations_1.checkIfValueIsNumber(`${data.city}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la ciudad de residencia.', 'city'));
+    }
+    else
+        ret.city = data.city || null;
+    // locality
+    if (!data.locality || !Validations_1.checkTitlesOrDescriptions(`${data.locality}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el nombre del barrio o localidad en la que reside.', 'locality'));
+    }
+    else
+        ret.locality = data.locality || null;
+    // direction
+    if (!data.direction || !Validations_1.checkTitlesOrDescriptions(`${data.direction}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su dirección.', 'direction'));
+    }
+    else
+        ret.direction = data.direction || null;
     // baptized
     if (data.baptized)
         ret.baptized = data.baptized;
-    // bloodType
+    // company
     if (data.company) {
-        ret.company = data.company;
+        ret.company = true;
         // companyType
         if (!Validations_1.checkIfValueIsNumber(`${data.companyType}`)) {
             errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar a qué se dedica su empresa.', 'companyType'));

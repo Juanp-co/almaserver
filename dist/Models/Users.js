@@ -27,15 +27,18 @@ const SecurityQuestionSchema = new mongoose_1.Schema({
     answer: { type: String, default: null }
 }, { _id: false, id: false });
 const UserSchema = new mongoose_1.Schema({
+    document: { type: String, require: true, unique: true },
+    email: { type: String, require: true, unique: true },
     phone: { type: String, require: true },
     password: { type: String, require: true },
-    names: { type: String, require: true },
-    lastNames: { type: String, require: true },
-    document: { type: String, require: true },
-    direction: { type: String, require: true },
-    profession: { type: Number, require: true },
+    names: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
+    lastNames: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
+    gender: { type: Number, default: null },
+    birthday: { type: String, default: null },
+    civilStatus: { type: Number, default: null },
     educationLevel: { type: Number, default: null },
-    bloodType: { type: Number, default: false },
+    profession: { type: Number, default: null },
+    bloodType: { type: Number, default: null },
     company: { type: Boolean, default: false },
     companyType: { type: Number, default: null },
     baptized: { type: Boolean, default: false },
@@ -43,6 +46,10 @@ const UserSchema = new mongoose_1.Schema({
     role: { type: Number, default: 5 },
     securityQuestion: { type: SecurityQuestionSchema, default: { SecurityQuestionSchema } },
     referred: { type: String, default: null },
+    department: { type: Number, default: null },
+    city: { type: Number, default: null },
+    locality: { type: String, default: null, set: GlobalFunctions_1.toUpperValue },
+    direction: { type: String, default: null, set: GlobalFunctions_1.toUpperValue },
     created_at: { type: Number, default: GlobalFunctions_1.setDate(), get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate(), get: GlobalFunctions_1.getDate }
 }, { id: false });

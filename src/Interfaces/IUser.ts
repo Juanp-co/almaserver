@@ -1,12 +1,20 @@
 import { Document } from 'mongoose';
 
+export interface IUserSecurityQuestion {
+  questionId?: string | null;
+  answer?: string | null;
+}
+
 export default interface IUser extends Document {
+  document: string | null;
+  email: string | null;
   phone: string | null;
   password: string | null;
   names: string | null;
   lastNames: string | null;
-  document: string | null;
-  direction: string | null;
+  gender: number | null;
+  birthday: string | null;
+  civilStatus: string | null;
   educationLevel?: number | string | null;
   profession?: number | string | null;
   bloodType?: number | string | null;
@@ -16,11 +24,16 @@ export default interface IUser extends Document {
   role?: number | null;
   securityQuestion: IUserSecurityQuestion;
   referred?: string | null;
+  department: number | null;
+  city: number | null;
+  locality: string | null;
+  direction: string | null;
   created_at?: number | null;
   updated_at?: number | null;
 }
 
 export interface IUserRegister {
+  email: IUser['email'];
   phone: IUser['phone'];
   password: IUser['password'];
   names: IUser['names'];
@@ -41,17 +54,23 @@ export interface IUserRegister {
 }
 
 export interface IUserUpdate {
+  email: IUser['email'];
   phone: IUser['phone'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
-  document: IUser['document'];
-  direction: IUser['direction'];
+  gender: IUser['gender'];
+  birthday: IUser['birthday'];
+  civilStatus: IUser['civilStatus'];
   educationLevel: IUser['educationLevel'];
-  profession?: IUser['profession'];
-  bloodType?: IUser['bloodType'];
-  company?: IUser['company'];
-  companyType?: IUser['companyType'];
-  baptized?: IUser['baptized'];
+  profession: IUser['profession'];
+  bloodType: IUser['bloodType'];
+  company: IUser['company'];
+  companyType: IUser['companyType'];
+  baptized: IUser['baptized'];
+  department: IUser['department'];
+  city: IUser['city'];
+  locality: IUser['locality'];
+  direction: IUser['direction'];
 }
 
 export interface IUserLogin {
@@ -70,11 +89,6 @@ export interface IUserSimpleInfo {
 export interface IUserPasswords {
   password?: string | null;
   newPassword?: string | null;
-}
-
-export interface IUserSecurityQuestion {
-  questionId?: string | null;
-  answer?: string | null;
 }
 
 export interface IUserToToken {
