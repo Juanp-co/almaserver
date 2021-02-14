@@ -3,8 +3,8 @@ import { Request, Response } from 'express';
 import getCoursesList, {
   checkIfUserApprovedPreviousCourses,
   getCourseDetails,
-  getCoursesDataUser, getModelReturnContent,
-  getModelReturnCourseOrTheme
+  getCoursesDataUser,
+  getModelReturnCourseOrTheme,
 } from '../../ActionsData/CoursesActions';
 import { validateTestData } from '../../FormRequest/CoursesRequest';
 import {
@@ -14,7 +14,7 @@ import {
   returnErrorParams
 } from '../../Functions/GlobalFunctions';
 import { checkObjectId, checkSlug, checkTitlesOrDescriptions } from '../../Functions/Validations';
-import { ICourseList } from '../../Interfaces/ICourse';
+import { ICourseList, ICourseTemary } from '../../Interfaces/ICourse';
 import { ICourseUserTemary } from '../../Interfaces/ICourseUser';
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
@@ -49,6 +49,10 @@ function returnNotFound(res: Response, code: string | null) : Response {
   else if (code === '404Theme') {
     ret.msg = 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.';
     statusCode = 404;
+  }
+  else if (code === 'errorAction') {
+    ret.msg = 'Disculpe, pero no se logró determinar la acción a realizar.';
+    statusCode = 422;
   }
   else if (code === 'errorCommentId') {
     ret.msg = 'Disculpe, pero el comentario seleccionado es incorrecto.';
@@ -262,21 +266,37 @@ export async function showCourseContentTheme(req: Request, res: Response) : Prom
       return returnNotFound(res, 'wasNotPreviousCourse');
     }
 
+    const theme: ICourseTemary = await getModelReturnCourseOrTheme({ data: course, theme: true, showContent: true }) as ICourseTemary;
+
+    if (theme) {
+      if (theme.content.length > 0) {
+        const index = _.findIndex(myCourse.temary, t => t.temaryId === theme._id.toString());
+
+        if (index > -1) {
+          // set view values
+          theme.view = myCourse.temary[index].view;
+          myCourse.temary[index].content.forEach(c => {
+            const index2 = _.findIndex(theme.content, c2 => c2._id.toString() === c.contentId);
+            if (index2 > -1) theme.content[index2].view = c.view;
+          });
+        }
+      }
+    }
+
     return res.json({
       msg: 'Tema',
-      theme: await getModelReturnCourseOrTheme({ data: course, theme: true, showContent: true }),
+      theme,
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/showCourseTheme`);
   }
 }
 
-export async function showCourseContent(req: Request, res: Response) : Promise<Response>{
+export async function updateHistoricalCourseContent(req: Request, res: Response) : Promise<Response>{
   try {
-    const { slug, _id, contentId } = req.params;
-    const { prevThemeId, prevContentId } = req.query;
-    let previous: any | undefined;
+    const { slug, _id, contentId, action } = req.params;
 
+    if (['watching', 'viewed'].indexOf(`${action}`) === -1) return returnNotFound(res, 'errorAction');
     if (!checkSlug(slug)) return returnNotFound(res, 'slug');
     if (!checkObjectId(_id)) return returnNotFound(res, 'errorThemeId');
     if (!checkObjectId(contentId)) return returnNotFound(res, 'errorContentId');
@@ -309,46 +329,35 @@ export async function showCourseContent(req: Request, res: Response) : Promise<R
 
     if (indexContent === -1) return returnNotFound(res, '404Content');
 
-    // check if exist prev to update view
-    if (prevThemeId && checkObjectId(prevThemeId) && prevContentId && checkObjectId(prevContentId)) {
-      const index = _.findIndex(myCourse.temary, t => t.temaryId === prevThemeId);
-      if (index > -1) {
-        const index2 = _.findIndex(myCourse.temary[index].content, c => c.contentId === prevContentId);
-
-        if (index2 > -1) {
-          if (myCourse.temary[index].content[index2].view !== 2) myCourse.temary[index].content[index2].view = 2;
-          myCourse.temary[index].content[index2].date = setDate();
-        }
-
-        if (myCourse.temary[index].view !== 2) myCourse.temary[index].view = 2;
-        myCourse.temary[index].date = setDate();
-        await myCourse.save();
-
-        previous = { prevThemeId, prevContentId }
-      }
-    }
-
     // set the new theme in viewing
-    const index3 = _.findIndex(myCourse.temary, t => t.temaryId === _id);
+    const index = _.findIndex(myCourse.temary, t => t.temaryId === _id);
 
-    if (index3 > -1) {
-      const index4 = _.findIndex(myCourse.temary[index3].content, c => c.contentId === contentId);
+    if (index > -1) {
+      const index2 = _.findIndex(myCourse.temary[index].content, c => c.contentId === contentId);
 
-      if (index4 > -1) {
-        if (myCourse.temary[index3].content[index4].view !== 2) myCourse.temary[index3].content[index4].view = 1;
-        myCourse.temary[index3].content[index4].date = setDate();
+      if (index2 > -1) {
+        myCourse.temary[index].content[index2].view = action === 'watching' ? 1 : 2;
+        myCourse.temary[index].content[index2].date = setDate();
       }
-      if (myCourse.temary[index3].view !== 2) myCourse.temary[index3].view = 1;
-      myCourse.temary[index3].date = setDate();
+
+      // check if all content was viewed
+      if (action === 'viewed') {
+        let acc = 0;
+        myCourse.temary[index].content.forEach(c => {
+          if (c.view === 2) acc++;
+        });
+
+        if (myCourse.temary[index].content.length === acc)
+          myCourse.temary[index].view = 2;
+      }
+
+      myCourse.temary[index].date = setDate();
       await myCourse.save();
     }
 
     return res.json({
-      msg: 'Contenido',
-      themeId: _id,
-      contentId,
-      content: getModelReturnContent(temary.content[indexContent], true),
-      previous
+      msg: '¡Éxito al guardar el progreso!',
+      updated: true
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/showCourseTheme`);

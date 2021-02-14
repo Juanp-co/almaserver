@@ -48,7 +48,8 @@ router.route('/courses/:slug/theme/:_id/test')
 // comment and like comments
 router.post(`/courses/:slug/theme/:_id/comment`, middleware_1.validateUser, courses_controller_1.commentCourseTheme);
 router.post(`/courses/:slug/theme/:_id/comment/:commentId/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseThemeComment);
-router.get(`/courses/:slug/theme/:_id/content/:contentId`, middleware_1.validateUser, courses_controller_1.showCourseContent); // get content
+// update historical content (action = watching | viewed)
+router.put(`/courses/:slug/theme/:_id/content/:contentId/:action`, middleware_1.validateUser, courses_controller_1.updateHistoricalCourseContent);
 router.post(`/courses/:slug/theme/:_id/content/:contentId/comment`, middleware_1.validateUser, courses_controller_1.commentCourseTheme);
 router.post(`/courses/:slug/theme/:_id/content/:contentId/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseThemeComment);
 router.post(`/courses/:slug/theme/:_id/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeTheme);

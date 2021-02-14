@@ -955,6 +955,7 @@
  * @apiSuccess (theme Object) {String} _id ID del curso.
  * @apiSuccess (theme Object) {String} title Título del tiema.
  * @apiSuccess (theme Object) {String|Null} description Descripción del tema.
+ * @apiSuccess (theme Object) {Number} view Indica si el tema fue visto (0 = Sin Ver | 1 = Viendo | 2 = Visto).
  * @apiSuccess (theme Object) {Array|Object} content Listado del contenido del tema.
  * @apiSuccess (theme Object) {Array|Object} comments Listado de comentarios.
  * @apiSuccess (theme Object) {Array|Object} likes Listado de "Me gusta" recibidos.
@@ -964,6 +965,7 @@
  * @apiSuccess (content Array Object) {String} title Título.
  * @apiSuccess (content Array Object) {String|Null} description Descripción.
  * @apiSuccess (content Array Object) {String|Null} urlVideo URL del video.
+ * @apiSuccess (content Array Object) {Number} view Indica si el contenido fue visto (0 = Sin Ver | 1 = Viendo | 2 = Visto).
  *
  * @apiSuccess (comments Array Object) {String} _id ID del comentario.
  * @apiSuccess (comments Array Object) {String|Null} answer Respuesta recibida (No implementado).
@@ -1115,78 +1117,41 @@
  */
 
 /**
- * @api {get} /api/courses/:slug/theme/:themeId/content/:contentId (08) Obtener un contenido de un tema.
- * @apiVersion 0.0.10
- * @apiName getContentThemeCourses
+ * @api {put} /api/courses/:slug/theme/:themeId/content/:contentId/:action (08) Marcar como 'VIENDO' o 'VISTO' un contenido de un tema.
+ * @apiVersion 0.0.14
+ * @apiName setWatchingOrViewedContentThemeCourses
  * @apiGroup Courses
+ * @apiDescription Se puede utilizar este endpoint para actualizar el progreso del usuario en relación al contenido de un tema.
+ * En la ruta, el parámetro ':action' indica la acción a realizar, donde los valores:
+ *
+ * 'watching' indica que el usuario está viendo el contenido.
+ * 'viewed' indica que el usuario está ya vió el contenido.
+ *
+ * Automáticamente, el servicio realiza una actualización del estado en el que se encuentra el tema en relación a su contenido.
+ * Ejemplo:
+ *
+ * 1. Si el usuario no ha visto ningún contenido del TEMA, este tendrá un valor de cero (0), que significa 'NO VISTO'.
+ * 2. Si el usuario ha visto al menos un contenido del TEMA, este tendrá un valor de uno (1), que significa 'VIENDO' o 'VISUALIZANDO'.
+ * 3. Si el usuario ha visto todos los contenidos del TEMA, este tendrá un valor de dos (2), que significa que ha 'VISTO' todo el contenido.
+ *
+ * Si el punto tres (3) se cumple, podrá solicita la prueba respectiva del tema.
+ * Ver punto: "(12) Obtener prueba (examen) para aprobar un tema" en este mismo grupo de endpoints.
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiParam (Path params) {String} slug Slug del curso.
  * @apiParam (Path params) {String} themeId ID del tema.
  * @apiParam (Path params) {String} contentId ID del contenido.
- *
- * @apiParam (Query params) {String} prevThemeId ID del tema anterior visto (opcional si es el primer tema).
- * @apiParam (Query params) {String} prevContentId ID del contenido anterior visto (opcional si es el primer contenido).
+ * @apiParam (Path params) {String} action Acción a realizar (valores = 'watching' | 'viewed').
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object} themeId ID del tema.
- * @apiSuccess {Object} contentId ID del contenido.
- * @apiSuccess {Object} content Detalles del tema.
- * @apiSuccess {Object|Null} previous Datos del tema previo.
- *
- * @apiSuccess (content Array Object) {String} _id ID del contenido.
- * @apiSuccess (content Array Object) {String} title Título.
- * @apiSuccess (content Array Object) {String|Null} description Descripción.
- * @apiSuccess (content Array Object) {String|Null} urlVideo URL del video.
- *
- * @apiSuccess (previous Object) {String|Null} prevThemeId ID del tema previo.
- * @apiSuccess (previous Object) {String|Null} prevContentId ID del contenido previo.
+ * @apiSuccess {Boolean} updated Indica si el progreso fue exitoso.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Contenido",
-	"themeId": "601f09f99775034e10510fa3",
-	"contentId": "601f09f99775034e10510fa4",
-	"content": {
-		"_id": "601f09f99775034e10510fa4",
-		"title": "Contenido 1",
-		"description": "<p>Contenido 01</p>",
-		"urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s"
-	}
-}
- *
- * @apiSuccessExample {JSON} Success without urlVideo
- * HTTP/1.1 200 Success
- * {
-	"msg": "Contenido",
-	"themeId": "601f09f99775034e10510fa3",
-	"contentId": "601f09f99775034e10510fa4",
-	"content": {
-		"_id": "601f09f99775034e10510fa4",
-		"title": "Contenido 1",
-		"description": "<p>Contenido 01</p>",
-		"urlVideo": null
-	}
-}
- *
- * @apiSuccessExample {JSON} Success with previos data
- * HTTP/1.1 200 Success
- * {
-	"msg": "Contenido",
-	"themeId": "601f09f99775034e10510fa3",
-	"contentId": "601f09f99775034e10510fa4",
-	"content": {
-		"_id": "601f09f99775034e10510fa4",
-		"title": "Contenido 1",
-		"description": "<p>Contenido 01</p>",
-		"urlVideo": "https://www.youtube.com/watch?v=-JVdH8ne-2s"
-	},
-	"previous": {
-		"prevThemeId": "601f09f99775034e10510fa3",
-		"prevContentId": "601f09f99775034e10510fa5"
-	}
+	"msg": "¡Éxito al guardar el progreso!",
+	"updated": true
 }
  *
  * @apiError {String} msg Mensaje general.
@@ -1224,6 +1189,12 @@
  * HTTP/1.1 404 Not found
  * {
     "msg": "Disculpe, pero el contenido seleccionado no existe o no se encuentra disponible."
+}
+ *
+ * @apiErrorExample {JSON} Invalid action
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+    "msg": "Disculpe, pero no se logró determinar la acción a realizar."
 }
  *
  * @apiErrorExample {JSON} Invalid slug

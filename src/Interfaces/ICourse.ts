@@ -44,6 +44,7 @@ export interface ICourseContent {
   title?: string | null;
   description?: string | null;
   urlVideo?: string | null;
+  view?: number | null;
 }
 
 export interface ICourseTemary {
@@ -52,6 +53,7 @@ export interface ICourseTemary {
   description?: string | null,
   content: ICourseContent[],
   test: ICourseTest[],
+  view?: number;
   comments: ICourseComments[];
   likes?: ICourseLikes[];
   unlikes?: ICourseLikes[];
