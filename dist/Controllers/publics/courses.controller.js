@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.evaluateTest = exports.getTest = exports.likeOrUnlikeCourseThemeComment = exports.commentCourseTheme = exports.likeOrUnlikeTheme = exports.likeOrUnlikeCourseComment = exports.commentCourse = exports.likeOrUnlikeCourse = exports.showCourseContent = exports.showCourseContentTheme = exports.showCourse = exports.addCourseUser = exports.getCoursesCounters = void 0;
+exports.evaluateTest = exports.getTest = exports.likeOrUnlikeCourseThemeComment = exports.commentCourseTheme = exports.likeOrUnlikeTheme = exports.likeOrUnlikeCourseComment = exports.commentCourse = exports.likeOrUnlikeCourse = exports.updateHistoricalCourseContent = exports.showCourseContentTheme = exports.showCourse = exports.addCourseUser = exports.getCoursesCounters = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const CoursesActions_1 = __importStar(require("../../ActionsData/CoursesActions"));
 const CoursesRequest_1 = require("../../FormRequest/CoursesRequest");
@@ -58,6 +58,10 @@ function returnNotFound(res, code) {
     else if (code === '404Theme') {
         ret.msg = 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.';
         statusCode = 404;
+    }
+    else if (code === 'errorAction') {
+        ret.msg = 'Disculpe, pero no se logró determinar la acción a realizar.';
+        statusCode = 422;
     }
     else if (code === 'errorCommentId') {
         ret.msg = 'Disculpe, pero el comentario seleccionado es incorrecto.';
@@ -255,9 +259,24 @@ async function showCourseContentTheme(req, res) {
             && !(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
             return returnNotFound(res, 'wasNotPreviousCourse');
         }
+        const theme = await CoursesActions_1.getModelReturnCourseOrTheme({ data: course, theme: true, showContent: true });
+        if (theme) {
+            if (theme.content.length > 0) {
+                const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === theme._id.toString());
+                if (index > -1) {
+                    // set view values
+                    theme.view = myCourse.temary[index].view;
+                    myCourse.temary[index].content.forEach(c => {
+                        const index2 = lodash_1.default.findIndex(theme.content, c2 => c2._id.toString() === c.contentId);
+                        if (index2 > -1)
+                            theme.content[index2].view = c.view;
+                    });
+                }
+            }
+        }
         return res.json({
             msg: 'Tema',
-            theme: await CoursesActions_1.getModelReturnCourseOrTheme({ data: course, theme: true, showContent: true }),
+            theme,
         });
     }
     catch (error) {
@@ -265,11 +284,11 @@ async function showCourseContentTheme(req, res) {
     }
 }
 exports.showCourseContentTheme = showCourseContentTheme;
-async function showCourseContent(req, res) {
+async function updateHistoricalCourseContent(req, res) {
     try {
-        const { slug, _id, contentId } = req.params;
-        const { prevThemeId, prevContentId } = req.query;
-        let previous;
+        const { slug, _id, contentId, action } = req.params;
+        if (['watching', 'viewed'].indexOf(`${action}`) === -1)
+            return returnNotFound(res, 'errorAction');
         if (!Validations_1.checkSlug(slug))
             return returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
@@ -301,50 +320,37 @@ async function showCourseContent(req, res) {
         const indexContent = lodash_1.default.findIndex(temary.content, v => v._id.toString() === contentId);
         if (indexContent === -1)
             return returnNotFound(res, '404Content');
-        // check if exist prev to update view
-        if (prevThemeId && Validations_1.checkObjectId(prevThemeId) && prevContentId && Validations_1.checkObjectId(prevContentId)) {
-            const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === prevThemeId);
-            if (index > -1) {
-                const index2 = lodash_1.default.findIndex(myCourse.temary[index].content, c => c.contentId === prevContentId);
-                if (index2 > -1) {
-                    if (myCourse.temary[index].content[index2].view !== 2)
-                        myCourse.temary[index].content[index2].view = 2;
-                    myCourse.temary[index].content[index2].date = GlobalFunctions_1.setDate();
-                }
-                if (myCourse.temary[index].view !== 2)
-                    myCourse.temary[index].view = 2;
-                myCourse.temary[index].date = GlobalFunctions_1.setDate();
-                await myCourse.save();
-                previous = { prevThemeId, prevContentId };
-            }
-        }
         // set the new theme in viewing
-        const index3 = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
-        if (index3 > -1) {
-            const index4 = lodash_1.default.findIndex(myCourse.temary[index3].content, c => c.contentId === contentId);
-            if (index4 > -1) {
-                if (myCourse.temary[index3].content[index4].view !== 2)
-                    myCourse.temary[index3].content[index4].view = 1;
-                myCourse.temary[index3].content[index4].date = GlobalFunctions_1.setDate();
+        const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
+        if (index > -1) {
+            const index2 = lodash_1.default.findIndex(myCourse.temary[index].content, c => c.contentId === contentId);
+            if (index2 > -1) {
+                myCourse.temary[index].content[index2].view = action === 'watching' ? 1 : 2;
+                myCourse.temary[index].content[index2].date = GlobalFunctions_1.setDate();
             }
-            if (myCourse.temary[index3].view !== 2)
-                myCourse.temary[index3].view = 1;
-            myCourse.temary[index3].date = GlobalFunctions_1.setDate();
+            // check if all content was viewed
+            if (action === 'viewed') {
+                let acc = 0;
+                myCourse.temary[index].content.forEach(c => {
+                    if (c.view === 2)
+                        acc++;
+                });
+                if (myCourse.temary[index].content.length === acc)
+                    myCourse.temary[index].view = 2;
+            }
+            myCourse.temary[index].date = GlobalFunctions_1.setDate();
             await myCourse.save();
         }
         return res.json({
-            msg: 'Contenido',
-            themeId: _id,
-            contentId,
-            content: CoursesActions_1.getModelReturnContent(temary.content[indexContent], true),
-            previous
+            msg: '¡Éxito al guardar el progreso!',
+            updated: true
         });
     }
     catch (error) {
         return GlobalFunctions_1.returnError(res, error, `${path}/showCourseTheme`);
     }
 }
-exports.showCourseContent = showCourseContent;
+exports.updateHistoricalCourseContent = updateHistoricalCourseContent;
 /*
   Comments Course
  */

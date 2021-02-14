@@ -4,7 +4,10 @@ import {
   ICourseComments, ICourseCommentsObject,
   ICourseList,
   ICourseTemary,
-  ICourseLikes, ICourseLikesAndUnlikesObject, ICourseReference, ICourseContent
+  ICourseLikes,
+  ICourseLikesAndUnlikesObject,
+  ICourseReference,
+  ICourseContent
 } from '../Interfaces/ICourse';
 import { ICourseUserList } from '../Interfaces/ICourseUser';
 import { IUserSimpleInfo } from '../Interfaces/IUser';
@@ -70,6 +73,7 @@ export function getModelReturnContent(data: ICourseContent | null, allData = fal
   if (allData) {
     ret.description = data.description;
     ret.urlVideo = data.urlVideo;
+    ret.view = 0;
   }
   return ret;
 }
@@ -161,6 +165,7 @@ export async function getModelReturnCourseOrTheme(
     ret._id = temary._id;
     ret.title = temary.title;
     ret.description = temary.description || null;
+    ret.view = 0;
     ret.content = [];
     // ret.test = [];
     ret.comments = getModelCommentsList(temary.comments || []);
@@ -182,7 +187,6 @@ export async function getModelReturnCourseOrTheme(
     const listUsers = listIds.length > 0 ? await getNamesUsersList(_.uniq(listIds)) : [];
 
     if (listUsers.length > 0) {
-      // if ('content' in ret) ret.content = setUserDataInList(ret.content || [], listUsers);
       if (ret.likes) ret.likes = setUserDataInList(ret.likes, listUsers);
       if (ret.unlikes) ret.unlikes = setUserDataInList(ret.unlikes, listUsers);
       if (ret.comments) ret.comments = setUserDataInList(ret.comments, listUsers);

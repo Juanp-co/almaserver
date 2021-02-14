@@ -4144,271 +4144,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/courses/:slug/theme/:themeId/content/:contentId",
-    "title": "(08) Obtener un contenido de un tema.",
-    "version": "0.0.10",
-    "name": "getContentThemeCourses",
-    "group": "Courses",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>Token de la sesión.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Path params": [
-          {
-            "group": "Path params",
-            "type": "String",
-            "optional": false,
-            "field": "slug",
-            "description": "<p>Slug del curso.</p>"
-          },
-          {
-            "group": "Path params",
-            "type": "String",
-            "optional": false,
-            "field": "themeId",
-            "description": "<p>ID del tema.</p>"
-          },
-          {
-            "group": "Path params",
-            "type": "String",
-            "optional": false,
-            "field": "contentId",
-            "description": "<p>ID del contenido.</p>"
-          }
-        ],
-        "Query params": [
-          {
-            "group": "Query params",
-            "type": "String",
-            "optional": false,
-            "field": "prevThemeId",
-            "description": "<p>ID del tema anterior visto (opcional si es el primer tema).</p>"
-          },
-          {
-            "group": "Query params",
-            "type": "String",
-            "optional": false,
-            "field": "prevContentId",
-            "description": "<p>ID del contenido anterior visto (opcional si es el primer contenido).</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje del proceso.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "themeId",
-            "description": "<p>ID del tema.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "contentId",
-            "description": "<p>ID del contenido.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "content",
-            "description": "<p>Detalles del tema.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object|Null",
-            "optional": false,
-            "field": "previous",
-            "description": "<p>Datos del tema previo.</p>"
-          }
-        ],
-        "content Array Object": [
-          {
-            "group": "content Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>ID del contenido.</p>"
-          },
-          {
-            "group": "content Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>Título.</p>"
-          },
-          {
-            "group": "content Array Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "description",
-            "description": "<p>Descripción.</p>"
-          },
-          {
-            "group": "content Array Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "urlVideo",
-            "description": "<p>URL del video.</p>"
-          }
-        ],
-        "previous Object": [
-          {
-            "group": "previous Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "prevThemeId",
-            "description": "<p>ID del tema previo.</p>"
-          },
-          {
-            "group": "previous Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "prevContentId",
-            "description": "<p>ID del contenido previo.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Contenido\",\n\t\"themeId\": \"601f09f99775034e10510fa3\",\n\t\"contentId\": \"601f09f99775034e10510fa4\",\n\t\"content\": {\n\t\t\"_id\": \"601f09f99775034e10510fa4\",\n\t\t\"title\": \"Contenido 1\",\n\t\t\"description\": \"<p>Contenido 01</p>\",\n\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n\t}\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Success without urlVideo",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Contenido\",\n\t\"themeId\": \"601f09f99775034e10510fa3\",\n\t\"contentId\": \"601f09f99775034e10510fa4\",\n\t\"content\": {\n\t\t\"_id\": \"601f09f99775034e10510fa4\",\n\t\t\"title\": \"Contenido 1\",\n\t\t\"description\": \"<p>Contenido 01</p>\",\n\t\t\"urlVideo\": null\n\t}\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Success with previos data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Contenido\",\n\t\"themeId\": \"601f09f99775034e10510fa3\",\n\t\"contentId\": \"601f09f99775034e10510fa4\",\n\t\"content\": {\n\t\t\"_id\": \"601f09f99775034e10510fa4\",\n\t\t\"title\": \"Contenido 1\",\n\t\t\"description\": \"<p>Contenido 01</p>\",\n\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=-JVdH8ne-2s\"\n\t},\n\t\"previous\": {\n\t\t\"prevThemeId\": \"601f09f99775034e10510fa3\",\n\t\t\"prevContentId\": \"601f09f99775034e10510fa5\"\n\t}\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje general.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Array|Object",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Listado de errores a mostrar.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Boolean",
-            "optional": false,
-            "field": "addCourse[addCourse]",
-            "description": "<p>Indica si se agregará el curso.</p>"
-          }
-        ],
-        "errors Array Object": [
-          {
-            "group": "errors Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "msg[msg]",
-            "description": "<p>Mensaje de error.</p>"
-          },
-          {
-            "group": "errors Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "input[input]",
-            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error token",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
-          "type": "JSON"
-        },
-        {
-          "title": "Not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Course in user not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero no ha registrado el curso en su listado.\",\n    \"addCourse\": true\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Theme not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Content not found",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el contenido seleccionado no existe o no se encuentra disponible.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Invalid slug",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Invalid themeId",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el tema seleccionado es incorrecto.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Invalid contentId",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el contenido seleccionado es incorrecto.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Not complete previous courses",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error internal server",
-          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
-          "type": "JSON"
-        }
-      ]
-    },
-    "filename": "Docs/Courses.js",
-    "groupTitle": "Courses"
-  },
-  {
-    "type": "get",
     "url": "/api/courses/counters",
     "title": "(00) Obtener contador de cursos.",
     "version": "0.0.6",
@@ -5597,6 +5332,13 @@ define({ "api": [
           },
           {
             "group": "theme Object",
+            "type": "Number",
+            "optional": false,
+            "field": "view",
+            "description": "<p>Indica si el tema fue visto (0 = Sin Ver | 1 = Viendo | 2 = Visto).</p>"
+          },
+          {
+            "group": "theme Object",
             "type": "Array|Object",
             "optional": false,
             "field": "content",
@@ -5652,6 +5394,13 @@ define({ "api": [
             "optional": false,
             "field": "urlVideo",
             "description": "<p>URL del video.</p>"
+          },
+          {
+            "group": "content Array Object",
+            "type": "Number",
+            "optional": false,
+            "field": "view",
+            "description": "<p>Indica si el contenido fue visto (0 = Sin Ver | 1 = Viendo | 2 = Visto).</p>"
           }
         ],
         "comments Array Object": [
@@ -6993,6 +6742,191 @@ define({ "api": [
         {
           "title": "All tests was completed",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero ya ha aprobado todos los exámenes de este curso.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Courses.js",
+    "groupTitle": "Courses"
+  },
+  {
+    "type": "put",
+    "url": "/api/courses/:slug/theme/:themeId/content/:contentId/:action",
+    "title": "(08) Marcar como 'VIENDO' o 'VISTO' un contenido de un tema.",
+    "version": "0.0.14",
+    "name": "setWatchingOrViewedContentThemeCourses",
+    "group": "Courses",
+    "description": "<p>Se puede utilizar este endpoint para actualizar el progreso del usuario en relación al contenido de un tema. En la ruta, el parámetro ':action' indica la acción a realizar, donde los valores:</p> <p>'watching' indica que el usuario está viendo el contenido. 'viewed' indica que el usuario está ya vió el contenido.</p> <p>Automáticamente, el servicio realiza una actualización del estado en el que se encuentra el tema en relación a su contenido. Ejemplo:</p> <ol> <li>Si el usuario no ha visto ningún contenido del TEMA, este tendrá un valor de cero (0), que significa 'NO VISTO'.</li> <li>Si el usuario ha visto al menos un contenido del TEMA, este tendrá un valor de uno (1), que significa 'VIENDO' o 'VISUALIZANDO'.</li> <li>Si el usuario ha visto todos los contenidos del TEMA, este tendrá un valor de dos (2), que significa que ha 'VISTO' todo el contenido.</li> </ol> <p>Si el punto tres (3) se cumple, podrá solicita la prueba respectiva del tema. Ver punto: &quot;(12) Obtener prueba (examen) para aprobar un tema&quot; en este mismo grupo de endpoints.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug del curso.</p>"
+          },
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "themeId",
+            "description": "<p>ID del tema.</p>"
+          },
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "contentId",
+            "description": "<p>ID del contenido.</p>"
+          },
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "action",
+            "description": "<p>Acción a realizar (valores = 'watching' | 'viewed').</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "updated",
+            "description": "<p>Indica si el progreso fue exitoso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"¡Éxito al guardar el progreso!\",\n\t\"updated\": true\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Array|Object",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Boolean",
+            "optional": false,
+            "field": "addCourse[addCourse]",
+            "description": "<p>Indica si se agregará el curso.</p>"
+          }
+        ],
+        "errors Array Object": [
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Course in user not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero no ha registrado el curso en su listado.\",\n    \"addCourse\": true\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Theme not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Content not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el contenido seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid action",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero no se logró determinar la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid slug",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid themeId",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el tema seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid contentId",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el contenido seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not complete previous courses",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.\"\n}",
           "type": "JSON"
         },
         {

@@ -66,6 +66,7 @@ function getModelReturnContent(data, allData = false) {
     if (allData) {
         ret.description = data.description;
         ret.urlVideo = data.urlVideo;
+        ret.view = 0;
     }
     return ret;
 }
@@ -146,6 +147,7 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
         ret._id = temary._id;
         ret.title = temary.title;
         ret.description = temary.description || null;
+        ret.view = 0;
         ret.content = [];
         // ret.test = [];
         ret.comments = getModelCommentsList(temary.comments || []);
@@ -164,7 +166,6 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
     if (!counters) {
         const listUsers = listIds.length > 0 ? await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(listIds)) : [];
         if (listUsers.length > 0) {
-            // if ('content' in ret) ret.content = setUserDataInList(ret.content || [], listUsers);
             if (ret.likes)
                 ret.likes = setUserDataInList(ret.likes, listUsers);
             if (ret.unlikes)

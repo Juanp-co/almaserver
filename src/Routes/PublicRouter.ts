@@ -9,7 +9,7 @@ import getCourses, {
   likeOrUnlikeCourse, likeOrUnlikeCourseComment,
   likeOrUnlikeCourseThemeComment, likeOrUnlikeTheme,
   // qualifyCourse,
-  showCourse, showCourseContent, showCourseContentTheme
+  showCourse, showCourseContentTheme, updateHistoricalCourseContent
 } from '../Controllers/publics/courses.controller';
 import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.controller';
 import {
@@ -48,7 +48,8 @@ router.route('/courses/:slug/theme/:_id/test')
 // comment and like comments
 router.post(`/courses/:slug/theme/:_id/comment`, validateUser, commentCourseTheme);
 router.post(`/courses/:slug/theme/:_id/comment/:commentId/like`, validateUser, likeOrUnlikeCourseThemeComment);
-router.get(`/courses/:slug/theme/:_id/content/:contentId`, validateUser, showCourseContent); // get content
+// update historical content (action = watching | viewed)
+router.put(`/courses/:slug/theme/:_id/content/:contentId/:action`, validateUser, updateHistoricalCourseContent);
 router.post(`/courses/:slug/theme/:_id/content/:contentId/comment`, validateUser, commentCourseTheme);
 router.post(`/courses/:slug/theme/:_id/content/:contentId/like`, validateUser, likeOrUnlikeCourseThemeComment);
 router.post(`/courses/:slug/theme/:_id/like`, validateUser, likeOrUnlikeTheme);
