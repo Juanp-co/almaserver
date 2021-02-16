@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfExistCode = exports.getLikesAndUnlikesCourse = exports.getCommentsCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
+exports.setPointToTest = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfExistCode = exports.getLikesAndUnlikesCourse = exports.getCommentsCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const Courses_1 = __importDefault(require("../Models/Courses"));
@@ -397,3 +397,114 @@ async function getCoursesDataUser({ query }) {
     };
 }
 exports.getCoursesDataUser = getCoursesDataUser;
+// =====================================================================================================================
+/*
+  Others functions
+ */
+function returnNotFound(res, code) {
+    const ret = { msg: 'Respuesta no determinada.' };
+    let statusCode = 500;
+    if (code === '404Content') {
+        ret.msg = 'Disculpe, pero el contenido seleccionado no existe o ya no se encuentra disponible.';
+        statusCode = 404;
+    }
+    else if (code === '404Course') {
+        ret.msg = 'Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.';
+        statusCode = 404;
+    }
+    else if (code === '404Comment') {
+        ret.msg = 'Disculpe, pero el comentario no existe o no se encuentra disponible.';
+        statusCode = 404;
+    }
+    else if (code === '404CourseUser') {
+        ret.msg = 'Disculpe, pero no ha registrado el curso en su listado.';
+        statusCode = 404;
+        ret.addCourse = true;
+    }
+    else if (code === '404GetDataTemaryUser') {
+        ret.msg = 'Disculpe, pero no se logró encontrar la relación de la prueba en su cuenta.';
+        statusCode = 404;
+    }
+    else if (code === '404Theme') {
+        ret.msg = 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.';
+        statusCode = 404;
+    }
+    else if (code === 'notFinishTheme') {
+        ret.msg = 'Disculpe, pero no puede realizar la prueba hasta haber completado todo el contenido del tema.';
+        statusCode = 403;
+    }
+    else if (code === 'errorAction') {
+        ret.msg = 'Disculpe, pero no se logró determinar la acción a realizar.';
+        statusCode = 422;
+    }
+    else if (code === 'errorCommentId') {
+        ret.msg = 'Disculpe, pero el comentario seleccionado es incorrecto.';
+        statusCode = 422;
+    }
+    else if (code === 'errorComment') {
+        ret.msg = 'Disculpe, pero el comentario debe cumplir con los siguientes parámetros: 1. Letras o números (az-AZ 0-9) y los siguientes caracteres especiales: .,#*?¿¡!()\\-+"\'/@.';
+        statusCode = 422;
+    }
+    else if (code === 'errorGroupId') {
+        ret.msg = 'Disculpe, pero el grupo seleccionado es incorrecto.';
+        statusCode = 422;
+    }
+    else if (code === 'errorThemeId') {
+        ret.msg = 'Disculpe, pero el tema seleccionado es incorrecto.';
+        statusCode = 422;
+    }
+    else if (code === 'errorContentId') {
+        ret.msg = 'Disculpe, pero el contenido seleccionado es incorrecto.';
+        statusCode = 422;
+    }
+    else if (code === 'like') {
+        ret.msg = 'Disculpe, pero no se determinó la acción a realizar.';
+        statusCode = 422;
+    }
+    else if (code === 'slug') {
+        ret.msg = 'Disculpe, pero el curso seleccionado es incorrecto.';
+        statusCode = 422;
+    }
+    else if (code === 'wasNotPreviousCourse') {
+        ret.msg = `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`;
+        statusCode = 422;
+    }
+    else if (code === 'wasRealized') {
+        ret.msg = `Disculpe, pero ya has realizado esta acción anteriormente.`;
+        statusCode = 422;
+    }
+    else if (code === 'wasRealizedAllTest') {
+        ret.msg = `Disculpe, pero ya ha aprobado todos los exámenes de este curso.`;
+        statusCode = 422;
+    }
+    else if (code === 'wasRealizedTest') {
+        ret.msg = `Disculpe, pero ya ha aprobado este examen anteriormente.`;
+        statusCode = 422;
+    }
+    return res.status(statusCode).json(ret);
+}
+exports.returnNotFound = returnNotFound;
+function checkAnswerCheckbox(value, correctAnswer) {
+    if (value && value.indexOf(',') > -1) {
+        const ans = value.split(',') || []; // separate values
+        if (correctAnswer !== null) {
+            // check if assignate points if the correctAnswer exists in the received answer
+            return ans && ans.indexOf(correctAnswer.toString()) > -1;
+        }
+    }
+    return false;
+}
+function setPointToTest(question, inputAnswer) {
+    if (question.inputType === 'checkbox') {
+        // check if answer cotains comma (,)
+        if (inputAnswer.answer && inputAnswer.answer.indexOf(',') > -1) {
+            // assignate points if the correctAnswer exists in the received answer
+            return checkAnswerCheckbox(inputAnswer.answer, question.correctAnswer) ? 1 : 0;
+        }
+    }
+    // check if questions has a default answer
+    if (question.correctAnswer !== null)
+        return question.correctAnswer.toString() === inputAnswer.answer ? 1 : 0;
+    return 1;
+}
+exports.setPointToTest = setPointToTest;
