@@ -11,7 +11,7 @@ const Validations_1 = require("../Functions/Validations");
 const Events_1 = __importDefault(require("../Models/Events"));
 async function getEventsList({ query, skip, sort, limit, endDate }) {
     const ret = [];
-    const events = await Events_1.default.find(query, { __v: 0, description: 0 })
+    const events = await Events_1.default.find(query, { __v: 0 })
         .skip(skip)
         .limit(limit)
         .sort(sort)
@@ -38,6 +38,7 @@ async function getEventsList({ query, skip, sort, limit, endDate }) {
                     ret.push({
                         _id: e._id,
                         title: e.title,
+                        description: e.description || null,
                         date: e.date,
                         initHour: e.initHour,
                         endHour: e.endHour,

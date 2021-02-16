@@ -8,7 +8,7 @@ import Events from '../Models/Events';
 export default async function getEventsList({ query, skip, sort, limit, endDate } : any) : Promise<IEventsList[]> {
   const ret: IEventsList[] = [];
 
-  const events = await Events.find(query, { __v: 0, description: 0 })
+  const events = await Events.find(query, { __v: 0 })
     .skip(skip)
     .limit(limit)
     .sort(sort)
@@ -37,6 +37,7 @@ export default async function getEventsList({ query, skip, sort, limit, endDate 
           ret.push({
             _id: e._id,
             title: e.title,
+            description: e.description || null,
             date: e.date,
             initHour: e.initHour,
             endHour: e.endHour,
