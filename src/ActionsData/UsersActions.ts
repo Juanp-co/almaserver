@@ -25,7 +25,7 @@ export async function getData(_id?: string, projection: any | null = null): Prom
 
 export async function getNamesUsersList(listIds: string|any[], projection: any|null = null): Promise<IUserSimpleInfo[] | any> {
   return listIds.length > 0 ?
-    Users.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1 }).exec()
+    Users.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1 }).exec()
     : [];
 }
 

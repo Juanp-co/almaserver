@@ -30,7 +30,7 @@ async function getGroup(req, res) {
                     _id: data._id,
                     name: data.name,
                     code: data.code,
-                    members: await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(data.members || []), { names: 1, lastNames: 1, direction: 1 }),
+                    members: await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(data.members || [])),
                     created_at: data.created_at,
                     updated_at: data.updated_at,
                 }
