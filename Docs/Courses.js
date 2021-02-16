@@ -1679,6 +1679,11 @@
  * {
     "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
   }
+ * @apiErrorExample {JSON} Unfinished all content of theme
+ * HTTP/1.1 403 Forbidden
+ * {
+    "msg": "Disculpe, pero no puede realizar la prueba hasta haber completado todo el contenido del tema."
+  }
  *
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
@@ -1783,7 +1788,7 @@
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Number} average Promedio de respuestas obtenido.
+ * @apiSuccess {Number|String} average Promedio de respuestas obtenido.
  * @apiSuccess {Boolean} approved Indica si aprobó o no el curso.
  *
  * @apiSuccessExample {JSON} Success and approved
@@ -1791,6 +1796,14 @@
  * {
     "msg": "Ha aprobado el curso exitosamente.",
     "average": 100,
+    "approved": true
+}
+ *
+ * @apiSuccessExample {JSON} Success with decimal average
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Ha aprobado el curso exitosamente.",
+    "average": "66.66",
     "approved": true
 }
  *

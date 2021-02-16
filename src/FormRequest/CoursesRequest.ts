@@ -294,7 +294,7 @@ export function validateTestData(data?: ICourseTestForm[] | null) : { data: ICou
         });
         stop = true;
       }
-      if (data[i].answer === undefined || data[i].answer === null) {
+      if (data[i].answer === undefined) {
         errors.push({
           msg: 'Disculpe, pero debe completar todas las respuesta de la prueba.',
           input: 'answer'

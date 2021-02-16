@@ -5191,6 +5191,11 @@
           "type": "JSON"
         },
         {
+          "title": "Unfinished all content of theme",
+          "content": "HTTP/1.1 403 Forbidden\n{\n    \"msg\": \"Disculpe, pero no puede realizar la prueba hasta haber completado todo el contenido del tema.\"\n  }",
+          "type": "JSON"
+        },
+        {
           "title": "Not found",
           "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.\"\n}",
           "type": "JSON"
@@ -6629,7 +6634,7 @@
           },
           {
             "group": "Success 200",
-            "type": "Number",
+            "type": "Number|String",
             "optional": false,
             "field": "average",
             "description": "<p>Promedio de respuestas obtenido.</p>"
@@ -6647,6 +6652,11 @@
         {
           "title": "Success and approved",
           "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Ha aprobado el curso exitosamente.\",\n    \"average\": 100,\n    \"approved\": true\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success with decimal average",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Ha aprobado el curso exitosamente.\",\n    \"average\": \"66.66\",\n    \"approved\": true\n}",
           "type": "JSON"
         },
         {

@@ -31,85 +31,6 @@ const Validations_1 = require("../../Functions/Validations");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const path = 'src/Controllers/publics/courses.controller';
-function returnNotFound(res, code) {
-    const ret = { msg: 'Respuesta no determinada.' };
-    let statusCode = 500;
-    if (code === '404Content') {
-        ret.msg = 'Disculpe, pero el contenido seleccionado no existe o ya no se encuentra disponible.';
-        statusCode = 404;
-    }
-    else if (code === '404Course') {
-        ret.msg = 'Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.';
-        statusCode = 404;
-    }
-    else if (code === '404Comment') {
-        ret.msg = 'Disculpe, pero el comentario no existe o no se encuentra disponible.';
-        statusCode = 404;
-    }
-    else if (code === '404CourseUser') {
-        ret.msg = 'Disculpe, pero no ha registrado el curso en su listado.';
-        statusCode = 404;
-        ret.addCourse = true;
-    }
-    else if (code === '404GetDataTemaryUser') {
-        ret.msg = 'Disculpe, pero no se logró encontrar la relación de la prueba en su cuenta.';
-        statusCode = 404;
-    }
-    else if (code === '404Theme') {
-        ret.msg = 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.';
-        statusCode = 404;
-    }
-    else if (code === 'errorAction') {
-        ret.msg = 'Disculpe, pero no se logró determinar la acción a realizar.';
-        statusCode = 422;
-    }
-    else if (code === 'errorCommentId') {
-        ret.msg = 'Disculpe, pero el comentario seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'errorComment') {
-        ret.msg = 'Disculpe, pero el comentario debe cumplir con los siguientes parámetros: 1. Letras o números (az-AZ 0-9) y los siguientes caracteres especiales: .,#*?¿¡!()\\-+"\'/@.';
-        statusCode = 422;
-    }
-    else if (code === 'errorGroupId') {
-        ret.msg = 'Disculpe, pero el grupo seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'errorThemeId') {
-        ret.msg = 'Disculpe, pero el tema seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'errorContentId') {
-        ret.msg = 'Disculpe, pero el contenido seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'like') {
-        ret.msg = 'Disculpe, pero no se determinó la acción a realizar.';
-        statusCode = 422;
-    }
-    else if (code === 'slug') {
-        ret.msg = 'Disculpe, pero el curso seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'wasNotPreviousCourse') {
-        ret.msg = `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`;
-        statusCode = 422;
-    }
-    else if (code === 'wasRealized') {
-        ret.msg = `Disculpe, pero ya has realizado esta acción anteriormente.`;
-        statusCode = 422;
-    }
-    else if (code === 'wasRealizedAllTest') {
-        ret.msg = `Disculpe, pero ya ha aprobado todos los exámenes de este curso.`;
-        statusCode = 422;
-    }
-    else if (code === 'wasRealizedTest') {
-        ret.msg = `Disculpe, pero ya ha aprobado este examen anteriormente.`;
-        statusCode = 422;
-    }
-    return res.status(statusCode).json(ret);
-}
-// =====================================================================================================================
 async function getCourses(req, res) {
     try {
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
@@ -161,10 +82,10 @@ async function addCourseUser(req, res) {
     try {
         const { userid, slug } = req.params;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         const courseExist = await CoursesActions_1.getCourseDetails({ query: { slug } });
         if (!courseExist)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if exists course
         const myCourse = await CoursesUsers_1.default.find({ userid, courseId: courseExist._id.toString() }).countDocuments().exec();
         if (myCourse > 0) {
@@ -214,14 +135,14 @@ async function showCourse(req, res) {
         const { slug } = req.params;
         const { userrole } = req.body;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         const course = await CoursesActions_1.getCourseDetails({
             query: { slug, toRoles: userrole, enable: true },
             isPublic: true,
             projection: { 'temary.comments': 0, 'temary.likes': 0, 'temary.unlikes': 0 }
         });
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check and get data user course user
         const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { courseId: course._id } });
         return res.json({
@@ -239,25 +160,25 @@ async function showCourseContentTheme(req, res) {
     try {
         const { slug, _id } = req.params;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorThemeId');
+            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         const course = await CoursesActions_1.getCourseDetails({
             query: { slug, 'temary._id': _id, enable: true },
             isPublic: true,
             projection: { 'temary.$': 1, levels: 1 }
         });
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.findOne({ courseId: course._id.toString() }, { temary: 1 }).exec();
         if (!myCourse)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         // check if previous courses is approved
         if (course.levels
             && course.levels.length > 0
             && !(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
-            return returnNotFound(res, 'wasNotPreviousCourse');
+            return CoursesActions_1.returnNotFound(res, 'wasNotPreviousCourse');
         }
         const theme = await CoursesActions_1.getModelReturnCourseOrTheme({ data: course, theme: true, showContent: true });
         if (theme) {
@@ -288,38 +209,38 @@ async function updateHistoricalCourseContent(req, res) {
     try {
         const { slug, _id, contentId, action } = req.params;
         if (['watching', 'viewed'].indexOf(`${action}`) === -1)
-            return returnNotFound(res, 'errorAction');
+            return CoursesActions_1.returnNotFound(res, 'errorAction');
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorThemeId');
+            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         if (!Validations_1.checkObjectId(contentId))
-            return returnNotFound(res, 'errorContentId');
+            return CoursesActions_1.returnNotFound(res, 'errorContentId');
         const course = await CoursesActions_1.getCourseDetails({
             query: { slug, 'temary._id': _id, enable: true },
             isPublic: true,
             projection: { 'temary.$.content': 1, levels: 1 }
         });
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.findOne({ courseId: course._id }, { temary: 1 }).exec();
         if (!myCourse)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         // check if previous courses is approved
         if (course.levels && course.levels.length > 0) {
             if (!(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
-                return returnNotFound(res, 'wasNotPreviousCourse');
+                return CoursesActions_1.returnNotFound(res, 'wasNotPreviousCourse');
             }
         }
         // get theme
         if ((!course.temary) || (course.temary && course.temary.length === 0)) {
-            return returnNotFound(res, '404Theme');
+            return CoursesActions_1.returnNotFound(res, '404Theme');
         }
         const temary = course.temary[0] || [];
         const indexContent = lodash_1.default.findIndex(temary.content, v => v._id.toString() === contentId);
         if (indexContent === -1)
-            return returnNotFound(res, '404Content');
+            return CoursesActions_1.returnNotFound(res, '404Content');
         // set the new theme in viewing
         const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
         if (index > -1) {
@@ -360,16 +281,16 @@ async function likeOrUnlikeCourse(req, res) {
         const { like } = req.body;
         let ret = null;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!/[01]{1}/.test(like))
-            return returnNotFound(res, 'like');
+            return CoursesActions_1.returnNotFound(res, 'like');
         const course = await Courses_1.default.findOne({ slug, enable: true, }, { 'likes': 1, 'unlikes': 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.find({ userid, courseId: course._id }).countDocuments().exec();
         if (myCourse === 0)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (!course.likes)
             course.likes = [];
         if (!course.unlikes)
@@ -389,7 +310,7 @@ async function likeOrUnlikeCourse(req, res) {
             ret = { unlike: course.unlikes[totalUnlikes - 1] };
         }
         else
-            return returnNotFound(res, 'wasRealized');
+            return CoursesActions_1.returnNotFound(res, 'wasRealized');
         await Courses_1.default.updateOne({ _id: course._id }, { $set: { likes: course.likes, unlikes: course.unlikes } }).exec();
         return res.status(201).json({
             msg: `${like ? 'Me gusta' : 'No me gusta'} agregado exitosamente.`,
@@ -406,16 +327,16 @@ async function commentCourse(req, res) {
         const { slug, userid } = req.params;
         const { comment } = req.body;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkTitlesOrDescriptions(comment))
-            return returnNotFound(res, 'errorComment');
+            return CoursesActions_1.returnNotFound(res, 'errorComment');
         const course = await Courses_1.default.findOne({ slug, enable: true }, { comments: 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.find({ userid, courseId: course._id }).countDocuments().exec();
         if (myCourse === 0)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (!course.comments)
             course.comments = [];
         // add comment
@@ -438,21 +359,21 @@ async function likeOrUnlikeCourseComment(req, res) {
         const { like } = req.body;
         let ret = null;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorCommentId');
+            return CoursesActions_1.returnNotFound(res, 'errorCommentId');
         if (!/[01]{1}/.test(like))
-            return returnNotFound(res, 'like');
+            return CoursesActions_1.returnNotFound(res, 'like');
         const course = await Courses_1.default.findOne({ slug, enable: true, 'comments._id': _id }, { 'comments': 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.find({ userid, courseId: course._id }).countDocuments().exec();
         if (myCourse === 0)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         const index = lodash_1.default.findIndex(course.comments, c => c._id.toString() === _id);
         if (index === -1)
-            return returnNotFound(res, '404Comment');
+            return CoursesActions_1.returnNotFound(res, '404Comment');
         if (!course.comments[index].likes)
             course.comments[index].likes = [];
         if (!course.comments[index].unlikes)
@@ -474,7 +395,7 @@ async function likeOrUnlikeCourseComment(req, res) {
             ret = { unlike: course.comments[index].unlikes[totalUnlikes - 1] };
         }
         else
-            return returnNotFound(res, 'wasRealized');
+            return CoursesActions_1.returnNotFound(res, 'wasRealized');
         await Courses_1.default.updateOne({ _id: course._id }, { $set: { comments: course.comments } }).exec();
         return res.status(201).json({
             msg: `${like ? 'Me gusta' : 'No me gusta'} agregado exitosamente.`,
@@ -495,21 +416,21 @@ async function likeOrUnlikeTheme(req, res) {
         const { like } = req.body;
         let ret = null;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorThemeId');
+            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         if (!/[01]{1}/.test(like))
-            return returnNotFound(res, 'like');
+            return CoursesActions_1.returnNotFound(res, 'like');
         const course = await Courses_1.default.findOne({ slug, enable: true, }, { 'temary': 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.find({ userid, courseId: course._id }).countDocuments().exec();
         if (myCourse === 0)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         const index = lodash_1.default.findIndex(course.temary || [], (t) => t._id.toString() === _id);
         if (index === -1 || !course.temary || !course.temary[index])
-            return returnNotFound(res, '404Theme');
+            return CoursesActions_1.returnNotFound(res, '404Theme');
         if (!course.temary[index].likes)
             course.temary[index].likes = [];
         if (!course.temary[index].unlikes)
@@ -528,7 +449,7 @@ async function likeOrUnlikeTheme(req, res) {
             ret = { unlike: course.temary[index].unlikes[course.temary[index].unlikes.length - 1] };
         }
         else
-            return returnNotFound(res, 'wasRealized');
+            return CoursesActions_1.returnNotFound(res, 'wasRealized');
         await Courses_1.default.updateOne({ _id: course._id }, { $set: { temary: course.temary, } }).exec();
         return res.status(201).json({
             msg: `${like ? 'Me gusta' : 'No me gusta'} agregado al tema exitosamente.`,
@@ -545,24 +466,24 @@ async function commentCourseTheme(req, res) {
         const { slug, _id, userid } = req.params;
         const { comment } = req.body;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorThemeId');
+            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         if (!Validations_1.checkTitlesOrDescriptions(comment))
-            return returnNotFound(res, 'errorComment');
+            return CoursesActions_1.returnNotFound(res, 'errorComment');
         const course = await Courses_1.default.findOne({ slug, enable: true }, { temary: 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.find({ userid, courseId: course._id }).countDocuments().exec();
         if (myCourse === 0)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (course.temary.length === 0)
-            return returnNotFound(res, '404Theme');
+            return CoursesActions_1.returnNotFound(res, '404Theme');
         // get theme
         const index = lodash_1.default.findIndex(course.temary, v => v._id.toString() === _id);
         if (index === -1 || !course.temary[index])
-            return returnNotFound(res, '404Theme');
+            return CoursesActions_1.returnNotFound(res, '404Theme');
         if (!course.temary[index].comments)
             course.temary[index].comments = [];
         // add comment
@@ -590,25 +511,25 @@ async function likeOrUnlikeCourseThemeComment(req, res) {
         const { like } = req.body;
         let ret = null;
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorThemeId');
+            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         if (!Validations_1.checkObjectId(commentId))
-            return returnNotFound(res, 'errorCommentId');
+            return CoursesActions_1.returnNotFound(res, 'errorCommentId');
         if (!/[01]{1}/.test(like))
-            return returnNotFound(res, 'like');
+            return CoursesActions_1.returnNotFound(res, 'like');
         const course = await Courses_1.default.findOne({ slug, enable: true, 'temary._id': _id, 'temary.comments._id': commentId }, { 'temary.$': 1, 'temary.comments.likes': 1, 'temary.comments.unlikes': 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.find({ userid, courseId: course._id }).countDocuments().exec();
         if (myCourse === 0)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (course.temary.length === 0)
-            return returnNotFound(res, '404Theme');
+            return CoursesActions_1.returnNotFound(res, '404Theme');
         const index = lodash_1.default.findIndex(course.temary[0].comments, v => v._id.toString() === commentId);
         if (!course.temary[0].comments[index])
-            return returnNotFound(res, '404Comment');
+            return CoursesActions_1.returnNotFound(res, '404Comment');
         if (!course.temary[0].comments[index].likes)
             course.temary[0].comments[index].likes = [];
         if (!course.temary[0].comments[index].unlikes)
@@ -628,7 +549,7 @@ async function likeOrUnlikeCourseThemeComment(req, res) {
             ret = { unlike: course.temary[0].comments[index].unlikes[totalUnlikes - 1] };
         }
         else
-            return returnNotFound(res, 'wasRealized');
+            return CoursesActions_1.returnNotFound(res, 'wasRealized');
         await Courses_1.default.updateOne({ _id: course._id, 'temary._id': _id, 'temary.comments._id': commentId }, { $set: { 'temary.$.comments': course.temary[0].comments } }).exec();
         return res.status(201).json({
             msg: `${like ? 'Me gusta' : 'No me gusta'} agregado exitosamente.`,
@@ -648,32 +569,34 @@ async function getTest(req, res) {
         const { slug, _id, userid } = req.params;
         const ret = [];
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorThemeId');
+            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         const course = await Courses_1.default.findOne({ slug, 'temary._id': _id, enable: true, }, { 'temary.$.test': 1, levels: 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         if (!course.temary)
-            return returnNotFound(res, '404Theme');
+            return CoursesActions_1.returnNotFound(res, '404Theme');
         // check if previous courses is approved
         if (course.levels && course.levels.length > 0) {
             if (!(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
-                return returnNotFound(res, 'wasNotPreviousCourse');
+                return CoursesActions_1.returnNotFound(res, 'wasNotPreviousCourse');
             }
         }
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id }, { 'temary.temaryId': 1, 'temary.test': 1, 'temary.approved': 1, approved: 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id }, { 'temary.temaryId': 1, 'temary.test': 1, 'temary.approved': 1, 'temary.view': 1, approved: 1 }).exec();
         if (!myCourse)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         // check if theme is approved or course
         if (myCourse.approved)
-            return returnNotFound(res, 'wasRealizedAllTest');
+            return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');
         const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
         if (index === -1)
-            return returnNotFound(res, '404GetDataTemaryUser');
+            return CoursesActions_1.returnNotFound(res, '404GetDataTemaryUser');
+        if (myCourse.temary[index].view !== 2)
+            return CoursesActions_1.returnNotFound(res, 'notFinishTheme');
         if (myCourse.temary[index].approved)
-            return returnNotFound(res, 'wasRealizedTest');
+            return CoursesActions_1.returnNotFound(res, 'wasRealizedTest');
         course.temary[0].test.forEach(t => {
             ret.push({
                 _id: t._id,
@@ -700,43 +623,45 @@ async function evaluateTest(req, res) {
     try {
         const { slug, _id, userid } = req.params;
         let points = 0; // points to test
+        let pointsIgnored = 0; // points to test
         if (!Validations_1.checkSlug(slug))
-            return returnNotFound(res, 'slug');
+            return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
-            return returnNotFound(res, 'errorThemeId');
+            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         const validate = CoursesRequest_1.validateTestData(req.body.data || []);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const course = await Courses_1.default.findOne({ slug, 'temary._id': _id, enable: true, }, { 'temary.$.test': 1, approved: 1 }).exec();
         if (!course)
-            return returnNotFound(res, '404Course');
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id, 'temary.temaryId': _id }, { 'temary.temaryId': 1, 'temary.approved': 1, 'temary.test': 1, approved: 1 }).exec();
         if (!myCourse)
-            return returnNotFound(res, '404CourseUser');
+            return CoursesActions_1.returnNotFound(res, '404CourseUser');
         // check if course is approved
         if (myCourse.approved)
-            return returnNotFound(res, 'wasRealizedAllTest');
+            return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');
         // check if exists temary in myCourse data
         const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
         if (index === -1)
-            return returnNotFound(res, '404GetDataTemaryUser');
+            return CoursesActions_1.returnNotFound(res, '404GetDataTemaryUser');
         if (myCourse.temary[index].approved)
-            return returnNotFound(res, 'wasRealizedTest');
+            return CoursesActions_1.returnNotFound(res, 'wasRealizedTest');
         // validate answer test
         validate.data.forEach(a => {
             // get questions
             const question = lodash_1.default.find(course.temary[0].test, t => t._id.toString() === a.questionId);
             if (question) {
-                // check if questions has a default answer
-                if (question.correctAnswer !== null)
-                    points += question.correctAnswer.toString() === a.answer ? 1 : 0;
+                if (!question.require && a.answer)
+                    points += CoursesActions_1.setPointToTest(question, a);
+                else if (question.require)
+                    points += CoursesActions_1.setPointToTest(question, a);
                 else
-                    points++;
+                    pointsIgnored++;
             }
         });
         // get average and check if the user approved the test
-        const average = points > 0 ? points * 100 / validate.data.length : 0;
+        const average = points > 0 ? points * 100 / (validate.data.length - pointsIgnored) : 0;
         const approved = (average === 100 || average >= 75);
         const msg = approved ?
             'Ha aprobado la prueba exitosamente.' :
@@ -754,7 +679,7 @@ async function evaluateTest(req, res) {
         await myCourse.save();
         return res.json({
             msg,
-            average,
+            average: average.toString().indexOf('.') > -1 ? average.toFixed(2) : average,
             approved
         });
     }

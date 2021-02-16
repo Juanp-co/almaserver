@@ -4,7 +4,7 @@ import getCoursesList, {
   checkIfUserApprovedPreviousCourses,
   getCourseDetails,
   getCoursesDataUser,
-  getModelReturnCourseOrTheme,
+  getModelReturnCourseOrTheme, returnNotFound, setPointToTest
 } from '../../ActionsData/CoursesActions';
 import { validateTestData } from '../../FormRequest/CoursesRequest';
 import {
@@ -20,89 +20,6 @@ import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
 
 const path = 'src/Controllers/publics/courses.controller';
-
-function returnNotFound(res: Response, code: string | null) : Response {
-  const ret: any = { msg: 'Respuesta no determinada.' };
-  let statusCode = 500;
-
-  if (code === '404Content') {
-    ret.msg = 'Disculpe, pero el contenido seleccionado no existe o ya no se encuentra disponible.';
-    statusCode = 404;
-  }
-  else if (code === '404Course') {
-    ret.msg = 'Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.';
-    statusCode = 404;
-  }
-  else if (code === '404Comment') {
-    ret.msg = 'Disculpe, pero el comentario no existe o no se encuentra disponible.';
-    statusCode = 404;
-  }
-  else if (code === '404CourseUser') {
-    ret.msg = 'Disculpe, pero no ha registrado el curso en su listado.';
-    statusCode = 404;
-    ret.addCourse = true;
-  }
-  else if (code === '404GetDataTemaryUser') {
-    ret.msg = 'Disculpe, pero no se logró encontrar la relación de la prueba en su cuenta.';
-    statusCode = 404;
-  }
-  else if (code === '404Theme') {
-    ret.msg = 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.';
-    statusCode = 404;
-  }
-  else if (code === 'errorAction') {
-    ret.msg = 'Disculpe, pero no se logró determinar la acción a realizar.';
-    statusCode = 422;
-  }
-  else if (code === 'errorCommentId') {
-    ret.msg = 'Disculpe, pero el comentario seleccionado es incorrecto.';
-    statusCode = 422;
-  }
-  else if (code === 'errorComment') {
-    ret.msg = 'Disculpe, pero el comentario debe cumplir con los siguientes parámetros: 1. Letras o números (az-AZ 0-9) y los siguientes caracteres especiales: .,#*?¿¡!()\\-+"\'/@.';
-    statusCode = 422;
-  }
-  else if (code === 'errorGroupId') {
-    ret.msg = 'Disculpe, pero el grupo seleccionado es incorrecto.';
-    statusCode = 422;
-  }
-  else if (code === 'errorThemeId') {
-    ret.msg = 'Disculpe, pero el tema seleccionado es incorrecto.';
-    statusCode = 422;
-  }
-  else if (code === 'errorContentId') {
-    ret.msg = 'Disculpe, pero el contenido seleccionado es incorrecto.';
-    statusCode = 422;
-  }
-  else if (code === 'like') {
-    ret.msg = 'Disculpe, pero no se determinó la acción a realizar.';
-    statusCode = 422;
-  }
-  else if (code === 'slug') {
-    ret.msg = 'Disculpe, pero el curso seleccionado es incorrecto.';
-    statusCode = 422;
-  }
-  else if (code === 'wasNotPreviousCourse') {
-    ret.msg = `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`;
-    statusCode = 422
-  }
-  else if (code === 'wasRealized') {
-    ret.msg = `Disculpe, pero ya has realizado esta acción anteriormente.`;
-    statusCode = 422;
-  }
-  else if (code === 'wasRealizedAllTest') {
-    ret.msg = `Disculpe, pero ya ha aprobado todos los exámenes de este curso.`;
-    statusCode = 422;
-  }
-  else if (code === 'wasRealizedTest') {
-    ret.msg = `Disculpe, pero ya ha aprobado este examen anteriormente.`;
-    statusCode = 422;
-  }
-
-  return res.status(statusCode).json(ret);
-}
-
-// =====================================================================================================================
 
 export default async function getCourses(req: Request, res: Response) : Promise<Response>{
   try {
@@ -685,7 +602,7 @@ export async function getTest(req: Request, res: Response) : Promise<Response> {
     // check if the course belonging to user
     const myCourse = await CoursesUsers.findOne(
       { userid, courseId: course._id },
-      { 'temary.temaryId': 1, 'temary.test': 1, 'temary.approved': 1, approved: 1 }
+      { 'temary.temaryId': 1, 'temary.test': 1, 'temary.approved': 1, 'temary.view': 1, approved: 1 }
       ).exec();
 
     if (!myCourse) return returnNotFound(res, '404CourseUser');
@@ -695,6 +612,7 @@ export async function getTest(req: Request, res: Response) : Promise<Response> {
     const index = _.findIndex(myCourse.temary, t => t.temaryId === _id);
 
     if (index === -1) return returnNotFound(res, '404GetDataTemaryUser');
+    if (myCourse.temary[index].view !== 2) return returnNotFound(res, 'notFinishTheme');
     if (myCourse.temary[index].approved) return returnNotFound(res, 'wasRealizedTest');
 
     course.temary[0].test.forEach(t => {
@@ -724,6 +642,7 @@ export async function evaluateTest(req: Request, res: Response) : Promise<Respon
   try {
     const { slug, _id, userid } = req.params;
     let points = 0; // points to test
+    let pointsIgnored = 0; // points to test
 
     if (!checkSlug(slug)) return returnNotFound(res, 'slug');
     if (!checkObjectId(_id)) return returnNotFound(res, 'errorThemeId');
@@ -760,14 +679,14 @@ export async function evaluateTest(req: Request, res: Response) : Promise<Respon
       // get questions
       const question = _.find(course.temary[0].test, t => t._id.toString() === a.questionId);
       if (question) {
-        // check if questions has a default answer
-        if (question.correctAnswer !== null) points += question.correctAnswer.toString() === a.answer ? 1 : 0;
-        else points++;
+        if (!question.require && a.answer) points += setPointToTest(question, a);
+        else if (question.require) points += setPointToTest(question, a);
+        else pointsIgnored++;
       }
     });
 
     // get average and check if the user approved the test
-    const average = points > 0 ? points * 100 / validate.data.length : 0;
+    const average = points > 0 ? points * 100 / (validate.data.length - pointsIgnored) : 0;
     const approved = (average === 100 || average >= 75);
     const msg = approved ?
       'Ha aprobado la prueba exitosamente.' :
@@ -787,7 +706,7 @@ export async function evaluateTest(req: Request, res: Response) : Promise<Respon
 
     return res.json({
       msg,
-      average,
+      average: average.toString().indexOf('.') > -1 ? average.toFixed(2) : average,
       approved
     });
   } catch (error: any) {
