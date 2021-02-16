@@ -31,8 +31,7 @@ export default async function getGroup(req: Request, res: Response): Promise<Res
           name: data.name,
           code: data.code,
           members: await getNamesUsersList(
-            _.uniq(data.members || []),
-            { names: 1, lastNames: 1, direction: 1 }
+            _.uniq(data.members || [])
           ),
           created_at: data.created_at,
           updated_at: data.updated_at,
