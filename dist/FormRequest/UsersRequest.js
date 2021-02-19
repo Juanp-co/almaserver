@@ -18,16 +18,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateSecurityQuestion = exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateRegister = void 0;
+exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateSimpleRegister = exports.validateRegister = void 0;
 const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
-const QuestionsActions_1 = __importDefault(require("../ActionsData/QuestionsActions"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
 async function validateRegister(data, admin) {
+    var _a;
     const ret = {
         phone: null,
         password: null,
@@ -42,13 +39,28 @@ async function validateRegister(data, admin) {
         companyType: null,
         baptized: false,
         role: admin ? null : 5,
-        securityQuestion: {
-            questionId: null,
-            answer: null
-        },
         referred: null
     };
     const errors = [];
+    // email
+    if (!data.email || !Validations_1.checkEmail(data.email)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
+    }
+    else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase())) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
+    }
+    else {
+        ret.email = data.email.toLowerCase();
+    }
+    // document
+    if (!data.document || !Validations_1.checkDocument(data.document)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+    }
+    else if (await UsersActions_1.default(data.document.toUpperCase())) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
+    }
+    else
+        ret.document = data.document.toUpperCase();
     // phone
     if (!data.phone || !Validations_1.checkPhone(data.phone)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de teléfono.', 'phone'));
@@ -74,42 +86,15 @@ async function validateRegister(data, admin) {
     }
     else
         ret.lastNames = data.lastNames.toUpperCase();
-    // document
-    if (!data.document || !Validations_1.checkDocument(data.document)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+    // birthday
+    if (data.birthday) {
+        if (!Validations_1.checkDate(`${data.birthday}`)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+        }
+        else {
+            ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
+        }
     }
-    else if (await UsersActions_1.default(data.document.toUpperCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
-    }
-    else
-        ret.document = data.document.toUpperCase();
-    // direction
-    if (!data.direction) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su dirección.', 'direction'));
-    }
-    else
-        ret.direction = data.direction;
-    // bloodType
-    if (!Validations_1.checkIfValueIsNumber(`${data.bloodType}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su tipo de sangre.', 'bloodType'));
-    }
-    else
-        ret.bloodType = data.bloodType;
-    // questionId
-    if (!data.questionId || !Validations_1.checkObjectId(data.questionId)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero seleccionar una pregunta de seguridad.', 'questionId'));
-    }
-    else if (!(await QuestionsActions_1.default(data.questionId))) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero la pregunta de seguridad seleccionada es incorrecta.', 'questionId'));
-    }
-    else
-        ret.securityQuestion.questionId = data.questionId;
-    // answer
-    if (!data.answer || data.answer.length < 4) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una respuesta de seguridad.', 'answer'));
-    }
-    else
-        ret.securityQuestion.answer = data.answer.trim();
     // educationLevel
     if (Validations_1.checkIfValueIsNumber(`${data.educationLevel}`))
         ret.educationLevel = data.educationLevel;
@@ -119,40 +104,118 @@ async function validateRegister(data, admin) {
     // bloodType
     if (Validations_1.checkIfValueIsNumber(`${data.bloodType}`))
         ret.bloodType = data.bloodType;
+    // gender
+    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
+        ret.gender = data.gender;
+    // civilStatus
+    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
+        ret.civilStatus = data.civilStatus;
+    // department
+    if (!Validations_1.checkIfValueIsNumber(`${data.department}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el departamento de residencia.', 'department'));
+    }
+    else
+        ret.department = data.department;
+    // city
+    if (!Validations_1.checkIfValueIsNumber(`${data.city}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la ciudad de residencia.', 'city'));
+    }
+    else
+        ret.city = data.city;
+    // locality
+    if (data.locality && Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
+        ret.locality = data.locality;
+    // direction
+    if (data.direction && Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
+        ret.direction = data.direction || null;
+    // role
+    if (!Validations_1.checkRole(`${data.role}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar un rol correcto para el usuario.', 'role'));
+    }
+    else
+        ret.role = data.role || null;
     // baptized
     if (data.baptized)
         ret.baptized = data.baptized;
-    // bloodType
+    // company
     if (data.company) {
-        ret.company = data.company;
+        ret.company = true;
         // companyType
-        if (!data.companyType || !Validations_1.checkDocument(data.companyType)) {
+        if (!Validations_1.checkIfValueIsNumber(`${data.companyType}`)) {
             errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar a qué se dedica su empresa.', 'companyType'));
         }
-        else
+        else {
             ret.companyType = data.companyType;
-    }
-    // role
-    if (admin) {
-        if (!Validations_1.checkIfValueIsNumber(`${data.role}`)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar un rol para el usuario.', 'role'));
         }
-        else
-            ret.role = data.role;
     }
-    // role
-    if (data.referred && Validations_1.checkDocument(`${data.referred}`)) {
-        ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred); // get _id referred
-    }
+    // referred
+    if (Validations_1.checkDocument(data.referred))
+        ret.referred = data.referred;
     return { data: ret, errors };
 }
 exports.validateRegister = validateRegister;
-async function validateUpdate(data, _id) {
+async function validateSimpleRegister(data, admin) {
+    const ret = {
+        email: null,
+        password: null,
+        document: null,
+        names: null,
+        lastNames: null,
+        role: 5,
+        referred: null
+    };
+    const errors = [];
+    // email
+    if (!data.email || !Validations_1.checkEmail(data.email)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
+    }
+    else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase())) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
+    }
+    else {
+        ret.email = data.email.toLowerCase();
+    }
+    // document
+    if (!data.document || !Validations_1.checkDocument(data.document)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+    }
+    else if (await UsersActions_1.default(data.document.toUpperCase())) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
+    }
+    else
+        ret.document = data.document.toUpperCase();
+    // password
+    if (!data.password || !Validations_1.checkPassword(data.password)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
+            'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.', 'password'));
+    }
+    else
+        ret.password = data.password;
+    // names
+    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+    }
+    else
+        ret.names = data.names.toUpperCase();
+    // lastNames
+    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
+    }
+    else
+        ret.lastNames = data.lastNames.toUpperCase();
+    // referred
+    if (Validations_1.checkDocument(data.referred)) {
+        ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred);
+    }
+    return { data: ret, errors };
+}
+exports.validateSimpleRegister = validateSimpleRegister;
+async function validateUpdate(data, _id, admin = false) {
     var _a, _b;
     const ret = {
         phone: null,
         email: null,
-        // document: null,
+        document: null,
         names: null,
         lastNames: null,
         gender: null,
@@ -170,12 +233,24 @@ async function validateUpdate(data, _id) {
         direction: null,
     };
     const errors = [];
+    if (admin) {
+        // document
+        if (!data.document || !Validations_1.checkDocument(data.document)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+        }
+        else if (await UsersActions_1.default(data.document, _id)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
+        }
+        else {
+            ret.document = data.document.toLowerCase();
+        }
+    }
     // email
     if (!data.email || !Validations_1.checkEmail(data.email)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
     }
     else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase(), _id)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de emailo ya se encuentra con otro usuario. Verifíquelo e intente nuevamente.', 'email'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
     }
     else {
         ret.email = data.email.toLowerCase();
@@ -244,13 +319,13 @@ async function validateUpdate(data, _id) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el departamento de residencia.', 'department'));
     }
     else
-        ret.department = data.department || null;
+        ret.department = data.department;
     // city
     if (!Validations_1.checkIfValueIsNumber(`${data.city}`)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la ciudad de residencia.', 'city'));
     }
     else
-        ret.city = data.city || null;
+        ret.city = data.city;
     // locality
     if (!data.locality || !Validations_1.checkTitlesOrDescriptions(`${data.locality}`)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el nombre del barrio o localidad en la que reside.', 'locality'));
@@ -283,23 +358,26 @@ exports.validateUpdate = validateUpdate;
 function validateLogin(data) {
     const ret = {
         document: null,
-        password: null
+        password: null,
+        admin: false,
     };
     const errors = [];
     // phone
     if (!data.document || !Validations_1.checkDocument(data.document ? data.document.toUpperCase() : '')) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento correctamete.', 'document'));
     }
     else {
         ret.document = data.document.toUpperCase();
     }
     // password
     if (!data.password || (data.password && data.password.length < 4)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asignar su contraseña correctamente.', 'password'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su contraseña correctamente.', 'password'));
     }
     else {
         ret.password = data.password;
     }
+    if (data.admin)
+        ret.admin = true;
     return { data: ret, errors };
 }
 exports.validateLogin = validateLogin;
@@ -325,27 +403,3 @@ async function validatePasswords(data) {
     return { data: ret, errors };
 }
 exports.validatePasswords = validatePasswords;
-async function validateSecurityQuestion(data) {
-    const ret = {
-        questionId: null,
-        answer: null
-    };
-    const errors = [];
-    // questionId
-    if (!data.questionId || !Validations_1.checkObjectId(data.questionId)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero seleccionar una pregunta de seguridad.', 'questionId'));
-    }
-    else if (!(await QuestionsActions_1.default(data.questionId))) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero la pregunta de seguridad seleccionada es incorrecta.', 'questionId'));
-    }
-    else
-        ret.questionId = data.questionId;
-    // answer
-    if (!data.answer || data.answer.length < 4) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una respuesta de seguridad.', 'answer'));
-    }
-    else
-        ret.answer = data.answer.trim();
-    return { data: ret, errors };
-}
-exports.validateSecurityQuestion = validateSecurityQuestion;

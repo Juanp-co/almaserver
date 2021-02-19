@@ -3,13 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getQuestions = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = require("../../FormRequest/UsersRequest");
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const TokenActions_1 = require("../../Functions/TokenActions");
-const Question_1 = __importDefault(require("../../Models/Question"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'Controllers/publics/publics.controller';
@@ -24,12 +23,11 @@ Actions Users
  */
 async function register(req, res) {
     try {
-        const validate = await UsersRequest_1.validateRegister(req.body);
+        const validate = await UsersRequest_1.validateSimpleRegister(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = new Users_1.default(validate.data);
         user.password = bcrypt_1.default.hashSync(user.password, 10);
-        user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
         await user.save();
         // create referrals document
         const referrals = new Referrals_1.default({
@@ -70,6 +68,13 @@ async function login(req, res) {
                 msg: `Disculpe, pero el número de documento no se encuentra registrado.`
             });
         }
+        if (validate.data.admin) {
+            if (user.role === 5) {
+                return res.status(401).json({
+                    msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
+                });
+            }
+        }
         if (!bcrypt_1.default.compareSync(`${validate.data.password}`, `${user.password}`)) {
             return res.status(422).json({
                 msg: 'Contraseña incorrecta.'
@@ -87,7 +92,7 @@ async function login(req, res) {
         }
         return res.json({
             msg: '¡Inicio de sesión con éxito!',
-            data: await UsersActions_1.getData(user._id.toString()),
+            data: await UsersActions_1.getData(user._id.toString(), { __v: 0, password: 0, referred: 0 }),
             token
         });
     }
@@ -109,19 +114,3 @@ async function logout(req, res) {
     }
 }
 exports.logout = logout;
-/*
-Public actions
- */
-async function getQuestions(req, res) {
-    try {
-        const questions = await Question_1.default.find({}, { question: 1 }).exec();
-        return res.json({
-            msg: `Preguntas de seguridad.`,
-            questions
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getQuestions`);
-    }
-}
-exports.getQuestions = getQuestions;

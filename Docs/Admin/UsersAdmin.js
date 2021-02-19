@@ -1,14 +1,12 @@
 /**
  * @api {get} /api/admin/users/counters (00) Obtener total de usuarios.
- * @apiVersion 0.0.3
+ * @apiVersion 0.0.16
  * @apiName countersUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Query Params) {String} document Número de documento a buscar (Opcional).
- * @apiParam (Query Params) {String} name Nombre o apellido del usuario (Opcional).
- * @apiParam (Query Params) {Number} role Rol a buscar (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona) (Opcional).
+ * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Array|Object} totals Listado de preguntas de seguridad.
@@ -35,7 +33,7 @@
 
 /**
  * @api {get} /api/admin/users (01) Obtener listado de usuarios.
- * @apiVersion 0.0.3
+ * @apiVersion 0.0.16
  * @apiName getUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -45,15 +43,14 @@
  * @apiParam (Query Params) {String} page Página (por defecto = 1).
  * @apiParam (Query Params) {String} input Campo por ordenar (campos = document | created | names | lastNames) (Opcional).
  * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional).
- * @apiParam (Query Params) {String} document Número de documento a buscar (Opcional).
- * @apiParam (Query Params) {String} name Nombre o apellido del usuario (Opcional).
- * @apiParam (Query Params) {Number} role Rol a buscar (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona) (Opcional).
+ * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Array|Object} users Listado de preguntas de seguridad.
  *
+ * @apiSuccess (users Array Object) {Number|Null} gender ID (array index) del sexo del usuario.
  * @apiSuccess (users Array Object) {Number} role Role del usuario.
- * @apiSuccess (users Array Object) {String} updated_at Fecha de la última actualización del perfil.
+ * @apiSuccess (users Array Object) {String} created_at Fecha de la última actualización del perfil.
  * @apiSuccess (users Array Object) {String} _id ID del usuario.
  * @apiSuccess (users Array Object) {String} phone Número de teléfono.
  * @apiSuccess (users Array Object) {String} document Número de documento.
@@ -63,21 +60,39 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Usuarios.",
-    "users": [
-        {
-            "role": 1,
-            "created_at": "2020-12-13 10:03:12",
-            "_id": "5fd62d49304a9a5a686adc1a",
-            "phone": "584121490196",
-            "document": "CC123456788",
-            "names": "ADMIN DOS",
-            "lastNames": "PRUEBA"
-        },
-        .
-        .
-        .
-    ]
+	"msg": "Usuarios.",
+	"users": [
+		{
+			"gender": 0,
+			"role": 5,
+			"created_at": "2021-02-09 00:10:26",
+			"_id": "6022194c88342006d4a700f3",
+			"phone": "563161234567",
+			"document": "CC12345675",
+			"names": "ANTHONY",
+			"lastNames": "VELÁSQUEZ"
+		},
+		{
+			"gender": 1,
+			"role": 1,
+			"created_at": "2020-12-13 10:03:12",
+			"_id": "5fd62d49304a9a5a686adc1a",
+			"phone": "563161234567",
+			"document": "CC123456788",
+			"names": "ADMIN DOS",
+			"lastNames": "PRUEBA"
+		},
+		{
+			"gender": 2,
+			"role": 5,
+			"created_at": "2020-12-07 23:59:12",
+			"_id": "5fcf0821fc917d476c1cf3e3",
+			"phone": "573161234567",
+			"document": "CC12345678",
+			"names": "PEDRO JOSE",
+			"lastNames": "PÉREZ"
+		}
+	]
 }
  * @apiSuccessExample {JSON} Success without data
  * HTTP/1.1 200 Success
@@ -101,42 +116,52 @@
 
 /**
  * @api {post} /api/admin/users (02) Crear nuevo usuario.
- * @apiVersion 0.0.11
+ * @apiVersion 0.0.16
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
  *
+ * @apiParam {String} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} password Contraseña.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {String} direction Dirección.
  * @apiParam {String} document Número de documento del identidad.
+ * @apiParam {Number|Null} gender ID (index array) del sexo (género).
+ * @apiParam {String|Null} birthday Fecha de nacimiento.
+ * @apiParam {Number|Null} civilStatus ID (index array) del estado civil.
  * @apiParam {Number|Null} educationLevel ID (index array) Nivel educativo.
  * @apiParam {Number|Null} profession ID (index array) de la profesión.
  * @apiParam {Number|Null} bloodType ID (index array) del tipo de sangre.
  * @apiParam {Boolean} company Indica si posee una empresa.
- * @apiParam {Number|Null} companyType Tipo de empresa en caso de que posea.
- * @apiParam {String} questionId ID de la pregunta de seguridad (obtenido desde API).
- * @apiParam {String} answer Respuesta de seguridad.
+ * @apiParam {Number|Null} companyType ID (index array) del tipo de empresa en caso de que posea.
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
+ * @apiParam {Number} department ID (index array) del departamento.
+ * @apiParam {Number} city ID (index array) de la ciudad.
+ * @apiParam {String|Null} locality Nombre de la localidad.
+ * @apiParam {String|Null} direction Dirección.
  * @apiParam {Number} role Rol para el usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "phone": "3161234567",
+    "email": "user2@example.com",
     "password": "password",
-    "names": "Usuario",
-    "lastNames": "Prueba",
-    "direction": "any direction",
-    "document": "CC12345678",
-    "educationLevel": null,
-    "profession": null,
-    "bloodType": 1,
+    "phone": "573161234567",
+    "names": "Anthony alejandro",
+    "lastNames": "velasquez rodriguez",
+    "document": "CC24402234",
+		"gender": 2,
+		"birthday": "1994-07-07",
+		"civilStatus": 0,
+		"educationLevel": 0,
+		"profession": 90,
+		"bloodType": 7,
     "company": false,
     "companyType": null,
-    "questionId": "5f8608596cd607042cdbea86",
-    "answer": "respuesta",
     "baptized": true,
+    "department": 19,
+    "city": 18,
+    "locality": "URB. NUEVO MUNDO",
+    "direction": "URB. NUEVO MUNDO #66",
     "role": 5
 }
  *
@@ -158,6 +183,10 @@
  * {
     "msg": "¡Error en los parámetros!",
     "errors": [
+        {
+            "input": "email",
+            "msg": "Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente."
+        },
         {
             "input": "document",
             "msg": "Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente."
@@ -276,43 +305,64 @@
  *
  * @apiParam (Path params) {String} _id ID del usuario.
  *
+ * @apiParam {String} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {String} direction Dirección.
  * @apiParam {String} document Número de documento del identidad.
- * @apiParam {Number|Null} educationLevel ID (index array) Nivel educativo.
- * @apiParam {Number|Null} profession ID (index array) de la profesión.
- * @apiParam {Number|Null} bloodType ID (index array) del tipo de sangre.
+ * @apiParam {Number} gender ID (index array) del sexo.
+ * @apiParam {Number} birthday Fecha de nacimiento (Formato: YYYY-MM-DD).
+ * @apiParam {Number} civilStatus ID (index array) del estado civil.
+ * @apiParam {Number} educationLevel ID (index array) Nivel educativo.
+ * @apiParam {Number} profession ID (index array) de la profesión.
+ * @apiParam {Number} bloodType ID (index array) del tipo de sangre.
  * @apiParam {Boolean} company Indica si posee una empresa.
- * @apiParam {Number|Null} companyType Tipo de empresa en caso de que posea.
+ * @apiParam {Number|Null} companyType ID (index array) del tipo de empresa en caso de que posea.
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
+ * @apiParam {Number} department ID (index array) del departamento.
+ * @apiParam {Number} city ID (index array) de la ciudad.
+ * @apiParam {String} locality Nombredel sector o localidad.
+ * @apiParam {String} direction Dirección.
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "phone": "3161234567",
-    "names": "Usuario",
-    "lastNames": "Prueba",
-    "direction": "any direction",
+    "email": "user@example.com",
+    "phone": "584121490196",
+    "names": "Usuario tres",
+    "lastNames": "Prueba tres",
     "document": "CC12345678",
-    "educationLevel": null,
-    "profession": null,
-    "bloodType": 1,
+		"gender": 2,
+		"birthday": "1994-07-07",
+		"civilStatus": 0,
+		"educationLevel": 0,
+		"profession": 90,
+		"bloodType": 7,
     "company": false,
     "companyType": null,
-    "baptized": true
+    "baptized": true,
+    "department": 19,
+    "city": 18,
+    "locality": "URB. NUEVO MUNDO",
+    "direction": "URB. NUEVO MUNDO #66"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos de la sesión.
  *
- * @apiSuccess (data Object) {Number|Null} educationLevel ID (array index) del nivel educativo.
- * @apiSuccess (data Object) {Number|Null} bloodType ID (array index) del tipo de sangre.
+ * @apiSuccess (data Object) {Number} gender ID (array index) del sexo.
+ * @apiSuccess (data Object) {String} birthday Fecha de nacimiento (Formato: YYYY-MM-DD).
+ * @apiSuccess (data Object) {Number} civilStatus ID (array index) del estado civil.
+ * @apiSuccess (data Object) {Number} educationLevel ID (array index) del nivel educativo.
+ * @apiSuccess (data Object) {Number} profession ID (array index) de la profesión.
+ * @apiSuccess (data Object) {Number} bloodType ID (array index) del tipo de sangre.
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
  * @apiSuccess (data Object) {Number} role Role del usuario.
- * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
+ * @apiSuccess (data Object) {Number} department ID (array index) del departamento.
+ * @apiSuccess (data Object) {Number} city ID (array index) de la ciudad.
+ * @apiSuccess (data Object) {String} locality Nombre de la localidad.
+ * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
  * @apiSuccess (data Object) {String} _id ID del usuario.
@@ -320,35 +370,36 @@
  * @apiSuccess (data Object) {String} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
- * @apiSuccess (data Object) {String} direction Dirección.
- * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
- *
- * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
+ * @apiSuccess (data Object) {String} email Correo electrónico.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Se han actualizado los datos del usuario exitosamente.",
-    "user": {
-        "educationLevel": null,
-        "bloodType": 1,
-        "company": false,
-        "companyType": null,
-        "baptized": true,
-        "role": 5,
-        "securityQuestion": {
-            "questionId": "5f8608596cd607042cdbea86"
-        },
-        "created_at": "2020-12-07 23:59:12",
-        "updated_at": "2020-12-13 15:37:43",
-        "_id": "5fcf0821fc917d476c1cf3e3",
-        "phone": "584121490196",
-        "document": "CC12345678",
-        "names": "USUARIO TRES",
-        "lastNames": "PRUEBA TRES",
-        "direction": "any direction",
-        "profession": null
-    }
+	"msg": "Se han actualizado los datos del usuario exitosamente.",
+	"user": {
+		"gender": 2,
+		"birthday": "1994-07-07",
+		"civilStatus": 0,
+		"educationLevel": 0,
+		"profession": 90,
+		"bloodType": 7,
+		"company": false,
+		"companyType": null,
+		"baptized": true,
+		"role": 5,
+		"department": 19,
+		"city": 18,
+		"locality": "URB. NUEVO MUNDO",
+		"direction": "URB. NUEVO MUNDO #66",
+		"created_at": "2020-12-07 23:59:12",
+		"updated_at": "2021-02-18 17:51:10",
+		"_id": "5fcf0821fc917d476c1cf3e3",
+		"phone": "584121490196",
+		"document": "CC12345678",
+		"names": "USUARIO TRES",
+		"lastNames": "PRUEBA TRES",
+		"email": "user@example.com"
+	}
 }
  *
  * @apiError {String} msg Mensaje general.

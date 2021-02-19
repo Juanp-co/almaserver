@@ -57,7 +57,7 @@ async function getMemberReferred(req, res) {
                 msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo de hijos espirituales.'
             });
         }
-        ret.member = await Users_1.default.findOne({ _id }, { names: 1, lastNames: 1, direction: 1, phone: 1 }).exec();
+        ret.member = await Users_1.default.findOne({ _id }, { names: 1, lastNames: 1, direction: 1, phone: 1, gender: 1 }).exec();
         if (!ret.member) {
             return res.status(404).json({
                 msg: 'Disculpe, pero no se logró encontrar la información del miembro.'

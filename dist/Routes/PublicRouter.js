@@ -64,10 +64,6 @@ router.get(`/events/:_id`, middleware_1.validateUser, events_controller_1.showPu
 router.post(`/login`, public_controller_1.login);
 router.delete(`/logout`, middleware_1.validateUser, public_controller_1.logout);
 /*
-  Questions
- */
-router.get('/questions', public_controller_1.getQuestions);
-/*
   Register
  */
 router.post(`/register`, public_controller_1.register);

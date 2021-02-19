@@ -9328,8 +9328,8 @@
   {
     "type": "get",
     "url": "/api/events/:_id",
-    "title": "(05) Obtener detalles de un evento público.",
-    "version": "0.0.4",
+    "title": "(04) Obtener detalles de un evento público.",
+    "version": "0.0.16",
     "name": "detailsPublicEventsPublic",
     "group": "Public",
     "header": {
@@ -9437,6 +9437,13 @@
         "user Object": [
           {
             "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -9468,7 +9475,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Evento.\",\n    \"event\": {\n        \"_id\": \"5fe00cf5e2c9942e5c866453\",\n        \"title\": \"EVENTO ESPECIAL\",\n        \"description\": \"Lorem ipsum\",\n        \"date\": \"2020-01-07\",\n        \"initHour\": \"00:00\",\n        \"endHour\": \"23:00\",\n        \"toRoles\": [\n            5\n        ],\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Evento.\",\n\t\"event\": {\n\t\t\"_id\": \"602bccfb1b70b930e43a3eb2\",\n\t\t\"title\": \"EVENTO NUEVO\",\n\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\"date\": \"2021-03-01\",\n\t\t\"initHour\": \"00:00\",\n\t\t\"endHour\": \"23:59\",\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n\t\t\"user\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\"document\": \"CC123456789\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t}\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -9537,8 +9544,8 @@
   {
     "type": "get",
     "url": "/api/events",
-    "title": "(04) Obtener eventos públicos.",
-    "version": "0.0.4",
+    "title": "(03) Obtener eventos públicos.",
+    "version": "0.0.16",
     "name": "getPublicEventsPublic",
     "group": "Public",
     "header": {
@@ -9660,6 +9667,13 @@
         "user Object": [
           {
             "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -9691,7 +9705,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Eventos.\",\n    \"events\": [\n        {\n            \"_id\": \"5fe00cf5e2c9942e5c866453\",\n            \"title\": \"EVENTO ESPECIAL\",\n            \"date\": \"2020-01-07\",\n            \"initHour\": \"00:00\",\n            \"endHour\": \"23:00\",\n            \"toRoles\": [\n                5\n            ],\n            \"user\": {\n                \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n                \"document\": \"CC123456789\",\n                \"names\": \"USUARIO\",\n                \"lastNames\": \"ADMIN\"\n            }\n        },\n        .\n        .\n        .\n    ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Eventos.\",\n\t\"events\": [\n\t\t{\n\t\t\t\"_id\": \"602bccfb1b70b930e43a3eb2\",\n\t\t\t\"title\": \"EVENTO NUEVO\",\n\t\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\"date\": \"2021-03-01\",\n\t\t\t\"initHour\": \"00:00\",\n\t\t\t\"endHour\": \"23:59\",\n\t\t\t\"toRoles\": [\n\t\t\t\t5\n\t\t\t],\n\t\t\t\"user\": {\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t}\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -9748,111 +9762,10 @@
     "groupTitle": "Public"
   },
   {
-    "type": "get",
-    "url": "/api/questions",
-    "title": "(03) Obtener preguntas de seguridad.",
-    "version": "0.0.2",
-    "name": "getQuestionsPublic",
-    "group": "Public",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje del proceso.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Array|Object",
-            "optional": false,
-            "field": "questions",
-            "description": "<p>Listado de preguntas.</p>"
-          }
-        ],
-        "questions Array Object": [
-          {
-            "group": "questions Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>ID de la pregunta.</p>"
-          },
-          {
-            "group": "questions Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "question",
-            "description": "<p>Pregunta.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Preguntas de seguridad.\",\n    \"questions\": [\n        {\n            \"_id\": \"5f8608596cd607042cdbea86\",\n            \"question\": \"¿Cuál es su color favorito?\"\n        },\n        .\n        .\n        .\n    ]\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Success without data",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Preguntas de seguridad.\",\n    \"questions\": []\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje general.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Array|Object",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Listado de errores a mostrar.</p>"
-          }
-        ],
-        "errors Array Object": [
-          {
-            "group": "errors Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "msg[msg]",
-            "description": "<p>Mensaje de error.</p>"
-          },
-          {
-            "group": "errors Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "input[input]",
-            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error internal server",
-          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
-          "type": "JSON"
-        }
-      ]
-    },
-    "filename": "Docs/Public.js",
-    "groupTitle": "Public"
-  },
-  {
     "type": "post",
     "url": "/api/login",
     "title": "(01) Iniciar sesión",
-    "version": "0.0.2",
+    "version": "0.0.16",
     "name": "loginPublic",
     "group": "Public",
     "parameter": {
@@ -9871,6 +9784,13 @@
             "optional": false,
             "field": "password",
             "description": "<p>Contraseña.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "admin",
+            "description": "<p>Indica si inicia sesión como administrador.</p>"
           }
         ]
       }
@@ -9878,7 +9798,12 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"document\": \"CC12345678\",\n    \"password\": \"password\"\n}",
+        "content": "{\n    \"document\": \"CC12345678\",\n    \"password\": \"password\",\n    \"admin\": true\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request with admin=false",
+        "content": "{\n    \"document\": \"CC12345678\",\n    \"password\": \"password\",\n    \"admin\": false\n}",
         "type": "JSON"
       }
     ],
@@ -9912,8 +9837,36 @@
             "group": "data Object",
             "type": "Number|Null",
             "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (array index) del nivel educativo.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "profession",
+            "description": "<p>ID (array index) de la profesión.</p>"
           },
           {
             "group": "data Object",
@@ -9952,10 +9905,31 @@
           },
           {
             "group": "data Object",
-            "type": "Object",
+            "type": "Number|Null",
             "optional": false,
-            "field": "securityQuestion",
-            "description": "<p>Datos de la pregunta de seguridad.</p>"
+            "field": "department",
+            "description": "<p>ID (array index) del departamento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (array index) de la ciudad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombrede la localidad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
           },
           {
             "group": "data Object",
@@ -9977,6 +9951,13 @@
             "optional": false,
             "field": "_id",
             "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
           },
           {
             "group": "data Object",
@@ -10005,36 +9986,13 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "profession",
-            "description": "<p>ID (array index) de la profesión.</p>"
-          }
-        ],
-        "securityQuestion Object": [
-          {
-            "group": "securityQuestion Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"¡Inicio de sesión con éxito!\",\n    \"data\": {\n        \"educationLevel\": null,\n        \"bloodType\": 1,\n        \"company\": false,\n        \"companyType\": null,\n        \"baptized\": true,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-08 21:35:19\",\n        \"updated_at\": \"2020-12-08 21:42:41\",\n        \"_id\": \"5fd039a0de66a52ce800e83a\",\n        \"phone\": \"3161234567\",\n        \"document\": \"CC12345678\",\n        \"names\": \"USUARIO\",\n        \"lastNames\": \"PRUEBA\",\n        \"direction\": \"any direction\",\n        \"profession\": null\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmQwMzlhMGRlNjZhNTJjZTgwMGU4M2EiLCJkb2N1bWVudCI6IkNDMTIzNDU2NzUiLCJyb2xlIjoicGVyc29uYSIsImlhdCI6MTYwNzQ4MjEzMiwiZXhwIjoxNjM5MDM5NzMyfQ.92zoGj9xfzCXAyUtLtN2qYdmtBrK8NClpXlpqekH2Rw\"\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"¡Inicio de sesión con éxito!\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-02-18 19:23:23\",\n\t\t\"updated_at\": \"2021-02-18 19:25:33\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"document\": \"CC12345675\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t},\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJmMDU3ZDhkM2U3ZDA3M2NlZjNlODciLCJkb2N1bWVudCI6IkNDMTIzNDU2NzUiLCJyb2xlIjo1LCJpYXQiOjE2MTM2OTUwMzIsImV4cCI6MTY0NTI1MjYzMn0.INSchol5fi6UAElm-d9hdYi95vq_U3leX59rKnCa9Y8\"\n}",
           "type": "JSON"
         }
       ]
@@ -10075,6 +10033,11 @@
         ]
       },
       "examples": [
+        {
+          "title": "Unauthorized",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no cuenta con privilegios para poder acceder a esta área.\"\n}",
+          "type": "JSON"
+        },
         {
           "title": "Not found",
           "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el número de documento no se encuentra registrado.\"\n}",
@@ -10195,7 +10158,7 @@
     "type": "post",
     "url": "/api/register",
     "title": "(00) Registro de usuario.",
-    "version": "0.0.11",
+    "version": "0.0.16",
     "name": "registerPublic",
     "group": "Public",
     "parameter": {
@@ -10205,8 +10168,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Número de teléfono.</p>"
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
           },
           {
             "group": "Parameter",
@@ -10233,71 +10196,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
             "field": "document",
             "description": "<p>Número de documento del identidad.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "educationLevel",
-            "description": "<p>ID (index array) Nivel educativo.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "profession",
-            "description": "<p>ID (index array) de la profesión.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "bloodType",
-            "description": "<p>ID (index array) del tipo de sangre.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "company",
-            "description": "<p>Indica si posee una empresa.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "companyType",
-            "description": "<p>Tipo de empresa en caso de que posea.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad (obtenido desde API).</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "answer",
-            "description": "<p>Respuesta de seguridad.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "baptized",
-            "description": "<p>Indica si se ha bautizado.</p>"
           },
           {
             "group": "Parameter",
@@ -10312,12 +10212,12 @@
     "examples": [
       {
         "title": "Example JSON Request with Referred",
-        "content": "{\n    \"phone\": \"3161234567\",\n    \"password\": \"password\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345678\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"questionId\": \"5f8608596cd607042cdbea86\",\n    \"answer\": \"respuesta\",\n    \"baptized\": true,\n    \"referred\": \"CC12345678\"\n}",
+        "content": "{\n\t\"email\": \"user3@example.com\",\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\",\n\t\"document\": \"CC12345675\",\n\t\"referred\": \"CC12345678\"\n}",
         "type": "JSON"
       },
       {
         "title": "Example JSON Request without Referred",
-        "content": "{\n    \"phone\": \"3161234567\",\n    \"password\": \"password\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345678\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"questionId\": \"5f8608596cd607042cdbea86\",\n    \"answer\": \"respuesta\",\n    \"baptized\": true,\n    \"referred\": \"CC12345678\"\n}",
+        "content": "{\n\t\"email\": \"user3@example.com\",\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\",\n\t\"document\": \"CC12345675\",\n\t\"referred\": null\n}",
         "type": "JSON"
       }
     ],
@@ -10379,7 +10279,7 @@
       "examples": [
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"questionId\",\n            \"msg\": \"Disculpe, pero seleccionar una pregunta de seguridad.\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -11184,7 +11084,7 @@
         "data Object": [
           {
             "group": "data Object",
-            "type": "String",
+            "type": "Object",
             "optional": false,
             "field": "member",
             "description": "<p>Datos del perfil del miembro.</p>"
@@ -11330,7 +11230,7 @@
     "type": "get",
     "url": "/api/user/group",
     "title": "(00) Obtener datos del grupo familiar.",
-    "version": "0.0.13",
+    "version": "0.0.16",
     "name": "getFamilyUserGroup",
     "group": "UserGroup",
     "header": {
@@ -11408,6 +11308,15 @@
             "description": "<p>Fecha de la última actualización del grupo.</p>"
           }
         ],
+        "member Object": [
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del usuario.</p>"
+          }
+        ],
         "members Array Object": [
           {
             "group": "members Array Object",
@@ -11442,7 +11351,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\t\"lastNames\": \"PRUEBA TRES\",\n\t\t\t\t\"direction\": \"any direction\"\n\t\t\t}\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"gender\": 2,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\t\"lastNames\": \"PRUEBA TRES\",\n\t\t\t\t\"direction\": \"any direction\"\n\t\t\t}\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
           "type": "JSON"
         },
         {
@@ -11507,7 +11416,7 @@
     "type": "get",
     "url": "/api/user/referrals/:memberId",
     "title": "(01) Obtener datos de un usuario referido.",
-    "version": "0.0.13",
+    "version": "0.0.16",
     "name": "getDataMemberUserReferrals",
     "group": "UserReferrals",
     "header": {
@@ -11557,7 +11466,7 @@
         "data Object": [
           {
             "group": "data Object",
-            "type": "String",
+            "type": "Object",
             "optional": false,
             "field": "member",
             "description": "<p>Datos del perfil del miembro.</p>"
@@ -11578,6 +11487,13 @@
           }
         ],
         "member Object": [
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del usuario.</p>"
+          },
           {
             "group": "member Object",
             "type": "String",
@@ -11618,7 +11534,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"584121490196\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"direction\": \"any direction\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"584121490196\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"direction\": \"any direction\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -11703,7 +11619,7 @@
     "type": "get",
     "url": "/api/user/referrals",
     "title": "(00) Obtener listado de referidos.",
-    "version": "0.0.13",
+    "version": "0.0.16",
     "name": "getUserReferrals",
     "group": "UserReferrals",
     "header": {
@@ -11740,6 +11656,13 @@
         "referrals Array Object": [
           {
             "group": "referrals Array Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del usuario.</p>"
+          },
+          {
+            "group": "referrals Array Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -11771,7 +11694,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"document\": \"CC12345675\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"document\": \"CC1234567777\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -11961,132 +11884,9 @@
     "groupTitle": "User"
   },
   {
-    "type": "put",
-    "url": "/api/user/change-question",
-    "title": "(03) Actualizar pregunta y respuesta de seguridad.",
-    "version": "0.0.2",
-    "name": "changeSecurityQuestionUser",
-    "group": "User",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>Token de la sesión.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "answer",
-            "description": "<p>Respuesta.</p>"
-          }
-        ]
-      }
-    },
-    "examples": [
-      {
-        "title": "Example JSON Request",
-        "content": "{\n    \"questionId\": \"5f8608596cd607042cdbea86\",\n    \"answer\": \"password\"\n}",
-        "type": "JSON"
-      }
-    ],
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje del proceso.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado los datos de seguridad exitosamente.\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje general.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Array|Object",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Listado de errores a mostrar.</p>"
-          }
-        ],
-        "errors Array Object": [
-          {
-            "group": "errors Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "msg[msg]",
-            "description": "<p>Mensaje de error.</p>"
-          },
-          {
-            "group": "errors Array Object",
-            "type": "String",
-            "optional": false,
-            "field": "input[input]",
-            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error token",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
-          "type": "JSON"
-        },
-        {
-          "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parametros!\",\n    \"errors\": [\n        {\n            \"input\": \"questionId\",\n            \"msg\": \"Disculpe, pero seleccionar una pregunta de seguridad.\"\n        },\n        {\n            \"input\": \"answer\",\n            \"msg\": \"Disculpe, pero debe indicar una respuesta de seguridad.\"\n        }\n    ]\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error internal server",
-          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
-          "type": "JSON"
-        }
-      ]
-    },
-    "filename": "Docs/User.js",
-    "groupTitle": "User"
-  },
-  {
     "type": "get",
     "url": "/api/user/courses",
-    "title": "(04) Obtener cursos de un usuario.",
+    "title": "(03) Obtener cursos de un usuario.",
     "version": "0.0.12",
     "name": "getCoursesListUser",
     "group": "User",
@@ -12227,7 +12027,7 @@
     "type": "get",
     "url": "/api/user",
     "title": "(00) Obtener datos de la sesión.",
-    "version": "0.0.2",
+    "version": "0.0.16",
     "name": "getDataSessionUser",
     "group": "User",
     "header": {
@@ -12266,8 +12066,36 @@
             "group": "data Object",
             "type": "Number|Null",
             "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (array index) del nivel educativo.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "profession",
+            "description": "<p>ID (array index) de la profesión.</p>"
           },
           {
             "group": "data Object",
@@ -12306,10 +12134,31 @@
           },
           {
             "group": "data Object",
-            "type": "Object",
+            "type": "Number|Null",
             "optional": false,
-            "field": "securityQuestion",
-            "description": "<p>Datos de la pregunta de seguridad.</p>"
+            "field": "department",
+            "description": "<p>ID (array index) del departamento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (array index) de la ciudad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombrede la localidad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
           },
           {
             "group": "data Object",
@@ -12331,6 +12180,13 @@
             "optional": false,
             "field": "_id",
             "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
           },
           {
             "group": "data Object",
@@ -12359,36 +12215,13 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "profession",
-            "description": "<p>ID (array index) de la profesión.</p>"
-          }
-        ],
-        "securityQuestion Object": [
-          {
-            "group": "securityQuestion Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Datos de la sesión\",\n    \"data\": {\n        \"educationLevel\": 0,\n        \"bloodType\": 5,\n        \"company\": true,\n        \"companyType\": 4,\n        \"baptized\": true,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-08 13:43:16\",\n        \"updated_at\": \"2020-12-08 21:34:22\",\n        \"_id\": \"5fcfc945f4647b4c200cca05\",\n        \"phone\": \"3161234568\",\n        \"document\": \"CC12345677\",\n        \"names\": \"USUARIO\",\n        \"lastNames\": \"PRUEBA\",\n        \"direction\": \"any direction\",\n        \"profession\": 44\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Datos de la sesión\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-02-18 19:23:23\",\n\t\t\"updated_at\": \"2021-02-18 19:25:33\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"document\": \"CC12345675\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -12576,8 +12409,8 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "location",
-            "description": "<p>Nombre del barrio o vereda.</p>"
+            "field": "locality",
+            "description": "<p>Nombredel barrio o vereda.</p>"
           },
           {
             "group": "Parameter",
@@ -12592,7 +12425,7 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": \"user@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Pedro\",\n    \"lastNames\": \"Pérez\",\n    \"gender\": 0,\n    \"birthday\": \"1994-07-07\",\n    \"civilStatus\": 0,\n    \"educationLevel\": 0,\n    \"profession\": 90,\n    \"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"NOMBRE DE LA LOCALIDAD\",\n    \"direction\": \"MI DIRECCIÓN\"\n}",
+        "content": "{\n    \"email\": \"user3@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"Velasquez rodriguez\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
         "type": "JSON"
       }
     ],
@@ -12617,10 +12450,10 @@
         "data Object": [
           {
             "group": "data Object",
-            "type": "Boolean",
+            "type": "Number",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
             "group": "data Object",
@@ -12633,6 +12466,13 @@
             "group": "data Object",
             "type": "Number",
             "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (array index) del nivel educativo.</p>"
           },
@@ -12640,8 +12480,8 @@
             "group": "data Object",
             "type": "Number",
             "optional": false,
-            "field": "civilStatus",
-            "description": "<p>ID (array index) del estado civil.</p>"
+            "field": "profession",
+            "description": "<p>ID (array index) de la profesión.</p>"
           },
           {
             "group": "data Object",
@@ -12676,28 +12516,28 @@
             "type": "Number",
             "optional": false,
             "field": "department",
-            "description": "<p>ID (array index) del departamento de residencia.</p>"
+            "description": "<p>ID (array index) del departamento.</p>"
           },
           {
             "group": "data Object",
             "type": "Number",
             "optional": false,
             "field": "city",
-            "description": "<p>ID (array index) de la ciudad de residencia.</p>"
+            "description": "<p>ID (array index) de la ciudad.</p>"
           },
           {
             "group": "data Object",
             "type": "String",
             "optional": false,
             "field": "locality",
-            "description": "<p>Nombre del barrio o localidad.</p>"
+            "description": "<p>Nombrede la localidad.</p>"
           },
           {
             "group": "data Object",
             "type": "String",
             "optional": false,
             "field": "direction",
-            "description": "<p>Dirección de residencia.</p>"
+            "description": "<p>Dirección.</p>"
           },
           {
             "group": "data Object",
@@ -12710,8 +12550,22 @@
             "group": "data Object",
             "type": "String",
             "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
             "field": "phone",
             "description": "<p>Número de teléfono.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
           },
           {
             "group": "data Object",
@@ -12726,20 +12580,6 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "profession",
-            "description": "<p>ID (array index) de la profesión.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
           }
         ],
         "securityQuestion Object": [
@@ -12755,7 +12595,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 0,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"NOMBRE DE LA LOCALIDAD\",\n\t\t\"direction\": \"MI DIRECCIÓN\",\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"PEDRO\",\n\t\t\"lastNames\": \"PÉREZ\",\n\t\t\"profession\": 90,\n\t\t\"email\": \"user@example.com\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"names\": \"ANTHONY ALEJANDRO\",\n\t\t\"lastNames\": \"VELASQUEZ RODRIGUEZ\",\n\t\t\"phone\": \"573161234567\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -12852,6 +12692,13 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
             "field": "phone",
             "description": "<p>Número de teléfono.</p>"
           },
@@ -12873,33 +12720,47 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
             "field": "document",
             "description": "<p>Número de documento del identidad.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number|Null",
+            "type": "Number",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (index array) del sexo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento (Formato: YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (index array) del estado civil.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
             "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (index array) Nivel educativo.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number|Null",
+            "type": "Number",
             "optional": false,
             "field": "profession",
             "description": "<p>ID (index array) de la profesión.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number|Null",
+            "type": "Number",
             "optional": false,
             "field": "bloodType",
             "description": "<p>ID (index array) del tipo de sangre.</p>"
@@ -12916,7 +12777,7 @@
             "type": "Number|Null",
             "optional": false,
             "field": "companyType",
-            "description": "<p>Tipo de empresa en caso de que posea.</p>"
+            "description": "<p>ID (index array) del tipo de empresa en caso de que posea.</p>"
           },
           {
             "group": "Parameter",
@@ -12924,6 +12785,34 @@
             "optional": false,
             "field": "baptized",
             "description": "<p>Indica si se ha bautizado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "department",
+            "description": "<p>ID (index array) del departamento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (index array) de la ciudad.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombredel sector o localidad.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
           }
         ]
       }
@@ -12931,7 +12820,7 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"phone\": \"3161234567\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345678\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true\n}",
+        "content": "{\n    \"email\": \"user@example.com\",\n    \"phone\": \"584121490196\",\n    \"names\": \"Usuario tres\",\n    \"lastNames\": \"Prueba tres\",\n    \"document\": \"CC12345678\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
         "type": "JSON"
       }
     ],
@@ -12956,14 +12845,42 @@
         "data Object": [
           {
             "group": "data Object",
-            "type": "Number|Null",
+            "type": "Number",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento (Formato: YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
             "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (array index) del nivel educativo.</p>"
           },
           {
             "group": "data Object",
-            "type": "Number|Null",
+            "type": "Number",
+            "optional": false,
+            "field": "profession",
+            "description": "<p>ID (array index) de la profesión.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
             "optional": false,
             "field": "bloodType",
             "description": "<p>ID (array index) del tipo de sangre.</p>"
@@ -12998,10 +12915,31 @@
           },
           {
             "group": "data Object",
-            "type": "Object",
+            "type": "Number",
             "optional": false,
-            "field": "securityQuestion",
-            "description": "<p>Datos de la pregunta de seguridad.</p>"
+            "field": "department",
+            "description": "<p>ID (array index) del departamento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (array index) de la ciudad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombre de la localidad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
           },
           {
             "group": "data Object",
@@ -13056,31 +12994,15 @@
             "group": "data Object",
             "type": "String",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "profession",
-            "description": "<p>ID (array index) de la profesión.</p>"
-          }
-        ],
-        "securityQuestion Object": [
-          {
-            "group": "securityQuestion Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad.</p>"
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se han actualizado los datos del usuario exitosamente.\",\n    \"user\": {\n        \"educationLevel\": null,\n        \"bloodType\": 1,\n        \"company\": false,\n        \"companyType\": null,\n        \"baptized\": true,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-07 23:59:12\",\n        \"updated_at\": \"2020-12-13 15:37:43\",\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"phone\": \"584121490196\",\n        \"document\": \"CC12345678\",\n        \"names\": \"USUARIO TRES\",\n        \"lastNames\": \"PRUEBA TRES\",\n        \"direction\": \"any direction\",\n        \"profession\": null\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del usuario exitosamente.\",\n\t\"user\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"role\": 5,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\"updated_at\": \"2021-02-18 17:51:10\",\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"phone\": \"584121490196\",\n\t\t\"document\": \"CC12345678\",\n\t\t\"names\": \"USUARIO TRES\",\n\t\t\"lastNames\": \"PRUEBA TRES\",\n\t\t\"email\": \"user@example.com\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -13155,7 +13077,7 @@
     "type": "get",
     "url": "/api/admin/users/counters",
     "title": "(00) Obtener total de usuarios.",
-    "version": "0.0.3",
+    "version": "0.0.16",
     "name": "countersUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -13178,22 +13100,8 @@
             "group": "Query Params",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento a buscar (Opcional).</p>"
-          },
-          {
-            "group": "Query Params",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Nombre o apellido del usuario (Opcional).</p>"
-          },
-          {
-            "group": "Query Params",
-            "type": "Number",
-            "optional": false,
-            "field": "role",
-            "description": "<p>Rol a buscar (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona) (Opcional).</p>"
+            "field": "word",
+            "description": "<p>Número de documento o nombre a buscar (Opcional).</p>"
           }
         ]
       }
@@ -13275,12 +13183,19 @@
     "type": "post",
     "url": "/api/admin/users",
     "title": "(02) Crear nuevo usuario.",
-    "version": "0.0.11",
+    "version": "0.0.16",
     "name": "createUsersAdmin",
     "group": "UsersAdmin",
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
           {
             "group": "Parameter",
             "type": "String",
@@ -13313,15 +13228,29 @@
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
+            "field": "document",
+            "description": "<p>Número de documento del identidad.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Number|Null",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento del identidad.</p>"
+            "field": "gender",
+            "description": "<p>ID (index array) del sexo (género).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (index array) del estado civil.</p>"
           },
           {
             "group": "Parameter",
@@ -13356,21 +13285,7 @@
             "type": "Number|Null",
             "optional": false,
             "field": "companyType",
-            "description": "<p>Tipo de empresa en caso de que posea.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad (obtenido desde API).</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "answer",
-            "description": "<p>Respuesta de seguridad.</p>"
+            "description": "<p>ID (index array) del tipo de empresa en caso de que posea.</p>"
           },
           {
             "group": "Parameter",
@@ -13378,6 +13293,34 @@
             "optional": false,
             "field": "baptized",
             "description": "<p>Indica si se ha bautizado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "department",
+            "description": "<p>ID (index array) del departamento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (index array) de la ciudad.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombre de la localidad.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
           },
           {
             "group": "Parameter",
@@ -13392,7 +13335,7 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"phone\": \"3161234567\",\n    \"password\": \"password\",\n    \"names\": \"Usuario\",\n    \"lastNames\": \"Prueba\",\n    \"direction\": \"any direction\",\n    \"document\": \"CC12345678\",\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": 1,\n    \"company\": false,\n    \"companyType\": null,\n    \"questionId\": \"5f8608596cd607042cdbea86\",\n    \"answer\": \"respuesta\",\n    \"baptized\": true,\n    \"role\": 5\n}",
+        "content": "{\n    \"email\": \"user2@example.com\",\n    \"password\": \"password\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"velasquez rodriguez\",\n    \"document\": \"CC24402234\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n    \"role\": 5\n}",
         "type": "JSON"
       }
     ],
@@ -13454,7 +13397,7 @@
       "examples": [
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"email\",\n            \"msg\": \"Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -13934,7 +13877,7 @@
     "type": "get",
     "url": "/api/admin/users",
     "title": "(01) Obtener listado de usuarios.",
-    "version": "0.0.3",
+    "version": "0.0.16",
     "name": "getUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -13985,22 +13928,8 @@
             "group": "Query Params",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento a buscar (Opcional).</p>"
-          },
-          {
-            "group": "Query Params",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>Nombre o apellido del usuario (Opcional).</p>"
-          },
-          {
-            "group": "Query Params",
-            "type": "Number",
-            "optional": false,
-            "field": "role",
-            "description": "<p>Rol a buscar (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona) (Opcional).</p>"
+            "field": "word",
+            "description": "<p>Número de documento o nombre a buscar (Opcional).</p>"
           }
         ]
       }
@@ -14026,6 +13955,13 @@
         "users Array Object": [
           {
             "group": "users Array Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del usuario.</p>"
+          },
+          {
+            "group": "users Array Object",
             "type": "Number",
             "optional": false,
             "field": "role",
@@ -14035,7 +13971,7 @@
             "group": "users Array Object",
             "type": "String",
             "optional": false,
-            "field": "updated_at",
+            "field": "created_at",
             "description": "<p>Fecha de la última actualización del perfil.</p>"
           },
           {
@@ -14078,7 +14014,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Usuarios.\",\n    \"users\": [\n        {\n            \"role\": 1,\n            \"created_at\": \"2020-12-13 10:03:12\",\n            \"_id\": \"5fd62d49304a9a5a686adc1a\",\n            \"phone\": \"584121490196\",\n            \"document\": \"CC123456788\",\n            \"names\": \"ADMIN DOS\",\n            \"lastNames\": \"PRUEBA\"\n        },\n        .\n        .\n        .\n    ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Usuarios.\",\n\t\"users\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"role\": 5,\n\t\t\t\"created_at\": \"2021-02-09 00:10:26\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC12345675\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 1,\n\t\t\t\"role\": 1,\n\t\t\t\"created_at\": \"2020-12-13 10:03:12\",\n\t\t\t\"_id\": \"5fd62d49304a9a5a686adc1a\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC123456788\",\n\t\t\t\"names\": \"ADMIN DOS\",\n\t\t\t\"lastNames\": \"PRUEBA\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 2,\n\t\t\t\"role\": 5,\n\t\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"phone\": \"573161234567\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"PEDRO JOSE\",\n\t\t\t\"lastNames\": \"PÉREZ\"\n\t\t}\n\t]\n}",
           "type": "JSON"
         },
         {

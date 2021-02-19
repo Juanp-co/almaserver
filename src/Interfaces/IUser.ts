@@ -1,8 +1,8 @@
 import { Document } from 'mongoose';
 
-export interface IUserSecurityQuestion {
-  questionId?: string | null;
-  answer?: string | null;
+export interface IUserTotals {
+  totalsCourses: number;
+  totalsReferrals: number;
 }
 
 export default interface IUser extends Document {
@@ -22,8 +22,7 @@ export default interface IUser extends Document {
   companyType?: number | string | null;
   baptized?: boolean | null;
   role?: number | null;
-  securityQuestion: IUserSecurityQuestion;
-  referred?: string | null;
+  referred?: any;
   department: number | null;
   city: number | null;
   locality: string | null;
@@ -32,30 +31,72 @@ export default interface IUser extends Document {
   updated_at?: number | null;
 }
 
-export interface IUserRegister {
+export interface IUserData {
+  _id: any;
+  document: IUser['document'];
   email: IUser['email'];
   phone: IUser['phone'];
   password: IUser['password'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
-  document: IUser['document'];
+  gender: IUser['gender'];
+  birthday: IUser['birthday'];
+  civilStatus: IUser['civilStatus'];
+  educationLevel?: IUser['educationLevel'];
+  profession?: IUser['profession'];
+  bloodType?: IUser['bloodType'];
+  company: IUser['company'];
+  companyType?: IUser['companyType'];
+  baptized?: IUser['baptized'];
+  role?: IUser['role'];
+  referred?: any;
+  department: IUser['department'];
+  city: IUser['city'];
+  locality: IUser['locality'];
   direction: IUser['direction'];
+  totals: IUserTotals;
+  created_at?: IUser['created_at'];
+  updated_at?: IUser['updated_at'];
+}
+
+export interface IUserRegister {
+  email: IUser['email'];
+  password: IUser['password'];
+  phone: IUser['phone'];
+  document: IUser['document'];
+  names: IUser['names'];
+  lastNames: IUser['lastNames'];
+  gender: IUser['gender'];
+  birthday: IUser['birthday'];
+  civilStatus: IUser['civilStatus'];
   educationLevel: IUser['educationLevel'];
   profession: IUser['profession'];
   bloodType: IUser['bloodType'];
   company: IUser['company'];
   companyType: IUser['companyType'];
   baptized: IUser['baptized'];
+  department: IUser['department'];
+  city: IUser['city'];
+  locality: IUser['locality'];
+  direction: IUser['direction'];
   role: IUser['role'];
   referred: string | null;
-  questionId?: string | null;
-  answer?: string | null;
-  securityQuestion: IUser['securityQuestion'];
+}
+
+export interface IUserSimpleRegister {
+  email: IUser['email'];
+  password: IUser['password'];
+  document: IUser['document'];
+  names: IUser['names'];
+  lastNames: IUser['lastNames'];
+  role: IUser['role'];
+  referred: string | null;
 }
 
 export interface IUserUpdate {
   email: IUser['email'];
   phone: IUser['phone'];
+  document: IUser['document'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
   gender: IUser['gender'];
@@ -76,6 +117,7 @@ export interface IUserUpdate {
 export interface IUserLogin {
   document: IUser['document'];
   password: IUser['password'];
+  admin: boolean | undefined;
 }
 
 export interface IUserSimpleInfo {

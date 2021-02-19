@@ -3,21 +3,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCourses = exports.changeSecurityQuestion = exports.changePassword = exports.update = exports.get = void 0;
+exports.getGroup = exports.getCourses = exports.changePassword = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const UsersRequest_1 = require("../FormRequest/UsersRequest");
+const UsersActions_1 = require("../ActionsData/UsersActions");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const TokenActions_1 = require("../Functions/TokenActions");
+const UsersRequest_1 = require("../FormRequest/UsersRequest");
 const Validations_1 = require("../Functions/Validations");
-const Users_1 = __importDefault(require("../Models/Users"));
-const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const Courses_1 = __importDefault(require("../Models/Courses"));
+const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
+const Groups_1 = __importDefault(require("../Models/Groups"));
+const Users_1 = __importDefault(require("../Models/Users"));
 const path = 'Controllers/user.controller';
 async function get(req, res) {
     try {
         const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, { __v: 0, password: 0, 'securityQuestion.answer': 0, referred: 0 }).exec();
+        const user = await Users_1.default.findOne({ _id: userid }, { __v: 0, password: 0, referred: 0 }).exec();
         // logout
         if (!user)
             return TokenActions_1.forceLogout(res, `${req.query.token}`);
@@ -46,7 +48,6 @@ async function update(req, res) {
                 document: 0,
                 password: 0,
                 __v: 0,
-                securityQuestion: 0,
                 created_at: 0,
                 updated_at: 0,
                 role: 0,
@@ -90,28 +91,6 @@ async function changePassword(req, res) {
     }
 }
 exports.changePassword = changePassword;
-async function changeSecurityQuestion(req, res) {
-    try {
-        const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, { securityQuestion: 1 }).exec();
-        // logout
-        if (!user)
-            return TokenActions_1.forceLogout(res, `${req.query.token}`);
-        const validate = await UsersRequest_1.validateSecurityQuestion(req.body);
-        if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        user.securityQuestion.questionId = validate.data.questionId;
-        user.securityQuestion.answer = bcrypt_1.default.hashSync(validate.data.answer, 10);
-        await user.save();
-        return res.json({
-            msg: 'Se ha actualizado los datos de seguridad exitosamente.'
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/changeSecurityQuestion`);
-    }
-}
-exports.changeSecurityQuestion = changeSecurityQuestion;
 /*
   COURSES, GROUP & REFERRALS
  */
@@ -138,3 +117,31 @@ async function getCourses(req, res) {
     }
 }
 exports.getCourses = getCourses;
+async function getGroup(req, res) {
+    try {
+        const { userid } = req.params;
+        if (!Validations_1.checkObjectId(userid)) {
+            return res.status(401).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+            });
+        }
+        const data = await Groups_1.default.findOne({ members: userid }).exec();
+        return res.json({
+            msg: 'Mi grupo familiar',
+            group: !data ?
+                null :
+                {
+                    _id: data._id,
+                    name: data.name,
+                    code: data.code,
+                    members: await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(data.members || [])),
+                    created_at: data.created_at,
+                    updated_at: data.updated_at,
+                }
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getGroup`);
+    }
+}
+exports.getGroup = getGroup;

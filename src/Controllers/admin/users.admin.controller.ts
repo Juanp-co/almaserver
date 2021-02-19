@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { checkFindValueSearch, getUserData, responseUsersAdmin } from '../../ActionsData/UsersActions';
 import { validateRegister, validateUpdate } from '../../FormRequest/UsersRequest';
 import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
-import { checkNameOrLastName, checkObjectId, checkRole } from '../../Functions/Validations';
+import { checkObjectId, checkRole } from '../../Functions/Validations';
+import { IUserData } from '../../Interfaces/IUser';
 import Users from '../../Models/Users';
 
 const path = 'Controllers/admin/users.admin.controller';
@@ -12,30 +14,15 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
   try {
     const { userid } = req.params;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    let query = {
-      _id: { $ne: userid }
-    };
-    const { document, name } = req.query;
-
-    if (document) {
-      query = Object.assign(query, { document: { $regex: new RegExp(`${document}`, 'i') } });
-    }
-
-    if (checkNameOrLastName(name)) {
-      const pattern = name ? name.toString().trim().replace(' ', '|') : null;
-      if (pattern)
-        query = Object.assign(query, { $or: [
-            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-          ]
-        });
-    }
+    let query = { _id: { $ne: userid } };
+    query = checkFindValueSearch(query, req.query.word);
 
     const users = await Users.find(
       query,
       {
         names: 1,
         lastNames: 1,
+        gender: 1,
         phone: 1,
         document: 1,
         role: 1,
@@ -58,29 +45,12 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
 export async function getUsersCounters(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
-    let query = {
-      _id: { $ne: userid }
-    };
-    const { document, name } = req.query;
     const { userrole } = req.body;
+    let query = { _id: { $ne: userid } };
+
+    query = checkFindValueSearch(query, req.query.word);
 
     if (checkRole(userrole)) query = Object.assign(query, { role: userrole });
-
-    if (document)
-      query = Object.assign(
-        query,
-        { document: { $regex: new RegExp(`${document}`, 'i') } }
-      );
-
-    if (checkNameOrLastName(name)) {
-      const pattern = name ? name.toString().trim().replace(' ', '|') : null;
-      if (pattern)
-        query = Object.assign(query, { $or: [
-            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-          ]
-        });
-    }
 
     const totals = await Users.find(query).countDocuments().exec();
 
@@ -101,7 +71,6 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
 
     const user = new Users(validate.data);
     user.password = bcrypt.hashSync(user.password, 10);
-    user.securityQuestion.answer = bcrypt.hashSync(`${user.securityQuestion.answer}`, 10);
     await user.save();
 
     return res.status(201).json({
@@ -117,22 +86,11 @@ export async function showUser(req: Request, res: Response): Promise<Response> {
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
-    const user = await Users.findOne(
-      { _id },
-      { __v: 0, password: 0, 'securityQuestion.answer': 0 })
-      .exec();
+    const user: IUserData | null = await getUserData(_id);
 
-    if (!user) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el usuario seleccionado no existe.'
-      });
-    }
+    if (!user) return responseUsersAdmin(res, 1);
 
     return res.json({
       msg: `Detalles del usuario.`,
@@ -147,38 +105,37 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
-    const validate = await validateUpdate(req.body, _id);
+    const validate = await validateUpdate(req.body, _id, true);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = await Users.findOne(
       { _id },
-      { __v: 0, password: 0, 'securityQuestion.answer': 0 }
+      { __v: 0, password: 0, referred: 0 }
       ).exec();
 
-    if (!user) {
-      return res.status(404).json({
-        msg: 'El usuario a actualizar no exite.'
-      });
-    }
+    if (!user) return responseUsersAdmin(res, 1);
 
+    user.email = validate.data.email;
     user.phone = validate.data.phone;
     user.names = validate.data.names;
     user.lastNames = validate.data.lastNames;
-    user.direction = validate.data.direction;
     user.document = validate.data.document;
+    user.gender = validate.data.gender;
+    user.birthday = validate.data.birthday;
+    user.civilStatus = validate.data.civilStatus;
     user.educationLevel = validate.data.educationLevel;
     user.profession = validate.data.profession;
     user.bloodType = validate.data.bloodType;
     user.company = validate.data.company;
     user.companyType = validate.data.companyType;
     user.baptized = validate.data.baptized;
+    user.department = validate.data.department;
+    user.city = validate.data.city;
+    user.locality = validate.data.locality;
+    user.direction = validate.data.direction;
 
     await user.save();
 
@@ -196,25 +153,13 @@ export async function changeRoleUser(req: Request, res: Response): Promise<Respo
     const { _id } = req.params;
     const { role } = req.body;
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
-    if (!checkRole(role)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el rol seleccionado es incorrecto.'
-      });
-    }
+    if (!checkRole(role)) return responseUsersAdmin(res, 2);
 
     const user = await Users.findOne({_id}, { role: 1 }).exec();
 
-    if (!user) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el usuario a actualizar no existe.'
-      });
-    }
+    if (!user) return responseUsersAdmin(res, 1);
 
     user.role = role;
     await user.save();
@@ -235,19 +180,11 @@ export async function changeRoleUser(req: Request, res: Response): Promise<Respo
 //   try {
 //     const { _id } = req.params;
 //
-//     if (!checkObjectId(_id)) {
-//       return res.status(422).json({
-//         msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-//       });
-//     }
+//     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 //
 //     const user = await Users.findOne({_id}, { __v: 0 }).exec();
 //
-//     if (!user) {
-//       return res.status(404).json({
-//         msg: 'Disculpe, pero el usuario no existe.'
-//       });
-//     }
+//     if (!user) return responseUsersAdmin(res, 1);
 //
 //     await user.delete();
 //

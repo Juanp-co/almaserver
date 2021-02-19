@@ -17,12 +17,6 @@ import getGroups, {
   getGroupsCounters,
   saveGroup, showGroup, updateGroup
 } from '../Controllers/admin/groups.admin.controller';
-import getQuestions, {
-  deleteQuestions,
-  getDetailsQuestion,
-  saveQuestions,
-  updateQuestions
-} from '../Controllers/admin/questions.admin.controller';
 import getReferrals from '../Controllers/admin/referrals.admin.controller';
 import getUsers, {
   changeRoleUser,
@@ -68,16 +62,6 @@ router.route('/events/:_id')
   .delete(validateAdmin, deleteEvent)
   .get(validateAdmin, showEvent)
   .put(validateAdmin, updateEvent);
-
-/* Questions */
-router.route('/questions')
-  .get(validateAdmin, getQuestions)
-  .post(validateAdmin, saveQuestions);
-
-router.route('/questions/:_id')
-  .get(validateAdmin, getDetailsQuestion)
-  .put(validateAdmin, updateQuestions)
-  .delete(validateAdmin, deleteQuestions);
 
 /*
   Groups
