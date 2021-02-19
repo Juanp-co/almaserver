@@ -7020,7 +7020,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"title\": \"Evento nuevo\",\n    \"description\": \"description\",\n    \"date\": \"2020-07-07\",\n    \"initHour\": \"00:00\",\n    \"endHour\": \"00:00\",\n    \"toRoles\": [\n        5\n    ]\n}",
+        "content": "{\n    \"title\": \"REUNIÓN DE UNIFICACIÓN FAMILIAR\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n    \"date\": \"2021-03-01\",\n    \"initHour\": \"00:00\",\n    \"endHour\": \"23:59\",\n    \"toRoles\": [5]\n}",
         "type": "JSON"
       }
     ],
@@ -7103,6 +7103,13 @@ define({ "api": [
         "user Object": [
           {
             "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -7134,7 +7141,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha creado el evento exitosamente.\",\n    \"event\": {\n        \"toRoles\": [\n            5\n        ],\n        \"_id\": \"5fe00cf5e2c9942e5c866453\",\n        \"title\": \"EVENTO NUEVO\",\n        \"description\": \"description\",\n        \"date\": \"2020-07-07\",\n        \"initHour\": \"00:00\",\n        \"endHour\": \"00:00\",\n        \"created_at\": \"2020-12-20 21:48:21\",\n        \"updated_at\": \"2020-12-20 21:48:21\",\n    }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha creado el evento exitosamente.\",\n\t\"event\": {\n\t\t\"_id\": \"603007b13b9d883c78abb864\",\n\t\t\"title\": \"REUNIÓN DE UNIFICACIÓN FAMILIAR\",\n\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\"date\": \"2021-03-01\",\n\t\t\"initHour\": \"00:00\",\n\t\t\"endHour\": \"23:59\",\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n\t\t\"user\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\"document\": \"CC123456789\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t}\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -7182,7 +7189,7 @@ define({ "api": [
         },
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"title\",\n            \"msg\": \"Disculpe, pero indicar un título para el evento.\"\n        },\n        {\n            \"input\": \"date\",\n            \"msg\": \"Disculpe, pero debe indicar la fecha para el evento.\"\n        },\n        {\n            \"input\": \"initHour\",\n            \"msg\": \"Disculpe, pero indicar la hora (correcta) de inicio para el evento.\"\n        },\n        {\n            \"input\": \"toRoles\",\n            \"msg\": \"Disculpe, pero debe seleccionar los roles para este evento.\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"title\",\n            \"msg\": \"Disculpe, pero indicar un título para el evento.\"\n        },\n        {\n            \"input\": \"date\",\n            \"msg\": \"Disculpe, pero debe indicar la fecha para el evento.\"\n        },\n        {\n            \"input\": \"initHour\",\n            \"msg\": \"Disculpe, pero indicar la hora de inicio para el evento.\"\n        },\n        {\n            \"input\": \"endHour\",\n            \"msg\": \"Disculpe, pero indicar la hora de finalización del evento.\"\n        },\n        {\n            \"input\": \"toRoles\",\n            \"msg\": \"Disculpe, pero debe seleccionar a quienes va dirigido el evento.\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -7644,6 +7651,13 @@ define({ "api": [
         "user Object": [
           {
             "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -7675,7 +7689,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Eventos.\",\n    \"events\": [\n        {\n            \"_id\": \"5fe00cf5e2c9942e5c866453\",\n            \"title\": \"EVENTO NUEVO\",\n            \"date\": \"2020-07-07\",\n            \"initHour\": \"00:00\",\n            \"endHour\": \"00:00\",\n            \"toRoles\": [\n                5\n            ],\n            \"user\": {\n                \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n                \"document\": \"CC123456789\",\n                \"names\": \"USUARIO\",\n                \"lastNames\": \"ADMIN\"\n            }\n        },\n        .\n        .\n        .\n    ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Eventos.\",\n    \"events\": [\n        {\n            \"_id\": \"5fe00cf5e2c9942e5c866453\",\n            \"title\": \"EVENTO NUEVO\",\n            \"date\": \"2020-07-07\",\n            \"initHour\": \"00:00\",\n            \"endHour\": \"00:00\",\n            \"toRoles\": [\n                5\n            ],\n            \"user\": {\n                \"gender\": 0,\n                \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n                \"document\": \"CC123456789\",\n                \"names\": \"USUARIO\",\n                \"lastNames\": \"ADMIN\"\n            }\n        },\n        .\n        .\n        .\n    ]\n}",
           "type": "JSON"
         },
         {

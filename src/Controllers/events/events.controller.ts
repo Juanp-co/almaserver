@@ -5,6 +5,7 @@ import validateRegister from '../../FormRequest/EventsRequest';
 import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkDate, checkObjectId } from '../../Functions/Validations';
 import Events from '../../Models/Events';
+import { getNamesUsersList } from '../../ActionsData/UsersActions';
 
 const path = 'src/controllers/events/events.controller';
 
@@ -126,9 +127,20 @@ export async function saveEvent(req: Request, res: Response): Promise<Response> 
     event.userid = req.params.userid;
     await event.save();
 
+    const user = await getNamesUsersList([req.params.userid]);
+
     return res.status(201).json({
       msg: `Se ha creado el evento exitosamente.`,
-      event
+      event: {
+        _id: event._id,
+        title: event.title,
+        description: event.description,
+        date: event.date,
+        initHour: event.initHour,
+        endHour: event.endHour,
+        toRoles: event.toRoles,
+        user: user[0] || null
+      }
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/saveEvent`);

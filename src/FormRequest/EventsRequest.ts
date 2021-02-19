@@ -47,7 +47,7 @@ export default function validateRegister(
   // initHour
   if (!data.initHour || !checkHour(data.initHour)) {
     errors.push(
-      setError('Disculpe, pero indicar la hora (correcta) de inicio para el evento.', 'initHour')
+      setError('Disculpe, pero indicar la hora de inicio para el evento.', 'initHour')
     );
   } else {
     ret.initHour = data.initHour ? data.initHour.toString().trim() : data.initHour;
@@ -56,7 +56,7 @@ export default function validateRegister(
   // endHour
   if (!data.endHour || !checkHour(data.endHour)) {
     errors.push(
-      setError('Disculpe, pero indicar una hora (correcta) de finalización del evento.', 'endHour')
+      setError('Disculpe, pero indicar la hora de finalización del evento.', 'endHour')
     );
   } else {
     ret.endHour = data.endHour ? data.endHour.toString().trim() : data.endHour;
@@ -65,7 +65,7 @@ export default function validateRegister(
   // toRoles
   if (!data.toRoles || typeof data.toRoles !== 'object' || data.toRoles.length === 0) {
     errors.push(
-      setError('Disculpe, pero debe seleccionar los roles para este evento.', 'toRoles')
+      setError('Disculpe, pero debe seleccionar a quienes va dirigido el evento.', 'toRoles')
     );
   } else {
     ret.toRoles = data.toRoles;

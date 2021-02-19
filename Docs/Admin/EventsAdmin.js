@@ -22,6 +22,7 @@
  * @apiSuccess (events Array Object) {Array|Number} toRoles Roles a los que va dirigido.
  * @apiSuccess (events Array Object) {Object} user Información del usuario que agregó el evento.
  *
+ * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
  * @apiSuccess (user Object) {String} _id ID del usuario.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
@@ -42,6 +43,7 @@
                 5
             ],
             "user": {
+                "gender": 0,
                 "_id": "5fcf0821fc917d476c1cf3e2",
                 "document": "CC123456789",
                 "names": "USUARIO",
@@ -97,14 +99,12 @@
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "title": "Evento nuevo",
-    "description": "description",
-    "date": "2020-07-07",
+    "title": "REUNIÓN DE UNIFICACIÓN FAMILIAR",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.",
+    "date": "2021-03-01",
     "initHour": "00:00",
-    "endHour": "00:00",
-    "toRoles": [
-        5
-    ]
+    "endHour": "23:59",
+    "toRoles": [5]
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -119,6 +119,7 @@
  * @apiSuccess (events Object) {Array|Number} toRoles Roles a los que va dirigido.
  * @apiSuccess (events Object) {Object} user Información del usuario que agregó el evento.
  *
+ * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
  * @apiSuccess (user Object) {String} _id ID del usuario.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
@@ -127,20 +128,25 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 201 Created
  * {
-    "msg": "Se ha creado el evento exitosamente.",
-    "event": {
-        "toRoles": [
-            5
-        ],
-        "_id": "5fe00cf5e2c9942e5c866453",
-        "title": "EVENTO NUEVO",
-        "description": "description",
-        "date": "2020-07-07",
-        "initHour": "00:00",
-        "endHour": "00:00",
-        "created_at": "2020-12-20 21:48:21",
-        "updated_at": "2020-12-20 21:48:21",
-    }
+	"msg": "Se ha creado el evento exitosamente.",
+	"event": {
+		"_id": "603007b13b9d883c78abb864",
+		"title": "REUNIÓN DE UNIFICACIÓN FAMILIAR",
+		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.",
+		"date": "2021-03-01",
+		"initHour": "00:00",
+		"endHour": "23:59",
+		"toRoles": [
+			5
+		],
+		"user": {
+			"gender": 0,
+			"_id": "5fcf0821fc917d476c1cf3e2",
+			"document": "CC123456789",
+			"names": "ANTHONY",
+			"lastNames": "VELÁSQUEZ"
+		}
+	}
 }
  *
  * @apiError {String} msg Mensaje general.
@@ -169,11 +175,15 @@
         },
         {
             "input": "initHour",
-            "msg": "Disculpe, pero indicar la hora (correcta) de inicio para el evento."
+            "msg": "Disculpe, pero indicar la hora de inicio para el evento."
+        },
+        {
+            "input": "endHour",
+            "msg": "Disculpe, pero indicar la hora de finalización del evento."
         },
         {
             "input": "toRoles",
-            "msg": "Disculpe, pero debe seleccionar los roles para este evento."
+            "msg": "Disculpe, pero debe seleccionar a quienes va dirigido el evento."
         }
     ]
   }
