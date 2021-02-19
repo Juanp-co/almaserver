@@ -29,6 +29,7 @@ const EventsRequest_1 = __importDefault(require("../../FormRequest/EventsRequest
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
 const Events_1 = __importDefault(require("../../Models/Events"));
+const UsersActions_1 = require("../../ActionsData/UsersActions");
 const path = 'src/controllers/events/events.controller';
 async function getEvents(req, res) {
     try {
@@ -132,9 +133,19 @@ async function saveEvent(req, res) {
         const event = new Events_1.default(validate.data);
         event.userid = req.params.userid;
         await event.save();
+        const user = await UsersActions_1.getNamesUsersList([req.params.userid]);
         return res.status(201).json({
             msg: `Se ha creado el evento exitosamente.`,
-            event
+            event: {
+                _id: event._id,
+                title: event.title,
+                description: event.description,
+                date: event.date,
+                initHour: event.initHour,
+                endHour: event.endHour,
+                toRoles: event.toRoles,
+                user: user[0] || null
+            }
         });
     }
     catch (error) {
