@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = require("../../FormRequest/UsersRequest");
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const TokenActions_1 = require("../../Functions/TokenActions");
@@ -15,25 +16,12 @@ async function getUsers(req, res) {
     try {
         const { userid } = req.params;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        let query = {
-            _id: { $ne: userid }
-        };
-        const { document, name } = req.query;
-        if (document) {
-            query = Object.assign(query, { document: { $regex: new RegExp(`${document}`, 'i') } });
-        }
-        if (Validations_1.checkNameOrLastName(name)) {
-            const pattern = name ? name.toString().trim().replace(' ', '|') : null;
-            if (pattern)
-                query = Object.assign(query, { $or: [
-                        { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                        { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                    ]
-                });
-        }
+        let query = { _id: { $ne: userid } };
+        query = UsersActions_1.checkFindValueSearch(query, req.query.word);
         const users = await Users_1.default.find(query, {
             names: 1,
             lastNames: 1,
+            gender: 1,
             phone: 1,
             document: 1,
             role: 1,
@@ -56,24 +44,11 @@ exports.default = getUsers;
 async function getUsersCounters(req, res) {
     try {
         const { userid } = req.params;
-        let query = {
-            _id: { $ne: userid }
-        };
-        const { document, name } = req.query;
         const { userrole } = req.body;
+        let query = { _id: { $ne: userid } };
+        query = UsersActions_1.checkFindValueSearch(query, req.query.word);
         if (Validations_1.checkRole(userrole))
             query = Object.assign(query, { role: userrole });
-        if (document)
-            query = Object.assign(query, { document: { $regex: new RegExp(`${document}`, 'i') } });
-        if (Validations_1.checkNameOrLastName(name)) {
-            const pattern = name ? name.toString().trim().replace(' ', '|') : null;
-            if (pattern)
-                query = Object.assign(query, { $or: [
-                        { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                        { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                    ]
-                });
-        }
         const totals = await Users_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: `Total usuarios.`,
@@ -92,7 +67,6 @@ async function saveUser(req, res) {
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = new Users_1.default(validate.data);
         user.password = bcrypt_1.default.hashSync(user.password, 10);
-        user.securityQuestion.answer = bcrypt_1.default.hashSync(`${user.securityQuestion.answer}`, 10);
         await user.save();
         return res.status(201).json({
             msg: `Se ha registrado el nuevo usuario exitosamente.`,
@@ -106,18 +80,11 @@ exports.saveUser = saveUser;
 async function showUser(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id)) {
-            return res.status(422).json({
-                msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-            });
-        }
-        const user = await Users_1.default.findOne({ _id }, { __v: 0, password: 0, 'securityQuestion.answer': 0 })
-            .exec();
-        if (!user) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero el usuario seleccionado no existe.'
-            });
-        }
+        if (!Validations_1.checkObjectId(_id))
+            return UsersActions_1.responseUsersAdmin(res, 0);
+        const user = await UsersActions_1.getUserData(_id);
+        if (!user)
+            return UsersActions_1.responseUsersAdmin(res, 1);
         return res.json({
             msg: `Detalles del usuario.`,
             user
@@ -131,31 +98,32 @@ exports.showUser = showUser;
 async function updateUser(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id)) {
-            return res.status(422).json({
-                msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-            });
-        }
-        const validate = await UsersRequest_1.validateUpdate(req.body, _id);
+        if (!Validations_1.checkObjectId(_id))
+            return UsersActions_1.responseUsersAdmin(res, 0);
+        const validate = await UsersRequest_1.validateUpdate(req.body, _id, true);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const user = await Users_1.default.findOne({ _id }, { __v: 0, password: 0, 'securityQuestion.answer': 0 }).exec();
-        if (!user) {
-            return res.status(404).json({
-                msg: 'El usuario a actualizar no exite.'
-            });
-        }
+        const user = await Users_1.default.findOne({ _id }, { __v: 0, password: 0, referred: 0 }).exec();
+        if (!user)
+            return UsersActions_1.responseUsersAdmin(res, 1);
+        user.email = validate.data.email;
         user.phone = validate.data.phone;
         user.names = validate.data.names;
         user.lastNames = validate.data.lastNames;
-        user.direction = validate.data.direction;
         user.document = validate.data.document;
+        user.gender = validate.data.gender;
+        user.birthday = validate.data.birthday;
+        user.civilStatus = validate.data.civilStatus;
         user.educationLevel = validate.data.educationLevel;
         user.profession = validate.data.profession;
         user.bloodType = validate.data.bloodType;
         user.company = validate.data.company;
         user.companyType = validate.data.companyType;
         user.baptized = validate.data.baptized;
+        user.department = validate.data.department;
+        user.city = validate.data.city;
+        user.locality = validate.data.locality;
+        user.direction = validate.data.direction;
         await user.save();
         return res.json({
             msg: `Se han actualizado los datos del usuario exitosamente.`,
@@ -171,22 +139,13 @@ async function changeRoleUser(req, res) {
     try {
         const { _id } = req.params;
         const { role } = req.body;
-        if (!Validations_1.checkObjectId(_id)) {
-            return res.status(422).json({
-                msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-            });
-        }
-        if (!Validations_1.checkRole(role)) {
-            return res.status(422).json({
-                msg: 'Disculpe, pero el rol seleccionado es incorrecto.'
-            });
-        }
+        if (!Validations_1.checkObjectId(_id))
+            return UsersActions_1.responseUsersAdmin(res, 0);
+        if (!Validations_1.checkRole(role))
+            return UsersActions_1.responseUsersAdmin(res, 2);
         const user = await Users_1.default.findOne({ _id }, { role: 1 }).exec();
-        if (!user) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero el usuario a actualizar no existe.'
-            });
-        }
+        if (!user)
+            return UsersActions_1.responseUsersAdmin(res, 1);
         user.role = role;
         await user.save();
         // disconnect user
@@ -205,19 +164,11 @@ exports.changeRoleUser = changeRoleUser;
 //   try {
 //     const { _id } = req.params;
 //
-//     if (!checkObjectId(_id)) {
-//       return res.status(422).json({
-//         msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
-//       });
-//     }
+//     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 //
 //     const user = await Users.findOne({_id}, { __v: 0 }).exec();
 //
-//     if (!user) {
-//       return res.status(404).json({
-//         msg: 'Disculpe, pero el usuario no existe.'
-//       });
-//     }
+//     if (!user) return responseUsersAdmin(res, 1);
 //
 //     await user.delete();
 //

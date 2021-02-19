@@ -27,7 +27,6 @@ const middleware_1 = require("../middleware");
 const courses_admin_controller_1 = __importStar(require("../Controllers/admin/courses.admin.controller"));
 const events_controller_1 = __importStar(require("../Controllers/events/events.controller"));
 const groups_admin_controller_1 = __importStar(require("../Controllers/admin/groups.admin.controller"));
-const questions_admin_controller_1 = __importStar(require("../Controllers/admin/questions.admin.controller"));
 const referrals_admin_controller_1 = __importDefault(require("../Controllers/admin/referrals.admin.controller"));
 const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
 const router = express_1.Router();
@@ -58,14 +57,6 @@ router.route('/events/:_id')
     .delete(middleware_1.validateAdmin, events_controller_1.deleteEvent)
     .get(middleware_1.validateAdmin, events_controller_1.showEvent)
     .put(middleware_1.validateAdmin, events_controller_1.updateEvent);
-/* Questions */
-router.route('/questions')
-    .get(middleware_1.validateAdmin, questions_admin_controller_1.default)
-    .post(middleware_1.validateAdmin, questions_admin_controller_1.saveQuestions);
-router.route('/questions/:_id')
-    .get(middleware_1.validateAdmin, questions_admin_controller_1.getDetailsQuestion)
-    .put(middleware_1.validateAdmin, questions_admin_controller_1.updateQuestions)
-    .delete(middleware_1.validateAdmin, questions_admin_controller_1.deleteQuestions);
 /*
   Groups
 */

@@ -17,7 +17,6 @@ import {
   login,
   logout,
   register,
-  getQuestions
 } from '../Controllers/publics/public.controller';
 
 const router = Router();
@@ -67,11 +66,6 @@ router.get(`/events/:_id`, validateUser, showPublicEvent);
 
 router.post(`/login`, login);
 router.delete(`/logout`, validateUser, logout);
-
-/*
-  Questions
- */
-router.get('/questions', getQuestions);
 
 /*
   Register

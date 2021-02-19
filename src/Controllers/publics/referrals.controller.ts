@@ -64,7 +64,7 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
 
     ret.member = await Users.findOne(
       { _id },
-      { names: 1, lastNames: 1, direction: 1, phone: 1 }
+      { names: 1, lastNames: 1, direction: 1, phone: 1, gender: 1 }
     ).exec();
 
     if (!ret.member) {

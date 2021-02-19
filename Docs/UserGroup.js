@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/user/group (00) Obtener datos del grupo familiar.
- * @apiVersion 0.0.13
+ * @apiVersion 0.0.16
  * @apiName getFamilyUserGroup
  * @apiGroup UserGroup
  *
@@ -16,6 +16,7 @@
  * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
+ * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del usuario.
  * @apiSuccess (members Array Object) {String} _id ID del usuario.
  * @apiSuccess (members Array Object) {String} names Nombre(s).
  * @apiSuccess (members Array Object) {String} lastNames Apellido(s).
@@ -31,6 +32,7 @@
 		"code": "AAA-001",
 		"members": [
 			{
+				"gender": 2,
 				"_id": "5fcf0821fc917d476c1cf3e3",
 				"names": "USUARIO TRES",
 				"lastNames": "PRUEBA TRES",
@@ -81,7 +83,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos del miembro del grupo.
  *
- * @apiSuccess (data Object) {String} member Datos del perfil del miembro.
+ * @apiSuccess (data Object) {Object} member Datos del perfil del miembro.
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
  * @apiSuccess (data Object) {String} totalReferrals Total de referidos.
  *

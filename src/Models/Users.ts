@@ -3,17 +3,9 @@ import { Schema, model } from 'mongoose';
 import IUser from '../Interfaces/IUser';
 import { getDate, setDate, toUpperValue } from '../Functions/GlobalFunctions';
 
-const SecurityQuestionSchema = new Schema(
-  {
-    questionId: { type: String, default: null },
-    answer: { type: String, default: null }
-  },
-  { _id: false, id: false }
-);
-
 const UserSchema = new Schema(
   {
-    document: { type: String, require: true, unique: true },
+    document: { type: String, require: true, unique: true, set: toUpperValue },
     email: { type: String, require: true, unique: true },
     phone: { type: String, require: true },
     password: { type: String, require: true },
@@ -30,7 +22,6 @@ const UserSchema = new Schema(
     baptized: { type: Boolean, default: false },
     // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona
     role: { type: Number, default: 5 },
-    securityQuestion: { type: SecurityQuestionSchema, default: { SecurityQuestionSchema } },
     referred: { type: String, default: null },
     department: { type: Number, default: null },
     city: { type: Number, default: null },

@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/user (00) Obtener datos de la sesión.
- * @apiVersion 0.0.2
+ * @apiVersion 0.0.16
  * @apiName getDataSessionUser
  * @apiGroup User
  *
@@ -9,49 +9,56 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos de la sesión.
  *
+ * @apiSuccess (data Object) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (data Object) {String|Null} birthday Fecha de nacimiento.
+ * @apiSuccess (data Object) {Number|Null} civilStatus ID (array index) del estado civil.
  * @apiSuccess (data Object) {Number|Null} educationLevel ID (array index) del nivel educativo.
+ * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
  * @apiSuccess (data Object) {Number|Null} bloodType ID (array index) del tipo de sangre.
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
  * @apiSuccess (data Object) {Number} role Role del usuario.
- * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
+ * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
+ * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
+ * @apiSuccess (data Object) {String} locality Nombrede la localidad.
+ * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
  * @apiSuccess (data Object) {String} _id ID del usuario.
+ * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
  * @apiSuccess (data Object) {String} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
- * @apiSuccess (data Object) {String} direction Dirección.
- * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
- *
- * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Datos de la sesión",
-    "data": {
-        "educationLevel": 0,
-        "bloodType": 5,
-        "company": true,
-        "companyType": 4,
-        "baptized": true,
-        "role": 5,
-        "securityQuestion": {
-            "questionId": "5f8608596cd607042cdbea86"
-        },
-        "created_at": "2020-12-08 13:43:16",
-        "updated_at": "2020-12-08 21:34:22",
-        "_id": "5fcfc945f4647b4c200cca05",
-        "phone": "3161234568",
-        "document": "CC12345677",
-        "names": "USUARIO",
-        "lastNames": "PRUEBA",
-        "direction": "any direction",
-        "profession": 44
-    }
+	"msg": "Datos de la sesión",
+	"data": {
+		"gender": null,
+		"birthday": null,
+		"civilStatus": null,
+		"educationLevel": null,
+		"profession": null,
+		"bloodType": null,
+		"company": false,
+		"companyType": null,
+		"baptized": false,
+		"role": 5,
+		"department": null,
+		"city": null,
+		"locality": null,
+		"direction": null,
+		"created_at": "2021-02-18 19:23:23",
+		"updated_at": "2021-02-18 19:25:33",
+		"_id": "602f057d8d3e7d073cef3e87",
+		"email": "user3@example.com",
+		"document": "CC12345675",
+		"names": "ANTHONY",
+		"lastNames": "VELÁSQUEZ"
+	}
 }
  *
  * @apiError {String} msg Mensaje general.
@@ -96,51 +103,52 @@
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
  * @apiParam {Number} department ID (index array)del departamento.
  * @apiParam {Number} city ID (index array)de la ciudad.
- * @apiParam {String} location Nombre del barrio o vereda.
+ * @apiParam {String} locality Nombredel barrio o vereda.
  * @apiParam {String} direction Dirección.
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "email": "user@example.com",
+    "email": "user3@example.com",
     "phone": "573161234567",
-    "names": "Pedro",
-    "lastNames": "Pérez",
-    "gender": 0,
-    "birthday": "1994-07-07",
-    "civilStatus": 0,
-    "educationLevel": 0,
-    "profession": 90,
-    "bloodType": 7,
+    "names": "Anthony alejandro",
+    "lastNames": "Velasquez rodriguez",
+		"gender": 2,
+		"birthday": "1994-07-07",
+		"civilStatus": 0,
+		"educationLevel": 0,
+		"profession": 90,
+		"bloodType": 7,
     "company": false,
     "companyType": null,
     "baptized": true,
     "department": 19,
     "city": 18,
-    "locality": "NOMBRE DE LA LOCALIDAD",
-    "direction": "MI DIRECCIÓN"
+    "locality": "URB. NUEVO MUNDO",
+    "direction": "URB. NUEVO MUNDO #66"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos actualizados.
  *
- * @apiSuccess (data Object) {Boolean} gender ID (array index) del sexo.
+ * @apiSuccess (data Object) {Number} gender ID (array index) del sexo (género).
  * @apiSuccess (data Object) {String} birthday Fecha de nacimiento.
- * @apiSuccess (data Object) {Number} educationLevel ID (array index) del nivel educativo.
  * @apiSuccess (data Object) {Number} civilStatus ID (array index) del estado civil.
+ * @apiSuccess (data Object) {Number} educationLevel ID (array index) del nivel educativo.
+ * @apiSuccess (data Object) {Number} profession ID (array index) de la profesión.
  * @apiSuccess (data Object) {Number} bloodType ID (array index) del tipo de sangre.
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Number} department ID (array index) del departamento de residencia.
- * @apiSuccess (data Object) {Number} city ID (array index) de la ciudad de residencia.
- * @apiSuccess (data Object) {String} locality Nombre del barrio o localidad.
- * @apiSuccess (data Object) {String} direction Dirección de residencia.
+ * @apiSuccess (data Object) {Number} department ID (array index) del departamento.
+ * @apiSuccess (data Object) {Number} city ID (array index) de la ciudad.
+ * @apiSuccess (data Object) {String} locality Nombrede la localidad.
+ * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} _id ID del usuario.
+ * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
+ * @apiSuccess (data Object) {String} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
- * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
- * @apiSuccess (data Object) {String} email Correo electrónico.
  *
  * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
  *
@@ -149,24 +157,24 @@
  * {
 	"msg": "Se ha actualizado la información exitosamente.",
 	"data": {
-		"gender": 0,
+		"gender": 2,
 		"birthday": "1994-07-07",
 		"civilStatus": 0,
 		"educationLevel": 0,
+		"profession": 90,
 		"bloodType": 7,
 		"company": false,
 		"companyType": null,
 		"baptized": true,
 		"department": 19,
 		"city": 18,
-		"locality": "NOMBRE DE LA LOCALIDAD",
-		"direction": "MI DIRECCIÓN",
-		"_id": "5fcf0821fc917d476c1cf3e3",
-		"phone": "573161234567",
-		"names": "PEDRO",
-		"lastNames": "PÉREZ",
-		"profession": 90,
-		"email": "user@example.com"
+		"locality": "URB. NUEVO MUNDO",
+		"direction": "URB. NUEVO MUNDO #66",
+		"_id": "602f057d8d3e7d073cef3e87",
+		"email": "user3@example.com",
+		"names": "ANTHONY ALEJANDRO",
+		"lastNames": "VELASQUEZ RODRIGUEZ",
+		"phone": "573161234567"
 	}
 }
  *
@@ -279,67 +287,7 @@
  */
 
 /**
- * @api {put} /api/user/change-question (03) Actualizar pregunta y respuesta de seguridad.
- * @apiVersion 0.0.2
- * @apiName changeSecurityQuestionUser
- * @apiGroup User
- *
- * @apiHeader {String} x-access-token Token de la sesión.
- *
- * @apiParam {String} questionId ID de la pregunta de seguridad.
- * @apiParam {String} answer Respuesta.
- *
- * @apiExample {JSON} Example JSON Request
- * {
-    "questionId": "5f8608596cd607042cdbea86",
-    "answer": "password"
-}
- *
- * @apiSuccess {String} msg Mensaje del proceso.
- *
- * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
- * {
-    "msg": "Se ha actualizado los datos de seguridad exitosamente."
-}
- *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
- *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
- *
- * @apiErrorExample {JSON} Validation fields
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "¡Error en los parametros!",
-    "errors": [
-        {
-            "input": "questionId",
-            "msg": "Disculpe, pero seleccionar una pregunta de seguridad."
-        },
-        {
-            "input": "answer",
-            "msg": "Disculpe, pero debe indicar una respuesta de seguridad."
-        }
-    ]
-}
- *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
- */
-
-/**
- * @api {get} /api/user/courses (04) Obtener cursos de un usuario.
+ * @api {get} /api/user/courses (03) Obtener cursos de un usuario.
  * @apiVersion 0.0.12
  * @apiName getCoursesListUser
  * @apiGroup User

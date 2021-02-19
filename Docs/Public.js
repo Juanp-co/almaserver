@@ -1,61 +1,34 @@
 /**
  * @api {post} /api/register (00) Registro de usuario.
- * @apiVersion 0.0.11
+ * @apiVersion 0.0.16
  * @apiName registerPublic
  * @apiGroup Public
  *
- * @apiParam {String} phone Número de teléfono.
+ * @apiParam {String} email Correo electrónico.
  * @apiParam {String} password Contraseña.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {String} direction Dirección.
  * @apiParam {String} document Número de documento del identidad.
- * @apiParam {Number|Null} educationLevel ID (index array) Nivel educativo.
- * @apiParam {Number|Null} profession ID (index array) de la profesión.
- * @apiParam {Number|Null} bloodType ID (index array) del tipo de sangre.
- * @apiParam {Boolean} company Indica si posee una empresa.
- * @apiParam {Number|Null} companyType Tipo de empresa en caso de que posea.
- * @apiParam {String} questionId ID de la pregunta de seguridad (obtenido desde API).
- * @apiParam {String} answer Respuesta de seguridad.
- * @apiParam {Boolean} baptized Indica si se ha bautizado.
  * @apiParam {String|Null} referred Número de documento del referido (Opcional)
  *
  * @apiExample {JSON} Example JSON Request with Referred
  * {
-    "phone": "3161234567",
-    "password": "password",
-    "names": "Usuario",
-    "lastNames": "Prueba",
-    "direction": "any direction",
-    "document": "CC12345678",
-    "educationLevel": null,
-    "profession": null,
-    "bloodType": 1,
-    "company": false,
-    "companyType": null,
-    "questionId": "5f8608596cd607042cdbea86",
-    "answer": "respuesta",
-    "baptized": true,
-    "referred": "CC12345678"
+	"email": "user3@example.com",
+	"password": "password",
+	"names": "Anthony",
+	"lastNames": "Velásquez",
+	"document": "CC12345675",
+	"referred": "CC12345678"
 }
  *
  * @apiExample {JSON} Example JSON Request without Referred
  * {
-    "phone": "3161234567",
-    "password": "password",
-    "names": "Usuario",
-    "lastNames": "Prueba",
-    "direction": "any direction",
-    "document": "CC12345678",
-    "educationLevel": null,
-    "profession": null,
-    "bloodType": 1,
-    "company": false,
-    "companyType": null,
-    "questionId": "5f8608596cd607042cdbea86",
-    "answer": "respuesta",
-    "baptized": true,
-    "referred": "CC12345678"
+	"email": "user3@example.com",
+	"password": "password",
+	"names": "Anthony",
+	"lastNames": "Velásquez",
+	"document": "CC12345675",
+	"referred": null
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -79,10 +52,6 @@
         {
             "input": "document",
             "msg": "Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente."
-        },
-        {
-            "input": "questionId",
-            "msg": "Disculpe, pero seleccionar una pregunta de seguridad."
         }
     ]
   }
@@ -97,73 +66,94 @@
 
 /**
  * @api {post} /api/login (01) Iniciar sesión
- * @apiVersion 0.0.2
+ * @apiVersion 0.0.16
  * @apiName loginPublic
  * @apiGroup Public
  *
  * @apiParam {String} document Número de documento.
  * @apiParam {String} password Contraseña.
+ * @apiParam {Boolean} admin Indica si inicia sesión como administrador.
  *
  * @apiExample {JSON} Example JSON Request
  * {
     "document": "CC12345678",
-    "password": "password"
+    "password": "password",
+    "admin": true
+}
+ * @apiExample {JSON} Example JSON Request with admin=false
+ * {
+    "document": "CC12345678",
+    "password": "password",
+    "admin": false
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos de la sesión.
  * @apiSuccess {String} token Token de la sesión.
  *
+ * @apiSuccess (data Object) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (data Object) {String|Null} birthday Fecha de nacimiento.
+ * @apiSuccess (data Object) {Number|Null} civilStatus ID (array index) del estado civil.
  * @apiSuccess (data Object) {Number|Null} educationLevel ID (array index) del nivel educativo.
+ * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
  * @apiSuccess (data Object) {Number|Null} bloodType ID (array index) del tipo de sangre.
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
  * @apiSuccess (data Object) {Number} role Role del usuario.
- * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
+ * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
+ * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
+ * @apiSuccess (data Object) {String} locality Nombrede la localidad.
+ * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
  * @apiSuccess (data Object) {String} _id ID del usuario.
+ * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
  * @apiSuccess (data Object) {String} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
- * @apiSuccess (data Object) {String} direction Dirección.
- * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
- *
- * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
  *
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
  * {
-    "msg": "¡Inicio de sesión con éxito!",
-    "data": {
-        "educationLevel": null,
-        "bloodType": 1,
-        "company": false,
-        "companyType": null,
-        "baptized": true,
-        "role": 5,
-        "securityQuestion": {
-            "questionId": "5f8608596cd607042cdbea86"
-        },
-        "created_at": "2020-12-08 21:35:19",
-        "updated_at": "2020-12-08 21:42:41",
-        "_id": "5fd039a0de66a52ce800e83a",
-        "phone": "3161234567",
-        "document": "CC12345678",
-        "names": "USUARIO",
-        "lastNames": "PRUEBA",
-        "direction": "any direction",
-        "profession": null
-    },
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmQwMzlhMGRlNjZhNTJjZTgwMGU4M2EiLCJkb2N1bWVudCI6IkNDMTIzNDU2NzUiLCJyb2xlIjoicGVyc29uYSIsImlhdCI6MTYwNzQ4MjEzMiwiZXhwIjoxNjM5MDM5NzMyfQ.92zoGj9xfzCXAyUtLtN2qYdmtBrK8NClpXlpqekH2Rw"
+	"msg": "¡Inicio de sesión con éxito!",
+	"data": {
+		"gender": null,
+		"birthday": null,
+		"civilStatus": null,
+		"educationLevel": null,
+		"profession": null,
+		"bloodType": null,
+		"company": false,
+		"companyType": null,
+		"baptized": false,
+		"role": 5,
+		"department": null,
+		"city": null,
+		"locality": null,
+		"direction": null,
+		"created_at": "2021-02-18 19:23:23",
+		"updated_at": "2021-02-18 19:25:33",
+		"_id": "602f057d8d3e7d073cef3e87",
+		"email": "user3@example.com",
+		"document": "CC12345675",
+		"names": "ANTHONY",
+		"lastNames": "VELÁSQUEZ"
+	},
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJmMDU3ZDhkM2U3ZDA3M2NlZjNlODciLCJkb2N1bWVudCI6IkNDMTIzNDU2NzUiLCJyb2xlIjo1LCJpYXQiOjE2MTM2OTUwMzIsImV4cCI6MTY0NTI1MjYzMn0.INSchol5fi6UAElm-d9hdYi95vq_U3leX59rKnCa9Y8"
 }
  *
  * @apiError {String} msg Mensaje general.
  * @apiError {Array|Object} errors Listado de errores a mostrar.
  * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
  * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Unauthorized
+ * HTTP/1.1 401 Unauthorized
+ * {
+    "msg": "Disculpe, pero no cuenta con privilegios para poder acceder a esta área."
+}
  *
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
@@ -237,55 +227,8 @@
  */
 
 /**
- * @api {get} /api/questions (03) Obtener preguntas de seguridad.
- * @apiVersion 0.0.2
- * @apiName getQuestionsPublic
- * @apiGroup Public
- *
- * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Array|Object} questions Listado de preguntas.
- *
- * @apiSuccess (questions Array Object) {String} _id ID de la pregunta.
- * @apiSuccess (questions Array Object) {String} question Pregunta.
- *
- * @apiSuccessExample {JSON} Success with data
- * HTTP/1.1 200 Success
- * {
-    "msg": "Preguntas de seguridad.",
-    "questions": [
-        {
-            "_id": "5f8608596cd607042cdbea86",
-            "question": "¿Cuál es su color favorito?"
-        },
-        .
-        .
-        .
-    ]
-}
- *
- * @apiSuccessExample {JSON} Success without data
- * HTTP/1.1 200 Success
- * {
-    "msg": "Preguntas de seguridad.",
-    "questions": []
-}
- *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
- *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
- */
-
-/**
- * @api {get} /api/events (04) Obtener eventos públicos.
- * @apiVersion 0.0.4
+ * @api {get} /api/events (03) Obtener eventos públicos.
+ * @apiVersion 0.0.16
  * @apiName getPublicEventsPublic
  * @apiGroup Public
  *
@@ -307,6 +250,7 @@
  * @apiSuccess (events Array Object) {Array|Number} toRoles Roles a los que va dirigido.
  * @apiSuccess (events Array Object) {Object} user Información del usuario que agregó el evento.
  *
+ * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
  * @apiSuccess (user Object) {String} _id ID del usuario.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
@@ -315,28 +259,30 @@
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
  * {
-    "msg": "Eventos.",
-    "events": [
-        {
-            "_id": "5fe00cf5e2c9942e5c866453",
-            "title": "EVENTO ESPECIAL",
-            "date": "2020-01-07",
-            "initHour": "00:00",
-            "endHour": "23:00",
-            "toRoles": [
-                5
-            ],
-            "user": {
-                "_id": "5fcf0821fc917d476c1cf3e2",
-                "document": "CC123456789",
-                "names": "USUARIO",
-                "lastNames": "ADMIN"
-            }
-        },
-        .
-        .
-        .
-    ]
+	"msg": "Eventos.",
+	"events": [
+		{
+			"_id": "602bccfb1b70b930e43a3eb2",
+			"title": "EVENTO NUEVO",
+			"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.",
+			"date": "2021-03-01",
+			"initHour": "00:00",
+			"endHour": "23:59",
+			"toRoles": [
+				5
+			],
+			"user": {
+				"gender": 0,
+				"_id": "5fcf0821fc917d476c1cf3e2",
+				"document": "CC123456789",
+				"names": "ANTHONY",
+				"lastNames": "VELÁSQUEZ"
+			}
+		},
+		.
+		.
+		.
+	]
 }
  *
  * @apiSuccessExample {JSON} Success without data
@@ -360,8 +306,8 @@
  */
 
 /**
- * @api {get} /api/events/:_id (05) Obtener detalles de un evento público.
- * @apiVersion 0.0.4
+ * @api {get} /api/events/:_id (04) Obtener detalles de un evento público.
+ * @apiVersion 0.0.16
  * @apiName detailsPublicEventsPublic
  * @apiGroup Public
  *
@@ -381,6 +327,7 @@
  * @apiSuccess (event Object) {Array|Number} toRoles Roles a los que va dirigido.
  * @apiSuccess (event Object) {Object} user Información del usuario que agregó el evento.
  *
+ * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
  * @apiSuccess (user Object) {String} _id ID del usuario.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
@@ -389,24 +336,25 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Evento.",
-    "event": {
-        "_id": "5fe00cf5e2c9942e5c866453",
-        "title": "EVENTO ESPECIAL",
-        "description": "Lorem ipsum",
-        "date": "2020-01-07",
-        "initHour": "00:00",
-        "endHour": "23:00",
-        "toRoles": [
-            5
-        ],
-        "user": {
-            "_id": "5fcf0821fc917d476c1cf3e2",
-            "document": "CC123456789",
-            "names": "USUARIO",
-            "lastNames": "ADMIN"
-        }
-    }
+	"msg": "Evento.",
+	"event": {
+		"_id": "602bccfb1b70b930e43a3eb2",
+		"title": "EVENTO NUEVO",
+		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.",
+		"date": "2021-03-01",
+		"initHour": "00:00",
+		"endHour": "23:59",
+		"toRoles": [
+			5
+		],
+		"user": {
+			"gender": 0,
+			"_id": "5fcf0821fc917d476c1cf3e2",
+			"document": "CC123456789",
+			"names": "ANTHONY",
+			"lastNames": "VELÁSQUEZ"
+		}
+	}
 }
  *
  * @apiError {String} msg Mensaje general.

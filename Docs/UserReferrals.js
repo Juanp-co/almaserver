@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/user/referrals (00) Obtener listado de referidos.
- * @apiVersion 0.0.13
+ * @apiVersion 0.0.16
  * @apiName getUserReferrals
  * @apiGroup UserReferrals
  *
@@ -9,6 +9,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Array|Object} referrals Listado de referidos del usuario.
  *
+ * @apiSuccess (referrals Array Object) {Number|Null} gender ID (array index) del sexo del usuario.
  * @apiSuccess (referrals Array Object) {String} _id ID del usuario.
  * @apiSuccess (referrals Array Object) {String} document Número de documento.
  * @apiSuccess (referrals Array Object) {String} names Nombres.
@@ -20,8 +21,9 @@
 	"msg": "Mis referidos.",
 	"referrals": [
 		{
+			"gender": 0,
 			"_id": "6022194c88342006d4a700f3",
-			"document": "CC12345675",
+			"document": "CC1234567777",
 			"names": "ANTHONY",
 			"lastNames": "VELÁSQUEZ"
 		},
@@ -59,7 +61,7 @@
 
 /**
  * @api {get} /api/user/referrals/:memberId (01) Obtener datos de un usuario referido.
- * @apiVersion 0.0.13
+ * @apiVersion 0.0.16
  * @apiName getDataMemberUserReferrals
  * @apiGroup UserReferrals
  *
@@ -70,10 +72,11 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos del miembro del grupo.
  *
- * @apiSuccess (data Object) {String} member Datos del perfil del miembro.
+ * @apiSuccess (data Object) {Object} member Datos del perfil del miembro.
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
  * @apiSuccess (data Object) {String} totalReferrals Total de referidos.
  *
+ * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del usuario.
  * @apiSuccess (member Object) {String} _id ID del miembro.
  * @apiSuccess (member Object) {String|Null} phone Número de teléfono.
  * @apiSuccess (member Object) {String} names Nombres.
@@ -86,6 +89,7 @@
 	"msg": "Miembro.",
 	"data": {
 		"member": {
+			"gender": 0,
 			"_id": "6022194c88342006d4a700f3",
 			"phone": "584121490196",
 			"names": "ANTHONY",

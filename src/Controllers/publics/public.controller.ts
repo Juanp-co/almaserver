@@ -1,10 +1,9 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { getData } from '../../ActionsData/UsersActions';
-import { validateLogin, validateRegister } from '../../FormRequest/UsersRequest';
+import { validateLogin, validateSimpleRegister } from '../../FormRequest/UsersRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
-import Questions from '../../Models/Question';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 
@@ -22,13 +21,12 @@ Actions Users
 
 export async function register(req: Request, res: Response): Promise<Response> {
   try {
-    const validate = await validateRegister(req.body);
+    const validate = await validateSimpleRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = new Users(validate.data);
     user.password = bcrypt.hashSync(user.password, 10);
-    user.securityQuestion.answer = bcrypt.hashSync(`${user.securityQuestion.answer}`, 10);
     await user.save();
 
     // create referrals document
@@ -76,6 +74,14 @@ export async function login(req: Request, res: Response): Promise<Response> {
       });
     }
 
+    if (validate.data.admin) {
+      if (user.role === 5) {
+        return res.status(401).json({
+          msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
+        });
+      }
+    }
+
     if (!bcrypt.compareSync(`${validate.data.password}`, `${user.password}`)) {
       return res.status(422).json({
         msg: 'Contraseña incorrecta.'
@@ -96,7 +102,10 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     return res.json({
       msg: '¡Inicio de sesión con éxito!',
-      data: await getData(user._id.toString()),
+      data: await getData(
+        user._id.toString(),
+        { __v: 0, password: 0, referred: 0 }
+      ),
       token
     });
   } catch (error: any) {
@@ -114,22 +123,5 @@ export async function logout(req: Request, res: Response): Promise<Response> {
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/logout`);
-  }
-}
-
-/*
-Public actions
- */
-
-export async function getQuestions(req: Request, res: Response): Promise<Response> {
-  try {
-    const questions = await Questions.find({}, { question: 1 }).exec();
-
-    return res.json({
-      msg: `Preguntas de seguridad.`,
-      questions
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getQuestions`);
   }
 }
