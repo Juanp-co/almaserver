@@ -1,12 +1,17 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
-import { getNamesUsersList } from '../../ActionsData/UsersActions';
+import {
+  checkFindValueSearch,
+  getNamesUsersList,
+  updateGroupIdInUsers
+} from '../../ActionsData/UsersActions';
 import validateRegister, { validateIdsMembers } from '../../FormRequest/GroupsRequest';
 import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
 import { IGroupsDetails, IGroupsList } from '../../Interfaces/IGroups';
 import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import Groups from '../../Models/Groups';
+import Users from '../../Models/Users';
 
 const path = 'src/admin/groups.admin.controller';
 
@@ -34,11 +39,20 @@ function returnErrorId(res: Response) : Response {
 export default async function getGroups(req: Request, res: Response) : Promise<Response> {
   try {
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const { code, name } = req.query;
+    const { word } = req.query;
     const query: any = {};
 
-    if (code) query.code = { $regex: new RegExp(`${code}`, 'i')};
-    if (name) query.name = { $regex: new RegExp(`${name}`, 'i')};
+    if (word) {
+      if (word && word.toString().indexOf(' ') > -1) {
+        query.name = { $regex: new RegExp(`${word}`, 'i')};
+      }
+      else {
+        query.$or = [
+          { name: { $regex: new RegExp(`${word}`, 'i')} },
+          { code: { $regex: new RegExp(`${word}`, 'i')} },
+        ];
+      }
+    }
 
     const ret: IGroupsList[] = [];
 
@@ -71,11 +85,20 @@ export default async function getGroups(req: Request, res: Response) : Promise<R
 
 export async function getGroupsCounters(req: Request, res: Response) : Promise<Response> {
   try {
-    const { code, name } = req.query;
+    const { word } = req.query;
     const query: any = {};
 
-    if (code) query.code = { $regex: new RegExp(`${code}`, 'i')};
-    if (name) query.name = { $regex: new RegExp(`${name}`, 'i')};
+    if (word) {
+      if (word && word.toString().indexOf(' ') > -1) {
+        query.name = { $regex: new RegExp(`${word}`, 'i')};
+      }
+      else {
+        query.$or = [
+          { name: { $regex: new RegExp(`${word}`, 'i')} },
+          { code: { $regex: new RegExp(`${word}`, 'i')} },
+        ];
+      }
+    }
 
     const totals = await Groups.find(query).countDocuments().exec();
 
@@ -201,9 +224,6 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    if (validate.data.members.length === 0)
-      return res.status(200).json({ msg: '¡Nada que actualizar!' });
-
     const group = await Groups.findOne({ _id }, { members: 1 }).exec();
 
     if (!group) return return404(res);
@@ -230,12 +250,27 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
       }
 
       group.members = _.uniq(validate.data.members.concat(group.members));
+      await group.save();
+
+      // update group value in users
+      await updateGroupIdInUsers(group.members, _id);
+
     }
     else {
-      group.members = _.difference(group.members, validate.data.members);
-    }
+      let membersToRemoveOfGroup: any = [];
+      if (validate.data.members.length === 0) {
+        membersToRemoveOfGroup = group.members;
+        group.members = [];
+      }
+      else {
+        membersToRemoveOfGroup = _.difference(group.members, validate.data.members);
+        group.members = _.filter(group.members, m => validate.data.members.indexOf(m) > -1);
+      }
+      await group.save();
 
-    await group.save();
+      // update group value in users
+      await updateGroupIdInUsers(membersToRemoveOfGroup);
+    }
 
     if (notInserts.length > 0) {
       return res.status(201).json({
@@ -252,15 +287,52 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
   }
 }
 
+export async function findNewMembers(req: Request, res: Response) : Promise<Response> {
+  try {
+    const { _id, userid } = req.params;
+    const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+
+    const group = await Groups.findOne({ _id }, { members: 1 })
+      .skip(skip)
+      .limit(limit)
+      .sort(sort)
+      .exec();
+
+    if (!group) return return404(res);
+
+    const query: any = checkFindValueSearch(
+      {
+        _id: { $nin: [userid, ...group.members] },
+        role: { $ne: 0 },
+        group: { $in: [null, undefined, ''] },
+      },
+      req.query.word
+    );
+
+    const users = await Users.find(query, { names: 1, lastNames: 1, document: 1, gender: 1 }).exec();
+
+    return res.status(201).json({
+      msg: 'Usuarios disponibles para grupos',
+      users
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/addOrRemoveMembersGroup`);
+  }
+}
+
 export async function deleteGroup(req: Request, res: Response) : Promise<Response> {
   try {
     const { _id } = req.params;
 
     if (!checkObjectId(_id)) return returnErrorId(res);
 
-    const group = await Groups.findOne({ _id }, { members: 0 }).exec();
+    const group = await Groups.findOne({ _id }, { members: 1 }).exec();
 
     if (!group) return return404(res);
+
+    await updateGroupIdInUsers(group.members || []);
 
     await group.delete();
 

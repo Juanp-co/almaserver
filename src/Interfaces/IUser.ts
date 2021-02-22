@@ -23,6 +23,7 @@ export default interface IUser extends Document {
   baptized?: boolean | null;
   role?: number | null;
   referred?: any;
+  group?: any;
   department: number | null;
   city: number | null;
   locality: string | null;

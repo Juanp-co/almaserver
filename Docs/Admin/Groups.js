@@ -237,6 +237,7 @@
  * @apiSuccess (members Array Object) {String} document Número de documento.
  * @apiSuccess (members Array Object) {String} names Nombre(s).
  * @apiSuccess (members Array Object) {String} lastNames Apellido(s).
+ * @apiSuccess (members Array Object) {String} phone Teléfono.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -258,6 +259,7 @@
                 "document": "CC12345678",
                 "names": "USUARIO TRES",
                 "lastNames": "PRUEBA TRES"
+                "phone": "563161234567"
             },
             .
             .
@@ -470,12 +472,6 @@
  * {
     "msg": "Se ha actualizado el listado de miembros exitosamente."
 }
- *
- * @apiSuccessExample {JSON} Success, but nothing to add
- * HTTP/1.1 200 Success
- * {
-    "msg": "¡Nada que actualizar!"
-}
  * @apiSuccessExample {JSON} Success, but some members wasn't added
  * HTTP/1.1 200 Success
  * {
@@ -588,12 +584,6 @@
  * HTTP/1.1 200 Success
  * {
     "msg": "Se ha actualizado el listado de miembros exitosamente."
-}
- *
- * @apiSuccessExample {JSON} Success, but nothing to remove
- * HTTP/1.1 200 Success
- * {
-    "msg": "¡Nada que actualizar!"
 }
  *
  * @apiError {String} msg Mensaje general.
