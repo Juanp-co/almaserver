@@ -15,7 +15,7 @@ export default function validateRegister(data: IGroupsForm) : { data: IGroupsFor
   // group name
   if (!checkTitlesOrDescriptions(data.name)) {
     errors.push(
-      setError('Disculpe, pero debe indicar un nombre para el grupo.', 'name')
+      setError('Disculpe, pero debe indicar un nombre correcto para el grupo.', 'name')
     );
   }
   else ret.name = data.name.trim();

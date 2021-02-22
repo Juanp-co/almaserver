@@ -13,7 +13,7 @@ import getCourses, {
 import getEvents, { deleteEvent, saveEvent, showEvent, updateEvent } from '../Controllers/events/events.controller';
 import getGroups, {
   addOrRemoveMembersGroup,
-  deleteGroup,
+  deleteGroup, findNewMembers,
   getGroupsCounters,
   saveGroup, showGroup, updateGroup
 } from '../Controllers/admin/groups.admin.controller';
@@ -76,6 +76,7 @@ router.route('/groups/:_id')
   .put(validateAdmin, updateGroup)
   .delete(validateAdmin, deleteGroup);
 
+router.get('/groups/:_id/find-members', validateAdmin, findNewMembers);
 router.put('/groups/:_id/members/:action', validateAdmin, addOrRemoveMembersGroup);
 
 /*

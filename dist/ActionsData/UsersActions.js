@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseUsersAdmin = exports.checkFindValueSearch = exports.getIdUserFromDocument = exports.getUserData = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
+exports.responseUsersAdmin = exports.checkFindValueSearch = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
@@ -32,10 +32,16 @@ async function getData(_id, projection = null) {
 exports.getData = getData;
 async function getNamesUsersList(listIds, projection = null) {
     return listIds.length > 0 ?
-        Users_1.default.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1 }).exec()
+        Users_1.default.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec()
         : [];
 }
 exports.getNamesUsersList = getNamesUsersList;
+async function updateGroupIdInUsers(listIds, _id = null) {
+    if (listIds.length > 0) {
+        await Users_1.default.updateMany({ _id: { $in: listIds } }, { $set: { group: _id } }).exec();
+    }
+}
+exports.updateGroupIdInUsers = updateGroupIdInUsers;
 async function getUserData(_id, projection = null) {
     let user = null;
     if (_id) {
@@ -101,15 +107,19 @@ function checkFindValueSearch(query, value) {
         if (Validations_1.checkNameOrLastName(value)) {
             const pattern = value ? value.toString().trim().replace(' ', '|') : null;
             if (pattern) {
-                query = Object.assign(query, { $or: [
-                        { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                        { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                    ]
-                });
+                query = {
+                    ...query,
+                    ...{
+                        $or: [
+                            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                        ]
+                    }
+                };
             }
         }
         else
-            query = Object.assign(query, { document: { $regex: new RegExp(`${value}`.toUpperCase(), 'i') } });
+            query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
     }
     return query;
 }

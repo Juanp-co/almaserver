@@ -68,6 +68,7 @@ router.route('/groups/:_id')
     .get(middleware_1.validateAdmin, groups_admin_controller_1.showGroup)
     .put(middleware_1.validateAdmin, groups_admin_controller_1.updateGroup)
     .delete(middleware_1.validateAdmin, groups_admin_controller_1.deleteGroup);
+router.get('/groups/:_id/find-members', middleware_1.validateAdmin, groups_admin_controller_1.findNewMembers);
 router.put('/groups/:_id/members/:action', middleware_1.validateAdmin, groups_admin_controller_1.addOrRemoveMembersGroup);
 /*
   Users

@@ -41,6 +41,7 @@ const UserSchema = new mongoose_1.Schema({
     // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona
     role: { type: Number, default: 5 },
     referred: { type: String, default: null },
+    group: { type: String, default: null },
     department: { type: Number, default: null },
     city: { type: Number, default: null },
     locality: { type: String, default: null, set: GlobalFunctions_1.toUpperValue },

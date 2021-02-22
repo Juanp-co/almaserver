@@ -8083,11 +8083,6 @@
           "type": "JSON"
         },
         {
-          "title": "Success, but nothing to add",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"¡Nada que actualizar!\"\n}",
-          "type": "JSON"
-        },
-        {
           "title": "Success, but some members wasn't added",
           "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el listado de miembros exitosamente. Algunos miembros no lograron ser agregados porque ya pertenecen a otro grupo.\",\n    \"notInserts\": [\n        {\n            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n            \"document\": \"CC12345678\",\n            \"names\": \"USUARIO TRES\",\n            \"lastNames\": \"PRUEBA TRES\"\n        }\n    ]\n}",
           "type": "JSON"
@@ -8615,13 +8610,20 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "members Array Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Grupo\",\n    \"group\": {\n        \"_id\": \"6018e503e02a45115407e82f\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"members\": [\n            {\n                \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                \"document\": \"CC12345678\",\n                \"names\": \"USUARIO TRES\",\n                \"lastNames\": \"PRUEBA TRES\"\n            },\n            .\n            .\n            .\n        ],\n        \"created_at\": \"2021-02-02 00:37:07\",\n        \"updated_at\": \"2021-02-02 02:16:16\"\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Grupo\",\n    \"group\": {\n        \"_id\": \"6018e503e02a45115407e82f\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"members\": [\n            {\n                \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                \"document\": \"CC12345678\",\n                \"names\": \"USUARIO TRES\",\n                \"lastNames\": \"PRUEBA TRES\"\n                \"phone\": \"563161234567\"\n            },\n            .\n            .\n            .\n        ],\n        \"created_at\": \"2021-02-02 00:37:07\",\n        \"updated_at\": \"2021-02-02 02:16:16\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -9058,11 +9060,6 @@
         {
           "title": "Success",
           "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el listado de miembros exitosamente.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Success, but nothing to remove",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"¡Nada que actualizar!\"\n}",
           "type": "JSON"
         }
       ]

@@ -16,7 +16,7 @@ function validateRegister(data) {
     const errors = [];
     // group name
     if (!Validations_1.checkTitlesOrDescriptions(data.name)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un nombre para el grupo.', 'name'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un nombre correcto para el grupo.', 'name'));
     }
     else
         ret.name = data.name.trim();

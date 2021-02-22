@@ -29,8 +29,18 @@ export async function getData(_id?: string, projection: any | null = null): Prom
 
 export async function getNamesUsersList(listIds: string|any[], projection: any|null = null): Promise<IUserSimpleInfo[] | any> {
   return listIds.length > 0 ?
-    Users.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1 }).exec()
+    Users.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec()
     : [];
+}
+
+export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null) {
+
+  if (listIds.length > 0) {
+    await Users.updateMany(
+      { _id: { $in: listIds } },
+      { $set: { group: _id } }
+    ).exec();
+  }
 }
 
 export async function getUserData(_id: any, projection: any = null): Promise<IUserData | null> {
@@ -105,15 +115,19 @@ export function checkFindValueSearch(query: any, value: any): any {
     if (checkNameOrLastName(value)) {
       const pattern = value ? value.toString().trim().replace(' ', '|') : null;
       if (pattern) {
-        query = Object.assign(query, { $or: [
-            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-          ]
-        });
+        query = {
+          ...query,
+          ...{
+            $or: [
+              { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+              { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+            ]
+          }
+        };
       }
     }
     else
-      query = Object.assign(query, { document: { $regex: new RegExp(`${value}`.toUpperCase(), 'i') } });
+      query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
   }
 
   return query;
