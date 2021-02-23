@@ -185,12 +185,14 @@ async function validateSimpleRegister(data, admin) {
     else
         ret.document = data.document.toUpperCase();
     // password
-    if (!data.password || !Validations_1.checkPassword(data.password)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
-            'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.', 'password'));
+    if (!admin) {
+        if (!data.password || !Validations_1.checkPassword(data.password)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
+                'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.', 'password'));
+        }
+        else
+            ret.password = data.password;
     }
-    else
-        ret.password = data.password;
     // names
     if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
@@ -206,6 +208,11 @@ async function validateSimpleRegister(data, admin) {
     // referred
     if (Validations_1.checkDocument(data.referred)) {
         ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred);
+    }
+    if (admin) {
+        if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
+            ret.role = data.role;
+        }
     }
     return { data: ret, errors };
 }

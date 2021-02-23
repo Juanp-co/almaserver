@@ -208,15 +208,17 @@ export async function validateSimpleRegister(data: IUserSimpleRegister, admin?: 
   } else ret.document = data.document.toUpperCase();
 
   // password
-  if (!data.password || !checkPassword(data.password)) {
-    errors.push(
-      setError(
-        'Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
+  if (!admin) {
+    if (!data.password || !checkPassword(data.password)) {
+      errors.push(
+        setError(
+          'Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
           'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.',
-        'password'
-      )
-    );
-  } else ret.password = data.password;
+          'password'
+        )
+      );
+    } else ret.password = data.password;
+  }
 
   // names
   if (!data.names || !checkNameOrLastName(data.names)) {
@@ -233,6 +235,12 @@ export async function validateSimpleRegister(data: IUserSimpleRegister, admin?: 
   // referred
   if (checkDocument(data.referred)) {
     ret.referred = await getIdUserFromDocument(data.referred);
+  }
+
+  if (admin) {
+    if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
+      ret.role = data.role;
+    }
   }
 
   return { data: ret, errors };
