@@ -13194,7 +13194,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/admin/users",
     "title": "(02) Crear nuevo usuario.",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "name": "createUsersAdmin",
     "group": "UsersAdmin",
     "parameter": {
@@ -13213,13 +13213,6 @@ define({ "api": [
             "optional": false,
             "field": "phone",
             "description": "<p>Número de teléfono.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>Contraseña.</p>"
           },
           {
             "group": "Parameter",
@@ -13244,97 +13237,6 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (index array) del sexo (género).</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "birthday",
-            "description": "<p>Fecha de nacimiento.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "civilStatus",
-            "description": "<p>ID (index array) del estado civil.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "educationLevel",
-            "description": "<p>ID (index array) Nivel educativo.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "profession",
-            "description": "<p>ID (index array) de la profesión.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "bloodType",
-            "description": "<p>ID (index array) del tipo de sangre.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "company",
-            "description": "<p>Indica si posee una empresa.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "companyType",
-            "description": "<p>ID (index array) del tipo de empresa en caso de que posea.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Boolean",
-            "optional": false,
-            "field": "baptized",
-            "description": "<p>Indica si se ha bautizado.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "department",
-            "description": "<p>ID (index array) del departamento.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "city",
-            "description": "<p>ID (index array) de la ciudad.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "locality",
-            "description": "<p>Nombre de la localidad.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "role",
@@ -13346,7 +13248,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": \"user2@example.com\",\n    \"password\": \"password\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"velasquez rodriguez\",\n    \"document\": \"CC24402234\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n    \"role\": 5\n}",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5\n}",
         "type": "JSON"
       }
     ],
@@ -13406,6 +13308,11 @@ define({ "api": [
         ]
       },
       "examples": [
+        {
+          "title": "Without privileges",
+          "content": "HTTP/1.1 403 Forbidden\n{\n    \"msg\": \"Disculpe, pero no tiene permisos para realizar esta acción.\"\n  }",
+          "type": "JSON"
+        },
         {
           "title": "Validation fields",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"email\",\n            \"msg\": \"Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        }\n    ]\n  }",

@@ -1,8 +1,13 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { checkFindValueSearch, getUserData, responseUsersAdmin } from '../../ActionsData/UsersActions';
-import { validateRegister, validateUpdate } from '../../FormRequest/UsersRequest';
-import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import { validateSimpleRegister, validateUpdate } from '../../FormRequest/UsersRequest';
+import {
+  generatePassword,
+  getLimitSkipSortSearch,
+  returnError,
+  returnErrorParams
+} from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
 import { checkObjectId, checkRole } from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
@@ -65,16 +70,27 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
 
 export async function saveUser(req: Request, res: Response): Promise<Response> {
   try {
-    const validate = await validateRegister(req.body, true);
+
+    const { userrole } = req.body;
+
+    if (userrole !== 0) {
+      return res.status(403).json({
+        msg: `Disculpe, pero no tiene permisos para realizar esta acción.`,
+      });
+    }
+
+    const validate = await validateSimpleRegister(req.body, true);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = new Users(validate.data);
-    user.password = bcrypt.hashSync(user.password, 10);
+    const password = generatePassword();
+    user.password = bcrypt.hashSync(password, 10);
     await user.save();
 
     return res.status(201).json({
       msg: `Se ha registrado el nuevo usuario exitosamente.`,
+      password
     });
 
   } catch (error: any) {

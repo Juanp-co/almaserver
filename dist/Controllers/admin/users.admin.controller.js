@@ -62,14 +62,22 @@ async function getUsersCounters(req, res) {
 exports.getUsersCounters = getUsersCounters;
 async function saveUser(req, res) {
     try {
-        const validate = await UsersRequest_1.validateRegister(req.body, true);
+        const { userrole } = req.body;
+        if (userrole !== 0) {
+            return res.status(403).json({
+                msg: `Disculpe, pero no tiene permisos para realizar esta acción.`,
+            });
+        }
+        const validate = await UsersRequest_1.validateSimpleRegister(req.body, true);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = new Users_1.default(validate.data);
-        user.password = bcrypt_1.default.hashSync(user.password, 10);
+        const password = GlobalFunctions_1.generatePassword();
+        user.password = bcrypt_1.default.hashSync(password, 10);
         await user.save();
         return res.status(201).json({
             msg: `Se ha registrado el nuevo usuario exitosamente.`,
+            password
         });
     }
     catch (error) {

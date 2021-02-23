@@ -116,53 +116,25 @@
 
 /**
  * @api {post} /api/admin/users (02) Crear nuevo usuario.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.17
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiParam {String} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
- * @apiParam {String} password Contraseña.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
  * @apiParam {String} document Número de documento del identidad.
- * @apiParam {Number|Null} gender ID (index array) del sexo (género).
- * @apiParam {String|Null} birthday Fecha de nacimiento.
- * @apiParam {Number|Null} civilStatus ID (index array) del estado civil.
- * @apiParam {Number|Null} educationLevel ID (index array) Nivel educativo.
- * @apiParam {Number|Null} profession ID (index array) de la profesión.
- * @apiParam {Number|Null} bloodType ID (index array) del tipo de sangre.
- * @apiParam {Boolean} company Indica si posee una empresa.
- * @apiParam {Number|Null} companyType ID (index array) del tipo de empresa en caso de que posea.
- * @apiParam {Boolean} baptized Indica si se ha bautizado.
- * @apiParam {Number} department ID (index array) del departamento.
- * @apiParam {Number} city ID (index array) de la ciudad.
- * @apiParam {String|Null} locality Nombre de la localidad.
- * @apiParam {String|Null} direction Dirección.
  * @apiParam {Number} role Rol para el usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "email": "user2@example.com",
-    "password": "password",
-    "phone": "573161234567",
-    "names": "Anthony alejandro",
-    "lastNames": "velasquez rodriguez",
-    "document": "CC24402234",
-		"gender": 2,
-		"birthday": "1994-07-07",
-		"civilStatus": 0,
-		"educationLevel": 0,
-		"profession": 90,
-		"bloodType": 7,
-    "company": false,
-    "companyType": null,
-    "baptized": true,
-    "department": 19,
-    "city": 18,
-    "locality": "URB. NUEVO MUNDO",
-    "direction": "URB. NUEVO MUNDO #66",
-    "role": 5
+  "email": "user2@example.com",
+  "phone": "573161234567",
+  "names": "Anthony alejandro",
+  "lastNames": "velasquez rodriguez",
+  "document": "CC24402234",
+  "role": 5
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -177,6 +149,12 @@
  * @apiError {Array|Object} errors Listado de errores a mostrar.
  * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
  * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ *
+ * @apiErrorExample {JSON} Without privileges
+ * HTTP/1.1 403 Forbidden
+ * {
+    "msg": "Disculpe, pero no tiene permisos para realizar esta acción."
+  }
  *
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity

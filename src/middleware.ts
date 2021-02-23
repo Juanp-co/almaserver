@@ -45,7 +45,7 @@ export async function validateAdmin(req: Request, res: Response, next: any): Pro
       });
     }
 
-    if (check.role !== 0) {
+    if (check.role === 5) {
       return res.status(401).json({
         msg: 'Disculpe, pero no cuenta con privilegios para realizar esta acción.',
         redirect: true

@@ -90,7 +90,7 @@ export interface IUserSimpleRegister {
   document: IUser['document'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
-  role: IUser['role'];
+  role: number | null;
   referred: string | null;
 }
 
