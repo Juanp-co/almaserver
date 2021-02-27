@@ -1,6 +1,6 @@
 define({
   "name": "Alma API",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "API Rest documentation",
   "title": "Alma API",
   "sampleUrl": false,
@@ -8,7 +8,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-02-23T02:23:47.881Z",
+    "time": "2021-02-27T21:22:20.720Z",
     "url": "https://apidocjs.com",
     "version": "0.26.0"
   }

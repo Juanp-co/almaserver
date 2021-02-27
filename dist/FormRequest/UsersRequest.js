@@ -19,141 +19,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateSimpleRegister = exports.validateRegister = void 0;
+exports.validatePasswords = exports.validateLogin = exports.validateUpdate = void 0;
 const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
-async function validateRegister(data, admin) {
-    var _a;
-    const ret = {
-        phone: null,
-        password: null,
-        document: null,
-        names: null,
-        lastNames: null,
-        direction: null,
-        educationLevel: null,
-        profession: null,
-        bloodType: null,
-        company: false,
-        companyType: null,
-        baptized: false,
-        role: admin ? null : 5,
-        referred: null
-    };
-    const errors = [];
-    // email
-    if (!data.email || !Validations_1.checkEmail(data.email)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
-    }
-    else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
-    }
-    else {
-        ret.email = data.email.toLowerCase();
-    }
-    // document
-    if (!data.document || !Validations_1.checkDocument(data.document)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
-    }
-    else if (await UsersActions_1.default(data.document.toUpperCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
-    }
-    else
-        ret.document = data.document.toUpperCase();
-    // phone
-    if (!data.phone || !Validations_1.checkPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de teléfono.', 'phone'));
-    }
-    else
-        ret.phone = data.phone;
-    // password
-    if (!data.password || !Validations_1.checkPassword(data.password)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
-            'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.', 'password'));
-    }
-    else
-        ret.password = data.password;
-    // names
-    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
-    }
-    else
-        ret.names = data.names.toUpperCase();
-    // lastNames
-    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
-    }
-    else
-        ret.lastNames = data.lastNames.toUpperCase();
-    // birthday
-    if (data.birthday) {
-        if (!Validations_1.checkDate(`${data.birthday}`)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
-        }
-        else {
-            ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
-        }
-    }
-    // educationLevel
-    if (Validations_1.checkIfValueIsNumber(`${data.educationLevel}`))
-        ret.educationLevel = data.educationLevel;
-    // profession
-    if (Validations_1.checkIfValueIsNumber(`${data.profession}`))
-        ret.profession = data.profession;
-    // bloodType
-    if (Validations_1.checkIfValueIsNumber(`${data.bloodType}`))
-        ret.bloodType = data.bloodType;
-    // gender
-    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
-        ret.gender = data.gender;
-    // civilStatus
-    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
-        ret.civilStatus = data.civilStatus;
-    // department
-    if (!Validations_1.checkIfValueIsNumber(`${data.department}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el departamento de residencia.', 'department'));
-    }
-    else
-        ret.department = data.department;
-    // city
-    if (!Validations_1.checkIfValueIsNumber(`${data.city}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la ciudad de residencia.', 'city'));
-    }
-    else
-        ret.city = data.city;
-    // locality
-    if (data.locality && Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
-        ret.locality = data.locality;
-    // direction
-    if (data.direction && Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
-        ret.direction = data.direction || null;
-    // role
-    if (!Validations_1.checkRole(`${data.role}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar un rol correcto para el usuario.', 'role'));
-    }
-    else
-        ret.role = data.role || null;
-    // baptized
-    if (data.baptized)
-        ret.baptized = data.baptized;
-    // company
-    if (data.company) {
-        ret.company = true;
-        // companyType
-        if (!Validations_1.checkIfValueIsNumber(`${data.companyType}`)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar a qué se dedica su empresa.', 'companyType'));
-        }
-        else {
-            ret.companyType = data.companyType;
-        }
-    }
-    // referred
-    if (Validations_1.checkDocument(data.referred))
-        ret.referred = data.referred;
-    return { data: ret, errors };
-}
-exports.validateRegister = validateRegister;
 async function validateSimpleRegister(data, admin) {
     const ret = {
         email: null,
@@ -216,7 +85,7 @@ async function validateSimpleRegister(data, admin) {
     }
     return { data: ret, errors };
 }
-exports.validateSimpleRegister = validateSimpleRegister;
+exports.default = validateSimpleRegister;
 async function validateUpdate(data, _id, admin = false) {
     var _a, _b;
     const ret = {

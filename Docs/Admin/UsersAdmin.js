@@ -9,7 +9,7 @@
  * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Array|Object} totals Listado de preguntas de seguridad.
+ * @apiSuccess {Object[]} totals Listado de preguntas de seguridad.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -18,17 +18,11 @@
     "totals": 2
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
  */
 
 /**
@@ -46,16 +40,16 @@
  * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Array|Object} users Listado de preguntas de seguridad.
+ * @apiSuccess {Object[]} users Listado de preguntas de seguridad.
  *
- * @apiSuccess (users Array Object) {Number|Null} gender ID (array index) del sexo del usuario.
- * @apiSuccess (users Array Object) {Number} role Role del usuario.
- * @apiSuccess (users Array Object) {String} created_at Fecha de la última actualización del perfil.
- * @apiSuccess (users Array Object) {String} _id ID del usuario.
- * @apiSuccess (users Array Object) {String} phone Número de teléfono.
- * @apiSuccess (users Array Object) {String} document Número de documento.
- * @apiSuccess (users Array Object) {String} names Nombres.
- * @apiSuccess (users Array Object) {String} lastNames Apellidos.
+ * @apiSuccess (users Object[]) {Number|Null} gender ID (array index) del sexo del usuario.
+ * @apiSuccess (users Object[]) {Number} role Role del usuario.
+ * @apiSuccess (users Object[]) {String} created_at Fecha de la última actualización del perfil.
+ * @apiSuccess (users Object[]) {String} _id ID del usuario.
+ * @apiSuccess (users Object[]) {String} phone Número de teléfono.
+ * @apiSuccess (users Object[]) {String} document Número de documento.
+ * @apiSuccess (users Object[]) {String} names Nombres.
+ * @apiSuccess (users Object[]) {String} lastNames Apellidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -101,17 +95,12 @@
     "users": []
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -145,10 +134,9 @@
     "msg": "Se ha registrado el nuevo usuario exitosamente.",
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
  *
  * @apiErrorExample {JSON} Without privileges
  * HTTP/1.1 403 Forbidden
@@ -176,12 +164,8 @@
     ]
   }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -242,35 +226,14 @@
     }
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el usuario seleccionado no existe."
-}
+ * @apiUse UsersErrorIdOrNotFound
  *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el usuario seleccionado es incorrecto."
-}
+ * @apiUse GlobalErrorSystem
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
  */
 
 /**
@@ -380,28 +343,11 @@
 	}
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el usuario a actualizar no existe."
-}
- *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el usuario seleccionado es incorrecto."
-}
+ * @apiUse UsersErrorIdOrNotFound
  *
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
@@ -419,12 +365,9 @@
     ]
   }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ *
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -452,28 +395,11 @@
     "msg": "Se asignado el nuevo rol al usuario exitosamente."
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el usuario a actualizar no existe."
-}
- *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el usuario seleccionado es incorrecto."
-}
+ * @apiUse UsersErrorIdOrNotFound
  *
  * @apiErrorExample {JSON} Invalid role
  * HTTP/1.1 422 Unprocessable Entity
@@ -481,12 +407,8 @@
     "msg": "Disculpe, pero el rol seleccionado es incorrecto."
 }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -504,7 +426,7 @@
  *
  * @apiSuccess {Object} user Datos del usuario.
  * @apiSuccess {Number} totals Total de referidos.
- * @apiSuccess {Array|Object} members Listado de referidos del usuario.
+ * @apiSuccess {Object[]} members Listado de referidos del usuario.
  *
  * @apiSuccess (user Object) {String|Null} referred Datos del usuario referido.
  * @apiSuccess (user Object) {String} _id ID del usuario.
@@ -512,10 +434,10 @@
  * @apiSuccess (user Object) {String} names Nombres.
  * @apiSuccess (user Object) {String} lastNames Apellidos.
  *
- * @apiSuccess (referred Object and members Array Object) {String} _id ID del usuario.
- * @apiSuccess (referred Object and members Array Object) {String} document Número de documento.
- * @apiSuccess (referred Object and members Array Object) {String} names Nombres.
- * @apiSuccess (referred Object and members Array Object) {String} lastNames Apellidos.
+ * @apiSuccess (referred Object and members Object[]) {String} _id ID del usuario.
+ * @apiSuccess (referred Object and members Object[]) {String} document Número de documento.
+ * @apiSuccess (referred Object and members Object[]) {String} names Nombres.
+ * @apiSuccess (referred Object and members Object[]) {String} lastNames Apellidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -598,33 +520,12 @@
 	}
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el usuario a seleccionado no existe."
-}
+ * @apiUse UsersErrorIdOrNotFound
  *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el usuario seleccionado es incorrecto."
-}
+ * @apiUse GlobalErrorSystem
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
  */

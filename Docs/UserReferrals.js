@@ -7,13 +7,13 @@
  * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Array|Object} referrals Listado de referidos del usuario.
+ * @apiSuccess {Object[]} referrals Listado de referidos del usuario.
  *
- * @apiSuccess (referrals Array Object) {Number|Null} gender ID (array index) del sexo del usuario.
- * @apiSuccess (referrals Array Object) {String} _id ID del usuario.
- * @apiSuccess (referrals Array Object) {String} document Número de documento.
- * @apiSuccess (referrals Array Object) {String} names Nombres.
- * @apiSuccess (referrals Array Object) {String} lastNames Apellidos.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del usuario.
+ * @apiSuccess (referrals Object[]) {String} _id ID del usuario.
+ * @apiSuccess (referrals Object[]) {String} document Número de documento.
+ * @apiSuccess (referrals Object[]) {String} names Nombres.
+ * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -41,9 +41,9 @@
 }
  *
  * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiError {Object[]} errors Listado de errores a mostrar.
+ * @apiError (errors Object[]) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Object[]) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
  *
  * @apiErrorExample {JSON} Error token
  * HTTP/1.1 401 Unauthorized
@@ -101,22 +101,11 @@
 	}
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Error session
- * HTTP/1.1 401 Unauthorized
- * {
-	"msg": "Disculpe, pero no está autorizado para ver este contenido."
-}
+ * @apiUse UsersErrorIdOrNotFound
  *
  * @apiErrorExample {JSON} Not found member in group
  * HTTP/1.1 403 Forbidden
@@ -130,22 +119,6 @@
     "msg": "Disculpe, pero el miembro seleccionado no pertenece a su grupo de hijos espirituales."
 }
  *
- * @apiErrorExample {JSON} Not found member data
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero no se logró encontrar la información del miembro."
-}
+ * @apiUse GlobalErrorSystem
  *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el miembro seleccionado es incorrecto."
-}
- *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
  */

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDetailsEvent = void 0;
+exports.return404Or422 = exports.getDetailsEvent = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const UsersActions_1 = require("./UsersActions");
@@ -74,3 +74,14 @@ async function getDetailsEvent({ query }) {
     return null;
 }
 exports.getDetailsEvent = getDetailsEvent;
+function return404Or422(res, notFound = false) {
+    if (notFound) {
+        return res.status(404).json({
+            msg: `Disculpe, pero el evento seleccionado no existe o no se encuentra disponible.`
+        });
+    }
+    return res.status(422).json({
+        msg: 'Disculpe, pero el evento seleccionado incorrecto.'
+    });
+}
+exports.return404Or422 = return404Or422;

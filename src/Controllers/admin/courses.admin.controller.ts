@@ -1,56 +1,49 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
-import getCoursesList, {
-  checkIfExistCode,
-  checkIfExistSlug,
-  getCommentsCourse,
+import {
+  checkIfExistSlug, checkIfUsersOwnCourse, checkPreviousIdsCourses,
   getCourseDetails,
-  getLikesAndUnlikesCourse,
-  getModelReturnCourseOrTheme
+  getModelReturnCourseOrTheme, return404, returnCantEdit, returnErrorId, validateToPublish
 } from '../../ActionsData/CoursesActions';
 import {
-  checkAndUploadPicture,
   createSlug,
   getLimitSkipSortSearch,
   returnError, returnErrorParams
 } from '../../Functions/GlobalFunctions';
-import validateRegister from '../../FormRequest/CoursesRequest';
+import validateSimpleRegister, {
+  validateBannerUpdate,
+  validateContentThemeUpdate,
+  validateInfoUpdate, validateLevelsData, validateQuestionTestUpdate,
+  validateThemeUpdate
+} from '../../FormRequest/CoursesRequest';
 import { checkObjectId } from '../../Functions/Validations';
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
+// import Pictures from '../../Models/Pictures';
 
 const path = 'src/admin/courses.admin.controller';
-
-function return404(res: Response) : Response {
-  return res.status(404).json({
-    msg: 'Disculpe, pero el curso seleccionado no existe o no se encuentra disponible.',
-  });
-}
-
-function returnErrorId(res: Response, theme = false) : Response {
-  return res.status(422).json({
-    msg: `Disculpe, pero el ${theme ? 'tema' : 'curso'} seleccionado es incorrecto.`,
-  });
-}
 
 // =====================================================================================================================
 
 export default async function getCourses(req: Request, res: Response) : Promise<Response>{
   try {
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const { code, title } = req.query;
+    const { enable, title, ignoreIds } = req.query;
     const query: any = {};
+    const projection: any = { _id: 1, title: 1, description: 1, banner: 1, enable: 1 };
 
-    if (code) query.code = code.toString().toUpperCase();
+    if (ignoreIds) {
+      query._id = { $nin: ignoreIds.toString().split(',')};
+      query.enable = true;
+    }
     if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
+    if (['true', 'false'].indexOf(`${enable}`) > -1) query.enable = enable === 'true';
 
-    const courses = await getCoursesList({
-      query,
-      limit,
-      skip,
-      sort,
-      infoUser: true,
-    });
+    const courses = await Courses.find(query, projection)
+      .skip(skip)
+      .limit(limit)
+      .sort(sort)
+      .exec();
 
     return res.json({
       msg: 'Cursos.',
@@ -63,28 +56,21 @@ export default async function getCourses(req: Request, res: Response) : Promise<
 
 export async function getCoursesCounters(req: Request, res: Response) : Promise<Response>{
   try {
-    const { code, title } = req.query;
+    const { enable, title, ignoreIds } = req.query;
     const query: any = {};
-    const ret = {
-      enables: 0,
-      drafts: 0
-    };
 
-    if (code) query.code = { $regex: new RegExp(`${code}`, 'i')};
-    if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
-
-    const courses = await Courses.find(query, { enable: 1 }).exec();
-
-    if (courses.length > 0){
-      courses.forEach(c => {
-        if (c.enable) ret.enables++;
-        else ret.drafts++;
-      })
+    if (ignoreIds) {
+      query._id = { $nin: ignoreIds.toString().split(',')};
+      query.enable = true;
     }
+    if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
+    if (['true', 'false'].indexOf(`${enable}`) > -1) query.enable = enable === 'true';
+
+    const totals = await Courses.find(query).countDocuments().exec();
 
     return res.json({
       msg: 'Total de cursos.',
-      totals: ret
+      totals
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getCoursesCounters`);
@@ -95,7 +81,7 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) returnErrorId(res);
+    if (!checkObjectId(_id)) return returnErrorId(res);
 
     const course = await getCourseDetails({
       query: { _id },
@@ -109,6 +95,7 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
       course: await getModelReturnCourseOrTheme({
         data: course,
         theme: false,
+        showContent: true,
         admin: true,
         counters: true
       }),
@@ -120,7 +107,7 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
 
 export async function saveCourse(req: Request, res: Response) : Promise<Response>{
   try {
-    const validate = await validateRegister(req.body, false);
+    const validate = validateSimpleRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
@@ -131,180 +118,142 @@ export async function saveCourse(req: Request, res: Response) : Promise<Response
     // check if exist slug
     if (slugQty > 0) validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
 
+    validate.data.code = validate.data.slug;
+    // let banner = null;
+
+    // save picture
+    // if (validate.data.banner) {
+    //   const pic = new Pictures({
+    //     base64: validate.data.banner
+    //   });
+    //   await pic.save();
+    //
+    //   validate.data.banner = pic._id.toString();
+    // }
+
     // create
     const course = new Courses(validate.data);
-    course.banner = await checkAndUploadPicture(validate.data.banner);
     course.userid = req.params.userid;
     await course.save();
 
     return res.status(201).json({
-      msg: 'Se ha creado el nuevo curso exitosamente.',
-      course
+      msg: 'Se ha guardo el nuevo curso exitosamente.'
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/saveCourse`);
   }
 }
 
-export async function updateCourse(req: Request, res: Response) : Promise<Response>{
+export async function updateInfoCourse(req: Request, res: Response) : Promise<Response>{
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) returnErrorId(res);
+    if (!checkObjectId(_id)) return returnErrorId(res);
 
-    const validate = await validateRegister(req.body, true);
+    const validate = validateInfoUpdate(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const course = await Courses.findOne(
       { _id },
+      {
+        title: 1,
+        code: 1,
+        slug: 1,
+        description: 1,
+        speaker: 1,
+        speakerPosition: 1,
+      }
     ).exec();
 
     if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
 
-    if (course.enable) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.'
-      });
-    }
+    if (course.title !== validate.data.title) {
+      // set slug value
+      let slug = createSlug(validate.data.title);
+      // get qty registered
+      const slugQty: number = await checkIfExistSlug(`${slug}`);
+      // check if exist slug
+      if (slugQty > 0) slug = `${slug}-${slugQty + 1}`;
 
-    if (course.code !== validate.data.code) {
-      // check if exist code
-      if ((await checkIfExistCode(`${validate.data.code}`))) {
-        return res.status(422).json({
-          msg: "Disculpe, pero el nuevo código ingresado ya se encuentra asignado a otro curso."
-        });
-      }
+      course.slug = slug;
+      course.code = slug;
     }
 
     course.title = validate.data.title;
     course.description = validate.data.description;
-    course.banner = await checkAndUploadPicture(validate.data.banner);
-    course.code = validate.data.code;
     course.speaker = validate.data.speaker;
     course.speakerPosition = validate.data.speakerPosition;
-
-    const totalTemary = validate.data.temary.length || 0;
-
-    for (let i = 0; i < totalTemary; i++) {
-      if (validate.data.temary[i]._id) {
-        const indexT = _.findIndex(course.temary, t => t._id.toString() === validate.data.temary[i]._id);
-
-        if (indexT > -1) {
-          course.temary[indexT].title = validate.data.temary[i].title;
-          course.temary[indexT].description = validate.data.temary[i].description;
-          const { content, test } = validate.data.temary[i];
-
-          for (const c of content) {
-            if (c && c._id) {
-              const indexC = _.findIndex(course.temary[indexT].content, co => co._id.toString() === co._id);
-              if (indexC > -1) {
-                course.temary[indexT].content[indexC].title = c.title;
-                course.temary[indexT].content[indexC].description = c.description;
-                course.temary[indexT].content[indexC].urlVideo = c.urlVideo;
-              }
-            }
-            else course.temary[indexT].content.push(c);
-          }
-
-          for (const t of test) {
-            if (t && t._id) {
-              const indexTest = _.findIndex(course.temary[indexT].test, te => te._id.toString() === t._id);
-              if (indexTest > -1) {
-                course.temary[indexT].test[indexTest].title = t.title || null;
-                course.temary[indexT].test[indexTest].description = t.description || null;
-                course.temary[indexT].test[indexTest].placeholder = t.placeholder || null;
-                course.temary[indexT].test[indexTest].extra = t.extra || null;
-                course.temary[indexT].test[indexTest].inputType = t.inputType;
-                course.temary[indexT].test[indexTest].values = t.values;
-                course.temary[indexT].test[indexTest].require = t.require;
-                course.temary[indexT].test[indexTest].correctAnswer = t.correctAnswer;
-              }
-            }
-            else course.temary[indexT].test.push(t);
-          }
-        }
-      }
-      else course.temary.push(validate.data.temary[i]);
-    }
-
-
-
-    course.levels = validate.data.levels;
     course.toRoles = validate.data.toRoles;
-    course.draft = validate.data.draft;
-    course.enable = validate.data.enable;
-
-    // check slug
-    if (!!validate.data.slug && course.slug !== validate.data.slug) {
-      // get qty registered
-      const slugQty: number = await checkIfExistSlug(`${validate.data.slug}`);
-      // check if exist slug
-      if (slugQty > 0) validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
-      else course.slug = validate.data.slug;
-    }
-
     await course.save();
 
     return res.json({
-      msg: 'Se ha actualizado el curso exitosamente.',
+      msg: 'Se ha actualizado la información del curso exitosamente.',
       course
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/updateCourse`);
+    return returnError(res, error, `${path}/updateInfoCourse`);
+  }
+}
+
+export async function updateBannerCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+
+    const validate = validateBannerUpdate(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const course = await Courses.findOne(
+      { _id },
+      { banner: 1 }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    course.banner = validate.data.banner;
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha actualizado la imagen del curso exitosamente.',
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/updateBannerCourse`);
   }
 }
 
 export async function enableCourse(req: Request, res: Response) : Promise<Response>{
   try {
     const { _id } = req.params;
-    const { enable } = req.body;
 
-    if (!checkObjectId(_id)) returnErrorId(res);
+    if (!checkObjectId(_id)) return returnErrorId(res);
 
-    if (!/[01]{1}/.test(enable)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero debe indicar si publicará o removerá el curso de la sección pública.'
-      });
-    }
-
-    const course = await Courses.findOne(
-      { _id },
-      { toRoles: 1, temary: 1, test: 1, draft: 1, enable: 1 }
-    ).exec();
+    const course = await Courses.findOne({ _id }).exec();
 
     if (!course) return return404(res);
 
-    if (enable === 1) {
-      if (course.draft) {
-        const errors = [];
-        if (course.toRoles.length === 0) {
-          errors.push({
-            msg: 'Disculpe, para publicar el curso es necesario que indique a que grupo de usuarios va dirigido.'
-          });
-        }
-        if (course.temary.length === 0) {
-          errors.push({
-            msg: 'Disculpe, para publicar el curso es necesario que indique el temario para este.'
-          });
-        }
-        if (errors.length > 0) return returnErrorParams(res, errors);
-      }
-    }
-    else {
-      const exists = await CoursesUsers.find({ courseId: _id }).countDocuments().exec();
-      if (exists > 0)
-        return res.status(422).json({
-          msg: 'Disculpe, pero el curso no puede ser deshabilitado. Los usuarios ya poseen el curso en sus listados.',
-        });
-    }
+    if (!course.enable) {
+      // validate all data
+      const validated = validateToPublish(course);
 
-    course.enable = enable === 1;
-    course.draft = !course.enable;
+      if (validated) return res.status(422).json({ msg: validated });
+      course.enable = true;
+    }
+    else course.enable = false;
+
     await course.save();
 
     return res.json({
-      msg: `Se ha ${enable === 1 ? 'publicado' : 'retirado'} el curso exitosamente.`
+      msg: `Se ha ${course.enable ? 'publicado' : 'retirado'} el curso exitosamente.`,
+      data: {
+        enable: course.enable
+      }
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/enableCourse`);
@@ -315,7 +264,7 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
   try {
     const { _id } = req.params;
 
-    if (!checkObjectId(_id)) returnErrorId(res);
+    if (!checkObjectId(_id)) return returnErrorId(res);
 
     const course = await Courses.findOne({ _id }).exec();
 
@@ -338,70 +287,439 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
   }
 }
 
-// =====================================================================================================================
-
 /*
-  Likes and Comments (course or theme)
+  THEMES
  */
 
-export async function commentsCourseOrTheme(req: Request, res: Response) : Promise<Response>{
+export async function addThemeCourse(req: Request, res: Response) : Promise<Response>{
   try {
-    const { _id, themeId } = req.params;
-    const order = req.query.sort && req.query.sort === '1' ? 'asc' :'desc';
-    const query: any = {};
-    let projection: any = {};
+    const { _id } = req.params;
 
-    if (!checkObjectId(_id)) returnErrorId(res);
+    if (!checkObjectId(_id)) return returnErrorId(res);
+    const validate = validateThemeUpdate(req.body);
 
-    query._id = _id;
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    if (themeId) {
-      if (!checkObjectId(themeId)) returnErrorId(res, true);
-      query['temary._id'] = themeId;
+    const course = await Courses.findOne(
+      { _id },
+      {
+        enable: 1,
+        temary: 1,
+      }
+    ).exec();
 
-      projection = { 'temary.$.comments': 1 };
-    }
-    else projection = { comments: 1 };
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
 
-    const data = await getCommentsCourse({ query, projection, sort: order, theme: !!themeId });
-
-    if (!data) return return404(res);
+    course.temary.push({
+      title: validate.data.title,
+      description: validate.data.description,
+      content: [],
+      test: []
+    });
+    await course.save();
 
     return res.json({
-      msg: `Comentarios del ${themeId ? 'tema' : 'curso'}.`,
-      data
+      msg: 'Se ha agregado el tema exitosamente.',
+      theme: course.temary.pop()
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/commentsCourse`);
+    return returnError(res, error, `${path}/updateThemeCourse`);
   }
 }
 
-export async function likesAndUnlikesCourseOrTheme(req: Request, res: Response) : Promise<Response>{
+export async function updateThemeCourse(req: Request, res: Response) : Promise<Response>{
   try {
     const { _id, themeId } = req.params;
-    const query: any = {};
-    let projection: any = {};
 
-    if (!checkObjectId(_id)) returnErrorId(res);
+    if (!checkObjectId(_id)) return returnErrorId(res, 0);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
 
-    query._id = _id;
+    const validate = validateThemeUpdate(req.body);
 
-    if (themeId) {
-      if (!checkObjectId(themeId)) returnErrorId(res, true);
-      query['temary._id'] = themeId;
-      projection = { 'temary.$': 1 };
-    }
-    else projection = { _id: 1, likes: 1, unlikes: 1 };
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    const data = await getLikesAndUnlikesCourse({ query, projection, theme: !!themeId });
+    const course = await Courses.findOne(
+      { _id, 'temary._id': themeId },
+      {
+        enable: 1,
+        'temary': 1,
+      }
+    ).exec();
 
-    if (!data) return return404(res);
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    course.temary[index].title = validate.data.title;
+    course.temary[index].description = validate.data.description;
+    await course.save();
 
     return res.json({
-      msg: `'Me gusta' y 'No me gustas' del ${themeId ? 'tema' : 'curso'}.`,
-      data
+      msg: 'Se ha actualizado la información del tema exitosamente.',
+      theme: {
+        title: course.temary[index].title,
+        description: course.temary[index].description,
+      }
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/likesAndUnlikesCourse`);
+    return returnError(res, error, `${path}/updateThemeCourse`);
+  }
+}
+
+export async function deleteThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
+
+    const course = await Courses.findOne(
+      { _id, 'temary._id': themeId },
+      {
+        enable: 1,
+        'temary': 1,
+      }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    course.temary = course.temary.filter(t => t._id.toString() !== themeId);
+    await course.save();
+
+    console.log('course.temary', course.temary);
+
+    return res.json({
+      msg: 'Se ha eliminado el tema y su contenido exitosamente.',
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/updateThemeCourse`);
+  }
+}
+
+/*
+  CONTENT
+ */
+
+export async function addContentThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
+
+    const validate = validateContentThemeUpdate(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const course = await Courses.findOne(
+      { _id },
+      {
+        enable: 1,
+        temary: 1,
+      }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    course.temary[index].content.push({
+      title: validate.data.title,
+      description: validate.data.description,
+      urlVideo: validate.data.urlVideo,
+    });
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha agregado el contenido al tema exitosamente.',
+      content: course.temary[index].content.pop()
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/updateContentThemeCourse`);
+  }
+}
+
+export async function updateContentThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId, contentId } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
+    if (!checkObjectId(contentId)) return returnErrorId(res, 2);
+
+    const validate = validateContentThemeUpdate(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const course = await Courses.findOne(
+      { _id, 'temary._id': themeId },
+      {
+        enable: 1,
+        'temary': 1,
+      }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    const index2 = course.temary[index].content.findIndex(c => c._id.toString() === contentId);
+    if (index2 === -1) return return404(res, 2);
+
+    course.temary[index].content[index2].title = validate.data.title;
+    course.temary[index].content[index2].description = validate.data.description;
+    course.temary[index].content[index2].urlVideo = validate.data.urlVideo;
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha actualizado la información del tema exitosamente.',
+      content: {
+        title: course.temary[index].content[index2].title,
+        description: course.temary[index].content[index2].description,
+        urlVideo: course.temary[index].content[index2].urlVideo,
+      }
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/updateContentThemeCourse`);
+  }
+}
+
+export async function deleteContentThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId, contentId } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
+    if (!checkObjectId(contentId)) return returnErrorId(res, 2);
+
+    const course = await Courses.findOne(
+      { _id, 'temary._id': themeId },
+      {
+        enable: 1,
+        'temary': 1,
+      }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    course.temary[index].content = course.temary[index].content.filter(c => c._id.toString() !== contentId);
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha eliminado el contenido exitosamente.'
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/deleteContentThemeCourse`);
+  }
+}
+
+/*
+  TEST
+ */
+
+export async function addQuestionTestThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
+
+    const validate = validateQuestionTestUpdate(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const course = await Courses.findOne(
+      { _id },
+      {
+        enable: 1,
+        temary: 1,
+      }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    course.temary[index].test.push({...validate.data});
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha agregado la pregunta exitosamente.',
+      question: course.temary[index].test.pop()
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/addQuestionTestThemeCourse`);
+  }
+}
+
+export async function updateQuestionTestThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId, questionId } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res, 0);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
+    if (!checkObjectId(questionId)) return returnErrorId(res, 2);
+
+    const validate = validateQuestionTestUpdate(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const course = await Courses.findOne(
+      { _id, 'temary._id': themeId },
+      {
+        enable: 1,
+        'temary': 1,
+      }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    const index2 = course.temary[index].test.findIndex(t => t._id.toString() === questionId);
+    if (index2 === -1) return return404(res, 2);
+
+    course.temary[index].test[index2].title = validate.data.title;
+    course.temary[index].test[index2].description = validate.data.description;
+    course.temary[index].test[index2].inputType = validate.data.inputType;
+    course.temary[index].test[index2].placeholder = validate.data.placeholder;
+    course.temary[index].test[index2].require = validate.data.require;
+    course.temary[index].test[index2].values = validate.data.values;
+    course.temary[index].test[index2].correctAnswer = validate.data.correctAnswer;
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha actualizado la pregunta exitosamente.',
+      question: course.temary[index].test[index2]
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/updateQuestionTestThemeCourse`);
+  }
+}
+
+export async function deleteQuestionTestThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, themeId, questionId } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res, 0);
+    if (!checkObjectId(themeId)) return returnErrorId(res, 1);
+    if (!checkObjectId(questionId)) return returnErrorId(res, 2);
+
+    const course = await Courses.findOne(
+      { _id, 'temary._id': themeId },
+      {
+        enable: 1,
+        'temary': 1,
+      }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    const index = course.temary.findIndex(t => t._id.toString() === themeId);
+    if (index === -1) return return404(res, 1);
+
+    course.temary[index].test = course.temary[index].test.filter(t => t._id.toString() !== questionId);
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha eliminado la pregunta exitosamente.',
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/deleteQuestionTestThemeCourse`);
+  }
+}
+
+/*
+  LEVELS
+ */
+
+export async function addLevelsThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id } = req.params;
+
+    if (!checkObjectId(_id)) return returnErrorId(res);
+
+    const validate = validateLevelsData(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const course = await Courses.findOne(
+      { _id },
+      { enable: 1, levels: 1 }
+    ).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    // check if all ids is enable
+    if (!await (checkPreviousIdsCourses(validate.data))) {
+      return returnErrorParams(res, [{
+        input: 'listIds',
+        msg: "Disculpe, pero uno de los cursos seleccionados no existe o no se encuentra disponible."
+      }]);
+    }
+
+    course.levels = _.uniq(course.levels.concat(validate.data));
+    await course.save();
+
+    return res.json({
+      msg: 'Se han agregado los cursos al listado exitosamente.'
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/addLevelsThemeCourse`);
+  }
+}
+
+export async function deleteLevelThemeCourse(req: Request, res: Response) : Promise<Response>{
+  try {
+    const { _id, levelId } = req.params;
+
+    if (!checkObjectId(_id)) returnErrorId(res, 0);
+    if (!checkObjectId(levelId)) returnErrorId(res, 4);
+
+    const course = await Courses.findOne({ _id }, { enable: 1, levels: 1 }).exec();
+
+    if (!course) return return404(res);
+    if (course.enable) return returnCantEdit(res, 0);
+    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
+
+    course.levels = course.levels.filter(l => l !== levelId);
+    await course.save();
+
+    return res.json({
+      msg: 'Se ha removido el curso del listado exitosamente.',
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/deleteLevelThemeCourse`);
   }
 }

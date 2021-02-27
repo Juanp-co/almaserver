@@ -1,37 +1,10 @@
 import { Document } from 'mongoose';
 import { IUserSimpleInfo } from './IUser';
 
-export interface ICourseTotals {
-  totalLikes: number;
-  totalUnlikes: number;
-  totalComments: number;
-}
-
-export interface ICourseLikes {
-  _id?: any;
-  userid: string | null;
-  user?: IUserSimpleInfo | null;
-  created_at?: string | number;
-}
-
-export interface ICourseComments {
-  _id?: any;
-  userid: string | null;
-  user?: IUserSimpleInfo | null;
-  comment: string | null;
-  answer?: string | null;
-  likes: ICourseLikes[];
-  unlikes: ICourseLikes[];
-  totals?: ICourseTotals;
-  created_at?: string | number;
-  updated_at?: string | number;
-}
-
 export interface ICourseTest {
   _id?: any;
   title: string | null;
   description: string | null;
-  extra: string | null;
   placeholder: string | null;
   inputType: string;
   require: boolean;
@@ -54,26 +27,6 @@ export interface ICourseTemary {
   content: ICourseContent[],
   test: ICourseTest[],
   view?: number;
-  comments: ICourseComments[];
-  likes?: ICourseLikes[];
-  unlikes?: ICourseLikes[];
-  totals?: ICourseTotals;
-}
-
-export interface ICourseCommentsObject {
-  _id?: any;
-  themeId?: any;
-  comments: ICourseComments[];
-  totals?: number;
-}
-
-export interface ICourseLikesAndUnlikesObject {
-  _id?: any;
-  themeId?: any;
-  likes: ICourseLikes[];
-  unlikes: ICourseLikes[];
-  totalLikes?: number;
-  totalUnlikes?: number;
 }
 
 export default interface ICourse extends Document {
@@ -86,37 +39,60 @@ export default interface ICourse extends Document {
   description: string | null;
   slug: string | null;
   temary: ICourseTemary[];
-  // test: ICourseTest[];
   levels: string[];
-  comments: ICourseComments[];
-  likes?: ICourseLikes[];
-  unlikes?: ICourseLikes[];
   toRoles: number[];
-  draft?: boolean;
   enable: boolean;
   created_at: string | number;
   updated_at: string | number;
 }
 
-export interface ICourseForm {
-  speaker: ICourse['speaker'];
-  speakerPosition: ICourse['speakerPosition'];
+export interface ICourseSimpleRegisterForm {
   code: ICourse['code'];
+  slug: ICourse['slug'];
   title: ICourse['title'];
   banner: ICourse['banner'];
   description: ICourse['description'];
-  slug: ICourse['slug'];
-  temary: ICourse['temary'];
-  // test: ICourse['test'];
-  levels: ICourse['levels'];
   toRoles: ICourse['toRoles'];
-  enable: ICourse['enable'];
-  draft?: ICourse['draft'];
+}
+
+export interface ICourseInfoUpdateForm {
+  title: string|null;
+  description: string|null;
+  speaker: string|null;
+  speakerPosition: string|null;
+  toRoles: ICourse['toRoles'];
+}
+
+export interface ICourseBannerUpdateForm {
+  banner: string|null;
+}
+
+export interface ICourseThemeUpdateForm {
+  title: string|null;
+  description: string|null;
+}
+
+export interface ICourseQuestionUpdateForm {
+  title: string|null;
+  description: string|null;
+  placeholder: string|null;
+  inputType: string;
+  require: boolean;
+  values: string[];
+  correctAnswer: number|null;
+}
+
+export interface ICourseContentThemeUpdateForm {
+  title: string|null;
+  description: string|null;
+  urlVideo: string|null;
 }
 
 export interface ICourseReference {
   _id: any;
   title: ICourse['title'];
+  description: ICourse['description'];
+  banner: ICourse['banner'];
   slug: ICourse['slug'];
 }
 
@@ -132,15 +108,10 @@ export interface ICourseList {
   banner: ICourse['banner'],
   description?: ICourse['description'],
   temary?: ICourse['temary'],
-  // test?: ICourse['test'],
   levels?: ICourseReference[] | ICourse['levels'] | any[],
-  comments?: ICourse['comments'],
-  likes?: ICourse['likes'],
-  unlikes?: ICourse['unlikes'],
   toRoles: ICourse['toRoles'],
-  draft?: ICourse['draft'],
   enable?: ICourse['enable'],
-  totals?: ICourseTotals;
+  totalsUsers?: number;
   created_at?: ICourse['created_at'],
   updated_at?: ICourse['updated_at'],
 }
@@ -156,4 +127,8 @@ export interface ICourseSimpleList {
 export interface ICourseTestForm {
   questionId?: string | null;
   answer?: string | null,
+}
+
+export interface ICourseLevelsForm {
+  listIds: string[];
 }

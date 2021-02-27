@@ -61,23 +61,11 @@
 	}
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
  */
 
 /**
@@ -178,16 +166,9 @@
 	}
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
@@ -212,12 +193,8 @@
     ]
   }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -245,16 +222,9 @@
     "msg": "Se ha actualizado su contraseña exitosamente."
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
@@ -278,12 +248,8 @@
     "msg": "Disculpe, pero la contraseña actual es incorrecta."
 }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -297,11 +263,11 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} courses Listado de curso del usuario.
  *
- * @apiSuccess (courses Array Object) {String|Null} banner URL del banner del curso.
- * @apiSuccess (courses Array Object) {String} _id ID del curso.
- * @apiSuccess (courses Array Object) {String} title Título del curso.
- * @apiSuccess (courses Array Object) {String} slug Slug (Valor url) del curso.
- * @apiSuccess (courses Array Object) {String|Null} description Descripción del curso.
+ * @apiSuccess (courses Object[]) {String|Null} banner URL o base64 de la imagen del curso.
+ * @apiSuccess (courses Object[]) {String} _id ID del curso.
+ * @apiSuccess (courses Object[]) {String} title Título del curso.
+ * @apiSuccess (courses Object[]) {String} slug Slug (Valor url) del curso.
+ * @apiSuccess (courses Object[]) {String|Null} description Descripción del curso.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -309,7 +275,7 @@
 	"msg": "Mis cursos.",
 	"courses": [
 		{
-			"banner": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Check_green_icon.svg/215px-Check_green_icon.svg.png",
+			"banner": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
 			"_id": "5ff8d0c1fd462643e42df1f6",
 			"title": "CURSO NUEVO 2",
 			"slug": "curso-nuevo-1",
@@ -328,21 +294,9 @@
 	"courses": []
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
  */

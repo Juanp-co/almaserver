@@ -76,7 +76,8 @@ export function checkDateMonthAndYear(value: any): boolean {
   return value && /(1[0-2]|0[1-9]|\d)-(20\d{2}|19\d{2}|0(?!0)\d|[1-9]\d)/.test(value);
 }
 
-export function checkBase64(text: string, doc = false) {
+export function checkBase64(text: string|null|undefined, doc = false) {
+  if (!text) return false;
   if (doc) return text.substr(0, 40).indexOf('data:application/pdf') > -1;
   return text.substr(0, 21).indexOf('data:image/') > -1;
 }
