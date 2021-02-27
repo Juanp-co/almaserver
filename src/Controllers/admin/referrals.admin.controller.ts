@@ -23,7 +23,7 @@ export default async function getReferrals(req: Request, res: Response): Promise
       });
     }
 
-    const user: any = await getData(_id, { _id: 1, names: 1, lastNames: 1, document: 1, referred: 1 });
+    const user: any = await getData(_id, { _id: 1, names: 1, lastNames: 1, document: 1, referred: 1, gender: 1 });
 
     if (!user) {
       return res.status(404).json({
@@ -34,7 +34,7 @@ export default async function getReferrals(req: Request, res: Response): Promise
     ret.user = Object.assign({}, user._doc);
 
     if (ret.user.referred && checkObjectId(ret.user.referred)) {
-      ret.user.referred = await getData(ret.user.referred, { _id: 1, names: 1, lastNames: 1, document: 1 });
+      ret.user.referred = await getData(ret.user.referred, { _id: 1, names: 1, lastNames: 1, document: 1, phone: 1, gender: 1 });
     }
     else ret.user.referred = null;
 

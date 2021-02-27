@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { getData } from '../../ActionsData/UsersActions';
-import { validateLogin, validateSimpleRegister } from '../../FormRequest/UsersRequest';
+import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import Referrals from '../../Models/Referrals';
@@ -121,6 +121,31 @@ export async function logout(req: Request, res: Response): Promise<Response> {
     return res.json({
       msg: 'Se ha finalizado la sesión exitosamente.'
     });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/logout`);
+  }
+}
+
+/*
+  Pictures
+ */
+
+export async function getPicture(req: Request, res: Response): Promise<Response> {
+  try {
+    // const { _id } = req.body;
+    //
+    // if (!checkObjectId(_id)) {
+    //
+    // }
+    //
+    // const picture = await Pictures.findOne({ _id }, { base64: 1 }).exec();
+    //
+    // if (!picture) {
+    //
+    // }
+
+    // return res.send(picture.base64);
+    return res.send('hello');
   } catch (error: any) {
     return returnError(res, error, `${path}/logout`);
   }

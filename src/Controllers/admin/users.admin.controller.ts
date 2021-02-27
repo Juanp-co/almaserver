@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { checkFindValueSearch, getUserData, responseUsersAdmin } from '../../ActionsData/UsersActions';
-import { validateSimpleRegister, validateUpdate } from '../../FormRequest/UsersRequest';
+import validateSimpleRegister, { validateUpdate } from '../../FormRequest/UsersRequest';
 import {
   generatePassword,
   getLimitSkipSortSearch,

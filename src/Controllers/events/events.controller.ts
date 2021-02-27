@@ -1,11 +1,11 @@
 import moment from 'moment-timezone';
 import { Request, Response } from 'express';
-import getEventsList, { getDetailsEvent } from '../../ActionsData/EventsActions';
+import getEventsList, { getDetailsEvent, return404Or422 } from '../../ActionsData/EventsActions';
+import { getNamesUsersList } from '../../ActionsData/UsersActions';
 import validateRegister from '../../FormRequest/EventsRequest';
 import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkDate, checkObjectId } from '../../Functions/Validations';
 import Events from '../../Models/Events';
-import { getNamesUsersList } from '../../ActionsData/UsersActions';
 
 const path = 'src/controllers/events/events.controller';
 
@@ -66,23 +66,15 @@ export async function showEvent(req: Request, res: Response): Promise<Response> 
 
     if (!req.body.superadmin) query = Object.assign(query, { userid } );
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el evento seleccionado incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) return return404Or422(res);
 
     const event = await getDetailsEvent({query});
 
-    if (event) {
-      return res.json({
-        msg: `Evento.`,
-        event
-      });
-    }
+    if (!event) return return404Or422(res, true);
 
-    return res.status(404).json({
-      msg: `Disculpe, pero el evento seleccionado no existe.`
+    return res.json({
+      msg: `Evento.`,
+      event
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/showEvent`);
@@ -94,23 +86,15 @@ export async function showPublicEvent(req: Request, res: Response): Promise<Resp
     const { _id } = req.params;
     const query = { _id };
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el evento seleccionado incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) return return404Or422(res);
 
     const event = await getDetailsEvent({query});
 
-    if (event) {
-      return res.json({
-        msg: `Evento.`,
-        event
-      });
-    }
+    if (!event) return return404Or422(res, true);
 
-    return res.status(404).json({
-      msg: `Disculpe, pero el evento seleccionado no existe.`
+    return res.json({
+      msg: `Evento.`,
+      event
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/showEvent`);
@@ -154,11 +138,7 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
 
     if (!req.body.superadmin) query = Object.assign(query, { userid } );
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el evento seleccionado incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) return return404Or422(res);
 
     const validate = validateRegister(req.body);
 
@@ -166,32 +146,29 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
 
     const event = await Events.findOne(query, { __v: 0 }).exec();
 
-    if (event) {
-      event.title = validate.data.title;
-      event.description = validate.data.description;
-      event.date = validate.data.date;
-      event.initHour = validate.data.initHour;
-      event.endHour = validate.data.endHour;
-      event.toRoles = validate.data.toRoles;
-      await event.save();
+    if (!event) return return404Or422(res, true);
 
-      return res.json({
-        msg: `Se ha actualizado el evento exitosamente.`,
-        event: {
-          _id: event._id,
-          title: event.title,
-          description: event.description,
-          date: event.date,
-          initHour: event.initHour,
-          endHour: event.endHour,
-          toRoles: event.toRoles
-        }
-      });
-    }
+    event.title = validate.data.title;
+    event.description = validate.data.description;
+    event.date = validate.data.date;
+    event.initHour = validate.data.initHour;
+    event.endHour = validate.data.endHour;
+    event.toRoles = validate.data.toRoles;
+    await event.save();
 
-    return res.status(404).json({
-      msg: `Disculpe, pero el evento a actualizar no existe.`
+    return res.json({
+      msg: `Se ha actualizado el evento exitosamente.`,
+      event: {
+        _id: event._id,
+        title: event.title,
+        description: event.description,
+        date: event.date,
+        initHour: event.initHour,
+        endHour: event.endHour,
+        toRoles: event.toRoles
+      }
     });
+
   } catch (error: any) {
     return returnError(res, error, `${path}/updateEvent`);
   }
@@ -204,23 +181,15 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
 
     if (!req.body.superadmin) query = Object.assign(query, { userid } );
 
-    if (!checkObjectId(_id)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el evento seleccionado incorrecto.'
-      });
-    }
+    if (!checkObjectId(_id)) return return404Or422(res);
 
     const event = await Events.findOne(query, { __v: 0 }).exec();
 
-    if (event) {
-      await event.delete();
-      return res.json({
-        msg: `Se ha eliminado el evento exitosamente.`,
-      });
-    }
+    if (!event) return return404Or422(res, true);
 
-    return res.status(404).json({
-      msg: `Disculpe, pero el evento a eliminar no existe.`
+    await event.delete();
+    return res.json({
+      msg: `Se ha eliminado el evento exitosamente.`,
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/deleteEvent`);

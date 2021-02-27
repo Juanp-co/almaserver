@@ -19,23 +19,12 @@
     "totals": 2
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -54,13 +43,13 @@
  * @apiParam (Query Params) {String} name Nombre del grupo (opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Array|Object} groups Listado de grupos.
+ * @apiSuccess {Object[]} groups Listado de grupos.
  *
- * @apiSuccess (groups Array Object) {String} _id ID del grupo.
- * @apiSuccess (groups Array Object) {String} title Título del grupo.
- * @apiSuccess (groups Array Object) {String} code Código del grupo.
- * @apiSuccess (groups Array Object) {Number} totalMembers Total de miembros.
- * @apiSuccess (groups Array Object) {String} created_at Fecha de registro del grupo.
+ * @apiSuccess (groups Object[]) {String} _id ID del grupo.
+ * @apiSuccess (groups Object[]) {String} title Título del grupo.
+ * @apiSuccess (groups Object[]) {String} code Código del grupo.
+ * @apiSuccess (groups Object[]) {Number} totalMembers Total de miembros.
+ * @apiSuccess (groups Object[]) {String} created_at Fecha de registro del grupo.
  *
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
@@ -94,23 +83,12 @@
     "groups": []
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -138,7 +116,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} group Detalles del grupo.
  *
- * @apiSuccess (group Object) {Array|Object} members Listado de miembros (vacío).
+ * @apiSuccess (group Object) {Object[]} members Listado de miembros (vacío).
  * @apiSuccess (group Object) {String} _id ID del grupo.
  * @apiSuccess (group Object) {String} title Título del grupo.
  * @apiSuccess (group Object) {String} code Código del grupo.
@@ -175,16 +153,9 @@
     }
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
@@ -204,12 +175,8 @@
     "msg": "Disculpe, pero el código indicado ya se encuentra asignado a otro grupo."
 }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -229,15 +196,15 @@
  * @apiSuccess (group Object) {Object|Null} user Datos del usuario creador del grupo.
  * @apiSuccess (group Object) {String} name Nombre del grupo.
  * @apiSuccess (group Object) {String} code Código del grupo.
- * @apiSuccess (group Object) {Array|Object} members Listado de miembros pertenecientes al grupo
+ * @apiSuccess (group Object) {Object[]} members Listado de miembros pertenecientes al grupo
  * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (members Array Object) {String} _id ID del usuario.
- * @apiSuccess (members Array Object) {String} document Número de documento.
- * @apiSuccess (members Array Object) {String} names Nombre(s).
- * @apiSuccess (members Array Object) {String} lastNames Apellido(s).
- * @apiSuccess (members Array Object) {String} phone Teléfono.
+ * @apiSuccess (members Object[]) {String} _id ID del usuario.
+ * @apiSuccess (members Object[]) {String} document Número de documento.
+ * @apiSuccess (members Object[]) {String} names Nombre(s).
+ * @apiSuccess (members Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (members Object[]) {String} phone Teléfono.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -270,35 +237,14 @@
     }
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible."
-}
+ * @apiUse GroupsErrorIdOrNotFound
  *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el grupo seleccionado es incorrecto."
-}
+ * @apiUse GlobalErrorSystem
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
  */
 
 /**
@@ -342,28 +288,11 @@
     }
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible."
-}
- *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el grupo seleccionado es incorrecto."
-}
+ * @apiUse GroupsErrorIdOrNotFound
  *
  * @apiErrorExample {JSON} The code exists
  * HTTP/1.1 422 Unprocessable Entity
@@ -374,21 +303,17 @@
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "¡Error en los parámetros!",
-    "errors": [
-        {
-            "input": "name",
-            "msg": "Disculpe, pero debe indicar un nombre para el grupo."
-        }
-    ]
-  }
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "name",
+      "msg": "Disculpe, pero debe indicar un nombre para el grupo."
+    }
+  ]
+}
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -409,35 +334,14 @@
     "msg": "Se ha eliminado el grupo exitosamente."
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible."
-}
+ * @apiUse GroupsErrorIdOrNotFound
  *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el grupo seleccionado es incorrecto."
-}
+ * @apiUse GlobalErrorSystem
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
  */
 
 /**
@@ -450,7 +354,7 @@
  *
  * @apiParam (Path params) {String} _id ID del grupo.
  *
- * @apiParam {Array|String} members Listado de IDs de los usuarios a agregar al grupo.
+ * @apiParam {String[]} members Listado de IDs de los usuarios a agregar al grupo.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -460,12 +364,12 @@
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Array|Object} notInserts[notInserts] Listado de miembros no agregados (en caso de aplicar).
+ * @apiSuccess {Object[]} notInserts[notInserts] Listado de miembros no agregados (en caso de aplicar).
  *
- * @apiSuccess (notInserts Array Object) {String} _id ID del usuario.
- * @apiSuccess (notInserts Array Object) {String} document Número de documento.
- * @apiSuccess (notInserts Array Object) {String} names Nombre(s).
- * @apiSuccess (notInserts Array Object) {String} lastNames Apellido(s).
+ * @apiSuccess (notInserts Object[]) {String} _id ID del usuario.
+ * @apiSuccess (notInserts Object[]) {String} document Número de documento.
+ * @apiSuccess (notInserts Object[]) {String} names Nombre(s).
+ * @apiSuccess (notInserts Object[]) {String} lastNames Apellido(s).
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -486,77 +390,56 @@
     ]
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible."
-}
- *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el grupo seleccionado es incorrecto."
-}
+ * @apiUse GroupsErrorIdOrNotFound
  *
  * @apiErrorExample {JSON} Error action
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "Disculpe, pero no se logró determinar la acción a realizar."
+  "msg": "Disculpe, pero no se logró determinar la acción a realizar."
 }
  *
  * @apiErrorExample {JSON} Error IDs users
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "¡Error en los parámetros!",
-    "errors": [
-        {
-            "input": "members",
-            "msg": "Disculpe, pero alguno de los usuarios seleccionados son incorrectos."
-        }
-    ]
-  }
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "members",
+      "msg": "Disculpe, pero alguno de los usuarios seleccionados son incorrectos."
+    }
+  ]
+}
  *
  * @apiErrorExample {JSON} Error data
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "¡Error en los parámetros!",
-    "errors": [
-        {
-            "input": "members",
-            "msg": "Disculpe, pero los datos enviados son incorrectos."
-        }
-    ]
-  }
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "members",
+      "msg": "Disculpe, pero los datos enviados son incorrectos."
+    }
+  ]
+}
  *
  * @apiErrorExample {JSON} Empty data
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "¡Error en los parámetros!",
-    "errors": [
-        {
-            "input": "members",
-            "msg": "Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n)."
-        }
-    ]
-  }
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "members",
+      "msg": "Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n)."
+    }
+  ]
+}
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -569,7 +452,7 @@
  *
  * @apiParam (Path params) {String} _id ID del grupo.
  *
- * @apiParam {Array|String} members Listado de IDs de los usuarios a remover del grupo.
+ * @apiParam {String[]} members Listado de IDs de los usuarios a remover del grupo.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -586,28 +469,11 @@
     "msg": "Se ha actualizado el listado de miembros exitosamente."
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible."
-}
- *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el grupo seleccionado es incorrecto."
-}
+ * @apiUse GroupsErrorIdOrNotFound
  *
  * @apiErrorExample {JSON} Error action
  * HTTP/1.1 422 Unprocessable Entity
@@ -651,10 +517,7 @@
     ]
   }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ *
+ * @apiUse GlobalErrorSystem
+ *
  */

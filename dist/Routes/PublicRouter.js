@@ -36,23 +36,13 @@ router.get(`/courses`, middleware_1.validateUser, courses_controller_1.default);
 router.get(`/courses/counters`, middleware_1.validateUser, courses_controller_1.getCoursesCounters);
 router.get(`/courses/:slug`, middleware_1.validateUser, courses_controller_1.showCourse);
 router.post('/courses/:slug/add', middleware_1.validateUser, courses_controller_1.addCourseUser); // add course to user
-// comment and likes course
-router.post('/courses/:slug/like', middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourse);
-router.post('/courses/:slug/comment', middleware_1.validateUser, courses_controller_1.commentCourse);
-router.post('/courses/:slug/comment/:_id/like', middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseComment);
 router.get(`/courses/:slug/theme/:_id`, middleware_1.validateUser, courses_controller_1.showCourseContentTheme); // get theme
 // get test
 router.route('/courses/:slug/theme/:_id/test')
     .get(middleware_1.validateUser, courses_controller_1.getTest)
     .post(middleware_1.validateUser, courses_controller_1.evaluateTest);
-// comment and like comments
-router.post(`/courses/:slug/theme/:_id/comment`, middleware_1.validateUser, courses_controller_1.commentCourseTheme);
-router.post(`/courses/:slug/theme/:_id/comment/:commentId/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseThemeComment);
 // update historical content (action = watching | viewed)
 router.put(`/courses/:slug/theme/:_id/content/:contentId/:action`, middleware_1.validateUser, courses_controller_1.updateHistoricalCourseContent);
-router.post(`/courses/:slug/theme/:_id/content/:contentId/comment`, middleware_1.validateUser, courses_controller_1.commentCourseTheme);
-router.post(`/courses/:slug/theme/:_id/content/:contentId/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeCourseThemeComment);
-router.post(`/courses/:slug/theme/:_id/like`, middleware_1.validateUser, courses_controller_1.likeOrUnlikeTheme);
 /*
   Events
 */
@@ -63,6 +53,10 @@ router.get(`/events/:_id`, middleware_1.validateUser, events_controller_1.showPu
 */
 router.post(`/login`, public_controller_1.login);
 router.delete(`/logout`, middleware_1.validateUser, public_controller_1.logout);
+/*
+  pictures
+ */
+router.get(`/img/:_id`, public_controller_1.register);
 /*
   Register
  */

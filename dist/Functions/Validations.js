@@ -69,6 +69,8 @@ function checkDateMonthAndYear(value) {
 }
 exports.checkDateMonthAndYear = checkDateMonthAndYear;
 function checkBase64(text, doc = false) {
+    if (!text)
+        return false;
     if (doc)
         return text.substr(0, 40).indexOf('data:application/pdf') > -1;
     return text.substr(0, 21).indexOf('data:image/') > -1;

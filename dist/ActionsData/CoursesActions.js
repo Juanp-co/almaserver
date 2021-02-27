@@ -3,60 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setPointToTest = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfExistCode = exports.getLikesAndUnlikesCourse = exports.getCommentsCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
+exports.validateToPublish = exports.setPointToTest = exports.returnCantEdit = exports.returnErrorId = exports.return404 = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfUsersOwnCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const Courses_1 = __importDefault(require("../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
-function getModelLikesAndUnlikes(data) {
-    return {
-        _id: data._id,
-        userid: data.userid,
-        user: null,
-        created_at: data.created_at,
-    };
-}
-function getModelLikesAndUnlikesList(data) {
-    const ret = [];
-    if (data.length > 0)
-        data.forEach(d => ret.push(getModelLikesAndUnlikes(d)));
-    return ret;
-}
-function getModelComments(data) {
-    return {
-        _id: data._id,
-        answer: data.answer,
-        userid: data.userid,
-        user: null,
-        comment: data.comment,
-        likes: getModelLikesAndUnlikesList(data.likes),
-        unlikes: getModelLikesAndUnlikesList(data.unlikes),
-        created_at: data.created_at,
-        updated_at: data.updated_at,
-    };
-}
-function getModelCommentsList(data) {
-    const ret = [];
-    if (data.length > 0)
-        data.forEach(d => ret.push(getModelComments(d)));
-    return ret;
-}
-function setUserDataInList(list, listUsers) {
-    if (list.length > 0) {
-        const total = list.length;
-        for (let i = 0; i < total; i++) {
-            list[i].user = lodash_1.default.find(listUsers, u => u._id.toString() === list[i].userid);
-            if (list[i].likes)
-                list[i].likes = setUserDataInList(list[i].likes, listUsers);
-            if (list[i].unlikes)
-                list[i].unlikes = setUserDataInList(list[i].unlikes, listUsers);
-            if (list[i].comments)
-                list[i].comments = setUserDataInList(list[i].comments, listUsers);
-        }
-    }
-    return list;
-}
-function getModelReturnContent(data, allData = false) {
+function getModelReturnContent(data, allData = false, admin = false) {
     if (!data)
         return null;
     const ret = {
@@ -66,7 +18,8 @@ function getModelReturnContent(data, allData = false) {
     if (allData) {
         ret.description = data.description;
         ret.urlVideo = data.urlVideo;
-        ret.view = 0;
+        if (!admin)
+            ret.view = 0;
     }
     return ret;
 }
@@ -76,11 +29,10 @@ exports.getModelReturnContent = getModelReturnContent;
   data: ICourseList | ICourseTemary | ICourseContent      <= data with any this schemas
   theme: boolean                                          <= to set 'ICourseList' or 'ICourseTemary' return model
   admin: boolean                                          <= to get extra params
-  counters: boolean                                       <= to get only totals of comments, likes and unlikes
+  counters: boolean                                       <= to get totals users with the course
  */
 async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showContent }) {
     let ret = null;
-    let listIds = [];
     if (!theme || (!theme && admin)) {
         ret = {};
         ret._id = data._id;
@@ -96,25 +48,13 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
         ret.temary = [];
         ret.levels = data.levels;
         if (admin) {
-            // ret.test = data.test;
             ret.toRoles = data.toRoles;
-            ret.draft = data.draft;
             ret.enable = data.enable;
             ret.created_at = data.created_at;
             ret.updated_at = data.updated_at;
         }
-        if (!counters) {
-            ret.comments = getModelCommentsList(data.comments || []);
-            ret.likes = getModelLikesAndUnlikesList(data.likes || []);
-            ret.unlikes = getModelLikesAndUnlikesList(data.unlikes || []);
-        }
-        else {
-            ret.totals = {
-                totalComments: data.comments ? data.comments.length : 0,
-                totalLikes: data.likes ? data.likes.length : 0,
-                totalUnlikes: data.unlikes ? data.unlikes.length : 0,
-            };
-        }
+        if (counters)
+            ret.totalsUsers = await CoursesUsers_1.default.find({ courseId: data._id.toString() }).countDocuments().exec() || 0;
         const { temary } = data;
         const totalTemary = temary.length;
         for (let i = 0; i < totalTemary || 0; i++) {
@@ -128,17 +68,11 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
                 dTheme.test = temary[i].test;
             const totalsContent = content.length || 0;
             for (let j = 0; j < totalsContent; j++) {
-                const dContent = getModelReturnContent(content[j], admin);
+                const dContent = getModelReturnContent(content[j], showContent, admin);
                 if (dContent)
                     dTheme.content.push(dContent);
             }
             ret.temary.push(dTheme); // add in temary
-        }
-        // comments
-        if (!counters) {
-            listIds = listIds.concat(lodash_1.default.map(ret.comments, 'userid'));
-            listIds = listIds.concat(lodash_1.default.map(ret.comments, 'likes.userid'));
-            listIds = listIds.concat(lodash_1.default.map(ret.comments, 'unlikes.userid'));
         }
     }
     else {
@@ -147,31 +81,15 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
         ret._id = temary._id;
         ret.title = temary.title;
         ret.description = temary.description || null;
-        ret.view = 0;
+        if (!admin)
+            ret.view = 0;
         ret.content = [];
-        // ret.test = [];
-        ret.comments = getModelCommentsList(temary.comments || []);
-        ret.likes = getModelLikesAndUnlikesList(temary.likes || []);
-        ret.unlikes = getModelLikesAndUnlikesList(temary.unlikes || []);
         if (temary && showContent) {
             for (let i = 0; i < temary.content.length; i++) {
                 const dContent = getModelReturnContent(temary.content[i], true);
                 if (dContent)
                     ret.content.push(dContent);
             }
-        }
-        listIds = listIds.concat(lodash_1.default.map(ret.likes, 'userid'));
-        listIds = listIds.concat(lodash_1.default.map(ret.unlikes, 'userid'));
-    }
-    if (!counters) {
-        const listUsers = listIds.length > 0 ? await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(listIds)) : [];
-        if (listUsers.length > 0) {
-            if (ret.likes)
-                ret.likes = setUserDataInList(ret.likes, listUsers);
-            if (ret.unlikes)
-                ret.unlikes = setUserDataInList(ret.unlikes, listUsers);
-            if (ret.comments)
-                ret.comments = setUserDataInList(ret.comments, listUsers);
         }
     }
     return ret;
@@ -180,12 +98,12 @@ exports.getModelReturnCourseOrTheme = getModelReturnCourseOrTheme;
 // =====================================================================================================================
 async function getPreviousIdsCourses(listIds) {
     return listIds.length > 0 ?
-        await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, slug: 1 }).exec()
+        await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, slug: 1, banner: 1, description: 1 }).exec()
         :
             [];
 }
 exports.getPreviousIdsCourses = getPreviousIdsCourses;
-async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, projection, }) {
+async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, projection }) {
     const ret = [];
     const courses = await Courses_1.default.find(query, projection || { __v: 0 })
         .skip(skip)
@@ -212,13 +130,11 @@ async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, pr
                 banner: c.banner,
                 description: c.description,
                 toRoles: c.toRoles,
-                draft: c.draft,
                 enable: c.enable,
                 created_at: c.created_at,
                 updated_at: c.updated_at,
             };
             if (isPublic) {
-                delete d.draft;
                 delete d.enable;
                 delete d.created_at;
                 delete d.updated_at;
@@ -254,18 +170,12 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             description: course.description,
             temary: course.temary,
             levels: await getPreviousIdsCourses(course.levels),
-            comments: course.comments,
-            likes: course.likes,
-            unlikes: course.unlikes,
             toRoles: course.toRoles,
-            draft: course.draft,
             enable: course.enable,
             created_at: course.created_at,
             updated_at: course.updated_at,
         };
         if (isPublic) {
-            // delete ret.test;
-            delete ret.draft;
             delete ret.enable;
             delete ret.created_at;
             delete ret.updated_at;
@@ -283,92 +193,18 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
     return ret;
 }
 exports.getCourseDetails = getCourseDetails;
-async function getCommentsCourse({ query, projection, sort }) {
-    let ret = null;
-    let contentId;
-    if (!query || Object.keys(query || {}).length === 0)
-        return ret;
-    if (query.contentId) {
-        contentId = query.contentId;
-        delete query.contentId;
-    }
-    const course = await Courses_1.default.findOne(query, projection).exec();
-    if (!course)
-        return ret;
-    ret = {
-        _id: course._id,
-        themeId: query['temary._id'],
-        contentId,
-        comments: course.comments ? getModelCommentsList(lodash_1.default.orderBy(course.comments, ['created_at'], [sort || 'desc'])) : [],
-        totals: course.comments ? course.comments.length : 0,
-    };
-    let listIds = lodash_1.default.map(ret.comments, 'userid');
-    if ('likes' in ret.comments)
-        listIds = listIds.concat(lodash_1.default.map(ret.comments, 'likes.userid'));
-    if ('unlikes' in ret.comments)
-        listIds = listIds.concat(lodash_1.default.map(ret.comments, 'unlikes.userid'));
-    if (listIds.length > 0) {
-        const listUsers = listIds.length > 0 ? await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(listIds)) : [];
-        if (listUsers.length > 0)
-            ret.comments = setUserDataInList(ret.comments, listUsers);
-    }
-    return ret;
+async function checkIfUsersOwnCourse(courseId) {
+    const course = await CoursesUsers_1.default.find({ courseId }).countDocuments().exec();
+    return course > 0;
 }
-exports.getCommentsCourse = getCommentsCourse;
-async function getLikesAndUnlikesCourse({ query, projection, theme }) {
-    let ret = null;
-    let contentId;
-    if (!query || Object.keys(query || {}).length === 0)
-        return ret;
-    if (query.contentId) {
-        contentId = query.contentId;
-        delete query.contentId;
-    }
-    const course = await Courses_1.default.findOne(query, projection).exec();
-    if (!course)
-        return ret;
-    ret = {
-        _id: course._id,
-        themeId: query['temary._id'],
-        contentId,
-        totalLikes: 0,
-        totalUnlikes: 0,
-        likes: [],
-        unlikes: []
-    };
-    if (!theme) {
-        ret.totalLikes = course.likes ? course.likes.length : 0;
-        ret.totalUnlikes = course.unlikes ? course.unlikes.length : 0;
-        ret.likes = getModelLikesAndUnlikesList(course.likes || []);
-        ret.unlikes = getModelLikesAndUnlikesList(course.unlikes || []);
-    }
-    let listIds = [];
-    if ('likes' in ret)
-        listIds = listIds.concat(lodash_1.default.map(ret.likes, 'userid'));
-    if ('unlikes' in ret)
-        listIds = listIds.concat(lodash_1.default.map(ret.unlikes, 'userid'));
-    if (listIds.length > 0) {
-        const listUsers = listIds.length > 0 ? await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(listIds)) : [];
-        if (listUsers.length > 0) {
-            ret.likes = setUserDataInList(ret.likes, listUsers);
-            ret.unlikes = setUserDataInList(ret.unlikes, listUsers);
-        }
-    }
-    return ret;
-}
-exports.getLikesAndUnlikesCourse = getLikesAndUnlikesCourse;
-async function checkIfExistCode(code) {
-    const course = await Courses_1.default.findOne({ code }, { _id: 1 }).exec();
-    return !!course;
-}
-exports.checkIfExistCode = checkIfExistCode;
+exports.checkIfUsersOwnCourse = checkIfUsersOwnCourse;
 async function checkIfExistSlug(slug) {
     return Courses_1.default.find({ slug }).countDocuments().exec();
 }
 exports.checkIfExistSlug = checkIfExistSlug;
 async function checkPreviousIdsCourses(listIds) {
     if (listIds.length > 0) {
-        const exist = await Courses_1.default.find({ _id: { $in: listIds } }).countDocuments().exec();
+        const exist = await Courses_1.default.find({ _id: { $in: listIds }, enable: true }).countDocuments().exec();
         return exist === listIds.length;
     }
     return false;
@@ -430,7 +266,7 @@ function returnNotFound(res, code) {
         statusCode = 404;
     }
     else if (code === 'notFinishTheme') {
-        ret.msg = 'Disculpe, pero no puede realizar la prueba hasta haber completado todo el contenido del tema.';
+        ret.msg = 'Disculpe, pero no puede realizar la prueba hasta haber completado el contenido del tema.';
         statusCode = 403;
     }
     else if (code === 'errorAction') {
@@ -484,6 +320,30 @@ function returnNotFound(res, code) {
     return res.status(statusCode).json(ret);
 }
 exports.returnNotFound = returnNotFound;
+function return404(res, title = 0) {
+    const titles = ['curso', 'tema', 'contendo', 'pregunta'];
+    return res.status(404).json({
+        msg: `Disculpe, pero ${title === 2 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 2 ? 'a' : 'o'} no existe o no se encuentra disponible.`,
+    });
+}
+exports.return404 = return404;
+function returnErrorId(res, title = 0) {
+    const titles = ['curso', 'tema', 'contendo', 'pregunta', 'tema previo'];
+    return res.status(422).json({
+        msg: `Disculpe, pero ${title === 2 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 2 ? 'a' : 'o'} es incorrecto.`,
+    });
+}
+exports.returnErrorId = returnErrorId;
+function returnCantEdit(res, index = 0) {
+    const msg = [
+        'Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.',
+        'Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.'
+    ];
+    return res.status(422).json({
+        msg: msg[index],
+    });
+}
+exports.returnCantEdit = returnCantEdit;
 function checkAnswerCheckbox(value, correctAnswer) {
     if (value && value.indexOf(',') > -1) {
         const ans = value.split(',') || []; // separate values
@@ -508,3 +368,36 @@ function setPointToTest(question, inputAnswer) {
     return 1;
 }
 exports.setPointToTest = setPointToTest;
+function validateToPublish(data) {
+    if (!data.description)
+        return 'Disculpe, pero el curso debe contener una descripción.';
+    if (!data.banner)
+        return 'Disculpe, pero el curso debe contener una imagen.';
+    if (!data.speaker)
+        return 'Disculpe, pero el curso debe contener el nombre del ponente.';
+    if (!data.speakerPosition)
+        return 'Disculpe, pero el curso debe contener el cargo o posición del ponente.';
+    if (!data.toRoles || (data.toRoles && data.toRoles.length === 0))
+        return 'Disculpe, pero se debe indicar a que roles va dirigido el curso.';
+    if (!data.temary || (data.temary && data.temary.length === 0))
+        return 'Disculpe, pero se debe el curso no puede ser publicado sin temas.';
+    if (data.temary) {
+        // validate content
+        const totalsThemes = data.temary.length;
+        let msg = null;
+        for (let i = 0; i < totalsThemes; i++) {
+            if (data.temary[i].content.length === 0) {
+                msg = 'Disculpe, pero los temas del curso deben tener al menos un contenido.';
+                break;
+            }
+            if (data.temary[i].test.length === 0) {
+                msg = 'Disculpe, pero los temas del curso contener pruebas con sus respectivas preguntas.';
+                break;
+            }
+        }
+        if (msg)
+            return msg;
+    }
+    return null;
+}
+exports.validateToPublish = validateToPublish;

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment-timezone';
+import { Response } from 'express';
 import { getNamesUsersList } from './UsersActions';
 import { checkDate } from '../Functions/Validations';
 import { IEventsList } from '../Interfaces/IEvents';
@@ -78,4 +79,16 @@ export async function getDetailsEvent({ query } : any) : Promise<IEventsList | n
   }
 
   return null;
+}
+
+export function return404Or422(res: Response, notFound = false) {
+  if (notFound) {
+    return res.status(404).json({
+      msg: `Disculpe, pero el evento seleccionado no existe o no se encuentra disponible.`
+    });
+  }
+
+  return res.status(422).json({
+    msg: 'Disculpe, pero el evento seleccionado incorrecto.'
+  });
 }

@@ -40,9 +40,9 @@
 }
  *
  * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiError {Object[]} errors Listado de errores a mostrar.
+ * @apiError (errors Object[]) {String} msg[msg] Mensaje de error.
+ * @apiError (errors Object[]) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
  *
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
@@ -144,16 +144,7 @@
 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJmMDU3ZDhkM2U3ZDA3M2NlZjNlODciLCJkb2N1bWVudCI6IkNDMTIzNDU2NzUiLCJyb2xlIjo1LCJpYXQiOjE2MTM2OTUwMzIsImV4cCI6MTY0NTI1MjYzMn0.INSchol5fi6UAElm-d9hdYi95vq_U3leX59rKnCa9Y8"
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
- *
- * @apiErrorExample {JSON} Unauthorized
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no cuenta con privilegios para poder acceder a esta área."
-}
+ * @apiUse GlobalParamsErrors
  *
  * @apiErrorExample {JSON} Not found
  * HTTP/1.1 404 Not found
@@ -189,12 +180,8 @@
     "msg": "¡Ha ocurrido un error al momento de iniciar la sesión!"
   }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -213,17 +200,11 @@
     "msg": "Se ha finalizado la sesión exitosamente."
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
  */
 
 /**
@@ -240,15 +221,15 @@
  * @apiParam (Query Params) {String} endDate Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Array|Object} events Listado de preguntas de seguridad.
+ * @apiSuccess {Object[]} events Listado de preguntas de seguridad.
  *
- * @apiSuccess (events Array Object) {String} _id ID del evento.
- * @apiSuccess (events Array Object) {String} title Título para el evento.
- * @apiSuccess (events Array Object) {String} date Fecha del evento.
- * @apiSuccess (events Array Object) {String} initDate Hora de inicio del evento.
- * @apiSuccess (events Array Object) {String} endDate Hora de finalización del evento.
- * @apiSuccess (events Array Object) {Array|Number} toRoles Roles a los que va dirigido.
- * @apiSuccess (events Array Object) {Object} user Información del usuario que agregó el evento.
+ * @apiSuccess (events Object[]) {String} _id ID del evento.
+ * @apiSuccess (events Object[]) {String} title Título para el evento.
+ * @apiSuccess (events Object[]) {String} date Fecha del evento.
+ * @apiSuccess (events Object[]) {String} initDate Hora de inicio del evento.
+ * @apiSuccess (events Object[]) {String} endDate Hora de finalización del evento.
+ * @apiSuccess (events Object[]) {Array|Number} toRoles Roles a los que va dirigido.
+ * @apiSuccess (events Object[]) {Object} user Información del usuario que agregó el evento.
  *
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
  * @apiSuccess (user Object) {String} _id ID del usuario.
@@ -292,17 +273,11 @@
     "events": []
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
  */
 
 /**
@@ -357,33 +332,12 @@
 	}
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Array|Object} errors Listado de errores a mostrar.
- * @apiError (errors Array Object) {String} msg[msg] Mensaje de error.
- * @apiError (errors Array Object) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-    "msg": "Disculpe, pero el evento seleccionado no existe."
-}
+ * @apiUse EventsErrorIdOrNotFound
  *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el evento seleccionado incorrecto."
-}
+ * @apiUse GlobalErrorSystem
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
  */

@@ -60,30 +60,6 @@ export interface IUserData {
   updated_at?: IUser['updated_at'];
 }
 
-export interface IUserRegister {
-  email: IUser['email'];
-  password: IUser['password'];
-  phone: IUser['phone'];
-  document: IUser['document'];
-  names: IUser['names'];
-  lastNames: IUser['lastNames'];
-  gender: IUser['gender'];
-  birthday: IUser['birthday'];
-  civilStatus: IUser['civilStatus'];
-  educationLevel: IUser['educationLevel'];
-  profession: IUser['profession'];
-  bloodType: IUser['bloodType'];
-  company: IUser['company'];
-  companyType: IUser['companyType'];
-  baptized: IUser['baptized'];
-  department: IUser['department'];
-  city: IUser['city'];
-  locality: IUser['locality'];
-  direction: IUser['direction'];
-  role: IUser['role'];
-  referred: string | null;
-}
-
 export interface IUserSimpleRegister {
   email: IUser['email'];
   password: IUser['password'];

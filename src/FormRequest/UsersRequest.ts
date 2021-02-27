@@ -6,166 +6,16 @@ import {
   checkIfValueIsNumber,
   checkNameOrLastName,
   checkPassword,
-  checkPhone, checkRole, checkTitlesOrDescriptions
+  checkPhone, checkTitlesOrDescriptions
 } from '../Functions/Validations';
 import IUser, {
   IUserLogin,
   IUserPasswords,
-  IUserRegister, IUserSimpleRegister,
+  IUserSimpleRegister,
   IUserUpdate
 } from '../Interfaces/IUser';
 
-export async function validateRegister(data: IUserRegister, admin?: boolean | null): Promise<{ data: IUserRegister; errors: any }> {
-  const ret = {
-    phone: null,
-    password: null,
-    document: null,
-    names: null,
-    lastNames: null,
-    direction: null,
-    educationLevel: null,
-    profession: null,
-    bloodType: null,
-    company: false,
-    companyType: null,
-    baptized: false,
-    role: admin ? null : 5,
-    referred: null
-  } as IUserRegister;
-  const errors: any = [];
-
-  // email
-  if (!data.email || !checkEmail(data.email)) {
-    errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email')
-    );
-  } else if (await checkIfExistEmail(data.email.toLowerCase())) {
-    errors.push(
-      setError(
-        'Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.',
-        'email'
-      )
-    );
-  } else {
-    ret.email = data.email.toLowerCase();
-  }
-
-  // document
-  if (!data.document || !checkDocument(data.document)) {
-    errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document')
-    );
-  } else if (await checkIfExistDocument(data.document.toUpperCase())) {
-    errors.push(
-      setError(
-        'Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.',
-        'document'
-      )
-    );
-  } else ret.document = data.document.toUpperCase();
-
-  // phone
-  if (!data.phone || !checkPhone(data.phone)) {
-    errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su número de teléfono.', 'phone')
-    );
-  } else ret.phone = data.phone;
-
-  // password
-  if (!data.password || !checkPassword(data.password)) {
-    errors.push(
-      setError(
-        'Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
-          'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.',
-        'password'
-      )
-    );
-  } else ret.password = data.password;
-
-  // names
-  if (!data.names || !checkNameOrLastName(data.names)) {
-    errors.push(setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
-  } else ret.names = data.names.toUpperCase();
-
-  // lastNames
-  if (!data.lastNames || !checkNameOrLastName(data.lastNames)) {
-    errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames')
-    );
-  } else ret.lastNames = data.lastNames.toUpperCase();
-
-  // birthday
-  if (data.birthday) {
-    if (!checkDate(`${data.birthday}`)) {
-      errors.push(setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
-    } else {
-      ret.birthday = data.birthday?.trim().toUpperCase() || null;
-    }
-  }
-
-  // educationLevel
-  if (checkIfValueIsNumber(`${data.educationLevel}`)) ret.educationLevel = data.educationLevel;
-
-  // profession
-  if (checkIfValueIsNumber(`${data.profession}`)) ret.profession = data.profession;
-
-  // bloodType
-  if (checkIfValueIsNumber(`${data.bloodType}`)) ret.bloodType = data.bloodType;
-
-  // gender
-  if (checkIfValueIsNumber(`${data.gender}`)) ret.gender = data.gender;
-
-  // civilStatus
-  if (checkIfValueIsNumber(`${data.civilStatus}`)) ret.civilStatus = data.civilStatus;
-
-  // department
-  if (!checkIfValueIsNumber(`${data.department}`)) {
-    errors.push(setError('Disculpe, pero debe indicar el departamento de residencia.', 'department'));
-  }
-  else ret.department = data.department;
-
-  // city
-  if (!checkIfValueIsNumber(`${data.city}`)) {
-    errors.push(setError('Disculpe, pero debe indicar la ciudad de residencia.', 'city'));
-  }
-  else ret.city = data.city;
-
-  // locality
-  if (data.locality && checkTitlesOrDescriptions(`${data.locality}`)) ret.locality = data.locality;
-
-  // direction
-  if (data.direction && checkTitlesOrDescriptions(`${data.direction}`)) ret.direction = data.direction || null;
-
-  // role
-  if (!checkRole(`${data.role}`)) {
-    errors.push(setError('Disculpe, pero debe seleccionar un rol correcto para el usuario.', 'role'));
-  }
-  else ret.role = data.role || null;
-
-  // baptized
-  if (data.baptized) ret.baptized = data.baptized;
-
-  // company
-  if (data.company) {
-    ret.company = true;
-
-    // companyType
-    if (!checkIfValueIsNumber(`${data.companyType}`)) {
-      errors.push(
-        setError('Disculpe, pero debe indicar a qué se dedica su empresa.', 'companyType')
-      );
-    } else {
-      ret.companyType = data.companyType;
-    }
-  }
-
-  // referred
-  if (checkDocument(data.referred)) ret.referred = data.referred;
-
-  return { data: ret, errors };
-}
-
-export async function validateSimpleRegister(data: IUserSimpleRegister, admin?: boolean | null): Promise<{ data: IUserSimpleRegister; errors: any }> {
+export default async function validateSimpleRegister(data: IUserSimpleRegister, admin?: boolean | null): Promise<{ data: IUserSimpleRegister; errors: any }> {
   const ret = {
     email: null,
     password: null,
