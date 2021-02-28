@@ -8815,7 +8815,7 @@
     "type": "get",
     "url": "/api/user/group/:memberId",
     "title": "(01) Obtener datos de un miembro del grupo familiar.",
-    "version": "0.0.13",
+    "version": "0.0.19",
     "name": "getDataMemberUserGroup",
     "group": "UserGroup",
     "header": {
@@ -8888,6 +8888,48 @@
         "member Object": [
           {
             "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del usuario.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil del usuario.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "department",
+            "description": "<p>ID (array index) del departamento.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (array index) de la ciudad.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombre de la localidad.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "member Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -8918,15 +8960,15 @@
             "group": "member Object",
             "type": "String|Null",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"584121490196\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"direction\": \"any direction\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -8934,13 +8976,28 @@
     "error": {
       "examples": [
         {
+          "title": "Not belong at the group",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero usted no pertenece a ningún grupo familiar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "The group not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo familiar no existe.\"\n}",
+          "type": "JSON"
+        },
+        {
           "title": "Not found member in group",
           "content": "HTTP/1.1 403 Forbidden\n{\n\t\"msg\": \"Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.\"\n}",
           "type": "JSON"
         },
         {
-          "title": "The member Doesn't belong to the group",
-          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.\"\n}",
+          "title": "The member not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar la información solicitada.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error memberId",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n\t\"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n}",
           "type": "JSON"
         },
         {
@@ -9192,7 +9249,7 @@
     "type": "get",
     "url": "/api/user/referrals/:memberId",
     "title": "(01) Obtener datos de un usuario referido.",
-    "version": "0.0.16",
+    "version": "0.0.19",
     "name": "getDataMemberUserReferrals",
     "group": "UserReferrals",
     "header": {
@@ -9272,6 +9329,41 @@
           },
           {
             "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil del usuario.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "department",
+            "description": "<p>ID (array index) del departamento.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (array index) de la ciudad.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombre de la localidad.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "member Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -9302,15 +9394,15 @@
             "group": "member Object",
             "type": "String|Null",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"584121490196\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"direction\": \"any direction\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -9318,13 +9410,18 @@
     "error": {
       "examples": [
         {
-          "title": "Not found member in group",
-          "content": "HTTP/1.1 403 Forbidden\n{\n\t\"msg\": \"Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.\"\n}",
+          "title": "Error memberId",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n\t\"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n}",
           "type": "JSON"
         },
         {
           "title": "The member Doesn't belong to the group",
           "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el miembro seleccionado no pertenece a su grupo de hijos espirituales.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "The member not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar la información solicitada.\"\n}",
           "type": "JSON"
         },
         {

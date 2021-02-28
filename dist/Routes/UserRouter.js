@@ -14,6 +14,7 @@ router.get('/courses', middleware_1.validateUser, user_controller_1.getCourses);
   Group
  */
 router.get('/group', middleware_1.validateUser, user_controller_1.getGroup);
+router.get('/group/:memberId', middleware_1.validateUser, user_controller_1.getMemberGroup);
 /*
   Referrals
  */

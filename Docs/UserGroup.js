@@ -60,7 +60,7 @@
 
 /**
  * @api {get} /api/user/group/:memberId (01) Obtener datos de un miembro del grupo familiar.
- * @apiVersion 0.0.13
+ * @apiVersion 0.0.19
  * @apiName getDataMemberUserGroup
  * @apiGroup UserGroup
  *
@@ -75,11 +75,17 @@
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
  * @apiSuccess (data Object) {String} totalReferrals Total de referidos.
  *
+ * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del usuario.
+ * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del usuario.
+ * @apiSuccess (member Object) {Number|Null} department ID (array index) del departamento.
+ * @apiSuccess (member Object) {Number|Null} city ID (array index) de la ciudad.
+ * @apiSuccess (member Object) {String|Null} locality Nombre de la localidad.
+ * @apiSuccess (member Object) {String|Null} direction Dirección.
  * @apiSuccess (member Object) {String} _id ID del miembro.
  * @apiSuccess (member Object) {String|Null} phone Número de teléfono.
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
- * @apiSuccess (member Object) {String|Null} direction Dirección.
+ * @apiSuccess (member Object) {String|Null} email Correo electrónico.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -87,11 +93,17 @@
 	"msg": "Miembro.",
 	"data": {
 		"member": {
+			"gender": 0,
+			"civilStatus": 0,
+			"department": 19,
+			"city": 18,
+			"locality": "CRUZ ROJA",
+			"direction": "C/CRUZ ROJA #62",
 			"_id": "6022194c88342006d4a700f3",
-			"phone": "584121490196",
+			"phone": "563161234567",
 			"names": "ANTHONY",
 			"lastNames": "VELÁSQUEZ",
-			"direction": "any direction"
+			"email": "anthony@example.com"
 		},
 		"totalReferrals": 1,
 		"totalCourses": 0
@@ -104,16 +116,34 @@
  *
  * @apiUse UsersErrorIdOrNotFound
  *
+ * @apiErrorExample {JSON} Not belong at the group
+ * HTTP/1.1 404 Not found
+ * {
+  "msg": "Disculpe, pero usted no pertenece a ningún grupo familiar."
+}
+ *
+ * @apiErrorExample {JSON} The group not found
+ * HTTP/1.1 404 Not found
+ * {
+  "msg": "Disculpe, pero el grupo familiar no existe."
+}
+ *
  * @apiErrorExample {JSON} Not found member in group
  * HTTP/1.1 403 Forbidden
  * {
 	"msg": "Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar."
 }
  *
- * @apiErrorExample {JSON} The member Doesn't belong to the group
+ * @apiErrorExample {JSON} The member not found
  * HTTP/1.1 404 Not found
  * {
-    "msg": "Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar."
+  "msg": "Disculpe, pero no se logró encontrar la información solicitada."
+}
+ *
+ * @apiErrorExample {JSON} Error memberId
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+	"msg": "Disculpe, pero el miembro seleccionado es incorrecto."
 }
  *
  * @apiUse GlobalErrorSystem

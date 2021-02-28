@@ -43,8 +43,8 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
     };
 
     if (!checkObjectId(userid)) {
-      return res.status(403).json({
-        msg: 'Disculpe, pero no está autorizado para ver este contenido.'
+      return res.status(401).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
       });
     }
 
@@ -64,12 +64,23 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
 
     ret.member = await Users.findOne(
       { _id },
-      { names: 1, lastNames: 1, direction: 1, phone: 1, gender: 1 }
+      {
+        names: 1,
+        lastNames: 1,
+        phone: 1,
+        email: 1,
+        gender: 1,
+        civilStatus: 1,
+        department: 1,
+        city: 1,
+        locality: 1 ,
+        direction: 1,
+      }
     ).exec();
 
     if (!ret.member) {
       return res.status(404).json({
-        msg: 'Disculpe, pero no se logró encontrar la información del miembro.'
+        msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
       });
     }
 
