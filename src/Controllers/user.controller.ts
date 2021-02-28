@@ -41,7 +41,7 @@ export async function update(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
 
-    const user = await Users.findOne({ _id: userid }, { _id: 1 }).exec();
+    const user = await Users.findOne({ _id: userid }, { _id: 1, document: 1 }).exec();
 
     // logout
     if (!user) return forceLogout(res, `${req.query.token}`);
@@ -49,6 +49,8 @@ export async function update(req: Request, res: Response): Promise<Response> {
     const validate = await validateUpdate(req.body, userid);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    if (!validate.data.document) validate.data.document = user.document;
 
     const updated = await Users.findByIdAndUpdate(userid, validate.data, {
       projection: {

@@ -36,13 +36,15 @@ exports.get = get;
 async function update(req, res) {
     try {
         const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, { _id: 1 }).exec();
+        const user = await Users_1.default.findOne({ _id: userid }, { _id: 1, document: 1 }).exec();
         // logout
         if (!user)
             return TokenActions_1.forceLogout(res, `${req.query.token}`);
         const validate = await UsersRequest_1.validateUpdate(req.body, userid);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+        if (!validate.data.document)
+            validate.data.document = user.document;
         const updated = await Users_1.default.findByIdAndUpdate(userid, validate.data, {
             projection: {
                 document: 0,
