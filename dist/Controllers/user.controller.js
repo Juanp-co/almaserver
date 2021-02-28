@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getGroup = exports.getCourses = exports.changePassword = exports.update = exports.get = void 0;
+exports.getMemberGroup = exports.getGroup = exports.getCourses = exports.changePassword = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersActions_1 = require("../ActionsData/UsersActions");
@@ -15,6 +15,7 @@ const Courses_1 = __importDefault(require("../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const Groups_1 = __importDefault(require("../Models/Groups"));
 const Users_1 = __importDefault(require("../Models/Users"));
+const Referrals_1 = __importDefault(require("../Models/Referrals"));
 const path = 'Controllers/user.controller';
 async function get(req, res) {
     try {
@@ -122,24 +123,34 @@ exports.getCourses = getCourses;
 async function getGroup(req, res) {
     try {
         const { userid } = req.params;
+        let group = null;
         if (!Validations_1.checkObjectId(userid)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
         }
-        const data = await Groups_1.default.findOne({ members: userid }).exec();
-        return res.json({
-            msg: 'Mi grupo familiar',
-            group: !data ?
-                null :
-                {
+        const user = await Users_1.default.findOne({ _id: userid }, { group: 1 }).exec();
+        if (!user) {
+            return res.status(401).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+            });
+        }
+        if (user.group) {
+            const data = await Groups_1.default.findOne({ _id: user.group }).exec();
+            if (data) {
+                group = {
                     _id: data._id,
                     name: data.name,
                     code: data.code,
                     members: await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(data.members || [])),
                     created_at: data.created_at,
                     updated_at: data.updated_at,
-                }
+                };
+            }
+        }
+        return res.json({
+            msg: 'Mi grupo familiar',
+            group
         });
     }
     catch (error) {
@@ -147,3 +158,76 @@ async function getGroup(req, res) {
     }
 }
 exports.getGroup = getGroup;
+async function getMemberGroup(req, res) {
+    try {
+        const { userid, memberId } = req.params;
+        const ret = {
+            member: null,
+            totalReferrals: 0,
+            totalCourses: 0
+        };
+        if (!Validations_1.checkObjectId(userid)) {
+            return res.status(401).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+            });
+        }
+        if (!Validations_1.checkObjectId(memberId)) {
+            return res.status(422).json({
+                msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
+            });
+        }
+        const user = await Users_1.default.findOne({ _id: userid }, { group: 1 }).exec();
+        if (!user) {
+            return res.status(401).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+            });
+        }
+        if (!user.group) {
+            return res.status(404).json({
+                msg: 'Disculpe, pero usted no pertenece a ningún grupo familiar.'
+            });
+        }
+        const data = await Groups_1.default.findOne({ _id: user.group }, { members: 1 }).exec();
+        if (!data) {
+            return res.status(404).json({
+                msg: 'Disculpe, pero el grupo familiar no existe.'
+            });
+        }
+        if (!data.members.includes(memberId)) {
+            return res.status(403).json({
+                msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.'
+            });
+        }
+        ret.member = await Users_1.default.findOne({ _id: memberId }, {
+            names: 1,
+            lastNames: 1,
+            phone: 1,
+            email: 1,
+            gender: 1,
+            civilStatus: 1,
+            department: 1,
+            city: 1,
+            locality: 1,
+            direction: 1,
+        }).exec();
+        if (!ret.member) {
+            return res.status(404).json({
+                msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
+            });
+        }
+        // get totals members referrals
+        const referrals = await Referrals_1.default.findOne({ _id: ret.member._id }).exec();
+        if (referrals)
+            ret.totalReferrals = referrals.members.length || 0;
+        // get totals courses
+        ret.totalCourses = await CoursesUsers_1.default.find({ userid: ret.member._id.toString() }).countDocuments().exec();
+        return res.json({
+            msg: `Miembro.`,
+            data: ret
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getMemberGroup`);
+    }
+}
+exports.getMemberGroup = getMemberGroup;

@@ -42,8 +42,8 @@ async function getMemberReferred(req, res) {
             totalCourses: 0
         };
         if (!Validations_1.checkObjectId(userid)) {
-            return res.status(403).json({
-                msg: 'Disculpe, pero no está autorizado para ver este contenido.'
+            return res.status(401).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
         }
         if (!Validations_1.checkObjectId(_id)) {
@@ -57,10 +57,21 @@ async function getMemberReferred(req, res) {
                 msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo de hijos espirituales.'
             });
         }
-        ret.member = await Users_1.default.findOne({ _id }, { names: 1, lastNames: 1, direction: 1, phone: 1, gender: 1 }).exec();
+        ret.member = await Users_1.default.findOne({ _id }, {
+            names: 1,
+            lastNames: 1,
+            phone: 1,
+            email: 1,
+            gender: 1,
+            civilStatus: 1,
+            department: 1,
+            city: 1,
+            locality: 1,
+            direction: 1,
+        }).exec();
         if (!ret.member) {
             return res.status(404).json({
-                msg: 'Disculpe, pero no se logró encontrar la información del miembro.'
+                msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
             });
         }
         // get totals members referrals

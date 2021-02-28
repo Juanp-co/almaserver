@@ -14,6 +14,7 @@ import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
 import Groups from '../Models/Groups';
 import Users from '../Models/Users';
+import Referrals from '../Models/Referrals';
 
 const path = 'Controllers/user.controller';
 
@@ -140,6 +141,7 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
 export async function getGroup(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
+    let group: any = null;
 
     if (!checkObjectId(userid)) {
       return res.status(401).json({
@@ -147,13 +149,19 @@ export async function getGroup(req: Request, res: Response): Promise<Response> {
       });
     }
 
-    const data = await Groups.findOne({ members: userid }).exec();
+    const user = await Users.findOne({ _id: userid }, { group: 1 }).exec();
 
-    return res.json({
-      msg: 'Mi grupo familiar',
-      group: !data ?
-        null :
-        {
+    if (!user) {
+      return res.status(401).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+      });
+    }
+
+    if (user.group) {
+      const data = await Groups.findOne({ _id: user.group }).exec();
+
+      if (data) {
+        group = {
           _id: data._id,
           name: data.name,
           code: data.code,
@@ -163,8 +171,103 @@ export async function getGroup(req: Request, res: Response): Promise<Response> {
           created_at: data.created_at,
           updated_at: data.updated_at,
         }
+      }
+
+    }
+
+    return res.json({
+      msg: 'Mi grupo familiar',
+      group
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getGroup`);
+  }
+}
+
+export async function getMemberGroup(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userid, memberId } = req.params;
+    const ret: any = {
+      member: null,
+      totalReferrals: 0,
+      totalCourses: 0
+    };
+
+    if (!checkObjectId(userid)) {
+      return res.status(401).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+      });
+    }
+
+    if (!checkObjectId(memberId)) {
+      return res.status(422).json({
+        msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
+      });
+    }
+
+    const user = await Users.findOne({ _id: userid }, { group: 1 }).exec();
+
+    if (!user) {
+      return res.status(401).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+      });
+    }
+
+    if (!user.group) {
+      return res.status(404).json({
+        msg: 'Disculpe, pero usted no pertenece a ningún grupo familiar.'
+      });
+    }
+
+    const data = await Groups.findOne({ _id: user.group }, { members: 1 }).exec();
+
+    if (!data) {
+      return res.status(404).json({
+        msg: 'Disculpe, pero el grupo familiar no existe.'
+      });
+    }
+
+    if (!data.members.includes(memberId)) {
+      return res.status(403).json({
+        msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.'
+      });
+    }
+
+    ret.member = await Users.findOne(
+      { _id: memberId },
+      {
+        names: 1,
+        lastNames: 1,
+        phone: 1,
+        email: 1,
+        gender: 1,
+        civilStatus: 1,
+        department: 1,
+        city: 1,
+        locality: 1 ,
+        direction: 1,
+      }
+    ).exec();
+
+    if (!ret.member) {
+      return res.status(404).json({
+        msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
+      });
+    }
+
+    // get totals members referrals
+    const referrals = await Referrals.findOne({ _id: ret.member._id }).exec();
+
+    if (referrals) ret.totalReferrals = referrals.members.length || 0;
+
+    // get totals courses
+    ret.totalCourses = await CoursesUsers.find({ userid: ret.member._id.toString() }).countDocuments().exec();
+
+    return res.json({
+      msg: `Miembro.`,
+      data: ret
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getMemberGroup`);
   }
 }

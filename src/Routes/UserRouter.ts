@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { validateUser } from '../middleware';
 import {
   changePassword,
-  get, getCourses, getGroup,
+  get, getCourses, getGroup, getMemberGroup,
   update
 } from '../Controllers/user.controller';
 import { getMemberReferred, getReferrals } from '../Controllers/publics/referrals.controller';
@@ -21,6 +21,7 @@ router.get('/courses', validateUser, getCourses);
   Group
  */
 router.get('/group', validateUser, getGroup);
+router.get('/group/:memberId', validateUser, getMemberGroup);
 
 /*
   Referrals
