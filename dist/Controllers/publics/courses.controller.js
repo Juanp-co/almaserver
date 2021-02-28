@@ -36,7 +36,7 @@ async function getCourses(req, res) {
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
         const { title } = req.query;
         const { userrole } = req.body;
-        const query = { toRoles: userrole, enable: true };
+        const query = { toRoles: userrole, enable: { $eq: true } };
         if (title)
             query.title = { $regex: new RegExp(`${title}`, 'i') };
         const courses = await CoursesActions_1.default({
@@ -61,7 +61,7 @@ async function getCoursesCounters(req, res) {
     try {
         const { title } = req.query;
         const { userrole } = req.body;
-        const query = { toRoles: userrole, enable: true };
+        const query = { toRoles: userrole, enable: { $eq: true } };
         if (title)
             query.title = { $regex: new RegExp(`${title}`, 'i') };
         const totals = await Courses_1.default.find(query).countDocuments().exec();
@@ -246,7 +246,7 @@ async function updateHistoricalCourseContent(req, res) {
                 myCourse.temary[index].content[index2].date = GlobalFunctions_1.setDate();
             }
             // check if all content was viewed
-            if (action === 'viewed') {
+            if (action === '2') {
                 let acc = 0;
                 myCourse.temary[index].content.forEach(c => {
                     if (c.view === 2)

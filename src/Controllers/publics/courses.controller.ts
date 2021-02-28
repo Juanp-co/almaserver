@@ -26,7 +26,7 @@ export default async function getCourses(req: Request, res: Response) : Promise<
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
     const { title } = req.query;
     const { userrole } = req.body;
-    const query: any = { toRoles: userrole, enable: true };
+    const query: any = { toRoles: userrole, enable: { $eq: true } };
 
     if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
 
@@ -52,7 +52,7 @@ export async function getCoursesCounters(req: Request, res: Response) : Promise<
   try {
     const { title } = req.query;
     const { userrole } = req.body;
-    const query: any = { toRoles: userrole, enable: true };
+    const query: any = { toRoles: userrole, enable: { $eq: true } };
 
     if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
 
@@ -256,7 +256,7 @@ export async function updateHistoricalCourseContent(req: Request, res: Response)
       }
 
       // check if all content was viewed
-      if (action === 'viewed') {
+      if (action === '2') {
         let acc = 0;
         myCourse.temary[index].content.forEach(c => {
           if (c.view === 2) acc++;
