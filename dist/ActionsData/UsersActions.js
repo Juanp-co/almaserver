@@ -140,6 +140,10 @@ function responseUsersAdmin(res, option) {
             msg = 'Disculpe, pero el rol seleccionado es incorrecto.';
             status = 422;
             break;
+        case 3:
+            msg = 'Disculpe, pero no cuenta con privilegios para realizar esta acción.';
+            status = 403;
+            break;
         default:
             msg = 'Error desconocido';
     }

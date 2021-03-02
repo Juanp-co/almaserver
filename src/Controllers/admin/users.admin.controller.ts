@@ -11,9 +11,19 @@ import {
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
 import { checkObjectId, checkRole } from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
+import CoursesUsers from '../../Models/CoursesUsers';
+import Groups from '../../Models/Groups';
+import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 
 const path = 'Controllers/admin/users.admin.controller';
+
+function checkRoleToActions(role: number|null): boolean {
+  if (!/[01]{1}/.test(`${role}`)) return false;
+  return ['0', '1'].indexOf(`${role}`) > -1;
+}
+
+// =====================================================================================================================
 
 export default async function getUsers(req: Request, res: Response): Promise<Response> {
   try {
@@ -70,14 +80,9 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
 
 export async function saveUser(req: Request, res: Response): Promise<Response> {
   try {
-
     const { userrole } = req.body;
 
-    if (userrole !== 0) {
-      return res.status(403).json({
-        msg: `Disculpe, pero no tiene permisos para realizar esta acción.`,
-      });
-    }
+    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
 
     const validate = await validateSimpleRegister(req.body, true);
 
@@ -119,7 +124,10 @@ export async function showUser(req: Request, res: Response): Promise<Response> {
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
   try {
+    const { userrole } = req.body;
     const { _id } = req.params;
+
+    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
 
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
@@ -164,50 +172,77 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
   }
 }
 
-export async function changeRoleUser(req: Request, res: Response): Promise<Response> {
-  try {
-    const { _id } = req.params;
-    const { role } = req.body;
-
-    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
-
-    if (!checkRole(role)) return responseUsersAdmin(res, 2);
-
-    const user = await Users.findOne({_id}, { role: 1 }).exec();
-
-    if (!user) return responseUsersAdmin(res, 1);
-
-    user.role = role;
-    await user.save();
-
-    // disconnect user
-    await disableTokenDBForUserId([_id]);
-
-    return res.json({
-      msg: `Se asignado el nuevo rol al usuario exitosamente.`
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/changeRoleUser`);
-  }
-}
-
-/* PENDIENTE */
-// export async function deleteUser(req: Request, res: Response): Promise<Response> {
+// export async function changeRoleUser(req: Request, res: Response): Promise<Response> {
 //   try {
 //     const { _id } = req.params;
+//     const { role } = req.body;
 //
 //     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 //
-//     const user = await Users.findOne({_id}, { __v: 0 }).exec();
+//     if (!checkRole(role)) return responseUsersAdmin(res, 2);
+//
+//     const user = await Users.findOne({_id}, { role: 1 }).exec();
 //
 //     if (!user) return responseUsersAdmin(res, 1);
 //
-//     await user.delete();
+//     user.role = role;
+//     await user.save();
+//
+//     // disconnect user
+//     await disableTokenDBForUserId([_id]);
 //
 //     return res.json({
-//       msg: `Se ha eliminado el usuario exitosamente.`
+//       msg: `Se asignado el nuevo rol al usuario exitosamente.`
 //     });
 //   } catch (error: any) {
-//     return returnError(res, error, `${path}/deleteUser`);
+//     return returnError(res, error, `${path}/changeRoleUser`);
 //   }
 // }
+
+export async function deleteUser(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userrole } = req.body;
+    const { _id } = req.params;
+
+    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
+
+    const user = await Users.findOne({_id}, { __v: 0 }).exec();
+
+    if (!user) return responseUsersAdmin(res, 1);
+
+    // delete all data
+    const groups = await Groups.find({ members: _id }).exec();
+    const referrals = await Referrals.find({ members: _id }).exec();
+
+    if (groups.length > 0) {
+      const totalsGroups = groups.length;
+
+      for (let i = 0; i < totalsGroups; i++) {
+        groups[i].members = groups[i].members.filter(m => m !== _id);
+        await groups[i].save();
+      }
+    }
+
+    if (referrals.length > 0) {
+      const totalsGroups = referrals.length;
+
+      for (let i = 0; i < totalsGroups; i++) {
+        referrals[i].members = referrals[i].members.filter(m => m !== _id);
+        await referrals[i].save();
+      }
+    }
+    await CoursesUsers.deleteMany({ userid: _id }).exec();
+    await Referrals.deleteMany({ _id }).exec();
+    await disableTokenDBForUserId([_id]);
+
+    await user.delete();
+
+    return res.json({
+      msg: `Se ha eliminado el usuario exitosamente.`
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/deleteUser`);
+  }
+}

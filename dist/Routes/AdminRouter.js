@@ -91,8 +91,8 @@ router.route('/users')
 router.get('/users/counters', middleware_1.validateAdmin, users_admin_controller_1.getUsersCounters);
 router.route('/users/:_id')
     .get(middleware_1.validateAdmin, users_admin_controller_1.showUser)
-    .put(middleware_1.validateAdmin, users_admin_controller_1.updateUser);
-// .delete(validateAdmin, deleteUser);
+    .put(middleware_1.validateAdmin, users_admin_controller_1.updateUser)
+    .delete(middleware_1.validateAdmin, users_admin_controller_1.deleteUser);
 router.get('/users/:_id/referrals', middleware_1.validateAdmin, referrals_admin_controller_1.default);
-router.put('/users/:_id/role', middleware_1.validateAdmin, users_admin_controller_1.changeRoleUser);
+// router.put('/users/:_id/role', validateAdmin, changeRoleUser);
 exports.default = router;

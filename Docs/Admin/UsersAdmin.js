@@ -371,48 +371,7 @@
  */
 
 /**
- * @api {put} /api/admin/users/:_id (05) Cambiar rol de un usuario.
- * @apiVersion 0.0.3
- * @apiName updateUsersAdmin
- * @apiGroup UsersAdmin
- *
- * @apiHeader {String} x-access-token Token de la sesión (admin).
- *
- * @apiParam (Path params) {String} _id ID del usuario.
- *
- * @apiParam {Number} role Role para el usuario.
- *
- * @apiExample {JSON} Example JSON Request
- * {
-    "role": 3
-}
- *
- * @apiSuccess {String} msg Mensaje del proceso.
- *
- * @apiSuccessExample {JSON} Success
- * HTTP/1.1 200 Success
- * {
-    "msg": "Se asignado el nuevo rol al usuario exitosamente."
-}
- *
- * @apiUse GlobalParamsErrors
- *
- * @apiUse GlobalUnauthorized
- *
- * @apiUse UsersErrorIdOrNotFound
- *
- * @apiErrorExample {JSON} Invalid role
- * HTTP/1.1 422 Unprocessable Entity
- * {
-    "msg": "Disculpe, pero el rol seleccionado es incorrecto."
-}
- *
- * @apiUse GlobalErrorSystem
- *
- */
-
-/**
- * @api {get} /api/admin/users/:_id/referrals (06) Obtener listado de referidos de un usuario.
+ * @api {get} /api/admin/users/:_id/referrals (05) Obtener listado de referidos de un usuario.
  * @apiVersion 0.0.11
  * @apiName getReferralsUsersListAdmin
  * @apiGroup UsersAdmin
@@ -525,6 +484,47 @@
  * @apiUse GlobalUnauthorized
  *
  * @apiUse UsersErrorIdOrNotFound
+ *
+ * @apiUse GlobalErrorSystem
+ *
+ */
+
+/*
+ * @api {put} /api/admin/users/:_id (06) Cambiar rol de un usuario.
+ * @apiVersion 0.0.3
+ * @apiName updateUsersAdmin
+ * @apiGroup UsersAdmin
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (admin).
+ *
+ * @apiParam (Path params) {String} _id ID del usuario.
+ *
+ * @apiParam {Number} role Role para el usuario.
+ *
+ * @apiExample {JSON} Example JSON Request
+ * {
+    "role": 3
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Se asignado el nuevo rol al usuario exitosamente."
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse UsersErrorIdOrNotFound
+ *
+ * @apiErrorExample {JSON} Invalid role
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+    "msg": "Disculpe, pero el rol seleccionado es incorrecto."
+}
  *
  * @apiUse GlobalErrorSystem
  *
