@@ -31,7 +31,7 @@
 
 /**
  * @api {get} /api/admin/courses (01) Obtener listado de cursos.
- * @apiVersion 0.0.18
+ * @apiVersion 0.0.19
  * @apiName getCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -50,7 +50,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} courses Listado de cursos.
  *
- * @apiSuccess (courses Object[]) {String} banner URL o base64 de la imagen principal del curso.
+ * @apiSuccess (courses Object[]) {String} banner URL de la imagen del curso.
  * @apiSuccess (courses Object[]) {Boolean} enable Indica si el curso se encuentra publicado.
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
@@ -62,7 +62,7 @@
 	"msg": "Cursos.",
 	"courses": [
 		{
-			"banner": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+      "banner": "http://url.com/images/1614664308734.jpeg",
 			"enable": false,
 			"_id": "603490a7cb2c7e406c5ff2b5",
 			"title": "CURSO JAVASCRIPT 2021",
@@ -153,7 +153,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id (03) Obtener detalles de un curso.
- * @apiVersion 0.0.18
+ * @apiVersion 0.0.19
  * @apiName detailsCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -171,7 +171,7 @@
  * @apiSuccess (course Object) {String} code Código del curso.
  * @apiSuccess (course Object) {String} title Título del curso.
  * @apiSuccess (course Object) {String} slug Slug (Valor url) del curso.
- * @apiSuccess (course Object) {String} banner URL o Base64 de la imagen del banner del curso.
+ * @apiSuccess (course Object) {String} banner URL de la imagen del curso.
  * @apiSuccess (course Object) {String} description Descripción del curso.
  * @apiSuccess (course Object) {Object[]} temary Listado de temas del curso.
  * @apiSuccess (course Object) {Object[]} levels Listado de cursos que el usuario debe visualizar antes.
@@ -201,7 +201,7 @@
  * @apiSuccess (test Object[]) {String} title Título o pregunta.
  * @apiSuccess (test Object[]) {String} inputType Tipo de campo para la pregunta (valores: 'checkbox' | 'radio' | 'text' | 'textarea').
  *
- * @apiSuccess (levels Object[]) {String} banner URL o base64 de la imagen del curso.
+ * @apiSuccess (levels Object[]) {String} banner URL de la imagen del curso.
  * @apiSuccess (levels Object[]) {String} _id ID del curso.
  * @apiSuccess (levels Object[]) {String} title Título del curso.
  * @apiSuccess (levels Object[]) {String} slug Slug del curso.
@@ -233,7 +233,7 @@
 		"code": "CURSO-JAVASCRIPT-2021",
 		"title": "CURSO JAVASCRIPT 2021",
 		"slug": "curso-javascript-2021",
-		"banner": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+    "banner": "http://url.com/images/1614664308734.jpeg",
 		"description": "Donec sollicitudin molestie malesuada. ...,
 		"temary": [
 			{
@@ -287,7 +287,7 @@
 		],
 		"levels": [
 			{
-				"banner": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+        "banner": "http://url.com/images/1614664308734.jpeg",
 				"_id": "601f09f99775034e10510fa2",
 				"title": "CURSO CON TEMAS Y PRUEBAS",
 				"slug": "curso-con-temas-y-pruebas",
@@ -326,7 +326,7 @@
 		"code": "CURSO-JAVASCRIPT-2021",
 		"title": "CURSO JAVASCRIPT 2021",
 		"slug": "curso-javascript-2021",
-		"banner": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+    "banner": "http://url.com/images/1614664308734.jpeg",
 		"description": "Donec sollicitudin molestie malesuada. ...,
 		"temary": [],
 		"levels": [],
@@ -536,7 +536,7 @@
 
 /**
  * @api {put} /api/admin/courses/:_id/banner (06) Actualizar imagen del curso.
- * @apiVersion 0.0.18
+ * @apiVersion 0.0.19
  * @apiName updateBannerCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -552,11 +552,13 @@
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {String} banner URL de la imagen del curso.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Se ha actualizado la imagen del curso exitosamente."
+	"msg": "Se ha actualizado la imagen del curso exitosamente.",
+  "banner": "http://url.com/images/1614664308734.jpeg",
 }
  *
  * @apiUse GlobalParamsErrors

@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -6,7 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createSlug = exports.checkAndUploadPicture = exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const slug_1 = __importDefault(require("slug"));
-const Validations_1 = require("./Validations");
+const fs = __importStar(require("fs"));
 /*
   Console logs
  */
@@ -162,16 +181,20 @@ function dateSpanish(timestamp) {
 }
 exports.dateSpanish = dateSpanish;
 async function checkAndUploadPicture(picture) {
-    if (picture) {
-        if (Validations_1.checkBase64(picture)) {
-            // CODE TO UPLOAD PICTURE
-            return null;
-        }
-        if (Validations_1.checkUrl(picture)) {
-            return picture;
-        }
-    }
-    return null;
+    if (!picture)
+        return null;
+    // check if exist folder
+    if (!fs.existsSync('./images'))
+        fs.mkdirSync('./images');
+    // get extension file
+    const extFile = picture.substring("data:image/".length, picture.indexOf(";base64"));
+    // to convert base64 format into random filename
+    const base64Data = picture.replace(/^data:([A-Za-z-+/]+);base64,/, '');
+    // set path
+    const path = `images/${moment_timezone_1.default().unix()}.${extFile}`;
+    // write
+    fs.writeFileSync(`./${path}`, base64Data, { encoding: 'base64' });
+    return path;
 }
 exports.checkAndUploadPicture = checkAndUploadPicture;
 function createSlug(value) {

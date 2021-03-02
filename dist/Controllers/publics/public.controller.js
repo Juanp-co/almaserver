@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPicture = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = __importStar(require("../../FormRequest/UsersRequest"));
@@ -133,27 +133,3 @@ async function logout(req, res) {
     }
 }
 exports.logout = logout;
-/*
-  Pictures
- */
-async function getPicture(req, res) {
-    try {
-        // const { _id } = req.body;
-        //
-        // if (!checkObjectId(_id)) {
-        //
-        // }
-        //
-        // const picture = await Pictures.findOne({ _id }, { base64: 1 }).exec();
-        //
-        // if (!picture) {
-        //
-        // }
-        // return res.send(picture.base64);
-        return res.send('hello');
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/logout`);
-    }
-}
-exports.getPicture = getPicture;

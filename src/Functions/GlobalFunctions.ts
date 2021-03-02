@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
 import slug from 'slug';
 import { Response } from 'express';
-import { checkBase64, checkUrl } from './Validations';
+import * as fs from 'fs';
 import { IInfoErrors } from '../Interfaces/IErrorResponse';
 
 /*
@@ -157,17 +157,21 @@ export function dateSpanish(timestamp?: number): string | null {
 }
 
 export async function checkAndUploadPicture(picture: string | null): Promise<string | null> {
-  if (picture) {
-    if (checkBase64(picture)) {
-      // CODE TO UPLOAD PICTURE
-      return null;
-    }
-    if (checkUrl(picture)) {
-      return picture;
-    }
-  }
+  if (!picture) return null;
 
-  return null;
+  // check if exist folder
+  if (!fs.existsSync('./images')) fs.mkdirSync('./images');
+
+  // get extension file
+  const extFile = picture.substring("data:image/".length, picture.indexOf(";base64"));
+  // to convert base64 format into random filename
+  const base64Data = picture.replace(/^data:([A-Za-z-+/]+);base64,/, '');
+  // set path
+  const path = `images/${moment().unix()}.${extFile}`;
+  // write
+  fs.writeFileSync(`./${path}`, base64Data,  { encoding: 'base64' });
+
+  return path;
 }
 
 export function createSlug(value: string | null) : string | null {

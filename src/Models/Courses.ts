@@ -1,8 +1,17 @@
 import { Schema, model } from 'mongoose';
+import dotenv from 'dotenv';
+import path from 'path';
 import { setDate, getDate, cleanWhiteSpaces, toUpperValue } from '../Functions/GlobalFunctions';
 import ICourse from '../Interfaces/ICourse';
 
+const pathEnv = path.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
+dotenv.config({ path: pathEnv });
+
 const getPlaceHolder = (value: string | null) => value || 'Indica tu respuesta';
+const getBannerUrl = (value: string | null) => {
+  if (!value) return value;
+  return `${process.env.URL_API}/${value}`;
+};
 
 const ContentSchema = new Schema(
   {
@@ -49,7 +58,7 @@ const CoursesSchema = new Schema(
     speakerPosition: { type: String, require: true }, // speaker position
     code: { type: String, require: true, set: toUpperValue }, // course code
     title: { type: String, require: true, set: cleanWhiteSpaces },
-    banner: { type: String, default: null },
+    banner: { type: String, default: null, get: getBannerUrl },
     description: { type: String, require: true, set: cleanWhiteSpaces },
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true }, // content

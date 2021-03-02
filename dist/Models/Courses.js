@@ -1,8 +1,20 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
+const pathEnv = path_1.default.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
+dotenv_1.default.config({ path: pathEnv });
 const getPlaceHolder = (value) => value || 'Indica tu respuesta';
+const getBannerUrl = (value) => {
+    if (!value)
+        return value;
+    return `${process.env.URL_API}/${value}`;
+};
 const ContentSchema = new mongoose_1.Schema({
     title: { type: String, require: true },
     description: { type: String, require: true },
@@ -35,7 +47,7 @@ const CoursesSchema = new mongoose_1.Schema({
     speakerPosition: { type: String, require: true },
     code: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
     title: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
-    banner: { type: String, default: null },
+    banner: { type: String, default: null, get: getBannerUrl },
     description: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true },

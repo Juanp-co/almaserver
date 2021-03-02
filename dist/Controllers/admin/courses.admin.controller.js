@@ -24,13 +24,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteLevelThemeCourse = exports.addLevelsThemeCourse = exports.deleteQuestionTestThemeCourse = exports.updateQuestionTestThemeCourse = exports.addQuestionTestThemeCourse = exports.deleteContentThemeCourse = exports.updateContentThemeCourse = exports.addContentThemeCourse = exports.deleteThemeCourse = exports.updateThemeCourse = exports.addThemeCourse = exports.deleteCourse = exports.enableCourse = exports.updateBannerCourse = exports.updateInfoCourse = exports.saveCourse = exports.showCourse = exports.getCoursesCounters = void 0;
 const lodash_1 = __importDefault(require("lodash"));
+const fs_1 = require("fs");
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const CoursesRequest_1 = __importStar(require("../../FormRequest/CoursesRequest"));
 const Validations_1 = require("../../Functions/Validations");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
-// import Pictures from '../../Models/Pictures';
 const path = 'src/admin/courses.admin.controller';
 // =====================================================================================================================
 async function getCourses(req, res) {
@@ -126,16 +126,8 @@ async function saveCourse(req, res) {
         if (slugQty > 0)
             validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
         validate.data.code = validate.data.slug;
-        // let banner = null;
         // save picture
-        // if (validate.data.banner) {
-        //   const pic = new Pictures({
-        //     base64: validate.data.banner
-        //   });
-        //   await pic.save();
-        //
-        //   validate.data.banner = pic._id.toString();
-        // }
+        validate.data.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
         // create
         const course = new Courses_1.default(validate.data);
         course.userid = req.params.userid;
@@ -213,10 +205,16 @@ async function updateBannerCourse(req, res) {
             return CoursesActions_1.returnCantEdit(res, 0);
         if (await (CoursesActions_1.checkIfUsersOwnCourse(course._id.toString())))
             return CoursesActions_1.returnCantEdit(res, 1);
+        if (course.banner) {
+            console.log('go to delete');
+            fs_1.unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+        }
+        validate.data.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
         course.banner = validate.data.banner;
         await course.save();
         return res.json({
             msg: 'Se ha actualizado la imagen del curso exitosamente.',
+            banner: course.banner
         });
     }
     catch (error) {

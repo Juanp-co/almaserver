@@ -254,7 +254,7 @@
 
 /**
  * @api {get} /api/user/courses (03) Obtener cursos de un usuario.
- * @apiVersion 0.0.12
+ * @apiVersion 0.0.19
  * @apiName getCoursesListUser
  * @apiGroup User
  *
@@ -263,7 +263,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} courses Listado de curso del usuario.
  *
- * @apiSuccess (courses Object[]) {String|Null} banner URL o base64 de la imagen del curso.
+ * @apiSuccess (courses Object[]) {String|Null} banner URL de la imagen del curso.
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
  * @apiSuccess (courses Object[]) {String} slug Slug (Valor url) del curso.
@@ -275,7 +275,7 @@
 	"msg": "Mis cursos.",
 	"courses": [
 		{
-			"banner": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...",
+      "banner": "http://url.com/images/1614664308734.jpeg",
 			"_id": "5ff8d0c1fd462643e42df1f6",
 			"title": "CURSO NUEVO 2",
 			"slug": "curso-nuevo-1",

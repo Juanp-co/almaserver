@@ -125,28 +125,3 @@ export async function logout(req: Request, res: Response): Promise<Response> {
     return returnError(res, error, `${path}/logout`);
   }
 }
-
-/*
-  Pictures
- */
-
-export async function getPicture(req: Request, res: Response): Promise<Response> {
-  try {
-    // const { _id } = req.body;
-    //
-    // if (!checkObjectId(_id)) {
-    //
-    // }
-    //
-    // const picture = await Pictures.findOne({ _id }, { base64: 1 }).exec();
-    //
-    // if (!picture) {
-    //
-    // }
-
-    // return res.send(picture.base64);
-    return res.send('hello');
-  } catch (error: any) {
-    return returnError(res, error, `${path}/logout`);
-  }
-}

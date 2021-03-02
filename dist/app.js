@@ -12,11 +12,12 @@ const pathEnv = path_1.default.resolve(__dirname, `../.env.${process.env.NODE_EN
 dotenv_1.default.config({ path: pathEnv });
 const app = express_1.default();
 app.use(cors_1.default());
-app.set('port', process.env.PORT || 9000);
+app.set('port', process.env.API_PORT || 9000);
 app.set('secretKey', 'n&m#y20oBG09GX*awZuwC&C5Yde^lw4IWQHPz#S0GzgVZ@CSHx');
 app.use(morgan_1.default(process.env.LOGS_FORMAT || 'dev'));
 // middleware
 app.use(express_1.default.json({ limit: '25mb' }));
 app.use(express_1.default.urlencoded({ extended: true, limit: '25mb' }));
 app.use(express_1.default.static('public'));
+app.use('/images', express_1.default.static('images'));
 exports.default = app;
