@@ -42,7 +42,7 @@ async function main() {
   startConnection();
   await App.listen(App.get('port'));
   console.log(`===============================================`);
-  console.log(`Server on port ${App.get('port')}`);
+  console.log(`Server on port: ${App.get('port')}`);
   console.log(`===============================================`);
 
   if (logsFile && logsFile !== 'false') {

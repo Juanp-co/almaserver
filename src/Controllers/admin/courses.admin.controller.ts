@@ -1,11 +1,13 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
+import {unlinkSync} from 'fs';
 import {
   checkIfExistSlug, checkIfUsersOwnCourse, checkPreviousIdsCourses,
   getCourseDetails,
   getModelReturnCourseOrTheme, return404, returnCantEdit, returnErrorId, validateToPublish
 } from '../../ActionsData/CoursesActions';
 import {
+  checkAndUploadPicture,
   createSlug,
   getLimitSkipSortSearch,
   returnError, returnErrorParams
@@ -19,7 +21,6 @@ import validateSimpleRegister, {
 import { checkObjectId } from '../../Functions/Validations';
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
-// import Pictures from '../../Models/Pictures';
 
 const path = 'src/admin/courses.admin.controller';
 
@@ -119,17 +120,9 @@ export async function saveCourse(req: Request, res: Response) : Promise<Response
     if (slugQty > 0) validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
 
     validate.data.code = validate.data.slug;
-    // let banner = null;
 
     // save picture
-    // if (validate.data.banner) {
-    //   const pic = new Pictures({
-    //     base64: validate.data.banner
-    //   });
-    //   await pic.save();
-    //
-    //   validate.data.banner = pic._id.toString();
-    // }
+    validate.data.banner = await checkAndUploadPicture(validate.data.banner);
 
     // create
     const course = new Courses(validate.data);
@@ -217,11 +210,17 @@ export async function updateBannerCourse(req: Request, res: Response) : Promise<
     if (course.enable) return returnCantEdit(res, 0);
     if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
 
+    if (course.banner) {
+      console.log('go to delete');
+      unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+    }
+    validate.data.banner = await checkAndUploadPicture(validate.data.banner);
     course.banner = validate.data.banner;
     await course.save();
 
     return res.json({
       msg: 'Se ha actualizado la imagen del curso exitosamente.',
+      banner: course.banner
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/updateBannerCourse`);

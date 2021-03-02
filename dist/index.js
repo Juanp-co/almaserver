@@ -41,7 +41,7 @@ async function main() {
     database_1.default();
     await app_1.default.listen(app_1.default.get('port'));
     console.log(`===============================================`);
-    console.log(`Server on port ${app_1.default.get('port')}`);
+    console.log(`Server on port: ${app_1.default.get('port')}`);
     console.log(`===============================================`);
     if (logsFile && logsFile !== 'false') {
         // Redirect all STDOUT and STDERR to log files if LOGS_FILE was setup.

@@ -11,7 +11,7 @@ import {
   helloWorld,
   login,
   logout,
-  register,
+  register
 } from '../Controllers/publics/public.controller';
 
 const router = Router();
@@ -53,11 +53,6 @@ router.get(`/events/:_id`, validateUser, showPublicEvent);
 
 router.post(`/login`, login);
 router.delete(`/logout`, validateUser, logout);
-
-/*
-  pictures
- */
-router.get(`/img/:_id`, register);
 
 /*
   Register
