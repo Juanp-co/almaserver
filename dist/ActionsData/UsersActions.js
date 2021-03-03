@@ -121,6 +121,7 @@ function checkFindValueSearch(query, value) {
         else
             query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
     }
+    console.log('query', query);
     return query;
 }
 exports.checkFindValueSearch = checkFindValueSearch;

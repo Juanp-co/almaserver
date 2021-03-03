@@ -6,13 +6,12 @@
     ],
     "title" : "EVENTO 1",
     "description" : "Para todos los roles",
-    "date" : 1578369600,
+    "date" : null,
     "initHour" : "00:00",
     "endHour" : "23:00",
     "created_at" : 1608518901,
     "updated_at" : 1608528331,
-    "userid" : "5fcf0821fc917d476c1cf3e2",
-    "__v" : 0
+    "userid" : "5fcf0821fc917d476c1cf3e2"
   },
   {
     "_id" : "5fe00cf5e2c9942e5c866454",
@@ -21,13 +20,12 @@
     ],
     "title" : "EVENTO 2",
     "description" : "Solo para administradores",
-    "date" : 1578369600,
+    "date" : null,
     "initHour" : "00:00",
     "endHour" : "23:00",
     "created_at" : 1608518901,
     "updated_at" : 1608528331,
-    "userid" : "5fcf0821fc917d476c1cf3e2",
-    "__v" : 0
+    "userid" : "5fcf0821fc917d476c1cf3e2"
   },
   {
     "_id" : "5fe00cf5e2c9942e5c866455",
@@ -36,13 +34,12 @@
     ],
     "title" : "EVENTO 3",
     "description" : "Solo para pastores",
-    "date" : 1578369600,
+    "date" : null,
     "initHour" : "00:00",
     "endHour" : "23:00",
     "created_at" : 1608518901,
     "updated_at" : 1608528331,
-    "userid" : "5fcf0821fc917d476c1cf3e2",
-    "__v" : 0
+    "userid" : "5fcf0821fc917d476c1cf3e2"
   },
   {
     "_id" : "5fe00cf5e2c9942e5c866456",
@@ -51,13 +48,12 @@
     ],
     "title" : "EVENTO 4",
     "description" : "Solo para supervisores",
-    "date" : 1578369600,
+    "date" : null,
     "initHour" : "00:00",
     "endHour" : "23:00",
     "created_at" : 1608518901,
     "updated_at" : 1608528331,
-    "userid" : "5fcf0821fc917d476c1cf3e2",
-    "__v" : 0
+    "userid" : "5fcf0821fc917d476c1cf3e2"
   },
   {
     "_id" : "5fe00cf5e2c9942e5c866457",
@@ -66,13 +62,12 @@
     ],
     "title" : "EVENTO 5",
     "description" : "Solo para líderes",
-    "date" : 1578369600,
+    "date" : null,
     "initHour" : "00:00",
     "endHour" : "23:00",
     "created_at" : 1608518901,
     "updated_at" : 1608528331,
-    "userid" : "5fcf0821fc917d476c1cf3e2",
-    "__v" : 0
+    "userid" : "5fcf0821fc917d476c1cf3e2"
   },
   {
     "_id" : "5fe00cf5e2c9942e5c866458",
@@ -81,13 +76,12 @@
     ],
     "title" : "EVENTO 6",
     "description" : "Solo para padres espirituales",
-    "date" : 1578369600,
+    "date" : null,
     "initHour" : "00:00",
     "endHour" : "23:00",
     "created_at" : 1608518901,
     "updated_at" : 1608528331,
-    "userid" : "5fcf0821fc917d476c1cf3e2",
-    "__v" : 0
+    "userid" : "5fcf0821fc917d476c1cf3e2"
   },
   {
     "_id" : "5fe00cf5e2c9942e5c866459",
@@ -96,12 +90,11 @@
     ],
     "title" : "EVENTO 7",
     "description" : "Solo para usuarios particulares",
-    "date" : 1578369600,
+    "date" : null,
     "initHour" : "00:00",
     "endHour" : "23:00",
     "created_at" : 1608518901,
     "updated_at" : 1608528331,
-    "userid" : "5fcf0821fc917d476c1cf3e2",
-    "__v" : 0
+    "userid" : "5fcf0821fc917d476c1cf3e2"
   }
 ]

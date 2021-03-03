@@ -29,8 +29,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
   try {
     const { userid } = req.params;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    let query = { _id: { $ne: userid } };
-    query = checkFindValueSearch(query, req.query.word);
+    const query = checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
 
     const users = await Users.find(
       query,
@@ -60,12 +59,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
 export async function getUsersCounters(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
-    const { userrole } = req.body;
-    let query = { _id: { $ne: userid } };
-
-    query = checkFindValueSearch(query, req.query.word);
-
-    if (checkRole(userrole)) query = Object.assign(query, { role: userrole });
+    const query = checkFindValueSearch({ _id: { $ne: userid } } , req.query.word);
 
     const totals = await Users.find(query).countDocuments().exec();
 

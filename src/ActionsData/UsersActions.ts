@@ -130,6 +130,8 @@ export function checkFindValueSearch(query: any, value: any): any {
       query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
   }
 
+  console.log('query', query);
+
   return query;
 }
 

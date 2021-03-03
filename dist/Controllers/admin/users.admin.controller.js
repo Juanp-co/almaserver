@@ -44,8 +44,7 @@ async function getUsers(req, res) {
     try {
         const { userid } = req.params;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        let query = { _id: { $ne: userid } };
-        query = UsersActions_1.checkFindValueSearch(query, req.query.word);
+        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
         const users = await Users_1.default.find(query, {
             names: 1,
             lastNames: 1,
@@ -72,11 +71,7 @@ exports.default = getUsers;
 async function getUsersCounters(req, res) {
     try {
         const { userid } = req.params;
-        const { userrole } = req.body;
-        let query = { _id: { $ne: userid } };
-        query = UsersActions_1.checkFindValueSearch(query, req.query.word);
-        if (Validations_1.checkRole(userrole))
-            query = Object.assign(query, { role: userrole });
+        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
         const totals = await Users_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: `Total usuarios.`,
