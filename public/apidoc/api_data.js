@@ -8790,6 +8790,246 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/admin/reports",
+    "title": "(00) Obtener reportes.",
+    "version": "0.0.20",
+    "name": "getReportsAdmin",
+    "group": "ReportsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "initDate",
+            "description": "<p>Fecha de inicio de la consulta (formato: YYYY-MM-DD) (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "endDate",
+            "description": "<p>Fecha de final de la consulta (formato: YYYY-MM-DD) (opcional) (Si se envía este parámetro, se requerirá la fecha de inicio. Sino, las fechas de filtrado se ignorarán).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "report",
+            "description": "<p>Datos para los reportes.</p>"
+          }
+        ],
+        "report Object": [
+          {
+            "group": "report Object",
+            "type": "Object",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Datos de los reportes para cursos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Object",
+            "optional": false,
+            "field": "events",
+            "description": "<p>Datos de los reportes para eventos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Object",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>Datos de los reportes para grupos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Object",
+            "optional": false,
+            "field": "users",
+            "description": "<p>Datos de los reportes para usuarios.</p>"
+          }
+        ],
+        "courses, events and groups Object": [
+          {
+            "group": "courses, events and groups Object",
+            "type": "Object",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título de grupo de datos.</p>"
+          },
+          {
+            "group": "courses, events and groups Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos para el reporte.</p>"
+          }
+        ],
+        "users Object": [
+          {
+            "group": "users Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del grupo de reporte.</p>"
+          },
+          {
+            "group": "users Object",
+            "type": "String",
+            "optional": false,
+            "field": "qty",
+            "description": "<p>Cantidad.</p>"
+          },
+          {
+            "group": "users Object",
+            "type": "Object",
+            "optional": false,
+            "field": "ages",
+            "description": "<p>Datos de reportes por edades.</p>"
+          },
+          {
+            "group": "users Object",
+            "type": "Object",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>Datos de reportes por género (sexo).</p>"
+          },
+          {
+            "group": "users Object",
+            "type": "Object",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Datos de reportes por roles.</p>"
+          },
+          {
+            "group": "users Object",
+            "type": "Object",
+            "optional": false,
+            "field": "families",
+            "description": "<p>Datos de reportes por familias.</p>"
+          }
+        ],
+        "ages, gender, roles, families Object of users Object": [
+          {
+            "group": "ages, gender, roles, families Object of users Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del grupo de datos.</p>"
+          },
+          {
+            "group": "ages, gender, roles, families Object of users Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos para el reporte.</p>"
+          }
+        ],
+        "data Object[]": [
+          {
+            "group": "data Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "label",
+            "description": "<p>Etiqueta del valor a mostrar en el reporte.</p>"
+          },
+          {
+            "group": "data Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "qty",
+            "description": "<p>Cantidad.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reporte\",\n\t\"report\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Publicados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Borradores\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Viendo\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 2\n\t\t},\n\t\t\"events\": {\n\t\t\t\"title\": \"Eventos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Finalizados\",\n\t\t\t\t\t\"qty\": 7\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 7\n\t\t},\n\t\t\"groups\": {\n\t\t\t\"title\": \"Grupos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Sin miembros\",\n\t\t\t\t\t\"qty\": 3\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Con miembros\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"users\": {\n\t\t\t\"title\": \"Miembros\",\n\t\t\t\"qty\": 8,\n\t\t\t\"ages\": {\n\t\t\t\t\"title\": \"Edades\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"0 a 15 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"16 a 20 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"21 a 30 años\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"31 a 40 años\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"41 a 50 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"51 a 60 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mayores de 61 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No indicados\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"families\": {\n\t\t\t\t\"title\": \"Miembros y grupos\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No pertenece\",\n\t\t\t\t\t\t\"qty\": 7\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pertenece\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"gender\": {\n\t\t\t\t\"title\": \"Géneros\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Hombres\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mujeres\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Otro\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"roles\": {\n\t\t\t\t\"title\": \"Roles\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Admins\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pastores\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Supervisores\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Líderes\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Padres espirituales\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Personas\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ReportsAdmin.js",
+    "groupTitle": "ReportsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/",
     "title": "Test connection",
     "version": "0.0.1",

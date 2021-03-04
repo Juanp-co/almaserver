@@ -211,7 +211,6 @@ export async function updateBannerCourse(req: Request, res: Response) : Promise<
     if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
 
     if (course.banner) {
-      console.log('go to delete');
       unlinkSync(`./${course.toObject({ getters: false }).banner}`);
     }
     validate.data.banner = await checkAndUploadPicture(validate.data.banner);
@@ -394,8 +393,6 @@ export async function deleteThemeCourse(req: Request, res: Response) : Promise<R
 
     course.temary = course.temary.filter(t => t._id.toString() !== themeId);
     await course.save();
-
-    console.log('course.temary', course.temary);
 
     return res.json({
       msg: 'Se ha eliminado el tema y su contenido exitosamente.',

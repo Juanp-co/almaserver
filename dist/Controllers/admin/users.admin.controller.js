@@ -34,11 +34,6 @@ const Groups_1 = __importDefault(require("../../Models/Groups"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'Controllers/admin/users.admin.controller';
-function checkRoleToActions(role) {
-    if (!/[01]{1}/.test(`${role}`))
-        return false;
-    return ['0', '1'].indexOf(`${role}`) > -1;
-}
 // =====================================================================================================================
 async function getUsers(req, res) {
     try {
@@ -86,7 +81,7 @@ exports.getUsersCounters = getUsersCounters;
 async function saveUser(req, res) {
     try {
         const { userrole } = req.body;
-        if (!checkRoleToActions(userrole))
+        if (!UsersActions_1.checkRoleToActions(userrole))
             return UsersActions_1.responseUsersAdmin(res, 3);
         const validate = await UsersRequest_1.default(req.body, true);
         if (validate.errors.length > 0)
@@ -127,7 +122,7 @@ async function updateUser(req, res) {
     try {
         const { userrole } = req.body;
         const { _id } = req.params;
-        if (!checkRoleToActions(userrole))
+        if (!UsersActions_1.checkRoleToActions(userrole))
             return UsersActions_1.responseUsersAdmin(res, 3);
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);
@@ -196,7 +191,7 @@ async function deleteUser(req, res) {
     try {
         const { userrole } = req.body;
         const { _id } = req.params;
-        if (!checkRoleToActions(userrole))
+        if (!UsersActions_1.checkRoleToActions(userrole))
             return UsersActions_1.responseUsersAdmin(res, 3);
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);

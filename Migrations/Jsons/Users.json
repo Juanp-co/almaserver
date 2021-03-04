@@ -6,7 +6,7 @@
     "company" : true,
     "companyType" : 3,
     "baptized" : false,
-    "role" : 1,
+    "role" : 0,
     "created_at" : 1607871792,
     "updated_at" : 1613680026,
     "phone" : "573161234567",

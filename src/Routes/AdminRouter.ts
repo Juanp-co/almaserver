@@ -27,6 +27,7 @@ import getUsers, {
   showUser,
   updateUser
 } from '../Controllers/admin/users.admin.controller';
+import getReports from '../Controllers/admin/reports.admin.controller';
 
 const router = Router();
 
@@ -95,6 +96,11 @@ router.route('/groups/:_id')
 
 router.get('/groups/:_id/find-members', validateAdmin, findNewMembers);
 router.put('/groups/:_id/members/:action', validateAdmin, addOrRemoveMembersGroup);
+
+/*
+  Users
+*/
+router.get('/reports', validateAdmin, getReports);
 
 /*
   Users
