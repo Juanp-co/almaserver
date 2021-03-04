@@ -130,9 +130,12 @@ export function checkFindValueSearch(query: any, value: any): any {
       query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
   }
 
-  console.log('query', query);
-
   return query;
+}
+
+export function checkRoleToActions(role: number|null): boolean {
+  if (!/[01]{1}/.test(`${role}`)) return false;
+  return ['0', '1'].indexOf(`${role}`) > -1;
 }
 
 export function responseUsersAdmin(res: Response, option: number) : Response {

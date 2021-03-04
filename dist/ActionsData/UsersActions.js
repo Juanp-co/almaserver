@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseUsersAdmin = exports.checkFindValueSearch = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
+exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
@@ -121,10 +121,15 @@ function checkFindValueSearch(query, value) {
         else
             query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
     }
-    console.log('query', query);
     return query;
 }
 exports.checkFindValueSearch = checkFindValueSearch;
+function checkRoleToActions(role) {
+    if (!/[01]{1}/.test(`${role}`))
+        return false;
+    return ['0', '1'].indexOf(`${role}`) > -1;
+}
+exports.checkRoleToActions = checkRoleToActions;
 function responseUsersAdmin(res, option) {
     let msg = '';
     let status = 500;

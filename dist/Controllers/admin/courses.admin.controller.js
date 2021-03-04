@@ -206,7 +206,6 @@ async function updateBannerCourse(req, res) {
         if (await (CoursesActions_1.checkIfUsersOwnCourse(course._id.toString())))
             return CoursesActions_1.returnCantEdit(res, 1);
         if (course.banner) {
-            console.log('go to delete');
             fs_1.unlinkSync(`./${course.toObject({ getters: false }).banner}`);
         }
         validate.data.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
@@ -374,7 +373,6 @@ async function deleteThemeCourse(req, res) {
             return CoursesActions_1.return404(res, 1);
         course.temary = course.temary.filter(t => t._id.toString() !== themeId);
         await course.save();
-        console.log('course.temary', course.temary);
         return res.json({
             msg: 'Se ha eliminado el tema y su contenido exitosamente.',
         });

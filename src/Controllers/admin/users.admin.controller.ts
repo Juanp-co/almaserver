@@ -1,6 +1,11 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { checkFindValueSearch, getUserData, responseUsersAdmin } from '../../ActionsData/UsersActions';
+import {
+  checkFindValueSearch,
+  checkRoleToActions,
+  getUserData,
+  responseUsersAdmin
+} from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateUpdate } from '../../FormRequest/UsersRequest';
 import {
   generatePassword,
@@ -17,11 +22,6 @@ import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 
 const path = 'Controllers/admin/users.admin.controller';
-
-function checkRoleToActions(role: number|null): boolean {
-  if (!/[01]{1}/.test(`${role}`)) return false;
-  return ['0', '1'].indexOf(`${role}`) > -1;
-}
 
 // =====================================================================================================================
 

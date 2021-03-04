@@ -29,6 +29,7 @@ const events_controller_1 = __importStar(require("../Controllers/events/events.c
 const groups_admin_controller_1 = __importStar(require("../Controllers/admin/groups.admin.controller"));
 const referrals_admin_controller_1 = __importDefault(require("../Controllers/admin/referrals.admin.controller"));
 const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
+const reports_admin_controller_1 = __importDefault(require("../Controllers/admin/reports.admin.controller"));
 const router = express_1.Router();
 // ===================================================================================
 /*
@@ -82,6 +83,10 @@ router.route('/groups/:_id')
     .delete(middleware_1.validateAdmin, groups_admin_controller_1.deleteGroup);
 router.get('/groups/:_id/find-members', middleware_1.validateAdmin, groups_admin_controller_1.findNewMembers);
 router.put('/groups/:_id/members/:action', middleware_1.validateAdmin, groups_admin_controller_1.addOrRemoveMembersGroup);
+/*
+  Users
+*/
+router.get('/reports', middleware_1.validateAdmin, reports_admin_controller_1.default);
 /*
   Users
 */
