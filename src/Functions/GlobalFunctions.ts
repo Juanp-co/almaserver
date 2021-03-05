@@ -110,45 +110,12 @@ export function getLimitSkipSortSearch(data: any): any {
 
   // sort
   const v = value && /[1 -]/.test(value) && value.toString() === '1' ? 1 : -1;
+  const listCases = [ 'created_at', 'code', 'date', 'document', 'lastNames', 'name', 'names', 'role', 'status', 'title', 'updated_at' ];
+  const index = listCases.indexOf(input);
 
-  switch (input) {
-    case 'created_at':
-      retSort.created_at = v;
-      break;
-    case 'code':
-      retSort.code = v;
-      break;
-    case 'date':
-      // to events
-      retSort.date = v;
-      break;
-    case 'document':
-      retSort.document = v;
-      break;
-    case 'lastNames':
-      retSort.lastNames = v;
-      break;
-    case 'name':
-      retSort.name = v;
-      break;
-    case 'names':
-      retSort.names = v;
-      break;
-    case 'role':
-      retSort.role = v;
-      break;
-    case 'status':
-      retSort.status = v;
-      break;
-    case 'title':
-      retSort.title = v;
-      break;
-    case 'updated_at':
-      retSort.updated_at = v;
-      break;
-    default:
-      retSort.created_at = v;
-  }
+  if (index > -1) retSort[listCases[index]] = v;
+  else retSort.created_at = v;
+
   return { limit: retLimit, skip: retSkip, sort: retSort };
 }
 

@@ -323,14 +323,14 @@ exports.returnNotFound = returnNotFound;
 function return404(res, title = 0) {
     const titles = ['curso', 'tema', 'contendo', 'pregunta'];
     return res.status(404).json({
-        msg: `Disculpe, pero ${title === 2 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 2 ? 'a' : 'o'} no existe o no se encuentra disponible.`,
+        msg: `Disculpe, pero ${title === 3 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 3 ? 'a' : 'o'} no existe o no se encuentra disponible.`,
     });
 }
 exports.return404 = return404;
 function returnErrorId(res, title = 0) {
     const titles = ['curso', 'tema', 'contendo', 'pregunta', 'tema previo'];
     return res.status(422).json({
-        msg: `Disculpe, pero ${title === 2 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 2 ? 'a' : 'o'} es incorrecto.`,
+        msg: `Disculpe, pero ${title === 3 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 3 ? 'a' : 'o'} es incorrecto.`,
     });
 }
 exports.returnErrorId = returnErrorId;

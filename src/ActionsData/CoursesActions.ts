@@ -358,14 +358,14 @@ export function returnNotFound(res: Response, code: string | null) : Response {
 export function return404(res: Response, title = 0) : Response {
   const titles = ['curso', 'tema', 'contendo', 'pregunta'];
   return res.status(404).json({
-    msg: `Disculpe, pero ${title === 2 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 2 ? 'a' : 'o'} no existe o no se encuentra disponible.`,
+    msg: `Disculpe, pero ${title === 3 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 3 ? 'a' : 'o'} no existe o no se encuentra disponible.`,
   });
 }
 
 export function returnErrorId(res: Response, title = 0) : Response {
   const titles = ['curso', 'tema', 'contendo', 'pregunta', 'tema previo'];
   return res.status(422).json({
-    msg: `Disculpe, pero ${title === 2 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 2 ? 'a' : 'o'} es incorrecto.`,
+    msg: `Disculpe, pero ${title === 3 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 3 ? 'a' : 'o'} es incorrecto.`,
   });
 }
 
