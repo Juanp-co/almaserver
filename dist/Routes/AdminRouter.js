@@ -27,7 +27,6 @@ const middleware_1 = require("../middleware");
 const courses_admin_controller_1 = __importStar(require("../Controllers/admin/courses.admin.controller"));
 const events_controller_1 = __importStar(require("../Controllers/events/events.controller"));
 const groups_admin_controller_1 = __importStar(require("../Controllers/admin/groups.admin.controller"));
-const referrals_admin_controller_1 = __importDefault(require("../Controllers/admin/referrals.admin.controller"));
 const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
 const reports_admin_controller_1 = __importDefault(require("../Controllers/admin/reports.admin.controller"));
 const router = express_1.Router();
@@ -98,6 +97,7 @@ router.route('/users/:_id')
     .get(middleware_1.validateAdmin, users_admin_controller_1.showUser)
     .put(middleware_1.validateAdmin, users_admin_controller_1.updateUser)
     .delete(middleware_1.validateAdmin, users_admin_controller_1.deleteUser);
-router.get('/users/:_id/referrals', middleware_1.validateAdmin, referrals_admin_controller_1.default);
+router.get('/users/:_id/courses', middleware_1.validateAdmin, users_admin_controller_1.getCoursesUser);
+router.get('/users/:_id/referrals', middleware_1.validateAdmin, users_admin_controller_1.getReferralsUser);
 // router.put('/users/:_id/role', validateAdmin, changeRoleUser);
 exports.default = router;

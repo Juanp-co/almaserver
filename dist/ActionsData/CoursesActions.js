@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateToPublish = exports.setPointToTest = exports.returnCantEdit = exports.returnErrorId = exports.return404 = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfUsersOwnCourse = exports.getCourseDetails = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
+exports.validateToPublish = exports.setPointToTest = exports.returnCantEdit = exports.returnErrorId = exports.return404 = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfUsersOwnCourse = exports.getCourseDetails = exports.getCoursesSimpleList = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const Courses_1 = __importDefault(require("../Models/Courses"));
@@ -154,6 +154,14 @@ async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, pr
     return ret;
 }
 exports.default = getCoursesList;
+async function getCoursesSimpleList(listIds) {
+    let courses = [];
+    if (listIds.length > 0) {
+        courses = await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, banner: 1, slug: 1, description: 1 }).exec();
+    }
+    return courses;
+}
+exports.getCoursesSimpleList = getCoursesSimpleList;
 async function getCourseDetails({ query, infoUser, isPublic, projection }) {
     let ret = null;
     const course = await Courses_1.default.findOne(query, projection || { __v: 0 }).exec();

@@ -18,10 +18,9 @@ import getGroups, {
   getGroupsCounters,
   saveGroup, showGroup, updateGroup
 } from '../Controllers/admin/groups.admin.controller';
-import getReferrals from '../Controllers/admin/referrals.admin.controller';
 import getUsers, {
   // changeRoleUser,
-  deleteUser,
+  deleteUser, getCoursesUser, getReferralsUser,
   getUsersCounters,
   saveUser,
   showUser,
@@ -116,7 +115,9 @@ router.route('/users/:_id')
   .put(validateAdmin, updateUser)
   .delete(validateAdmin, deleteUser);
 
-router.get('/users/:_id/referrals', validateAdmin, getReferrals);
+router.get('/users/:_id/courses', validateAdmin, getCoursesUser);
+router.get('/users/:_id/referrals', validateAdmin, getReferralsUser);
+
 // router.put('/users/:_id/role', validateAdmin, changeRoleUser);
 
 export default router;

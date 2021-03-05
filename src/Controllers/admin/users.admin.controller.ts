@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import {
   checkFindValueSearch,
-  checkRoleToActions,
+  checkRoleToActions, getNamesUsersList,
   getUserData,
   responseUsersAdmin
 } from '../../ActionsData/UsersActions';
@@ -20,6 +20,7 @@ import CoursesUsers from '../../Models/CoursesUsers';
 import Groups from '../../Models/Groups';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
+import { getCoursesSimpleList } from '../../ActionsData/CoursesActions';
 
 const path = 'Controllers/admin/users.admin.controller';
 
@@ -86,6 +87,9 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
     const password = generatePassword();
     user.password = bcrypt.hashSync(password, 10);
     await user.save();
+
+    const referrals = new Referrals({ _id: user._id });
+    await referrals.save();
 
     return res.status(201).json({
       msg: `Se ha registrado el nuevo usuario exitosamente.`,
@@ -235,6 +239,106 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
 
     return res.json({
       msg: `Se ha eliminado el usuario exitosamente.`
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/deleteUser`);
+  }
+}
+
+export async function getCoursesUser(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userrole } = req.body;
+    const { _id } = req.params;
+
+    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
+
+    const user = await Users.findOne({_id}, { __v: 0 }).exec();
+
+    if (!user) return responseUsersAdmin(res, 1);
+
+    // get all referrals
+    const ret: any[] = [];
+    let courses: any[] = [];
+    const coursesData = await CoursesUsers.find({ userid: _id }, { courseId: 1, approved: 1 }).exec();
+
+    if (coursesData.length > 0) {
+      const listIdsCourses = coursesData.map((cd: any) => cd.courseId);
+      courses = await getCoursesSimpleList(listIdsCourses || []);
+
+      for (const c of coursesData) {
+        if (courses.length > 0) {
+          const index = courses.findIndex(co => co._id.toString() === c.courseId);
+          if (index > -1) {
+            ret.push({
+              _id: courses[index]._id,
+              banner: courses[index].banner,
+              slug: courses[index].slug,
+              title: courses[index].title,
+              description: courses[index].description,
+              approved: c.approved
+            });
+          }
+        }
+      }
+
+    }
+
+
+    return res.json({
+      msg: `Listado de cursos del usuario.`,
+      courses: ret
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/deleteUser`);
+  }
+}
+
+export async function getReferralsUser(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userrole } = req.body;
+    const { _id } = req.params;
+
+    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
+
+    const user = await Users.findOne({_id}, { __v: 0 }).exec();
+
+    if (!user) return responseUsersAdmin(res, 1);
+
+    // get all referrals
+    const ret: any = [];
+    let referred = await Referrals.findOne({ _id }).exec();
+
+    if (!referred) {
+      referred = new Referrals({ _id });
+      await referred.save();
+    }
+
+    if (referred.members.length > 0) {
+      const referrals = await getNamesUsersList(referred.members);
+
+      if (referrals.length > 0) {
+        const refMembers = await Referrals.find({ _id: { $in: referred.members } }).exec();
+
+        for (const ref of referrals) {
+          if (refMembers.length > 0) {
+            const index = refMembers.findIndex(rm => rm._id.toString() === ref._id.toString());
+
+            if (index > -1) ret.push({ ...ref._doc, totalsReferrals: refMembers[index].members.length });
+            else ret.push({ ...ref._doc, totalsReferrals: 0 });
+          }
+          else ret.push({ ...ref._doc, totalsReferrals: 0 });
+        }
+      }
+    }
+
+
+    return res.json({
+      msg: `Listado de referidos del usuario.`,
+      referrals: ret
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/deleteUser`);

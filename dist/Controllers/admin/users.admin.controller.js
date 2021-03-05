@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
+exports.getReferralsUser = exports.getCoursesUser = exports.deleteUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = __importStar(require("../../FormRequest/UsersRequest"));
@@ -33,6 +33,7 @@ const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const Groups_1 = __importDefault(require("../../Models/Groups"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
+const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const path = 'Controllers/admin/users.admin.controller';
 // =====================================================================================================================
 async function getUsers(req, res) {
@@ -90,6 +91,8 @@ async function saveUser(req, res) {
         const password = GlobalFunctions_1.generatePassword();
         user.password = bcrypt_1.default.hashSync(password, 10);
         await user.save();
+        const referrals = new Referrals_1.default({ _id: user._id });
+        await referrals.save();
         return res.status(201).json({
             msg: `Se ha registrado el nuevo usuario exitosamente.`,
             password
@@ -228,3 +231,92 @@ async function deleteUser(req, res) {
     }
 }
 exports.deleteUser = deleteUser;
+async function getCoursesUser(req, res) {
+    try {
+        const { userrole } = req.body;
+        const { _id } = req.params;
+        if (!UsersActions_1.checkRoleToActions(userrole))
+            return UsersActions_1.responseUsersAdmin(res, 3);
+        if (!Validations_1.checkObjectId(_id))
+            return UsersActions_1.responseUsersAdmin(res, 0);
+        const user = await Users_1.default.findOne({ _id }, { __v: 0 }).exec();
+        if (!user)
+            return UsersActions_1.responseUsersAdmin(res, 1);
+        // get all referrals
+        const ret = [];
+        let courses = [];
+        const coursesData = await CoursesUsers_1.default.find({ userid: _id }, { courseId: 1, approved: 1 }).exec();
+        if (coursesData.length > 0) {
+            const listIdsCourses = coursesData.map((cd) => cd.courseId);
+            courses = await CoursesActions_1.getCoursesSimpleList(listIdsCourses || []);
+            for (const c of coursesData) {
+                if (courses.length > 0) {
+                    const index = courses.findIndex(co => co._id.toString() === c.courseId);
+                    if (index > -1) {
+                        ret.push({
+                            _id: courses[index]._id,
+                            banner: courses[index].banner,
+                            slug: courses[index].slug,
+                            title: courses[index].title,
+                            description: courses[index].description,
+                            approved: c.approved
+                        });
+                    }
+                }
+            }
+        }
+        return res.json({
+            msg: `Listado de cursos del usuario.`,
+            courses: ret
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/deleteUser`);
+    }
+}
+exports.getCoursesUser = getCoursesUser;
+async function getReferralsUser(req, res) {
+    try {
+        const { userrole } = req.body;
+        const { _id } = req.params;
+        if (!UsersActions_1.checkRoleToActions(userrole))
+            return UsersActions_1.responseUsersAdmin(res, 3);
+        if (!Validations_1.checkObjectId(_id))
+            return UsersActions_1.responseUsersAdmin(res, 0);
+        const user = await Users_1.default.findOne({ _id }, { __v: 0 }).exec();
+        if (!user)
+            return UsersActions_1.responseUsersAdmin(res, 1);
+        // get all referrals
+        const ret = [];
+        let referred = await Referrals_1.default.findOne({ _id }).exec();
+        if (!referred) {
+            referred = new Referrals_1.default({ _id });
+            await referred.save();
+        }
+        if (referred.members.length > 0) {
+            const referrals = await UsersActions_1.getNamesUsersList(referred.members);
+            if (referrals.length > 0) {
+                const refMembers = await Referrals_1.default.find({ _id: { $in: referred.members } }).exec();
+                for (const ref of referrals) {
+                    if (refMembers.length > 0) {
+                        const index = refMembers.findIndex(rm => rm._id.toString() === ref._id.toString());
+                        if (index > -1)
+                            ret.push({ ...ref._doc, totalsReferrals: refMembers[index].members.length });
+                        else
+                            ret.push({ ...ref._doc, totalsReferrals: 0 });
+                    }
+                    else
+                        ret.push({ ...ref._doc, totalsReferrals: 0 });
+                }
+            }
+        }
+        return res.json({
+            msg: `Listado de referidos del usuario.`,
+            referrals: ret
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/deleteUser`);
+    }
+}
+exports.getReferralsUser = getReferralsUser;

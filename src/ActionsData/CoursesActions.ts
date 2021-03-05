@@ -5,7 +5,7 @@ import ICourse, {
   ICourseList,
   ICourseTemary,
   ICourseReference,
-  ICourseContent
+  ICourseContent, ICourseSimpleList
 } from '../Interfaces/ICourse';
 import { ICourseUserList } from '../Interfaces/ICourseUser';
 import { IUserSimpleInfo } from '../Interfaces/IUser';
@@ -179,6 +179,21 @@ export default async function getCoursesList(
   }
 
   return ret;
+}
+
+export async function getCoursesSimpleList(
+  listIds: string[]
+): Promise<ICourseSimpleList[]>{
+  let courses: ICourseSimpleList[] = [];
+
+  if (listIds.length > 0) {
+    courses = await Courses.find(
+      { _id: { $in: listIds } },
+      { _id: 1, title: 1, banner: 1, slug: 1, description: 1 }
+    ).exec() as ICourseSimpleList[];
+  }
+
+  return courses;
 }
 
 export async function getCourseDetails({ query, infoUser, isPublic, projection } : any) : Promise<ICourseList | null> {

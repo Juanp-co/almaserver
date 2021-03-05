@@ -372,8 +372,8 @@
 
 /**
  * @api {get} /api/admin/users/:_id/referrals (05) Obtener listado de referidos de un usuario.
- * @apiVersion 0.0.11
- * @apiName getReferralsUsersListAdmin
+ * @apiVersion 0.0.21
+ * @apiName getReferralsUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
@@ -384,99 +384,82 @@
  * @apiSuccess {Object} data Datos del usuario y listado de referidos.
  *
  * @apiSuccess {Object} user Datos del usuario.
- * @apiSuccess {Number} totals Total de referidos.
- * @apiSuccess {Object[]} members Listado de referidos del usuario.
+ * @apiSuccess {Object[]} referrals Listado de referidos del usuario.
  *
- * @apiSuccess (user Object) {String|Null} referred Datos del usuario referido.
- * @apiSuccess (user Object) {String} _id ID del usuario.
- * @apiSuccess (user Object) {String} document Número de documento.
- * @apiSuccess (user Object) {String} names Nombres.
- * @apiSuccess (user Object) {String} lastNames Apellidos.
- *
- * @apiSuccess (referred Object and members Object[]) {String} _id ID del usuario.
- * @apiSuccess (referred Object and members Object[]) {String} document Número de documento.
- * @apiSuccess (referred Object and members Object[]) {String} names Nombres.
- * @apiSuccess (referred Object and members Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (referrals Object) {String|Null} referred Datos del usuario referido.
+ * @apiSuccess (referrals Object) {String} _id ID del usuario.
+ * @apiSuccess (referrals Object) {String} document Número de documento.
+ * @apiSuccess (referrals Object) {String} names Nombres.
+ * @apiSuccess (referrals Object) {String} lastNames Apellidos.
+ * @apiSuccess (referrals Object) {Number} TotalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Listado de referidos.",
-	"data": {
-		"user": {
-			"referred": {
-				"_id": "6022194c88342006d4a700f3",
-				"document": "CC12345675",
-				"names": "ANTHONY",
-				"lastNames": "VELÁSQUEZ"
-			},
-			"_id": "5fcf0821fc917d476c1cf3e3",
-			"document": "CC12345678",
-			"names": "USUARIO TRES",
-			"lastNames": "PRUEBA TRES"
+	"msg": "Listado de referidos del usuario.",
+	"referrals": [
+		{
+			"gender": 0,
+			"_id": "604068999b20e72f341972ec",
+			"document": "CC3123123123",
+			"names": "SUPERVISOR",
+			"lastNames": "PRUEBA",
+			"phone": "3161234567",
+			"totalsReferrals": 0
 		},
-		"totals": 1,
-		"members": [
-			{
-				"user": {
-					"_id": "6022194c88342006d4a700f3",
-					"document": "CC12345675",
-					"names": "ANTHONY",
-					"lastNames": "VELÁSQUEZ"
-				},
-				"totalsReferrals": 1
-			}
-		]
-	}
+		.
+		.
+		.
+	]
 }
  *
- * @apiSuccessExample {JSON} Success without members
- * HTTP/1.1 200 Success
- * {
-	"msg": "Listado de referidos.",
-	"data": {
-		"user": {
-			"referred": {
-				"_id": "6022194c88342006d4a700f3",
-				"document": "CC12345675",
-				"names": "ANTHONY",
-				"lastNames": "VELÁSQUEZ"
-			},
-			"_id": "5fcf0821fc917d476c1cf3e3",
-			"document": "CC12345678",
-			"names": "USUARIO TRES",
-			"lastNames": "PRUEBA TRES"
-		},
-		"totals": 0,
-		"members": []
-	}
-}
+ * @apiUse GlobalParamsErrors
  *
- * @apiSuccessExample {JSON} Success without referred data
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse UsersErrorIdOrNotFound
+ *
+ * @apiUse GlobalErrorSystem
+ *
+ */
+
+/**
+ * @api {get} /api/admin/users/:_id/courses (06) Obtener listado de cursos de un usuario.
+ * @apiVersion 0.0.21
+ * @apiName getCoursesUsersListAdmin
+ * @apiGroup UsersAdmin
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (admin).
+ *
+ * @apiParam (Path params) {String} _id ID del usuario.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} courses Listado de cursos.
+ *
+ * @apiSuccess (courses Object[]) {String} banner URL de la imagen del curso.
+ * @apiSuccess (courses Object[]) {Boolean} enable Indica si el curso se encuentra publicado.
+ * @apiSuccess (courses Object[]) {String} _id ID del curso.
+ * @apiSuccess (courses Object[]) {String} title Título del curso.
+ * @apiSuccess (courses Object[]) {String} description Descripción del curso.
+ * @apiSuccess (courses Object[]) {Boolean} approved Indica si el curso fue aprobado o no.
+ *
+ * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Listado de referidos.",
-	"data": {
-		"user": {
-			"referred": null,
-			"_id": "5fcf0821fc917d476c1cf3e3",
-			"document": "CC12345678",
-			"names": "USUARIO TRES",
-			"lastNames": "PRUEBA TRES"
+	"msg": "Listado de cursos del usuario.",
+	"courses": [
+		{
+			"_id": "603afb2309bf7a3428ac58f7",
+			"banner": "http://localhost:9000/images/1614784438.jpeg",
+			"slug": "curso-01",
+			"title": "CURSO 01",
+			"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.",
+			"approved": false
 		},
-		"totals": 1,
-		"members": [
-			{
-				"user": {
-					"_id": "6022194c88342006d4a700f3",
-					"document": "CC12345675",
-					"names": "ANTHONY",
-					"lastNames": "VELÁSQUEZ"
-				},
-				"totalsReferrals": 1
-			}
-		]
-	}
+		.
+		.
+		.
+	]
 }
  *
  * @apiUse GlobalParamsErrors
