@@ -11444,6 +11444,171 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/admin/users/:_id/courses",
+    "title": "(06) Obtener listado de cursos de un usuario.",
+    "version": "0.0.21",
+    "name": "getCoursesUsersListAdmin",
+    "group": "UsersAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Listado de cursos.</p>"
+          }
+        ],
+        "courses Object[]": [
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "banner",
+            "description": "<p>URL de la imagen del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra publicado.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "approved",
+            "description": "<p>Indica si el curso fue aprobado o no.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de cursos del usuario.\",\n\t\"courses\": [\n\t\t{\n\t\t\t\"_id\": \"603afb2309bf7a3428ac58f7\",\n\t\t\t\"banner\": \"http://localhost:9000/images/1614784438.jpeg\",\n\t\t\t\"slug\": \"curso-01\",\n\t\t\t\"title\": \"CURSO 01\",\n\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\"approved\": false\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/UsersAdmin.js",
+    "groupTitle": "UsersAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/admin/users/:_id",
     "title": "(03) Obtener detalles de un usuario.",
     "version": "0.0.3",
@@ -11690,8 +11855,8 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/users/:_id/referrals",
     "title": "(05) Obtener listado de referidos de un usuario.",
-    "version": "0.0.11",
-    "name": "getReferralsUsersListAdmin",
+    "version": "0.0.21",
+    "name": "getReferralsUsersAdmin",
     "group": "UsersAdmin",
     "header": {
       "fields": {
@@ -11745,101 +11910,61 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "totals",
-            "description": "<p>Total de referidos.</p>"
-          },
-          {
-            "group": "Success 200",
             "type": "Object[]",
             "optional": false,
-            "field": "members",
+            "field": "referrals",
             "description": "<p>Listado de referidos del usuario.</p>"
           }
         ],
-        "user Object": [
+        "referrals Object": [
           {
-            "group": "user Object",
+            "group": "referrals Object",
             "type": "String|Null",
             "optional": false,
             "field": "referred",
             "description": "<p>Datos del usuario referido.</p>"
           },
           {
-            "group": "user Object",
+            "group": "referrals Object",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del usuario.</p>"
           },
           {
-            "group": "user Object",
+            "group": "referrals Object",
             "type": "String",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "user Object",
+            "group": "referrals Object",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombres.</p>"
           },
           {
-            "group": "user Object",
+            "group": "referrals Object",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
-          }
-        ],
-        "referred Object and members Object[]": [
-          {
-            "group": "referred Object and members Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>ID del usuario.</p>"
           },
           {
-            "group": "referred Object and members Object[]",
-            "type": "String",
+            "group": "referrals Object",
+            "type": "Number",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "referred Object and members Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "names",
-            "description": "<p>Nombres.</p>"
-          },
-          {
-            "group": "referred Object and members Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "field": "TotalReferrals",
+            "description": "<p>Total de referidos.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos.\",\n\t\"data\": {\n\t\t\"user\": {\n\t\t\t\"referred\": {\n\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t},\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\"lastNames\": \"PRUEBA TRES\"\n\t\t},\n\t\t\"totals\": 1,\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"user\": {\n\t\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t\t},\n\t\t\t\t\"totalsReferrals\": 1\n\t\t\t}\n\t\t]\n\t}\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Success without members",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos.\",\n\t\"data\": {\n\t\t\"user\": {\n\t\t\t\"referred\": {\n\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t},\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\"lastNames\": \"PRUEBA TRES\"\n\t\t},\n\t\t\"totals\": 0,\n\t\t\"members\": []\n\t}\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Success without referred data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos.\",\n\t\"data\": {\n\t\t\"user\": {\n\t\t\t\"referred\": null,\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\"lastNames\": \"PRUEBA TRES\"\n\t\t},\n\t\t\"totals\": 1,\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"user\": {\n\t\t\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\t\t\"document\": \"CC12345675\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t\t},\n\t\t\t\t\"totalsReferrals\": 1\n\t\t\t}\n\t\t]\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del usuario.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"604068999b20e72f341972ec\",\n\t\t\t\"document\": \"CC3123123123\",\n\t\t\t\"names\": \"SUPERVISOR\",\n\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         }
       ]
