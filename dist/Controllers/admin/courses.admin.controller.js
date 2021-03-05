@@ -208,8 +208,7 @@ async function updateBannerCourse(req, res) {
         if (course.banner) {
             fs_1.unlinkSync(`./${course.toObject({ getters: false }).banner}`);
         }
-        validate.data.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
-        course.banner = validate.data.banner;
+        course.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
         await course.save();
         return res.json({
             msg: 'Se ha actualizado la imagen del curso exitosamente.',

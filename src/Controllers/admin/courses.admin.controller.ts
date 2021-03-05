@@ -213,8 +213,7 @@ export async function updateBannerCourse(req: Request, res: Response) : Promise<
     if (course.banner) {
       unlinkSync(`./${course.toObject({ getters: false }).banner}`);
     }
-    validate.data.banner = await checkAndUploadPicture(validate.data.banner);
-    course.banner = validate.data.banner;
+    course.banner = await checkAndUploadPicture(validate.data.banner);
     await course.save();
 
     return res.json({
