@@ -1,5 +1,5 @@
 /**
- * @api {get} /api/admin/users/counters (00) Obtener total de usuarios.
+ * @api {get} /api/admin/users/counters (00) Obtener total de miembros.
  * @apiVersion 0.0.16
  * @apiName countersUsersAdmin
  * @apiGroup UsersAdmin
@@ -14,7 +14,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Total usuarios.",
+    "msg": "Total miembros.",
     "totals": 2
 }
  *
@@ -26,7 +26,7 @@
  */
 
 /**
- * @api {get} /api/admin/users (01) Obtener listado de usuarios.
+ * @api {get} /api/admin/users (01) Obtener listado de miembros.
  * @apiVersion 0.0.16
  * @apiName getUsersAdmin
  * @apiGroup UsersAdmin
@@ -42,10 +42,10 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} users Listado de preguntas de seguridad.
  *
- * @apiSuccess (users Object[]) {Number|Null} gender ID (array index) del sexo del usuario.
- * @apiSuccess (users Object[]) {Number} role Role del usuario.
+ * @apiSuccess (users Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (users Object[]) {Number} role Role del miembro.
  * @apiSuccess (users Object[]) {String} created_at Fecha de la última actualización del perfil.
- * @apiSuccess (users Object[]) {String} _id ID del usuario.
+ * @apiSuccess (users Object[]) {String} _id ID del miembro.
  * @apiSuccess (users Object[]) {String} phone Número de teléfono.
  * @apiSuccess (users Object[]) {String} document Número de documento.
  * @apiSuccess (users Object[]) {String} names Nombres.
@@ -104,7 +104,7 @@
  */
 
 /**
- * @api {post} /api/admin/users (02) Crear nuevo usuario.
+ * @api {post} /api/admin/users (02) Crear nuevo miembro.
  * @apiVersion 0.0.17
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
@@ -114,7 +114,7 @@
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
  * @apiParam {String} document Número de documento del identidad.
- * @apiParam {Number} role Rol para el usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
+ * @apiParam {Number} role Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -131,7 +131,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 201 Created
  * {
-    "msg": "Se ha registrado el nuevo usuario exitosamente.",
+    "msg": "Se ha registrado el nuevo miembro exitosamente.",
 }
  *
  * @apiUse GlobalParamsErrors
@@ -151,7 +151,7 @@
     "errors": [
         {
             "input": "email",
-            "msg": "Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente."
+            "msg": "Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente."
         },
         {
             "input": "document",
@@ -169,14 +169,14 @@
  */
 
 /**
- * @api {get} /api/admin/users/:_id (03) Obtener detalles de un usuario.
+ * @api {get} /api/admin/users/:_id (03) Obtener detalles de un miembro.
  * @apiVersion 0.0.3
  * @apiName getDetailsUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path params) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del miembro.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos de la sesión.
@@ -186,11 +186,11 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Number} role Role del usuario.
+ * @apiSuccess (data Object) {Number} role Role del miembro.
  * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
- * @apiSuccess (data Object) {String} _id ID del usuario.
+ * @apiSuccess (data Object) {String} _id ID del miembro.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
  * @apiSuccess (data Object) {String} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
@@ -203,7 +203,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Detalles del usuario.",
+    "msg": "Detalles del miembro.",
     "user": {
         "educationLevel": null,
         "bloodType": 1,
@@ -237,14 +237,14 @@
  */
 
 /**
- * @api {put} /api/admin/users/:_id (04) Actualizar datos de un usuario.
+ * @api {put} /api/admin/users/:_id (04) Actualizar datos de un miembro.
  * @apiVersion 0.0.3
  * @apiName changeRoleUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path params) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del miembro.
  *
  * @apiParam {String} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
@@ -299,14 +299,14 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Number} role Role del usuario.
+ * @apiSuccess (data Object) {Number} role Role del miembro.
  * @apiSuccess (data Object) {Number} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number} city ID (array index) de la ciudad.
  * @apiSuccess (data Object) {String} locality Nombre de la localidad.
  * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
- * @apiSuccess (data Object) {String} _id ID del usuario.
+ * @apiSuccess (data Object) {String} _id ID del miembro.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
  * @apiSuccess (data Object) {String} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
@@ -316,7 +316,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Se han actualizado los datos del usuario exitosamente.",
+	"msg": "Se han actualizado los datos del miembro exitosamente.",
 	"user": {
 		"gender": 2,
 		"birthday": "1994-07-07",
@@ -371,23 +371,23 @@
  */
 
 /**
- * @api {get} /api/admin/users/:_id/referrals (05) Obtener listado de referidos de un usuario.
+ * @api {get} /api/admin/users/:_id/referrals (05) Obtener listado de referidos de un miembro.
  * @apiVersion 0.0.21
  * @apiName getReferralsUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path params) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del miembro.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object} data Datos del usuario y listado de referidos.
+ * @apiSuccess {Object} data Datos del miembro y listado de referidos.
  *
- * @apiSuccess {Object} user Datos del usuario.
- * @apiSuccess {Object[]} referrals Listado de referidos del usuario.
+ * @apiSuccess {Object} user Datos del miembro.
+ * @apiSuccess {Object[]} referrals Listado de referidos del miembro.
  *
- * @apiSuccess (referrals Object) {String|Null} referred Datos del usuario referido.
- * @apiSuccess (referrals Object) {String} _id ID del usuario.
+ * @apiSuccess (referrals Object) {String|Null} referred Datos del miembro referido.
+ * @apiSuccess (referrals Object) {String} _id ID del miembro.
  * @apiSuccess (referrals Object) {String} document Número de documento.
  * @apiSuccess (referrals Object) {String} names Nombres.
  * @apiSuccess (referrals Object) {String} lastNames Apellidos.
@@ -396,7 +396,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Listado de referidos del usuario.",
+	"msg": "Listado de referidos del miembro.",
 	"referrals": [
 		{
 			"gender": 0,
@@ -424,14 +424,14 @@
  */
 
 /**
- * @api {get} /api/admin/users/:_id/courses (06) Obtener listado de cursos de un usuario.
+ * @api {get} /api/admin/users/:_id/courses (06) Obtener listado de cursos de un miembro.
  * @apiVersion 0.0.21
  * @apiName getCoursesUsersListAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path params) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del miembro.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} courses Listado de cursos.
@@ -446,7 +446,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Listado de cursos del usuario.",
+	"msg": "Listado de cursos del miembro.",
 	"courses": [
 		{
 			"_id": "603afb2309bf7a3428ac58f7",
@@ -473,16 +473,16 @@
  */
 
 /*
- * @api {put} /api/admin/users/:_id (06) Cambiar rol de un usuario.
+ * @api {put} /api/admin/users/:_id (06) Cambiar rol de un miembro.
  * @apiVersion 0.0.3
  * @apiName updateUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Path params) {String} _id ID del usuario.
+ * @apiParam (Path params) {String} _id ID del miembro.
  *
- * @apiParam {Number} role Role para el usuario.
+ * @apiParam {Number} role Role para el miembro.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -494,7 +494,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Se asignado el nuevo rol al usuario exitosamente."
+    "msg": "Se asignado el nuevo rol al miembro exitosamente."
 }
  *
  * @apiUse GlobalParamsErrors

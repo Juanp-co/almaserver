@@ -7,10 +7,10 @@
  * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object[]} referrals Listado de referidos del usuario.
+ * @apiSuccess {Object[]} referrals Listado de referidos del miembro.
  *
- * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del usuario.
- * @apiSuccess (referrals Object[]) {String} _id ID del usuario.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
  * @apiSuccess (referrals Object[]) {String} document Número de documento.
  * @apiSuccess (referrals Object[]) {String} names Nombres.
  * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
@@ -60,7 +60,7 @@
  */
 
 /**
- * @api {get} /api/user/referrals/:memberId (01) Obtener datos de un usuario referido.
+ * @api {get} /api/user/referrals/:memberId (01) Obtener datos de un miembro referido.
  * @apiVersion 0.0.19
  * @apiName getDataMemberUserReferrals
  * @apiGroup UserReferrals
@@ -76,8 +76,8 @@
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
  * @apiSuccess (data Object) {String} totalReferrals Total de referidos.
  *
- * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del usuario.
- * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del usuario.
+ * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
  * @apiSuccess (member Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (member Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (member Object) {String|Null} locality Nombre de la localidad.

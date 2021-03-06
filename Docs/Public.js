@@ -1,5 +1,5 @@
 /**
- * @api {post} /api/register (00) Registro de usuario.
+ * @api {post} /api/register (00) Registro.
  * @apiVersion 0.0.16
  * @apiName registerPublic
  * @apiGroup Public
@@ -100,14 +100,14 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Number} role Role del usuario.
+ * @apiSuccess (data Object) {Number} role Role del miembro.
  * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (data Object) {String} locality Nombrede la localidad.
  * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
- * @apiSuccess (data Object) {String} _id ID del usuario.
+ * @apiSuccess (data Object) {String} _id ID del miembro.
  * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
  * @apiSuccess (data Object) {String} document Número de documento.
@@ -229,10 +229,10 @@
  * @apiSuccess (events Object[]) {String} initDate Hora de inicio del evento.
  * @apiSuccess (events Object[]) {String} endDate Hora de finalización del evento.
  * @apiSuccess (events Object[]) {Array|Number} toRoles Roles a los que va dirigido.
- * @apiSuccess (events Object[]) {Object} user Información del usuario que agregó el evento.
+ * @apiSuccess (events Object[]) {Object} user Información del miembro que agregó el evento.
  *
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} _id ID del miembro.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
  * @apiSuccess (user Object) {String} lastNames Apellido(s).
@@ -300,10 +300,10 @@
  * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (event Object) {Array|Number} toRoles Roles a los que va dirigido.
- * @apiSuccess (event Object) {Object} user Información del usuario que agregó el evento.
+ * @apiSuccess (event Object) {Object} user Información del miembro que agregó el evento.
  *
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} _id ID del miembro.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
  * @apiSuccess (user Object) {String} lastNames Apellido(s).

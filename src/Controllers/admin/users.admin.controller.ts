@@ -65,7 +65,7 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
     const totals = await Users.find(query).countDocuments().exec();
 
     return res.json({
-      msg: `Total usuarios.`,
+      msg: `Total miembros.`,
       totals
     });
   } catch (error: any) {
@@ -92,7 +92,7 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
     await referrals.save();
 
     return res.status(201).json({
-      msg: `Se ha registrado el nuevo usuario exitosamente.`,
+      msg: `Se ha registrado el nuevo miembro exitosamente.`,
       password
     });
 
@@ -112,7 +112,7 @@ export async function showUser(req: Request, res: Response): Promise<Response> {
     if (!user) return responseUsersAdmin(res, 1);
 
     return res.json({
-      msg: `Detalles del usuario.`,
+      msg: `Detalles del miembro.`,
       user
     });
   } catch (error: any) {
@@ -162,7 +162,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     await user.save();
 
     return res.json({
-      msg: `Se han actualizado los datos del usuario exitosamente.`,
+      msg: `Se han actualizado los datos del miembro exitosamente.`,
       user
     });
   } catch (error: any) {
@@ -190,7 +190,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 //     await disableTokenDBForUserId([_id]);
 //
 //     return res.json({
-//       msg: `Se asignado el nuevo rol al usuario exitosamente.`
+//       msg: `Se asignado el nuevo rol al miembro exitosamente.`
 //     });
 //   } catch (error: any) {
 //     return returnError(res, error, `${path}/changeRoleUser`);
@@ -238,7 +238,7 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
     await user.delete();
 
     return res.json({
-      msg: `Se ha eliminado el usuario exitosamente.`
+      msg: `Se ha eliminado el miembro exitosamente.`
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/deleteUser`);
@@ -287,7 +287,7 @@ export async function getCoursesUser(req: Request, res: Response): Promise<Respo
 
 
     return res.json({
-      msg: `Listado de cursos del usuario.`,
+      msg: `Listado de cursos del miembro.`,
       courses: ret
     });
   } catch (error: any) {
@@ -337,7 +337,7 @@ export async function getReferralsUser(req: Request, res: Response): Promise<Res
 
 
     return res.json({
-      msg: `Listado de referidos del usuario.`,
+      msg: `Listado de referidos del miembro.`,
       referrals: ret
     });
   } catch (error: any) {

@@ -19,13 +19,13 @@ async function getReferrals(req, res) {
         };
         if (!Validations_1.checkObjectId(_id)) {
             return res.status(401).json({
-                msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
+                msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
             });
         }
         const user = await UsersActions_1.getData(_id, { _id: 1, names: 1, lastNames: 1, document: 1, referred: 1, gender: 1 });
         if (!user) {
             return res.status(404).json({
-                msg: 'Disculpe, pero el usuario seleccionado no existe.'
+                msg: 'Disculpe, pero el miembro seleccionado no existe.'
             });
         }
         ret.user = Object.assign({}, user._doc);

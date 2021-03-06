@@ -19,7 +19,7 @@ export default async function getReferrals(req: Request, res: Response): Promise
 
     if (!checkObjectId(_id)) {
       return res.status(401).json({
-        msg: 'Disculpe, pero el usuario seleccionado es incorrecto.'
+        msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
       });
     }
 
@@ -27,7 +27,7 @@ export default async function getReferrals(req: Request, res: Response): Promise
 
     if (!user) {
       return res.status(404).json({
-        msg: 'Disculpe, pero el usuario seleccionado no existe.'
+        msg: 'Disculpe, pero el miembro seleccionado no existe.'
       });
     }
 

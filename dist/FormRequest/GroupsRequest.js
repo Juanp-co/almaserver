@@ -32,7 +32,7 @@ function validateIdsMembers(data) {
     };
     const errors = [];
     if (!data.members) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n).', 'members'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n).', 'members'));
     }
     else if (data.members && typeof data.members !== 'object') {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero los datos enviados son incorrectos.', 'members'));
@@ -45,7 +45,7 @@ function validateIdsMembers(data) {
                 if (Validations_1.checkObjectId(listIds[i]))
                     ret.members.push(listIds[i]);
                 else {
-                    errors.push(GlobalFunctions_1.setError('Disculpe, pero alguno de los usuarios seleccionados son incorrectos.', 'members'));
+                    errors.push(GlobalFunctions_1.setError('Disculpe, pero alguno de los miembros seleccionados son incorrectos.', 'members'));
                     break;
                 }
             }

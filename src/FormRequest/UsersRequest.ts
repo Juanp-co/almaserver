@@ -18,6 +18,7 @@ import IUser, {
 export default async function validateSimpleRegister(data: IUserSimpleRegister, admin?: boolean | null): Promise<{ data: IUserSimpleRegister; errors: any }> {
   const ret = {
     email: null,
+    phone: null,
     password: null,
     document: null,
     names: null,
@@ -35,7 +36,7 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
   } else if (await checkIfExistEmail(data.email.toLowerCase())) {
     errors.push(
       setError(
-        'Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.',
+        'Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
         'email'
       )
     );
@@ -83,9 +84,12 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
   } else ret.lastNames = data.lastNames.toUpperCase();
 
   // referred
-  if (checkDocument(data.referred)) {
-    ret.referred = await getIdUserFromDocument(data.referred);
+  if (data.referred && checkDocument(data.referred)) {
+    ret.referred = await getIdUserFromDocument(data.referred.toUpperCase());
   }
+
+  // phone
+  if (checkPhone(data.phone)) ret.phone = data.phone;
 
   if (admin) {
     if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
@@ -128,7 +132,7 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
     } else if (await checkIfExistDocument(data.document, _id)) {
       errors.push(
         setError(
-          'Disculpe, pero el número de documento ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.',
+          'Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
           'email'
         )
       );
@@ -145,7 +149,7 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
   } else if (await checkIfExistEmail(data.email.toLowerCase(), _id)) {
     errors.push(
       setError(
-        'Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.',
+        'Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
         'email'
       )
     );

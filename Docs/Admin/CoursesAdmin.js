@@ -165,7 +165,7 @@
  * @apiSuccess {Object} course Datos del curso.
  *
  * @apiSuccess (course Object) {String} _id ID del curso.
- * @apiSuccess (course Object) {Object|Null} user Datos del usuario creador del curso.
+ * @apiSuccess (course Object) {Object|Null} user Datos del miembro creador del curso.
  * @apiSuccess (course Object) {String} speaker Orador del curso.
  * @apiSuccess (course Object) {String} speakerPosition Cargo o posición del orador.
  * @apiSuccess (course Object) {String} code Código del curso.
@@ -174,12 +174,12 @@
  * @apiSuccess (course Object) {String} banner URL de la imagen del curso.
  * @apiSuccess (course Object) {String} description Descripción del curso.
  * @apiSuccess (course Object) {Object[]} temary Listado de temas del curso.
- * @apiSuccess (course Object) {Object[]} levels Listado de cursos que el usuario debe visualizar antes.
+ * @apiSuccess (course Object) {Object[]} levels Listado de cursos que el miembro debe visualizar antes.
  * @apiSuccess (course Object) {Number[]} toRoles Roles a los que va dirigido el curso.
  * @apiSuccess (course Object) {Boolean} enable Indica si el curso se encuentra disponible al público.
  * @apiSuccess (course Object) {String} created_at Fecha de registro del curso.
  * @apiSuccess (course Object) {String} updated_at Fecha de la última actualización del curso.
- * @apiSuccess (course Object) {Number} totalsUsers Total de usuarios con el curso.
+ * @apiSuccess (course Object) {Number} totalsUsers Total de miembros con el curso.
  *
  * @apiSuccess (temary Object[]) {String} _id ID del tema.
  * @apiSuccess (temary Object[]) {String} title Título del tema.
@@ -208,7 +208,7 @@
  * @apiSuccess (levels Object[]) {String} description Descripción del curso.
  *
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo.
- * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} _id ID del miembro.
  * @apiSuccess (user Object) {String} phone Teléfono.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).

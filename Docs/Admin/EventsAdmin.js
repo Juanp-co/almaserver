@@ -20,10 +20,10 @@
  * @apiSuccess (events Object[]) {String} initDate Hora de inicio del evento.
  * @apiSuccess (events Object[]) {String} endDate Hora de finalización del evento.
  * @apiSuccess (events Object[]) {Array|Number} toRoles Roles a los que va dirigido.
- * @apiSuccess (events Object[]) {Object} user Información del usuario que agregó el evento.
+ * @apiSuccess (events Object[]) {Object} user Información del miembro que agregó el evento.
  *
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} _id ID del miembro.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
  * @apiSuccess (user Object) {String} lastNames Apellido(s).
@@ -105,10 +105,10 @@
  * @apiSuccess (events Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (events Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (events Object) {Array|Number} toRoles Roles a los que va dirigido.
- * @apiSuccess (events Object) {Object} user Información del usuario que agregó el evento.
+ * @apiSuccess (events Object) {Object} user Información del miembro que agregó el evento.
  *
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} _id ID del miembro.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
  * @apiSuccess (user Object) {String} lastNames Apellido(s).
@@ -193,9 +193,9 @@
  * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (event Object) {Array|Number} toRoles Roles a los que va dirigido.
- * @apiSuccess (event Object) {Object} user Información del usuario que agregó el evento.
+ * @apiSuccess (event Object) {Object} user Información del miembro que agregó el evento.
  *
- * @apiSuccess (user Object) {String} _id ID del usuario.
+ * @apiSuccess (user Object) {String} _id ID del miembro.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {String} names Nombre(s).
  * @apiSuccess (user Object) {String} lastNames Apellido(s).

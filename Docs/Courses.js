@@ -94,7 +94,7 @@
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} course Detalles del curso.
- * @apiSuccess {Object|Null} dataCourseUser Progreso del curso del usuario.
+ * @apiSuccess {Object|Null} dataCourseUser Progreso del curso del miembro.
  *
  * @apiSuccess (course Object) {String} _id ID del curso.
  * @apiSuccess (course Object) {String} speaker Nombre completo del orador del curso.
@@ -105,7 +105,7 @@
  * @apiSuccess (course Object) {String} banner Url de la imagen del curso.
  * @apiSuccess (course Object) {String} description Descripción del curso.
  * @apiSuccess (course Object) {Object[]} temary Listado de temas del curso.
- * @apiSuccess (course Object) {Object[]} levels Listado de cursos que el usuario debe completar antes continuar.
+ * @apiSuccess (course Object) {Object[]} levels Listado de cursos que el miembro debe completar antes continuar.
  *
  * @apiSuccess (dataCourseUser Object) {String} _id ID del registro.
  * @apiSuccess (dataCourseUser Object) {Object[]} temary Actividad de los temas del curso.
@@ -118,7 +118,7 @@
  * @apiSuccess (temary Object[] dataCourseUser) {Boolean} approved Indica si el tema fue aprobado o no.
  * @apiSuccess (temary Object[] dataCourseUser) {String} approvedDate Fecha de aprobación del tema.
  * @apiSuccess (temary Object[] dataCourseUser) {String} temaryId ID del tema relacionado.
- * @apiSuccess (temary Object[] dataCourseUser) {Object[]} content Lisado de contenido del tema (Avances del usuario).
+ * @apiSuccess (temary Object[] dataCourseUser) {Object[]} content Lisado de contenido del tema (Avances del miembro).
  * @apiSuccess (temary Object[] dataCourseUser) {Object[]} test Listado de pruebas del tema.
  *
  * @apiSuccess (content Object[] temary dataCourseUser) {Number} view Valor de vista del contenido (0 = sin ver | 1 = viendo | 2 = visto).
@@ -317,7 +317,7 @@
  */
 
 /**
- * @api {post} /api/courses/:slug/add (03) Agergar un curso al listado del usuario.
+ * @api {post} /api/courses/:slug/add (03) Agergar un curso al listado del miembro.
  * @apiVersion 0.0.18
  * @apiName addCourseUser
  * @apiGroup Courses
@@ -331,7 +331,7 @@
  *
  * @apiSuccess (added Object) {Boolean} approved Indica si el curso está aprobado.
  * @apiSuccess (added Object) {String} _id ID del registro.
- * @apiSuccess (added Object) {String} userid ID del usuario.
+ * @apiSuccess (added Object) {String} userid ID del miembro.
  * @apiSuccess (added Object) {String} courseId ID del curso.
  * @apiSuccess (added Object) {Object[]} temary Actividad de los temas del curso.
  * @apiSuccess (added Object) {String} created_at Fecha de registro.
@@ -342,7 +342,7 @@
  * @apiSuccess (temary Object[]) {Boolean} approved Indica si el tema fue aprobado o no.
  * @apiSuccess (temary Object[]) {String|Null} approvedDate Fecha de aprobación del tema.
  * @apiSuccess (temary Object[]) {String} temaryId ID del tema.
- * @apiSuccess (temary Object[]) {Object[]} content Contenido del tema (histórico de usuario).
+ * @apiSuccess (temary Object[]) {Object[]} content Contenido del tema (histórico de miembro).
  * @apiSuccess (temary Object[]) {Object[]} tests Listado de pruebas realizadas para el tema.
  *
  * @apiSuccess (content Object[]) {Number} view Valor de vista del contenido (0 = sin ver | 1 = viendo | 2 = visto).
@@ -494,18 +494,18 @@
  * @apiName setWatchingOrViewedContentThemeCourses
  * @apiGroup Courses
  *
- * @apiDescription Este endpoint es para actualizar el progreso del usuario en relación al contenido de un tema.
+ * @apiDescription Este endpoint es para actualizar el progreso del miembro en relación al contenido de un tema.
  * En la ruta, el parámetro ':action' indica la acción a realizar, donde los valores:
  *
- * '1' indica que el usuario está viendo el contenido.
- * '2' indica que el usuario ya vió el contenido.
+ * '1' indica que el miembro está viendo el contenido.
+ * '2' indica que el miembro ya vió el contenido.
  *
  * Automáticamente, el servicio realiza una actualización del estado en el que se encuentra el tema en relación a su contenido.
  * Ejemplo:
  *
- * 1. Si el usuario no ha visto ningún contenido del TEMA, este tendrá un valor de cero (0), que significa 'NO VISTO'.
- * 2. Si el usuario ha visto al menos un contenido del TEMA, este tendrá un valor de uno (1), que significa 'VIENDO' o 'VISUALIZANDO'.
- * 3. Si el usuario ha visto todos los contenidos del TEMA, este tendrá un valor de dos (2), que significa que ha 'VISTO' completamente el contenido.
+ * 1. Si el miembro no ha visto ningún contenido del TEMA, este tendrá un valor de cero (0), que significa 'NO VISTO'.
+ * 2. Si el miembro ha visto al menos un contenido del TEMA, este tendrá un valor de uno (1), que significa 'VIENDO' o 'VISUALIZANDO'.
+ * 3. Si el miembro ha visto todos los contenidos del TEMA, este tendrá un valor de dos (2), que significa que ha 'VISTO' completamente el contenido.
  *
  * Si el punto tres (3) se cumple, podrá solicita la prueba respectiva del tema.
  * Ver punto: "(06) Obtener prueba (examen) para aprobar un tema" en este mismo grupo de endpoints.

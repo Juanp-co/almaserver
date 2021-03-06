@@ -386,8 +386,8 @@ export function returnErrorId(res: Response, title = 0) : Response {
 
 export function returnCantEdit(res: Response, index = 0) : Response {
   const msg = [
-    'Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.',
-    'Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.'
+    'Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.',
+    'Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listas.'
   ];
   return res.status(422).json({
     msg: msg[index],
