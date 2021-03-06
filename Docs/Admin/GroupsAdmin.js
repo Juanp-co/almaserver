@@ -122,7 +122,7 @@
  * @apiSuccess (group Object) {String} code Código del grupo.
  * @apiSuccess (group Object) {String} created_at Fecha de creación del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del contenido del grupo.
- * @apiSuccess (group Object) {String} userid ID del usuario que creó el grupo.
+ * @apiSuccess (group Object) {String} userid ID del miembro que creó el grupo.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 201 Created
@@ -193,14 +193,14 @@
  * @apiSuccess {Object} group Datos del grupo.
  *
  * @apiSuccess (group Object) {String} _id ID del grupo.
- * @apiSuccess (group Object) {Object|Null} user Datos del usuario creador del grupo.
+ * @apiSuccess (group Object) {Object|Null} user Datos del miembro creador del grupo.
  * @apiSuccess (group Object) {String} name Nombre del grupo.
  * @apiSuccess (group Object) {String} code Código del grupo.
  * @apiSuccess (group Object) {Object[]} members Listado de miembros pertenecientes al grupo
  * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (members Object[]) {String} _id ID del usuario.
+ * @apiSuccess (members Object[]) {String} _id ID del miembro.
  * @apiSuccess (members Object[]) {String} document Número de documento.
  * @apiSuccess (members Object[]) {String} names Nombre(s).
  * @apiSuccess (members Object[]) {String} lastNames Apellido(s).
@@ -354,7 +354,7 @@
  *
  * @apiParam (Path params) {String} _id ID del grupo.
  *
- * @apiParam {String[]} members Listado de IDs de los usuarios a agregar al grupo.
+ * @apiParam {String[]} members Listado de IDs de los miembros a agregar al grupo.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -366,7 +366,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} notInserts[notInserts] Listado de miembros no agregados (en caso de aplicar).
  *
- * @apiSuccess (notInserts Object[]) {String} _id ID del usuario.
+ * @apiSuccess (notInserts Object[]) {String} _id ID del miembro.
  * @apiSuccess (notInserts Object[]) {String} document Número de documento.
  * @apiSuccess (notInserts Object[]) {String} names Nombre(s).
  * @apiSuccess (notInserts Object[]) {String} lastNames Apellido(s).
@@ -409,7 +409,7 @@
   "errors": [
     {
       "input": "members",
-      "msg": "Disculpe, pero alguno de los usuarios seleccionados son incorrectos."
+      "msg": "Disculpe, pero alguno de los miembros seleccionados son incorrectos."
     }
   ]
 }
@@ -433,7 +433,7 @@
   "errors": [
     {
       "input": "members",
-      "msg": "Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n)."
+      "msg": "Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n)."
     }
   ]
 }
@@ -452,7 +452,7 @@
  *
  * @apiParam (Path params) {String} _id ID del grupo.
  *
- * @apiParam {String[]} members Listado de IDs de los usuarios a remover del grupo.
+ * @apiParam {String[]} members Listado de IDs de los miembros a remover del grupo.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -488,7 +488,7 @@
     "errors": [
         {
             "input": "members",
-            "msg": "Disculpe, pero alguno de los usuarios seleccionados son incorrectos."
+            "msg": "Disculpe, pero alguno de los miembros seleccionados son incorrectos."
         }
     ]
   }
@@ -512,7 +512,7 @@
     "errors": [
         {
             "input": "members",
-            "msg": "Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n)."
+            "msg": "Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n)."
         }
     ]
   }

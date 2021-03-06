@@ -7,7 +7,7 @@
  * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object|Null} group Datos del grupo familiar del usuario.
+ * @apiSuccess {Object|Null} group Datos del grupo familiar del miembro.
  *
  * @apiSuccess (group Object) {String} _id ID del grupo.
  * @apiSuccess (group Object) {String} name Nombre del grupo.
@@ -16,11 +16,11 @@
  * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del usuario.
- * @apiSuccess (members Object[]) {String} _id ID del usuario.
+ * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (members Object[]) {String} _id ID del miembro.
  * @apiSuccess (members Object[]) {String} names Nombre(s).
  * @apiSuccess (members Object[]) {String} lastNames Apellido(s).
- * @apiSuccess (members Object[]) {String} direction Dirección del usuario.
+ * @apiSuccess (members Object[]) {String} direction Dirección del miembro.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -75,8 +75,8 @@
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
  * @apiSuccess (data Object) {String} totalReferrals Total de referidos.
  *
- * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del usuario.
- * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del usuario.
+ * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
  * @apiSuccess (member Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (member Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (member Object) {String|Null} locality Nombre de la localidad.

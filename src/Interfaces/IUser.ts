@@ -62,6 +62,7 @@ export interface IUserData {
 
 export interface IUserSimpleRegister {
   email: IUser['email'];
+  phone?: IUser['phone'];
   password: IUser['password'];
   document: IUser['document'];
   names: IUser['names'];

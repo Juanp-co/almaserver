@@ -16,7 +16,7 @@
  * @apiSuccess (report Object) {Object} courses Datos de los reportes para cursos.
  * @apiSuccess (report Object) {Object} events Datos de los reportes para eventos.
  * @apiSuccess (report Object) {Object} groups Datos de los reportes para grupos.
- * @apiSuccess (report Object) {Object} users Datos de los reportes para usuarios.
+ * @apiSuccess (report Object) {Object} users Datos de los reportes para miembros.
  *
  * @apiSuccess (courses, events and groups Object) {Object} title Título de grupo de datos.
  * @apiSuccess (courses, events and groups Object) {Object[]} data Datos para el reporte.

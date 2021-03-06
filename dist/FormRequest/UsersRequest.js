@@ -26,6 +26,7 @@ const Validations_1 = require("../Functions/Validations");
 async function validateSimpleRegister(data, admin) {
     const ret = {
         email: null,
+        phone: null,
         password: null,
         document: null,
         names: null,
@@ -39,7 +40,7 @@ async function validateSimpleRegister(data, admin) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
     }
     else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
     }
     else {
         ret.email = data.email.toLowerCase();
@@ -75,9 +76,12 @@ async function validateSimpleRegister(data, admin) {
     else
         ret.lastNames = data.lastNames.toUpperCase();
     // referred
-    if (Validations_1.checkDocument(data.referred)) {
-        ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred);
+    if (data.referred && Validations_1.checkDocument(data.referred)) {
+        ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred.toUpperCase());
     }
+    // phone
+    if (Validations_1.checkPhone(data.phone))
+        ret.phone = data.phone;
     if (admin) {
         if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
             ret.role = data.role;
@@ -115,7 +119,7 @@ async function validateUpdate(data, _id, admin = false) {
             errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
         }
         else if (await UsersActions_1.default(data.document, _id)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
         }
         else {
             ret.document = data.document.toLowerCase();
@@ -126,7 +130,7 @@ async function validateUpdate(data, _id, admin = false) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
     }
     else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase(), _id)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.', 'email'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
     }
     else {
         ret.email = data.email.toLowerCase();

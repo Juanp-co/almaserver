@@ -57,7 +57,7 @@ async function migration() {
 
     showConsoleLog(1, '==========================================================');
 
-    showConsoleLog(1, `Importando listado de referidos de los usuarios ...`);
+    showConsoleLog(1, `Importando listado de referidos de los miembros ...`);
     await Referrals.insertMany(referrals);
 
     showConsoleLog(1, '==========================================================');
@@ -83,7 +83,7 @@ async function migration() {
 
       showConsoleLog(1, '==========================================================');
 
-      showConsoleLog(1, `Importando datos de los cursos de los usuarios.`);
+      showConsoleLog(1, `Importando datos de los cursos de los miembros.`);
       await CoursesUsers.insertMany(coursesUsers); // save all
     }
     else showConsoleLog(1, `Ocurrió un error al momento de importar los cursos.`);

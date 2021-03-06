@@ -143,11 +143,11 @@ export function responseUsersAdmin(res: Response, option: number) : Response {
   let status = 500;
   switch (option) {
     case 0:
-      msg = 'Disculpe, pero el usuario seleccionado es incorrecto.';
+      msg = 'Disculpe, pero el miembro seleccionado es incorrecto.';
       status = 422;
       break;
     case 1:
-      msg = 'Disculpe, pero el usuario seleccionado no existe.';
+      msg = 'Disculpe, pero el miembro seleccionado no existe.';
       status = 404;
       break;
     case 2:

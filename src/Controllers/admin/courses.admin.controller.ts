@@ -271,8 +271,12 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
 
     if (exists > 0)
       return res.status(422).json({
-        msg: 'Disculpe, pero el curso no puede ser eliminado. Los usuarios ya poseen el curso en sus listados.',
+        msg: 'Disculpe, pero el curso no puede ser eliminado. Los miembros ya poseen el curso en sus listados.',
       });
+
+    if (course.banner) {
+      unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+    }
 
     await course.delete();
 

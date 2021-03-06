@@ -70,7 +70,7 @@ async function getUsersCounters(req, res) {
         const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
         const totals = await Users_1.default.find(query).countDocuments().exec();
         return res.json({
-            msg: `Total usuarios.`,
+            msg: `Total miembros.`,
             totals
         });
     }
@@ -94,7 +94,7 @@ async function saveUser(req, res) {
         const referrals = new Referrals_1.default({ _id: user._id });
         await referrals.save();
         return res.status(201).json({
-            msg: `Se ha registrado el nuevo usuario exitosamente.`,
+            msg: `Se ha registrado el nuevo miembro exitosamente.`,
             password
         });
     }
@@ -112,7 +112,7 @@ async function showUser(req, res) {
         if (!user)
             return UsersActions_1.responseUsersAdmin(res, 1);
         return res.json({
-            msg: `Detalles del usuario.`,
+            msg: `Detalles del miembro.`,
             user
         });
     }
@@ -155,7 +155,7 @@ async function updateUser(req, res) {
         user.direction = validate.data.direction;
         await user.save();
         return res.json({
-            msg: `Se han actualizado los datos del usuario exitosamente.`,
+            msg: `Se han actualizado los datos del miembro exitosamente.`,
             user
         });
     }
@@ -184,7 +184,7 @@ exports.updateUser = updateUser;
 //     await disableTokenDBForUserId([_id]);
 //
 //     return res.json({
-//       msg: `Se asignado el nuevo rol al usuario exitosamente.`
+//       msg: `Se asignado el nuevo rol al miembro exitosamente.`
 //     });
 //   } catch (error: any) {
 //     return returnError(res, error, `${path}/changeRoleUser`);
@@ -223,7 +223,7 @@ async function deleteUser(req, res) {
         await TokenActions_1.disableTokenDBForUserId([_id]);
         await user.delete();
         return res.json({
-            msg: `Se ha eliminado el usuario exitosamente.`
+            msg: `Se ha eliminado el miembro exitosamente.`
         });
     }
     catch (error) {
@@ -266,7 +266,7 @@ async function getCoursesUser(req, res) {
             }
         }
         return res.json({
-            msg: `Listado de cursos del usuario.`,
+            msg: `Listado de cursos del miembro.`,
             courses: ret
         });
     }
@@ -311,7 +311,7 @@ async function getReferralsUser(req, res) {
             }
         }
         return res.json({
-            msg: `Listado de referidos del usuario.`,
+            msg: `Listado de referidos del miembro.`,
             referrals: ret
         });
     }

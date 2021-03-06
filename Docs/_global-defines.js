@@ -184,12 +184,12 @@
  * @apiErrorExample {JSON} Can't edit course published
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado."
+    "msg": "Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado."
 }
  * @apiErrorExample {JSON} Can't edit course with users
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados."
+    "msg": "Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados."
 }
  *
  */

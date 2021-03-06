@@ -261,8 +261,11 @@ async function deleteCourse(req, res) {
         const exists = await CoursesUsers_1.default.find({ courseId: _id }).countDocuments().exec();
         if (exists > 0)
             return res.status(422).json({
-                msg: 'Disculpe, pero el curso no puede ser eliminado. Los usuarios ya poseen el curso en sus listados.',
+                msg: 'Disculpe, pero el curso no puede ser eliminado. Los miembros ya poseen el curso en sus listados.',
             });
+        if (course.banner) {
+            fs_1.unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+        }
         await course.delete();
         return res.json({
             msg: 'Se ha eliminado el curso exitosamente.'

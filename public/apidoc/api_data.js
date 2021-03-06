@@ -170,12 +170,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -315,12 +315,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -594,12 +594,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -809,12 +809,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -1130,12 +1130,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -1288,12 +1288,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -1403,12 +1403,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -1519,7 +1519,7 @@ define({ "api": [
             "type": "Object|Null",
             "optional": false,
             "field": "user",
-            "description": "<p>Datos del usuario creador del curso.</p>"
+            "description": "<p>Datos del miembro creador del curso.</p>"
           },
           {
             "group": "course Object",
@@ -1582,7 +1582,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "levels",
-            "description": "<p>Listado de cursos que el usuario debe visualizar antes.</p>"
+            "description": "<p>Listado de cursos que el miembro debe visualizar antes.</p>"
           },
           {
             "group": "course Object",
@@ -1617,7 +1617,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "totalsUsers",
-            "description": "<p>Total de usuarios con el curso.</p>"
+            "description": "<p>Total de miembros con el curso.</p>"
           }
         ],
         "temary Object[]": [
@@ -1795,7 +1795,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "user Object",
@@ -2507,12 +2507,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -2623,12 +2623,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -2856,12 +2856,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -3152,12 +3152,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -3397,12 +3397,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -3599,12 +3599,12 @@ define({ "api": [
         },
         {
           "title": "Can't edit course published",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya se encuentra publicado.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Can't edit course with users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado porque ya los usuarios lo poseen en sus listados.\"\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados.\"\n}",
           "type": "JSON"
         },
         {
@@ -3654,7 +3654,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/courses/:slug/add",
-    "title": "(03) Agergar un curso al listado del usuario.",
+    "title": "(03) Agergar un curso al listado del miembro.",
     "version": "0.0.18",
     "name": "addCourseUser",
     "group": "Courses",
@@ -3722,7 +3722,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "userid",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "added Object",
@@ -3794,7 +3794,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "content",
-            "description": "<p>Contenido del tema (histórico de usuario).</p>"
+            "description": "<p>Contenido del tema (histórico de miembro).</p>"
           },
           {
             "group": "temary Object[]",
@@ -4223,7 +4223,7 @@ define({ "api": [
             "type": "Object|Null",
             "optional": false,
             "field": "dataCourseUser",
-            "description": "<p>Progreso del curso del usuario.</p>"
+            "description": "<p>Progreso del curso del miembro.</p>"
           }
         ],
         "course Object": [
@@ -4295,7 +4295,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "levels",
-            "description": "<p>Listado de cursos que el usuario debe completar antes continuar.</p>"
+            "description": "<p>Listado de cursos que el miembro debe completar antes continuar.</p>"
           }
         ],
         "dataCourseUser Object": [
@@ -4376,7 +4376,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "content",
-            "description": "<p>Lisado de contenido del tema (Avances del usuario).</p>"
+            "description": "<p>Lisado de contenido del tema (Avances del miembro).</p>"
           },
           {
             "group": "temary Object[] dataCourseUser",
@@ -5258,7 +5258,7 @@ define({ "api": [
     "version": "0.0.18",
     "name": "setWatchingOrViewedContentThemeCourses",
     "group": "Courses",
-    "description": "<p>Este endpoint es para actualizar el progreso del usuario en relación al contenido de un tema. En la ruta, el parámetro ':action' indica la acción a realizar, donde los valores:</p> <p>'1' indica que el usuario está viendo el contenido. '2' indica que el usuario ya vió el contenido.</p> <p>Automáticamente, el servicio realiza una actualización del estado en el que se encuentra el tema en relación a su contenido. Ejemplo:</p> <ol> <li>Si el usuario no ha visto ningún contenido del TEMA, este tendrá un valor de cero (0), que significa 'NO VISTO'.</li> <li>Si el usuario ha visto al menos un contenido del TEMA, este tendrá un valor de uno (1), que significa 'VIENDO' o 'VISUALIZANDO'.</li> <li>Si el usuario ha visto todos los contenidos del TEMA, este tendrá un valor de dos (2), que significa que ha 'VISTO' completamente el contenido.</li> </ol> <p>Si el punto tres (3) se cumple, podrá solicita la prueba respectiva del tema. Ver punto: &quot;(06) Obtener prueba (examen) para aprobar un tema&quot; en este mismo grupo de endpoints.</p>",
+    "description": "<p>Este endpoint es para actualizar el progreso del miembro en relación al contenido de un tema. En la ruta, el parámetro ':action' indica la acción a realizar, donde los valores:</p> <p>'1' indica que el miembro está viendo el contenido. '2' indica que el miembro ya vió el contenido.</p> <p>Automáticamente, el servicio realiza una actualización del estado en el que se encuentra el tema en relación a su contenido. Ejemplo:</p> <ol> <li>Si el miembro no ha visto ningún contenido del TEMA, este tendrá un valor de cero (0), que significa 'NO VISTO'.</li> <li>Si el miembro ha visto al menos un contenido del TEMA, este tendrá un valor de uno (1), que significa 'VIENDO' o 'VISUALIZANDO'.</li> <li>Si el miembro ha visto todos los contenidos del TEMA, este tendrá un valor de dos (2), que significa que ha 'VISTO' completamente el contenido.</li> </ol> <p>Si el punto tres (3) se cumple, podrá solicita la prueba respectiva del tema. Ver punto: &quot;(06) Obtener prueba (examen) para aprobar un tema&quot; en este mismo grupo de endpoints.</p>",
     "header": {
       "fields": {
         "Header": [
@@ -5577,7 +5577,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "user",
-            "description": "<p>Información del usuario que agregó el evento.</p>"
+            "description": "<p>Información del miembro que agregó el evento.</p>"
           }
         ],
         "user Object": [
@@ -5593,7 +5593,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "user Object",
@@ -5902,7 +5902,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "user",
-            "description": "<p>Información del usuario que agregó el evento.</p>"
+            "description": "<p>Información del miembro que agregó el evento.</p>"
           }
         ],
         "user Object": [
@@ -5911,7 +5911,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "user Object",
@@ -6125,7 +6125,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "user",
-            "description": "<p>Información del usuario que agregó el evento.</p>"
+            "description": "<p>Información del miembro que agregó el evento.</p>"
           }
         ],
         "user Object": [
@@ -6141,7 +6141,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "user Object",
@@ -6495,7 +6495,7 @@ define({ "api": [
             "type": "String[]",
             "optional": false,
             "field": "members",
-            "description": "<p>Listado de IDs de los usuarios a agregar al grupo.</p>"
+            "description": "<p>Listado de IDs de los miembros a agregar al grupo.</p>"
           }
         ]
       }
@@ -6531,7 +6531,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "notInserts Object[]",
@@ -6578,7 +6578,7 @@ define({ "api": [
         },
         {
           "title": "Error IDs users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero alguno de los usuarios seleccionados son incorrectos.\"\n    }\n  ]\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero alguno de los miembros seleccionados son incorrectos.\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -6588,7 +6588,7 @@ define({ "api": [
         },
         {
           "title": "Empty data",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n).\"\n    }\n  ]\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n).\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -6768,7 +6768,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "userid",
-            "description": "<p>ID del usuario que creó el grupo.</p>"
+            "description": "<p>ID del miembro que creó el grupo.</p>"
           }
         ]
       },
@@ -7024,7 +7024,7 @@ define({ "api": [
             "type": "Object|Null",
             "optional": false,
             "field": "user",
-            "description": "<p>Datos del usuario creador del grupo.</p>"
+            "description": "<p>Datos del miembro creador del grupo.</p>"
           },
           {
             "group": "group Object",
@@ -7068,7 +7068,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "members Object[]",
@@ -7512,7 +7512,7 @@ define({ "api": [
             "type": "String[]",
             "optional": false,
             "field": "members",
-            "description": "<p>Listado de IDs de los usuarios a remover del grupo.</p>"
+            "description": "<p>Listado de IDs de los miembros a remover del grupo.</p>"
           }
         ]
       }
@@ -7553,7 +7553,7 @@ define({ "api": [
         },
         {
           "title": "Error IDs users",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero alguno de los usuarios seleccionados son incorrectos.\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero alguno de los miembros seleccionados son incorrectos.\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -7563,7 +7563,7 @@ define({ "api": [
         },
         {
           "title": "Empty data",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero debe seleccionar que usuario(s) se agregará(n) o eliminará(n).\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"members\",\n            \"msg\": \"Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n).\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -7922,7 +7922,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "user",
-            "description": "<p>Información del usuario que agregó el evento.</p>"
+            "description": "<p>Información del miembro que agregó el evento.</p>"
           }
         ],
         "user Object": [
@@ -7938,7 +7938,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "user Object",
@@ -8152,7 +8152,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "user",
-            "description": "<p>Información del usuario que agregó el evento.</p>"
+            "description": "<p>Información del miembro que agregó el evento.</p>"
           }
         ],
         "user Object": [
@@ -8168,7 +8168,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "user Object",
@@ -8397,7 +8397,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "role",
-            "description": "<p>Role del usuario.</p>"
+            "description": "<p>Role del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -8446,7 +8446,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -8653,7 +8653,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/register",
-    "title": "(00) Registro de usuario.",
+    "title": "(00) Registro.",
     "version": "0.0.16",
     "name": "registerPublic",
     "group": "Public",
@@ -8873,7 +8873,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "users",
-            "description": "<p>Datos de los reportes para usuarios.</p>"
+            "description": "<p>Datos de los reportes para miembros.</p>"
           }
         ],
         "courses, events and groups Object": [
@@ -9138,14 +9138,14 @@ define({ "api": [
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del usuario.</p>"
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
           },
           {
             "group": "member Object",
             "type": "Number|Null",
             "optional": false,
             "field": "civilStatus",
-            "description": "<p>ID (array index) del estado civil del usuario.</p>"
+            "description": "<p>ID (array index) del estado civil del miembro.</p>"
           },
           {
             "group": "member Object",
@@ -9341,7 +9341,7 @@ define({ "api": [
             "type": "Object|Null",
             "optional": false,
             "field": "group",
-            "description": "<p>Datos del grupo familiar del usuario.</p>"
+            "description": "<p>Datos del grupo familiar del miembro.</p>"
           }
         ],
         "group Object": [
@@ -9394,7 +9394,7 @@ define({ "api": [
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del usuario.</p>"
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
           }
         ],
         "members Object[]": [
@@ -9403,7 +9403,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "members Object[]",
@@ -9424,7 +9424,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "direction",
-            "description": "<p>Dirección del usuario.</p>"
+            "description": "<p>Dirección del miembro.</p>"
           }
         ]
       },
@@ -9495,7 +9495,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/user/referrals/:memberId",
-    "title": "(01) Obtener datos de un usuario referido.",
+    "title": "(01) Obtener datos de un miembro referido.",
     "version": "0.0.19",
     "name": "getDataMemberUserReferrals",
     "group": "UserReferrals",
@@ -9572,14 +9572,14 @@ define({ "api": [
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del usuario.</p>"
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
           },
           {
             "group": "member Object",
             "type": "Number|Null",
             "optional": false,
             "field": "civilStatus",
-            "description": "<p>ID (array index) del estado civil del usuario.</p>"
+            "description": "<p>ID (array index) del estado civil del miembro.</p>"
           },
           {
             "group": "member Object",
@@ -9765,7 +9765,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "referrals",
-            "description": "<p>Listado de referidos del usuario.</p>"
+            "description": "<p>Listado de referidos del miembro.</p>"
           }
         ],
         "referrals Object[]": [
@@ -9774,14 +9774,14 @@ define({ "api": [
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del usuario.</p>"
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
           },
           {
             "group": "referrals Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "referrals Object[]",
@@ -10001,7 +10001,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/user/courses",
-    "title": "(03) Obtener cursos de un usuario.",
+    "title": "(03) Obtener cursos de un miembro.",
     "version": "0.0.19",
     "name": "getCoursesListUser",
     "group": "User",
@@ -10033,7 +10033,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "courses",
-            "description": "<p>Listado de curso del usuario.</p>"
+            "description": "<p>Listado de curso del miembro.</p>"
           }
         ],
         "courses Object[]": [
@@ -10245,7 +10245,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "role",
-            "description": "<p>Role del usuario.</p>"
+            "description": "<p>Role del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -10294,7 +10294,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -10659,7 +10659,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -10774,7 +10774,7 @@ define({ "api": [
   {
     "type": "put",
     "url": "/api/admin/users/:_id",
-    "title": "(04) Actualizar datos de un usuario.",
+    "title": "(04) Actualizar datos de un miembro.",
     "version": "0.0.3",
     "name": "changeRoleUsersAdmin",
     "group": "UsersAdmin",
@@ -10799,7 +10799,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           }
         ],
         "Parameter": [
@@ -11026,7 +11026,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "role",
-            "description": "<p>Role del usuario.</p>"
+            "description": "<p>Role del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -11075,7 +11075,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -11117,7 +11117,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del usuario exitosamente.\",\n\t\"user\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"role\": 5,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\"updated_at\": \"2021-02-18 17:51:10\",\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"phone\": \"584121490196\",\n\t\t\"document\": \"CC12345678\",\n\t\t\"names\": \"USUARIO TRES\",\n\t\t\"lastNames\": \"PRUEBA TRES\",\n\t\t\"email\": \"user@example.com\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"role\": 5,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\"updated_at\": \"2021-02-18 17:51:10\",\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"phone\": \"584121490196\",\n\t\t\"document\": \"CC12345678\",\n\t\t\"names\": \"USUARIO TRES\",\n\t\t\"lastNames\": \"PRUEBA TRES\",\n\t\t\"email\": \"user@example.com\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -11191,7 +11191,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/admin/users/counters",
-    "title": "(00) Obtener total de usuarios.",
+    "title": "(00) Obtener total de miembros.",
     "version": "0.0.16",
     "name": "countersUsersAdmin",
     "group": "UsersAdmin",
@@ -11243,7 +11243,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Total usuarios.\",\n    \"totals\": 2\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Total miembros.\",\n    \"totals\": 2\n}",
           "type": "JSON"
         }
       ]
@@ -11302,7 +11302,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/admin/users",
-    "title": "(02) Crear nuevo usuario.",
+    "title": "(02) Crear nuevo miembro.",
     "version": "0.0.17",
     "name": "createUsersAdmin",
     "group": "UsersAdmin",
@@ -11349,7 +11349,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "role",
-            "description": "<p>Rol para el usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).</p>"
+            "description": "<p>Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).</p>"
           }
         ]
       }
@@ -11376,7 +11376,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha registrado el nuevo usuario exitosamente.\",\n}",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha registrado el nuevo miembro exitosamente.\",\n}",
           "type": "JSON"
         }
       ]
@@ -11390,7 +11390,7 @@ define({ "api": [
         },
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"email\",\n            \"msg\": \"Disculpe, pero el correo electrónico ya se encuentra asignado a otro usuario. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"email\",\n            \"msg\": \"Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {
@@ -11445,7 +11445,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/admin/users/:_id/courses",
-    "title": "(06) Obtener listado de cursos de un usuario.",
+    "title": "(06) Obtener listado de cursos de un miembro.",
     "version": "0.0.21",
     "name": "getCoursesUsersListAdmin",
     "group": "UsersAdmin",
@@ -11470,7 +11470,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           }
         ]
       }
@@ -11541,7 +11541,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de cursos del usuario.\",\n\t\"courses\": [\n\t\t{\n\t\t\t\"_id\": \"603afb2309bf7a3428ac58f7\",\n\t\t\t\"banner\": \"http://localhost:9000/images/1614784438.jpeg\",\n\t\t\t\"slug\": \"curso-01\",\n\t\t\t\"title\": \"CURSO 01\",\n\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\"approved\": false\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de cursos del miembro.\",\n\t\"courses\": [\n\t\t{\n\t\t\t\"_id\": \"603afb2309bf7a3428ac58f7\",\n\t\t\t\"banner\": \"http://localhost:9000/images/1614784438.jpeg\",\n\t\t\t\"slug\": \"curso-01\",\n\t\t\t\"title\": \"CURSO 01\",\n\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\"approved\": false\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         }
       ]
@@ -11610,7 +11610,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/admin/users/:_id",
-    "title": "(03) Obtener detalles de un usuario.",
+    "title": "(03) Obtener detalles de un miembro.",
     "version": "0.0.3",
     "name": "getDetailsUsersAdmin",
     "group": "UsersAdmin",
@@ -11635,7 +11635,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           }
         ]
       }
@@ -11699,7 +11699,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "role",
-            "description": "<p>Role del usuario.</p>"
+            "description": "<p>Role del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -11727,7 +11727,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "data Object",
@@ -11785,7 +11785,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Detalles del usuario.\",\n    \"user\": {\n        \"educationLevel\": null,\n        \"bloodType\": 1,\n        \"company\": false,\n        \"companyType\": null,\n        \"baptized\": false,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-07 23:59:12\",\n        \"updated_at\": \"2020-12-13 12:57:12\",\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"phone\": \"584121490196\",\n        \"document\": \"CC12345678\",\n        \"names\": \"USUARIO TRES\",\n        \"lastNames\": \"PRUEBA TRES\",\n        \"direction\": \"any direction\",\n        \"profession\": null\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Detalles del miembro.\",\n    \"user\": {\n        \"educationLevel\": null,\n        \"bloodType\": 1,\n        \"company\": false,\n        \"companyType\": null,\n        \"baptized\": false,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-07 23:59:12\",\n        \"updated_at\": \"2020-12-13 12:57:12\",\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"phone\": \"584121490196\",\n        \"document\": \"CC12345678\",\n        \"names\": \"USUARIO TRES\",\n        \"lastNames\": \"PRUEBA TRES\",\n        \"direction\": \"any direction\",\n        \"profession\": null\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -11854,7 +11854,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/admin/users/:_id/referrals",
-    "title": "(05) Obtener listado de referidos de un usuario.",
+    "title": "(05) Obtener listado de referidos de un miembro.",
     "version": "0.0.21",
     "name": "getReferralsUsersAdmin",
     "group": "UsersAdmin",
@@ -11879,7 +11879,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           }
         ]
       }
@@ -11899,21 +11899,21 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "data",
-            "description": "<p>Datos del usuario y listado de referidos.</p>"
+            "description": "<p>Datos del miembro y listado de referidos.</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": false,
             "field": "user",
-            "description": "<p>Datos del usuario.</p>"
+            "description": "<p>Datos del miembro.</p>"
           },
           {
             "group": "Success 200",
             "type": "Object[]",
             "optional": false,
             "field": "referrals",
-            "description": "<p>Listado de referidos del usuario.</p>"
+            "description": "<p>Listado de referidos del miembro.</p>"
           }
         ],
         "referrals Object": [
@@ -11922,14 +11922,14 @@ define({ "api": [
             "type": "String|Null",
             "optional": false,
             "field": "referred",
-            "description": "<p>Datos del usuario referido.</p>"
+            "description": "<p>Datos del miembro referido.</p>"
           },
           {
             "group": "referrals Object",
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "referrals Object",
@@ -11964,7 +11964,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del usuario.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"604068999b20e72f341972ec\",\n\t\t\t\"document\": \"CC3123123123\",\n\t\t\t\"names\": \"SUPERVISOR\",\n\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del miembro.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"604068999b20e72f341972ec\",\n\t\t\t\"document\": \"CC3123123123\",\n\t\t\t\"names\": \"SUPERVISOR\",\n\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         }
       ]
@@ -12033,7 +12033,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/admin/users",
-    "title": "(01) Obtener listado de usuarios.",
+    "title": "(01) Obtener listado de miembros.",
     "version": "0.0.16",
     "name": "getUsersAdmin",
     "group": "UsersAdmin",
@@ -12115,14 +12115,14 @@ define({ "api": [
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del usuario.</p>"
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
           },
           {
             "group": "users Object[]",
             "type": "Number",
             "optional": false,
             "field": "role",
-            "description": "<p>Role del usuario.</p>"
+            "description": "<p>Role del miembro.</p>"
           },
           {
             "group": "users Object[]",
@@ -12136,7 +12136,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del usuario.</p>"
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "users Object[]",
