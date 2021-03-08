@@ -230,3 +230,65 @@
   "msg": "Disculpe, pero el miembro seleccionado es incorrecto."
 }
  */
+
+/**
+ * @apiDefine UsersRecoveryPassword01
+ *
+ * @apiErrorExample {JSON} Error action
+ * HTTP/1.1 404 Not found
+ * {
+  "msg": "Disculpe, pero no se encontró la acción a realizar."
+}
+ *
+ * @apiErrorExample {JSON} Document not found
+ * HTTP/1.1 404 Not found
+ * {
+  "msg": "Disculpe, pero el número de documento indicado no existe o no se encuentra disponible."
+}
+ *
+ * @apiErrorExample {JSON} Invalid document
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero debe indicar un número de documento válido."
+}
+ */
+
+/**
+ * @apiDefine UsersRecoveryPassword02
+ *
+ * @apiErrorExample {JSON} Errors params
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero no se recibieron los datos a validar."
+}
+ * @apiErrorExample {JSON} Invalid email
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero debe indicar un correo electrónico válido."
+}
+ * @apiErrorExample {JSON} Email isn't equals to user data
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero el correo electrónico indicado no coincide con el de su cuenta."
+}
+ * @apiErrorExample {JSON} Invalid date
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero debe indicar una fecha válida."
+}
+ * @apiErrorExample {JSON} Birthday isn't equals to user data
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero la fecha indicada no coincide con su fecha de cumpleaños de su cuenta."
+}
+ */
+
+/**
+ * @apiDefine UsersRecoveryPassword03
+ *
+ * @apiErrorExample {JSON} Invalid format password
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero la nueva contraseña debe contener letras (a-Z, A-Z), números (0-9) y al menos 6 caracteres."
+}
+ */

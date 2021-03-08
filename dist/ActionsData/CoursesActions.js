@@ -184,7 +184,6 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             updated_at: course.updated_at,
         };
         if (isPublic) {
-            delete ret.enable;
             delete ret.created_at;
             delete ret.updated_at;
         }

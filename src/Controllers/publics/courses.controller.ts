@@ -145,6 +145,8 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
 
     if (!dataCourseUser && !course.enable) return returnNotFound(res, '404Course');
 
+    delete course.enable;
+
     return res.json({
       msg: 'Curso',
       course: await getModelReturnCourseOrTheme({ data: course }),

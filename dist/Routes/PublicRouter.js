@@ -54,6 +54,11 @@ router.get(`/events/:_id`, middleware_1.validateUser, events_controller_1.showPu
 router.post(`/login`, public_controller_1.login);
 router.delete(`/logout`, middleware_1.validateUser, public_controller_1.logout);
 /*
+  Recovery Password
+ */
+router.post(`/recovery-password/:action`, public_controller_1.recoveryPassword);
+router.put(`/recovery-password/:action`, public_controller_1.recoveryPassword);
+/*
   Register
  */
 router.post(`/register`, public_controller_1.register);

@@ -221,7 +221,6 @@ export async function getCourseDetails({ query, infoUser, isPublic, projection }
     };
 
     if (isPublic) {
-      delete ret.enable;
       delete ret.created_at;
       delete ret.updated_at;
     }

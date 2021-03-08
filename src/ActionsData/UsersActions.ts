@@ -139,30 +139,44 @@ export function checkRoleToActions(role: number|null): boolean {
 }
 
 export function responseUsersAdmin(res: Response, option: number) : Response {
-  let msg = '';
-  let status = 500;
-  switch (option) {
-    case 0:
-      msg = 'Disculpe, pero el miembro seleccionado es incorrecto.';
-      status = 422;
-      break;
-    case 1:
-      msg = 'Disculpe, pero el miembro seleccionado no existe.';
-      status = 404;
-      break;
-    case 2:
-      msg = 'Disculpe, pero el rol seleccionado es incorrecto.';
-      status = 422;
-      break;
-    case 3:
-      msg = 'Disculpe, pero no cuenta con privilegios para realizar esta acción.';
-      status = 403;
-      break;
-    default:
-      msg= 'Error desconocido';
-  }
 
-  return res.status(status).json({
-    msg
-  })
+  const ret = [
+    { status: 422, msg: 'Disculpe, pero el miembro seleccionado es incorrecto.' },
+    { status: 404, msg: 'Disculpe, pero el miembro seleccionado no existe.' },
+    { status: 422, msg: 'Disculpe, pero el rol seleccionado es incorrecto.' },
+    { status: 403, msg: 'Disculpe, pero no cuenta con privilegios para realizar esta acción.' },
+  ];
+
+  if (ret[option])
+    return res.status(ret[option].status).json({
+      msg: ret[option].msg
+    });
+
+  return res.status(500).json({
+    msg: '¡Error desconocido!',
+  });
+}
+
+
+export function responseErrorsRecoveryPassword(res: Response, option: number) : Response {
+  const ret = [
+    { status: 404, msg: 'Disculpe, pero no se encontro la acción a realizar.' },
+    { status: 422, msg: 'Disculpe, pero debe indicar un número de documento válido.' },
+    { status: 404, msg: 'Disculpe, pero el número de documento indicado no existe o no se encuentra disponible.' },
+    { status: 422, msg: 'Disculpe, pero no se recibieron los datos a validar.' },
+    { status: 422, msg: 'Disculpe, pero debe indicar un correo electrónico válido.' },
+    { status: 422, msg: 'Disculpe, pero el correo electrónico indicado no coincide con el de su cuenta.' },
+    { status: 422, msg: 'Disculpe, pero debe indicar una fecha válida.' },
+    { status: 422, msg: 'Disculpe, pero la fecha indicada no coincide con su fecha de cumpleaños de su cuenta.' },
+    { status: 422, msg: 'Disculpe, pero la nueva contraseña debe contener letras (a-Z, A-Z), números (0-9) y al menos 6 caracteres.' },
+  ];
+
+  if (ret[option])
+    return res.status(ret[option].status).json({
+      msg: ret[option].msg
+    });
+
+  return res.status(500).json({
+    msg: '¡Error desconocido!',
+  });
 }
