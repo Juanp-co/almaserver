@@ -27,7 +27,7 @@ export default function validateRegister(
   }
 
   // description
-  if (!data.description || !checkTitlesOrDescriptions(data.description)) {
+  if (!data.description || (data.description && data.description.length < 5)) {
     errors.push(
       setError('Disculpe, pero indicar una descripción para el evento.', 'description')
     );

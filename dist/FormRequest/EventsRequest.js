@@ -24,7 +24,7 @@ function validateRegister(data) {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
     }
     // description
-    if (!data.description || !Validations_1.checkTitlesOrDescriptions(data.description)) {
+    if (!data.description || (data.description && data.description.length < 5)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una descripción para el evento.', 'description'));
     }
     else {
