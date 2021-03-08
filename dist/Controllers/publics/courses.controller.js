@@ -140,7 +140,7 @@ async function showCourse(req, res) {
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check and get data user course user
-        const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { userid, courseId: course._id } });
+        const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { userid, courseId: course._id.toString() } });
         if (!dataCourseUser && !course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
         delete course.enable;
@@ -157,22 +157,24 @@ async function showCourse(req, res) {
 exports.showCourse = showCourse;
 async function showCourseContentTheme(req, res) {
     try {
-        const { slug, _id } = req.params;
+        const { slug, _id, userid } = req.params;
         if (!Validations_1.checkSlug(slug))
             return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
             return CoursesActions_1.returnNotFound(res, 'errorThemeId');
         const course = await CoursesActions_1.getCourseDetails({
-            query: { slug, 'temary._id': _id, enable: true },
+            query: { slug, 'temary._id': _id },
             isPublic: true,
-            projection: { 'temary.$': 1, levels: 1 }
+            projection: { 'temary.$': 1, levels: 1, enable: 1 }
         });
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ courseId: course._id.toString() }, { temary: 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id.toString() }, { temary: 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
+        if (!myCourse && !course.enable)
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if previous courses is approved
         if (course.levels
             && course.levels.length > 0
@@ -206,7 +208,7 @@ async function showCourseContentTheme(req, res) {
 exports.showCourseContentTheme = showCourseContentTheme;
 async function updateHistoricalCourseContent(req, res) {
     try {
-        const { slug, _id, contentId, action } = req.params;
+        const { slug, _id, contentId, action, userid } = req.params;
         if (!/[12]{1}/.test(`${action}`))
             return CoursesActions_1.returnNotFound(res, 'errorAction');
         if (!Validations_1.checkSlug(slug))
@@ -216,16 +218,18 @@ async function updateHistoricalCourseContent(req, res) {
         if (!Validations_1.checkObjectId(contentId))
             return CoursesActions_1.returnNotFound(res, 'errorContentId');
         const course = await CoursesActions_1.getCourseDetails({
-            query: { slug, 'temary._id': _id, enable: true },
+            query: { slug, 'temary._id': _id },
             isPublic: true,
-            projection: { 'temary.$.content': 1, levels: 1 }
+            projection: { 'temary.$.content': 1, levels: 1, enable: 1 }
         });
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ courseId: course._id }, { temary: 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id }, { temary: 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
+        if (!myCourse && !course.enable)
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if previous courses is approved
         if (course.levels && course.levels.length > 0) {
             if (!(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
@@ -282,7 +286,7 @@ async function getTest(req, res) {
             return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
             return CoursesActions_1.returnNotFound(res, 'errorThemeId');
-        const course = await Courses_1.default.findOne({ slug, 'temary._id': _id, enable: true, }, { 'temary.$.test': 1, levels: 1 }).exec();
+        const course = await Courses_1.default.findOne({ slug, 'temary._id': _id }, { 'temary.$.test': 1, levels: 1, enable: 1 }).exec();
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         if (!course.temary)
@@ -297,6 +301,8 @@ async function getTest(req, res) {
         const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id }, { 'temary.temaryId': 1, 'temary.test': 1, 'temary.approved': 1, 'temary.view': 1, approved: 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
+        if (!myCourse && !course.enable)
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if theme is approved or course
         if (myCourse.approved)
             return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');
@@ -340,13 +346,15 @@ async function evaluateTest(req, res) {
         const validate = CoursesRequest_1.validateTestData(req.body.data || []);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const course = await Courses_1.default.findOne({ slug, 'temary._id': _id, enable: true, }, { 'temary.$.test': 1, approved: 1 }).exec();
+        const course = await Courses_1.default.findOne({ slug, 'temary._id': _id }, { 'temary.$.test': 1, approved: 1, enable: 1 }).exec();
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id, 'temary.temaryId': _id }, { 'temary.temaryId': 1, 'temary.approved': 1, 'temary.test': 1, approved: 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
+        if (!myCourse && !course.enable)
+            return CoursesActions_1.returnNotFound(res, '404Course');
         // check if course is approved
         if (myCourse.approved)
             return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');

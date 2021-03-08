@@ -9,7 +9,7 @@ import {
   validateUpdate
 } from '../FormRequest/UsersRequest';
 import { checkObjectId } from '../Functions/Validations';
-import { ICourseSimpleList } from '../Interfaces/ICourse';
+import { ICourseReference } from '../Interfaces/ICourse';
 import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
 import Groups from '../Models/Groups';
@@ -112,7 +112,7 @@ export async function changePassword(req: Request, res: Response): Promise<Respo
 export async function getCourses(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
-    let courses: ICourseSimpleList[] = [];
+    let courses: ICourseReference[] = [];
 
     if (!checkObjectId(userid)) {
       return res.status(401).json({
@@ -125,8 +125,8 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
     if (myCourses.length > 0) {
       courses = await Courses.find(
         { _id: { $in: _.map(myCourses, 'courseId') || [] } },
-        { _id: 1, title: 1, banner: 1, slug: 1, description: 1 }
-      ).exec() as ICourseSimpleList[];
+        { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }
+      ).exec() as ICourseReference[];
     }
 
     return res.json({

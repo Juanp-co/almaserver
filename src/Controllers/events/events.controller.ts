@@ -34,57 +34,12 @@ export default async function getEvents(req: Request, res: Response): Promise<Re
   }
 }
 
-export async function getPublicEvents(req: Request, res: Response): Promise<Response> {
-  try {
-    const { initDate, endDate } = req.query;
-    const { userrole } = req.body;
-    const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    let query = {
-      toRoles: userrole
-    };
-
-    if (initDate && checkDate(initDate)) {
-      query = Object.assign(
-        query,
-        { date: { $gte: moment(`${initDate}`).startOf('d').unix() } }
-        );
-    }
-
-    return res.json({
-      msg: `Eventos.`,
-      events: await getEventsList({ skip, limit, sort, endDate, query })
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getEvents`);
-  }
-}
-
 export async function showEvent(req: Request, res: Response): Promise<Response> {
   try {
     const { _id, userid } = req.params;
     let query = { _id };
 
     if (!req.body.superadmin) query = Object.assign(query, { userid } );
-
-    if (!checkObjectId(_id)) return return404Or422(res);
-
-    const event = await getDetailsEvent({query});
-
-    if (!event) return return404Or422(res, true);
-
-    return res.json({
-      msg: `Evento.`,
-      event
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/showEvent`);
-  }
-}
-
-export async function showPublicEvent(req: Request, res: Response): Promise<Response> {
-  try {
-    const { _id } = req.params;
-    const query = { _id };
 
     if (!checkObjectId(_id)) return return404Or422(res);
 
@@ -193,5 +148,47 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/deleteEvent`);
+  }
+}
+
+/*
+  PUBLIC EVENTS
+ */
+export async function getPublicEvents(req: Request, res: Response): Promise<Response> {
+  try {
+    const { initDate, endDate } = req.query;
+    const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
+    const query: any = {};
+
+    if (initDate && checkDate(initDate)) {
+      query.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
+    }
+
+    return res.json({
+      msg: `Eventos.`,
+      events: await getEventsList({ skip, limit, sort, endDate, query })
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getEvents`);
+  }
+}
+
+export async function showPublicEvent(req: Request, res: Response): Promise<Response> {
+  try {
+    const { _id } = req.params;
+    const query = { _id };
+
+    if (!checkObjectId(_id)) return return404Or422(res);
+
+    const event = await getDetailsEvent({query});
+
+    if (!event) return return404Or422(res, true);
+
+    return res.json({
+      msg: `Evento.`,
+      event
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/showEvent`);
   }
 }

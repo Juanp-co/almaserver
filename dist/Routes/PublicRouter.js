@@ -46,8 +46,8 @@ router.put(`/courses/:slug/theme/:_id/content/:contentId/:action`, middleware_1.
 /*
   Events
 */
-router.get(`/events`, middleware_1.validateUser, events_controller_1.getPublicEvents);
-router.get(`/events/:_id`, middleware_1.validateUser, events_controller_1.showPublicEvent);
+router.get(`/events`, events_controller_1.getPublicEvents);
+router.get(`/events/:_id`, events_controller_1.showPublicEvent);
 /*
   Login, logout
 */

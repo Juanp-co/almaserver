@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { validateUser } from '../middleware';
+import { validatePublic, validateUser } from '../middleware';
 import getCourses, {
   addCourseUser, evaluateTest,
   getCoursesCounters,
@@ -44,8 +44,8 @@ router.put(`/courses/:slug/theme/:_id/content/:contentId/:action`, validateUser,
   Events
 */
 
-router.get(`/events`, validateUser, getPublicEvents);
-router.get(`/events/:_id`, validateUser, showPublicEvent);
+router.get(`/events`, getPublicEvents);
+router.get(`/events/:_id`, showPublicEvent);
 
 /*
   Login, logout

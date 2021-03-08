@@ -31,6 +31,29 @@ export async function validateUser(req: Request, res: Response, next: any): Prom
   }
 }
 
+export async function validatePublic(req: Request, res: Response, next: any): Promise<any> {
+  try {
+    const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;
+    const check = jwt.verify(token, req.app.get('secretKey')) as IUserToToken;
+
+    const session = await checkTokenDB(token);
+
+    if (session) {
+      req.params.userid = `${check._id}`;
+      req.body.userid = `${check._id}`;
+      req.body.userrole = check.role;
+      req.query.role = `${check.role}`;
+      req.query.token = token;
+    }
+
+    return next();
+  } catch (e: any) {
+    return res.status(401).json({
+      msg: 'Disculpe, pero no se logró encontrar una sesión activa.'
+    });
+  }
+}
+
 export async function validateAdmin(req: Request, res: Response, next: any): Promise<any> {
   try {
     const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;

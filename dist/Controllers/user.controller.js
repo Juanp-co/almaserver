@@ -108,7 +108,7 @@ async function getCourses(req, res) {
         }
         const myCourses = await CoursesUsers_1.default.find({ userid }, { courseId: 1 }).exec();
         if (myCourses.length > 0) {
-            courses = await Courses_1.default.find({ _id: { $in: lodash_1.default.map(myCourses, 'courseId') || [] } }, { _id: 1, title: 1, banner: 1, slug: 1, description: 1 }).exec();
+            courses = await Courses_1.default.find({ _id: { $in: lodash_1.default.map(myCourses, 'courseId') || [] } }, { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }).exec();
         }
         return res.json({
             msg: `Mis cursos.`,

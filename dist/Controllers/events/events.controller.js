@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteEvent = exports.updateEvent = exports.saveEvent = exports.showPublicEvent = exports.showEvent = exports.getPublicEvents = void 0;
+exports.showPublicEvent = exports.getPublicEvents = exports.deleteEvent = exports.updateEvent = exports.saveEvent = exports.showEvent = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const EventsActions_1 = __importStar(require("../../ActionsData/EventsActions"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
@@ -52,27 +52,6 @@ async function getEvents(req, res) {
     }
 }
 exports.default = getEvents;
-async function getPublicEvents(req, res) {
-    try {
-        const { initDate, endDate } = req.query;
-        const { userrole } = req.body;
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        let query = {
-            toRoles: userrole
-        };
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query = Object.assign(query, { date: { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() } });
-        }
-        return res.json({
-            msg: `Eventos.`,
-            events: await EventsActions_1.default({ skip, limit, sort, endDate, query })
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getEvents`);
-    }
-}
-exports.getPublicEvents = getPublicEvents;
 async function showEvent(req, res) {
     try {
         const { _id, userid } = req.params;
@@ -94,25 +73,6 @@ async function showEvent(req, res) {
     }
 }
 exports.showEvent = showEvent;
-async function showPublicEvent(req, res) {
-    try {
-        const { _id } = req.params;
-        const query = { _id };
-        if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res);
-        const event = await EventsActions_1.getDetailsEvent({ query });
-        if (!event)
-            return EventsActions_1.return404Or422(res, true);
-        return res.json({
-            msg: `Evento.`,
-            event
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showEvent`);
-    }
-}
-exports.showPublicEvent = showPublicEvent;
 async function saveEvent(req, res) {
     try {
         const validate = EventsRequest_1.default(req.body);
@@ -201,3 +161,43 @@ async function deleteEvent(req, res) {
     }
 }
 exports.deleteEvent = deleteEvent;
+/*
+  PUBLIC EVENTS
+ */
+async function getPublicEvents(req, res) {
+    try {
+        const { initDate, endDate } = req.query;
+        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const query = {};
+        if (initDate && Validations_1.checkDate(initDate)) {
+            query.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+        }
+        return res.json({
+            msg: `Eventos.`,
+            events: await EventsActions_1.default({ skip, limit, sort, endDate, query })
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getEvents`);
+    }
+}
+exports.getPublicEvents = getPublicEvents;
+async function showPublicEvent(req, res) {
+    try {
+        const { _id } = req.params;
+        const query = { _id };
+        if (!Validations_1.checkObjectId(_id))
+            return EventsActions_1.return404Or422(res);
+        const event = await EventsActions_1.getDetailsEvent({ query });
+        if (!event)
+            return EventsActions_1.return404Or422(res, true);
+        return res.json({
+            msg: `Evento.`,
+            event
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/showEvent`);
+    }
+}
+exports.showPublicEvent = showPublicEvent;
