@@ -129,22 +129,24 @@ async function addCourseUser(req, res) {
 exports.addCourseUser = addCourseUser;
 async function showCourse(req, res) {
     try {
-        const { slug } = req.params;
+        const { slug, userid } = req.params;
         const { userrole } = req.body;
         if (!Validations_1.checkSlug(slug))
             return CoursesActions_1.returnNotFound(res, 'slug');
         const course = await CoursesActions_1.getCourseDetails({
-            query: { slug, toRoles: userrole, enable: true },
+            query: { slug, toRoles: userrole },
             isPublic: true,
         });
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check and get data user course user
-        const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { courseId: course._id } });
+        const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { userid, courseId: course._id } });
+        if (!dataCourseUser && !course.enable)
+            return CoursesActions_1.returnNotFound(res, '404Course');
         return res.json({
             msg: 'Curso',
             course: await CoursesActions_1.getModelReturnCourseOrTheme({ data: course }),
-            dataCourseUser: dataCourseUser || null
+            dataCourseUser
         });
     }
     catch (error) {

@@ -917,7 +917,7 @@
     },
     "examples": [
       {
-        "title": "Example JSON Request without levels",
+        "title": "Example JSON Request",
         "content": "{\n\t\"title\": \"NUEVO CURSO\",\n\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n\t\"banner\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABA...\",\n\t\"toRoles\": [\n\t\t5\n\t]\n}",
         "type": "JSON"
       }
@@ -1459,7 +1459,7 @@
     "type": "get",
     "url": "/api/admin/courses/:_id",
     "title": "(03) Obtener detalles de un curso.",
-    "version": "0.0.19",
+    "version": "0.0.22",
     "name": "detailsCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -1755,6 +1755,13 @@
           },
           {
             "group": "levels Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra publicado.</p>"
+          },
+          {
+            "group": "levels Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -1905,7 +1912,7 @@
     "type": "get",
     "url": "/api/admin/courses/:_id/enable",
     "title": "(04) Publicar o retirar curso del listado público.",
-    "version": "0.0.18",
+    "version": "0.0.22",
     "name": "enableCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -1951,6 +1958,66 @@
             "field": "data",
             "description": "<p>Datos del curso.</p>"
           }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Datos del curso.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "levels",
+            "description": "<p>Listados de cursos previos que han sido retirados de la sección pública (en caso de disponer)</p>"
+          }
+        ],
+        "levels Object[]": [
+          {
+            "group": "levels Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "banner",
+            "description": "<p>URL de la imagen del curso.</p>"
+          },
+          {
+            "group": "levels Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "enable",
+            "description": "<p>Indica si el curso se encuentra publicado.</p>"
+          },
+          {
+            "group": "levels Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "levels Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "levels Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug del curso.</p>"
+          },
+          {
+            "group": "levels Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          }
         ]
       },
       "examples": [
@@ -1961,7 +2028,7 @@
         },
         {
           "title": "Success withdraw course",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha retirado el curso exitosamente.\",\n\t\"data\": {\n\t\t\"enable\": false\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha retirado el curso exitosamente.\",\n\t\"data\": {\n\t\t\"enable\": false,\n\t\t\"levels\": [\n\t\t\t{\n\t\t\t\t\"banner\": \"http://localhost:9000/images/1614969471.jpeg\",\n\t\t\t\t\"enable\": false,\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f8\",\n\t\t\t\t\"slug\": \"curso-02\",\n\t\t\t\t\"title\": \"CURSO 02\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\"\n\t\t\t}\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -2006,6 +2073,11 @@
         {
           "title": "The themes must contain their tests with questions",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero los temas del curso contener sus pruebas con sus respectivas preguntas.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Can't publish the course before the previous courses",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero los cursos previos deben estar publicados para poder realizar esta acción.\"\n}",
           "type": "JSON"
         },
         {

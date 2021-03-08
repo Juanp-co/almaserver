@@ -228,6 +228,9 @@ export async function updateBannerCourse(req: Request, res: Response) : Promise<
 export async function enableCourse(req: Request, res: Response) : Promise<Response>{
   try {
     const { _id } = req.params;
+    const ret: any = {
+      enable: false
+    };
 
     if (!checkObjectId(_id)) return returnErrorId(res);
 
@@ -244,13 +247,42 @@ export async function enableCourse(req: Request, res: Response) : Promise<Respon
     }
     else course.enable = false;
 
+    ret.enable = course.enable;
+
+    if (course.levels.length > 0) {
+      const courses = await Courses.find(
+        { _id: { $in: course.levels } },
+        { _id: 1, title: 1, slug: 1, banner: 1, description: 1, enable: 1 }
+      ).exec();
+      if (courses.length > 0) {
+        if (!course.enable) {
+          for (const c of courses) {
+            if (c.enable) {
+              c.enable = false;
+              await c.save();
+            }
+          }
+          ret.levels = courses;
+        }
+        else {
+          let counter = 0;
+          for (const c of courses) {
+            if (!c.enable) {
+              counter += 1;
+              break;
+            }
+          }
+
+          if (counter > 0) return returnCantEdit(res, 2);
+        }
+      }
+    }
+
     await course.save();
 
     return res.json({
       msg: `Se ha ${course.enable ? 'publicado' : 'retirado'} el curso exitosamente.`,
-      data: {
-        enable: course.enable
-      }
+      data: ret
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/enableCourse`);

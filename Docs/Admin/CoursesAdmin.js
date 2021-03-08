@@ -101,7 +101,7 @@
  * @apiParam {String} banner Base64 de la imagen a cargar.
  * @apiParam {Number[]} toRoles Roles a los que va dirigido el curso.
  *
- * @apiExample {JSON} Example JSON Request without levels
+ * @apiExample {JSON} Example JSON Request
  * {
 	"title": "NUEVO CURSO",
 	"description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.",
@@ -153,7 +153,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id (03) Obtener detalles de un curso.
- * @apiVersion 0.0.19
+ * @apiVersion 0.0.22
  * @apiName detailsCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -202,6 +202,7 @@
  * @apiSuccess (test Object[]) {String} inputType Tipo de campo para la pregunta (valores: 'checkbox' | 'radio' | 'text' | 'textarea').
  *
  * @apiSuccess (levels Object[]) {String} banner URL de la imagen del curso.
+ * @apiSuccess (levels Object[]) {Boolean} enable Indica si el curso se encuentra publicado.
  * @apiSuccess (levels Object[]) {String} _id ID del curso.
  * @apiSuccess (levels Object[]) {String} title Título del curso.
  * @apiSuccess (levels Object[]) {String} slug Slug del curso.
@@ -352,7 +353,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id/enable (04) Publicar o retirar curso del listado público.
- * @apiVersion 0.0.18
+ * @apiVersion 0.0.22
  * @apiName enableCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -362,6 +363,16 @@
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos del curso.
+ *
+ * @apiSuccess (data Object) {Boolean} enable Datos del curso.
+ * @apiSuccess (data Object) {Object[]} levels Listados de cursos previos que han sido retirados de la sección pública (en caso de disponer)
+ *
+ * @apiSuccess (levels Object[]) {String} banner URL de la imagen del curso.
+ * @apiSuccess (levels Object[]) {Boolean} enable Indica si el curso se encuentra publicado.
+ * @apiSuccess (levels Object[]) {String} _id ID del curso.
+ * @apiSuccess (levels Object[]) {String} title Título del curso.
+ * @apiSuccess (levels Object[]) {String} slug Slug del curso.
+ * @apiSuccess (levels Object[]) {String} description Descripción del curso.
  *
  * @apiSuccessExample {JSON} Success published course
  * HTTP/1.1 200 Success
@@ -377,7 +388,17 @@
  * {
 	"msg": "Se ha retirado el curso exitosamente.",
 	"data": {
-		"enable": false
+		"enable": false,
+		"levels": [
+			{
+				"banner": "http://localhost:9000/images/1614969471.jpeg",
+				"enable": false,
+				"_id": "603afb2309bf7a3428ac58f8",
+				"slug": "curso-02",
+				"title": "CURSO 02",
+				"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat."
+			}
+		]
 	}
 }
  *
@@ -433,6 +454,12 @@
  * HTTP/1.1 422 Unprocessable Entity
  * {
   "msg": "Disculpe, pero los temas del curso contener sus pruebas con sus respectivas preguntas."
+}
+ *
+ * @apiErrorExample {JSON} Can't publish the course before the previous courses
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero los cursos previos deben estar publicados para poder realizar esta acción."
 }
  *
  * @apiUse GlobalErrorSystem

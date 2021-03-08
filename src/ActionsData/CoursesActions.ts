@@ -117,7 +117,7 @@ export async function getPreviousIdsCourses(listIds: any[]) : Promise<ICourseRef
   return listIds.length > 0 ?
     await Courses.find(
       { _id: { $in: listIds } },
-      { _id: 1, title: 1, slug: 1, banner: 1, description: 1 }
+      { _id: 1, title: 1, slug: 1, banner: 1, description: 1, enable: 1 }
       ).exec() as ICourseReference[]
     :
     [];
@@ -387,7 +387,8 @@ export function returnErrorId(res: Response, title = 0) : Response {
 export function returnCantEdit(res: Response, index = 0) : Response {
   const msg = [
     'Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.',
-    'Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listas.'
+    'Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listas.',
+    'Disculpe, pero los cursos previos deben estar publicados para poder realizar esta acción.',
   ];
   return res.status(422).json({
     msg: msg[index],

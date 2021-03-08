@@ -29,7 +29,6 @@ export default async function getCourses(req: Request, res: Response) : Promise<
     const query: any = { toRoles: userrole, enable: { $eq: true } };
 
     if (title) query.title = { $regex: new RegExp(`${title}`, 'i')};
-
     const courses = await getCoursesList({
       query,
       limit,
@@ -130,24 +129,26 @@ export async function addCourseUser(req: Request, res: Response) : Promise<Respo
 
 export async function showCourse(req: Request, res: Response) : Promise<Response>{
   try {
-    const { slug } = req.params;
+    const { slug, userid } = req.params;
     const { userrole } = req.body;
 
     if (!checkSlug(slug)) return returnNotFound(res, 'slug');
 
     const course: ICourseList | null = await getCourseDetails({
-      query: { slug, toRoles: userrole, enable: true },
+      query: { slug, toRoles: userrole },
       isPublic: true,
     });
     if (!course) return returnNotFound(res, '404Course');
 
     // check and get data user course user
-    const dataCourseUser = await getCoursesDataUser({ query: { courseId: course._id } });
+    const dataCourseUser = await getCoursesDataUser({ query: { userid, courseId: course._id } });
+
+    if (!dataCourseUser && !course.enable) return returnNotFound(res, '404Course');
 
     return res.json({
       msg: 'Curso',
       course: await getModelReturnCourseOrTheme({ data: course }),
-      dataCourseUser: dataCourseUser || null
+      dataCourseUser
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/showCourse`);
