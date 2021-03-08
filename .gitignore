@@ -1,6 +1,5 @@
 node_modules/
 .idea/*
 ./logs
-package-lock.json
 .env.production
 images/
