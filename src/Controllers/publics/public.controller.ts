@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { getData } from '../../ActionsData/UsersActions';
+import { getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
+import { checkDate, checkDocument, checkEmail, checkPassword } from '../../Functions/Validations';
 
 const path = 'Controllers/publics/publics.controller';
 
@@ -121,6 +122,76 @@ export async function logout(req: Request, res: Response): Promise<Response> {
     return res.json({
       msg: 'Se ha finalizado la sesión exitosamente.'
     });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/logout`);
+  }
+}
+
+export async function recoveryPassword(req: Request, res: Response): Promise<Response> {
+  try {
+    const actionsList = ['check-document', 'check-params', 'change-password'];
+    const ret: any = {
+      msg: null,
+    };
+    const { action } = req.params;
+    const { document } = req.body;
+
+    if (actionsList.indexOf(`${action}`) === -1) return responseErrorsRecoveryPassword(res, 0);
+
+    if (!checkDocument(document)) return responseErrorsRecoveryPassword(res, 1);
+
+    const user = await Users.findOne(
+      {
+        document: document.toString().toUpperCase(),
+        role: { $nin: [0, 1] }
+      },
+      { email: 1, birthday: 1 }
+    ).exec();
+
+    if (!user) return responseErrorsRecoveryPassword(res, 2);
+
+    if (action === 'check-document') {
+      ret.msg = 'Por favor, complete los siguientes campos para recuperar su contraseña.';
+      ret.check = {
+        email: !!user.email,
+        birthday: !!user.birthday,
+      };
+
+      return res.json(ret);
+    }
+
+    // validate extra params
+
+    const { check } = req.body;
+    if (!check || (check && Object.keys(check).length === 0)) return responseErrorsRecoveryPassword(res, 3);
+
+    if (user.email) {
+      if (!checkEmail(check.email)) return responseErrorsRecoveryPassword(res, 4);
+      if (check.email !== user.email) return responseErrorsRecoveryPassword(res, 5);
+    }
+
+    if (user.birthday) {
+      if (!checkDate(check.birthday)) return responseErrorsRecoveryPassword(res, 6);
+      if (check.birthday !== user.birthday) return responseErrorsRecoveryPassword(res, 7);
+    }
+
+    if (action === 'check-params') {
+      ret.msg = 'Por favor, indique su nueva contraseña.';
+      ret.setNewPassword = true;
+
+      return res.json(ret);
+    }
+
+    const { password } = req.body;
+
+    if (!checkPassword(password)) return responseErrorsRecoveryPassword(res, 8);
+
+    user.password = bcrypt.hashSync(password, 10);
+    await user.save();
+    ret.msg = 'Se ha asignado la nueva contraseña a su cuenta exitosamente.';
+    ret.changed = true;
+
+    return res.json(ret);
   } catch (error: any) {
     return returnError(res, error, `${path}/logout`);
   }

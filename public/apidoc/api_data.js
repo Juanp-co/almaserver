@@ -8723,6 +8723,490 @@ define({ "api": [
     }
   },
   {
+    "type": "put",
+    "url": "/api/recovery-password/change-password",
+    "title": "(07) Recuperar contraseña - Cambiar contraseña.",
+    "version": "0.0.22",
+    "name": "recoveryPasswordChangePassPublic",
+    "group": "Public",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento del identidad.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "check",
+            "description": "<p>Datos a validar.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Nueva contraseña.</p>"
+          }
+        ],
+        "check Object": [
+          {
+            "group": "check Object",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "check Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request with check only email",
+        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": null\n\t},\n\t\"password\": \"password\"\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request with check email and birthday",
+        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": \"1994-07-07\"\n\t},\n\t\"password\": \"password\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "changed",
+            "description": "<p>Indica si se asignó la nueva contraseña.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success, check only email",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha asignado la nueva contraseña a su cuenta exitosamente.\",\n\t\"changed\": true\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error action",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero no se encontró la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Document not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el número de documento indicado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid document",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero debe indicar un número de documento válido.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Errors params",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no se recibieron los datos a validar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid email",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero debe indicar un correo electrónico válido.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Email isn't equals to user data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el correo electrónico indicado no coincide con el de su cuenta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid date",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero debe indicar una fecha válida.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Birthday isn't equals to user data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la fecha indicada no coincide con su fecha de cumpleaños de su cuenta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid format password",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la nueva contraseña debe contener letras (a-Z, A-Z), números (0-9) y al menos 6 caracteres.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/recovery-password/check-document",
+    "title": "(05) Recuperar contraseña - Verificar documento.",
+    "version": "0.0.22",
+    "name": "recoveryPasswordCheckDocumentPublic",
+    "group": "Public",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento del identidad.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"document\": \"CC12345678\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "check",
+            "description": "<p>Datos a verificar.</p>"
+          }
+        ],
+        "check Object": [
+          {
+            "group": "check Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Verificar correo electrónico.</p>"
+          },
+          {
+            "group": "check Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Verificar fecha de nacimiento.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success, check only email",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Por favor, complete los siguientes campos para recuperar su contraseña.\",\n\t\"check\": {\n\t\t\"email\": true,\n\t\t\"birthday\": false\n\t}\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success, check email and birthday",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Por favor, complete los siguientes campos para recuperar su contraseña.\",\n\t\"check\": {\n\t\t\"email\": true,\n\t\t\"birthday\": true\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error action",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero no se encontró la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Document not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el número de documento indicado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid document",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero debe indicar un número de documento válido.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/recovery-password/check-params",
+    "title": "(06) Recuperar contraseña - Verificar datos solicitados.",
+    "version": "0.0.22",
+    "name": "recoveryPasswordCheckParamsPublic",
+    "group": "Public",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento del identidad.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "check",
+            "description": "<p>Datos a validar.</p>"
+          }
+        ],
+        "check Object": [
+          {
+            "group": "check Object",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "check Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request with check only email",
+        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": null\n\t}\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request with check email and birthday",
+        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": \"1994-07-07\"\n\t}\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "setNewPassword",
+            "description": "<p>Indica si se asignará la nueva contraseña.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success, check only email",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Por favor, indique su nueva contraseña.\",\n\t\"setNewPassword\": true\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error action",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero no se encontró la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Document not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el número de documento indicado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid document",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero debe indicar un número de documento válido.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Errors params",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no se recibieron los datos a validar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid email",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero debe indicar un correo electrónico válido.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Email isn't equals to user data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el correo electrónico indicado no coincide con el de su cuenta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid date",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero debe indicar una fecha válida.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Birthday isn't equals to user data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la fecha indicada no coincide con su fecha de cumpleaños de su cuenta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
     "type": "post",
     "url": "/api/register",
     "title": "(00) Registro.",
@@ -8810,6 +9294,18 @@ define({ "api": [
       ]
     },
     "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        }\n    ]\n  }",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
       "fields": {
         "Error 4xx": [
           {
@@ -8843,19 +9339,7 @@ define({ "api": [
             "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        }\n    ]\n  }",
-          "type": "JSON"
-        },
-        {
-          "title": "Error internal server",
-          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
-          "type": "JSON"
-        }
-      ]
+      }
     },
     "filename": "Docs/Public.js",
     "groupTitle": "Public"

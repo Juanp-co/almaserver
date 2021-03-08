@@ -143,6 +143,7 @@ async function showCourse(req, res) {
         const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { userid, courseId: course._id } });
         if (!dataCourseUser && !course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
+        delete course.enable;
         return res.json({
             msg: 'Curso',
             course: await CoursesActions_1.getModelReturnCourseOrTheme({ data: course }),

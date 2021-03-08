@@ -10,7 +10,7 @@ import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.c
 import {
   helloWorld,
   login,
-  logout,
+  logout, recoveryPassword,
   register
 } from '../Controllers/publics/public.controller';
 
@@ -53,6 +53,12 @@ router.get(`/events/:_id`, validateUser, showPublicEvent);
 
 router.post(`/login`, login);
 router.delete(`/logout`, validateUser, logout);
+
+/*
+  Recovery Password
+ */
+router.post(`/recovery-password/:action`, recoveryPassword);
+router.put(`/recovery-password/:action`, recoveryPassword);
 
 /*
   Register

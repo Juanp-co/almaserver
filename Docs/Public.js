@@ -39,10 +39,7 @@
     "msg": "Registro exitoso.",
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Object[]} errors Listado de errores a mostrar.
- * @apiError (errors Object[]) {String} msg[msg] Mensaje de error.
- * @apiError (errors Object[]) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
@@ -56,12 +53,7 @@
     ]
   }
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
  */
 
 /**
@@ -340,4 +332,150 @@
  *
  * @apiUse GlobalErrorSystem
  *
+ */
+
+/**
+ * @api {post} /api/recovery-password/check-document (05) Recuperar contraseña - Verificar documento.
+ * @apiVersion 0.0.22
+ * @apiName recoveryPasswordCheckDocumentPublic
+ * @apiGroup Public
+ *
+ * @apiParam {String} document Número de documento del identidad.
+ *
+ * @apiExample {JSON} Example JSON Request
+ * {
+	"document": "CC12345678"
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} check Datos a verificar.
+ *
+ * @apiSuccess (check Object) {Boolean} email Verificar correo electrónico.
+ * @apiSuccess (check Object) {Boolean} birthday Verificar fecha de nacimiento.
+ *
+ * @apiSuccessExample {JSON} Success, check only email
+ * HTTP/1.1 201 Created
+ * {
+	"msg": "Por favor, complete los siguientes campos para recuperar su contraseña.",
+	"check": {
+		"email": true,
+		"birthday": false
+	}
+}
+ * @apiSuccessExample {JSON} Success, check email and birthday
+ * HTTP/1.1 201 Created
+ * {
+	"msg": "Por favor, complete los siguientes campos para recuperar su contraseña.",
+	"check": {
+		"email": true,
+		"birthday": true
+	}
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse UsersRecoveryPassword01
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {post} /api/recovery-password/check-params (06) Recuperar contraseña - Verificar datos solicitados.
+ * @apiVersion 0.0.22
+ * @apiName recoveryPasswordCheckParamsPublic
+ * @apiGroup Public
+ *
+ * @apiParam {String} document Número de documento del identidad.
+ * @apiParam {Object} check Datos a validar.
+ *
+ * @apiParam (check Object) {String} email Correo electrónico.
+ * @apiParam (check Object) {String|Null} birthday Fecha de nacimiento.
+ *
+ * @apiExample {JSON} Example JSON Request with check only email
+ * {
+	"document": "CC12345678",
+	"check": {
+		"email": "user@example.com",
+		"birthday": null
+	}
+}
+ * @apiExample {JSON} Example JSON Request with check email and birthday
+ * {
+	"document": "CC12345678",
+	"check": {
+		"email": "user@example.com",
+		"birthday": "1994-07-07"
+	}
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Boolean} setNewPassword Indica si se asignará la nueva contraseña.
+ *
+ * @apiSuccessExample {JSON} Success, check only email
+ * HTTP/1.1 201 Created
+ * {
+	"msg": "Por favor, indique su nueva contraseña.",
+	"setNewPassword": true
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse UsersRecoveryPassword01
+ *
+ * @apiUse UsersRecoveryPassword02
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {put} /api/recovery-password/change-password (07) Recuperar contraseña - Cambiar contraseña.
+ * @apiVersion 0.0.22
+ * @apiName recoveryPasswordChangePassPublic
+ * @apiGroup Public
+ *
+ * @apiParam {String} document Número de documento del identidad.
+ * @apiParam {Object} check Datos a validar.
+ * @apiParam {String} password Nueva contraseña.
+ *
+ * @apiParam (check Object) {String} email Correo electrónico.
+ * @apiParam (check Object) {String|Null} birthday Fecha de nacimiento.
+ *
+ * @apiExample {JSON} Example JSON Request with check only email
+ * {
+	"document": "CC12345678",
+	"check": {
+		"email": "user@example.com",
+		"birthday": null
+	},
+	"password": "password"
+}
+ * @apiExample {JSON} Example JSON Request with check email and birthday
+ * {
+	"document": "CC12345678",
+	"check": {
+		"email": "user@example.com",
+		"birthday": "1994-07-07"
+	},
+	"password": "password"
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Boolean} changed Indica si se asignó la nueva contraseña.
+ *
+ * @apiSuccessExample {JSON} Success, check only email
+ * HTTP/1.1 201 Created
+ * {
+	"msg": "Se ha asignado la nueva contraseña a su cuenta exitosamente.",
+	"changed": true
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse UsersRecoveryPassword01
+ *
+ * @apiUse UsersRecoveryPassword02
+ *
+ * @apiUse UsersRecoveryPassword03
+ *
+ * @apiUse GlobalErrorSystem
  */
