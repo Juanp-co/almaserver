@@ -94,6 +94,7 @@ export interface ICourseReference {
   description: ICourse['description'];
   banner: ICourse['banner'];
   slug: ICourse['slug'];
+  enable: ICourse['enable'];
 }
 
 export interface ICourseList {

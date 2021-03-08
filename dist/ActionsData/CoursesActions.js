@@ -98,7 +98,7 @@ exports.getModelReturnCourseOrTheme = getModelReturnCourseOrTheme;
 // =====================================================================================================================
 async function getPreviousIdsCourses(listIds) {
     return listIds.length > 0 ?
-        await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, slug: 1, banner: 1, description: 1 }).exec()
+        await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, slug: 1, banner: 1, description: 1, enable: 1 }).exec()
         :
             [];
 }
@@ -345,7 +345,8 @@ exports.returnErrorId = returnErrorId;
 function returnCantEdit(res, index = 0) {
     const msg = [
         'Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.',
-        'Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listas.'
+        'Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listas.',
+        'Disculpe, pero los cursos previos deben estar publicados para poder realizar esta acción.',
     ];
     return res.status(422).json({
         msg: msg[index],

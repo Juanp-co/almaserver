@@ -223,6 +223,9 @@ exports.updateBannerCourse = updateBannerCourse;
 async function enableCourse(req, res) {
     try {
         const { _id } = req.params;
+        const ret = {
+            enable: false
+        };
         if (!Validations_1.checkObjectId(_id))
             return CoursesActions_1.returnErrorId(res);
         const course = await Courses_1.default.findOne({ _id }).exec();
@@ -237,12 +240,36 @@ async function enableCourse(req, res) {
         }
         else
             course.enable = false;
+        ret.enable = course.enable;
+        if (course.levels.length > 0) {
+            const courses = await Courses_1.default.find({ _id: { $in: course.levels } }, { _id: 1, title: 1, slug: 1, banner: 1, description: 1, enable: 1 }).exec();
+            if (courses.length > 0) {
+                if (!course.enable) {
+                    for (const c of courses) {
+                        if (c.enable) {
+                            c.enable = false;
+                            await c.save();
+                        }
+                    }
+                    ret.levels = courses;
+                }
+                else {
+                    let counter = 0;
+                    for (const c of courses) {
+                        if (!c.enable) {
+                            counter += 1;
+                            break;
+                        }
+                    }
+                    if (counter > 0)
+                        return CoursesActions_1.returnCantEdit(res, 2);
+                }
+            }
+        }
         await course.save();
         return res.json({
             msg: `Se ha ${course.enable ? 'publicado' : 'retirado'} el curso exitosamente.`,
-            data: {
-                enable: course.enable
-            }
+            data: ret
         });
     }
     catch (error) {

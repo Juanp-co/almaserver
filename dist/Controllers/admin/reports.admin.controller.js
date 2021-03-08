@@ -22,7 +22,7 @@ async function getReports(req, res) {
                 title: 'Cursos',
                 data: [
                     { label: 'Publicados', qty: 0 },
-                    { label: 'Borradores', qty: 0 },
+                    { label: 'No publicados', qty: 0 },
                     { label: 'Viendo', qty: 0 },
                 ],
                 qty: 0,
