@@ -3,9 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMemberGroup = exports.getGroup = exports.getCourses = exports.changePassword = exports.update = exports.get = void 0;
+exports.getReports = exports.getMemberGroup = exports.getGroup = exports.getCourses = exports.changePassword = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const UsersActions_1 = require("../ActionsData/UsersActions");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const TokenActions_1 = require("../Functions/TokenActions");
@@ -231,3 +232,94 @@ async function getMemberGroup(req, res) {
     }
 }
 exports.getMemberGroup = getMemberGroup;
+/*
+  REPORTS
+ */
+async function getReports(req, res) {
+    try {
+        const { initDate, endDate } = req.query;
+        const query = {};
+        const queryReferrals = {};
+        const ret = {
+            courses: {
+                title: 'Mis cursos',
+                data: [
+                    { label: 'Aprobados', qty: 0 },
+                    { label: 'Cursando', qty: 0 }
+                ],
+                qty: 0,
+            },
+            referrals: {
+                title: 'Hijos espirituales',
+                data: [],
+                qty: 0,
+            },
+        };
+        if (initDate) {
+            query.created_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+            queryReferrals.updated_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+        }
+        if (endDate) {
+            query.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+            queryReferrals.updated_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        }
+        const { userid } = req.params;
+        if (!Validations_1.checkObjectId(userid)) {
+            return res.status(401).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+            });
+        }
+        const myCourses = await CoursesUsers_1.default.find({ userid, ...query }, { approved: 1 }).exec();
+        const myReferrals = await Referrals_1.default.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
+        if (myCourses.length > 0) {
+            ret.courses.qty = myCourses.length;
+            for (const c of myCourses) {
+                if (c.approved)
+                    ret.courses.data[0].qty += 1;
+                else
+                    ret.courses.data[0].qty += 1;
+            }
+        }
+        if (myReferrals) {
+            ret.referrals.qty = myReferrals.members.length;
+            if (ret.referrals.qty > 0) {
+                const members = await Referrals_1.default.find({ _id: { $in: myReferrals.members } }, { members: 1 }).exec();
+                const users = await Users_1.default.find({ _id: { $in: myReferrals.members } }, { names: 1, lastNames: 1 }).exec();
+                if (members.length > 0) {
+                    let listsMembersDetails = []; // generate a new array data
+                    let limit = 0;
+                    for (const m of members) {
+                        const data = {
+                            label: null,
+                            qty: null
+                        };
+                        // get names and lastNames
+                        const dataUser = users.find(u => u._id.toString() === m._id.toString());
+                        if (dataUser) {
+                            data.label = `${dataUser.names} ${dataUser.lastNames}`;
+                            data.qty = m.members.length;
+                            listsMembersDetails.push(data);
+                            limit += 1;
+                        }
+                        if (limit === 3) {
+                            ret.referrals.data.push(listsMembersDetails);
+                            listsMembersDetails = [];
+                            limit = 0;
+                        }
+                    }
+                    if (listsMembersDetails.length > 0) {
+                        ret.referrals.data.push(listsMembersDetails);
+                    }
+                }
+            }
+        }
+        return res.json({
+            msg: `Mis reportes.`,
+            reports: ret
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getReports`);
+    }
+}
+exports.getReports = getReports;

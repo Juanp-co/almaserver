@@ -10949,6 +10949,186 @@ define({ "api": [
     }
   },
   {
+    "type": "get",
+    "url": "/api/user/reports",
+    "title": "(04) Obtener reportes de la cuenta.",
+    "version": "0.0.19",
+    "name": "getReportsUser",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "initDate",
+            "description": "<p>Fecha de busqueda inicial (formato: YYYY-MM-DD) (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "endDate",
+            "description": "<p>Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "report",
+            "description": "<p>Listado de curso del miembro.</p>"
+          }
+        ],
+        "report Object": [
+          {
+            "group": "report Object",
+            "type": "Object",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Cursos del miembro.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Object",
+            "optional": false,
+            "field": "referrals",
+            "description": "<p>Referidos del miembro.</p>"
+          }
+        ],
+        "courses and referrals Object": [
+          {
+            "group": "courses and referrals Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título de la sección.</p>"
+          },
+          {
+            "group": "courses and referrals Object",
+            "type": "Object[]|Array[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.</p>"
+          },
+          {
+            "group": "courses and referrals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "qty",
+            "description": "<p>Datos del reporte.</p>"
+          }
+        ],
+        "data Array[] in referrals Object": [
+          {
+            "group": "data Array[] in referrals Object",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del reporte.</p>"
+          }
+        ],
+        "data Object[]": [
+          {
+            "group": "data Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Etiqueta.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 1\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PRUEBA USUARIO\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PADRE PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"SUPERVISOR PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t}\n\t}\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without referrals data",
+          "content": "HTTP/1.1 200 Success\n{{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 0\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [],\n\t\t\t\"qty\": 0\n\t\t}\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/User.js",
+    "groupTitle": "User",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
     "type": "put",
     "url": "/api/user",
     "title": "(01) Actualizar datos del perfil.",

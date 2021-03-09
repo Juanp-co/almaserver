@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { validateUser } from '../middleware';
 import {
   changePassword,
-  get, getCourses, getGroup, getMemberGroup,
+  get, getCourses, getGroup, getMemberGroup, getReports,
   update
 } from '../Controllers/user.controller';
 import { getMemberReferred, getReferrals } from '../Controllers/publics/referrals.controller';
@@ -28,5 +28,10 @@ router.get('/group/:memberId', validateUser, getMemberGroup);
  */
 router.get('/referrals', validateUser, getReferrals);
 router.get('/referrals/:_id', validateUser, getMemberReferred);
+
+/*
+  Reports
+ */
+router.get('/reports', validateUser, getReports);
 
 export default router;
