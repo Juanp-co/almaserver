@@ -300,3 +300,113 @@
  *
  * @apiUse GlobalErrorSystem
  */
+
+/**
+ * @api {get} /api/user/reports (04) Obtener reportes de la cuenta.
+ * @apiVersion 0.0.19
+ * @apiName getReportsUser
+ * @apiGroup User
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ * 
+ * @apiParam (Query Params) {String} initDate Fecha de busqueda inicial (formato: YYYY-MM-DD) (opcional).
+ * @apiParam (Query Params) {String} endDate Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} report Listado de curso del miembro.
+ *
+ * @apiSuccess (report Object) {Object} courses Cursos del miembro.
+ * @apiSuccess (report Object) {Object} referrals Referidos del miembro.
+ *
+ * @apiSuccess (courses and referrals Object) {String} title Título de la sección.
+ * @apiSuccess (courses and referrals Object) {Object[]|Array[]} data Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.
+ * @apiSuccess (courses and referrals Object) {Number} qty Datos del reporte.
+ *
+ * @apiSuccess (data Array[] in referrals Object) {Object} data Datos del reporte.
+ *
+ * @apiSuccess (data Object[]) {String} data Etiqueta.
+ * @apiSuccess (data Object[]) {Number} data Total de datos.
+ *
+ *
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Mis reportes.",
+	"reports": {
+		"courses": {
+			"title": "Mis cursos",
+			"data": [
+				{
+					"label": "Aprobados",
+					"qty": 1
+				},
+				{
+					"label": "Cursando",
+					"qty": 0
+				}
+			],
+			"qty": 1
+		},
+		"referrals": {
+			"title": "Hijos espirituales",
+			"data": [
+				[
+					{
+						"label": "PRUEBA USUARIO",
+						"qty": 0
+					},
+					{
+						"label": "PADRE PRUEBA",
+						"qty": 0
+					},
+					{
+						"label": "ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ",
+						"qty": 1
+					}
+				],
+				[
+					{
+						"label": "SUPERVISOR PRUEBA",
+						"qty": 0
+					}
+				]
+			],
+			"qty": 4
+		}
+	}
+}
+ *
+ * @apiSuccessExample {JSON} Success without referrals data
+ * HTTP/1.1 200 Success
+ * {{
+	"msg": "Mis reportes.",
+	"reports": {
+		"courses": {
+			"title": "Mis cursos",
+			"data": [
+				{
+					"label": "Aprobados",
+					"qty": 0
+				},
+				{
+					"label": "Cursando",
+					"qty": 0
+				}
+			],
+			"qty": 0
+		},
+		"referrals": {
+			"title": "Hijos espirituales",
+			"data": [],
+			"qty": 0
+		}
+	}
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ */

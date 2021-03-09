@@ -20,4 +20,8 @@ router.get('/group/:memberId', middleware_1.validateUser, user_controller_1.getM
  */
 router.get('/referrals', middleware_1.validateUser, referrals_controller_1.getReferrals);
 router.get('/referrals/:_id', middleware_1.validateUser, referrals_controller_1.getMemberReferred);
+/*
+  Reports
+ */
+router.get('/reports', middleware_1.validateUser, user_controller_1.getReports);
 exports.default = router;

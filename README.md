@@ -63,6 +63,17 @@ _NOTE: You was must created a new database in mongodb and configure the `.env` f
     
 _NOTE: The migrations contain test data. To run in production server is necessary delete the data test. Evaluate what data will be delete before to do._
 
+## Indicate the url API Server.
+
+In the .env.* file (of your preference), you must indicate the url of API Server. This values is REQUIRED to the show courses images.
+
+    #example dev
+    URL_API="http://localhost:7000"
+    
+    #example production
+    URL_API="https://api.domain.com"
+
+
 ## Configure Send Mail
 
 And now, to send mail you must configure the credentials in your `.env` file, just find the `# MAILER` comment and complete the require data:
@@ -79,6 +90,10 @@ And now, to send mail you must configure the credentials in your `.env` file, ju
 
     To access, you can create a new user (read documentation) or login with
     the users to testing (run migrations previously).
+    
+    # Particular admin to testing
+    user: CC123456789
+    pass: password
     
     # Particular user to testing
     user: CC12345678
