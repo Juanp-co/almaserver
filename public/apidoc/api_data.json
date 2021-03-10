@@ -5217,17 +5217,17 @@
       "examples": [
         {
           "title": "Success and approved",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Ha aprobado el curso exitosamente.\",\n    \"average\": 100,\n    \"approved\": true\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Ha aprobado el examen exitosamente.\",\n    \"average\": 100,\n    \"approved\": true\n}",
           "type": "JSON"
         },
         {
           "title": "Success with decimal average",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Ha aprobado el curso exitosamente.\",\n    \"average\": \"66.66\",\n    \"approved\": true\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Ha aprobado el examen exitosamente.\",\n    \"average\": \"84.66\",\n    \"approved\": true\n}",
           "type": "JSON"
         },
         {
-          "title": "Success and not approved",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del curso.\",\n    \"average\": 50,\n    \"approved\": false\n}",
+          "title": "Success, but not approved",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del examen.\",\n    \"average\": 66.66,\n    \"approved\": false\n}",
           "type": "JSON"
         }
       ]

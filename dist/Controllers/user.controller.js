@@ -277,7 +277,7 @@ async function getReports(req, res) {
                 if (c.approved)
                     ret.courses.data[0].qty += 1;
                 else
-                    ret.courses.data[0].qty += 1;
+                    ret.courses.data[1].qty += 1;
             }
         }
         if (myReferrals) {

@@ -381,8 +381,8 @@ async function evaluateTest(req, res) {
         const average = points > 0 ? points * 100 / (validate.data.length - pointsIgnored) : 0;
         const approved = (average === 100 || average >= 75);
         const msg = approved ?
-            'Ha aprobado la prueba exitosamente.' :
-            'Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del tema.';
+            'Ha aprobado el examen exitosamente.' :
+            'Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del examen.';
         // update data course user
         myCourse.temary[index].test.push({ points: average });
         myCourse.temary[index].approved = approved;
