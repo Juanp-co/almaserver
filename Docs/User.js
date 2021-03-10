@@ -308,7 +308,7 @@
  * @apiGroup User
  *
  * @apiHeader {String} x-access-token Token de la sesión.
- * 
+ *
  * @apiParam (Query Params) {String} initDate Fecha de busqueda inicial (formato: YYYY-MM-DD) (opcional).
  * @apiParam (Query Params) {String} endDate Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).
  *

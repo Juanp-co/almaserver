@@ -682,7 +682,7 @@
  * @apiSuccessExample {JSON} Success and approved
  * HTTP/1.1 200 Success
  * {
-    "msg": "Ha aprobado el curso exitosamente.",
+    "msg": "Ha aprobado el examen exitosamente.",
     "average": 100,
     "approved": true
 }
@@ -690,16 +690,16 @@
  * @apiSuccessExample {JSON} Success with decimal average
  * HTTP/1.1 200 Success
  * {
-    "msg": "Ha aprobado el curso exitosamente.",
-    "average": "66.66",
+    "msg": "Ha aprobado el examen exitosamente.",
+    "average": "84.66",
     "approved": true
 }
  *
- * @apiSuccessExample {JSON} Success and not approved
+ * @apiSuccessExample {JSON} Success, but not approved
  * HTTP/1.1 200 Success
  * {
-    "msg": "Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del curso.",
-    "average": 50,
+    "msg": "Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del examen.",
+    "average": 66.66,
     "approved": false
 }
  *

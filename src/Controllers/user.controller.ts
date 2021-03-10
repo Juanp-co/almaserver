@@ -322,7 +322,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
       ret.courses.qty = myCourses.length;
       for (const c of myCourses) {
         if (c.approved) ret.courses.data[0].qty += 1;
-        else ret.courses.data[0].qty += 1;
+        else ret.courses.data[1].qty += 1;
       }
     }
 
