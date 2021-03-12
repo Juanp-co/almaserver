@@ -213,7 +213,7 @@
  * @apiParam (Query Params) {String} endDate Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object[]} events Listado de preguntas de seguridad.
+ * @apiSuccess {Object[]} events Listado de eventos.
  *
  * @apiSuccess (events Object[]) {String} _id ID del evento.
  * @apiSuccess (events Object[]) {String} title Título para el evento.
@@ -476,6 +476,46 @@
  * @apiUse UsersRecoveryPassword02
  *
  * @apiUse UsersRecoveryPassword03
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {get} /api/banks (08) Obtener listado de bancos.
+ * @apiVersion 0.0.25
+ * @apiName getPublicBanksPublic
+ * @apiGroup Public
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} banks Listado de bancos.
+ *
+ * @apiSuccess (banks Object[]) {String} _id ID del banco.
+ * @apiSuccess (banks Object[]) {String} title Título para el banco.
+ * @apiSuccess (banks Object[]) {String} description Descripción del banco.
+ * @apiSuccess (banks Object[]) {String} picture URL imagen.
+ *
+ * @apiSuccessExample {JSON} Success with data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Bancos",
+	"banks": [
+		{
+			"_id": "604bdd2f5a94aa3824e40086",
+			"title": "BANCO 02",
+			"description": "<p><b>Núm. cuenta</b>: 01010101010101010101.</p>",
+			"picture": "http://localhost:7000/images/banks/1615584559.jpeg"
+		}
+	]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Bancos",
+	"banks": []
+}
+ *
+ * @apiUse GlobalParamsErrors
  *
  * @apiUse GlobalErrorSystem
  */

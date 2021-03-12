@@ -2,6 +2,7 @@ import moment from 'moment-timezone';
 import slug from 'slug';
 import { Response } from 'express';
 import * as fs from 'fs';
+import { unlinkSync } from "fs";
 import { IInfoErrors } from '../Interfaces/IErrorResponse';
 
 /*
@@ -60,8 +61,7 @@ export function setDate(): number {
 }
 
 export function getDate(timestamp: number | null | undefined): string | any {
-  if (timestamp) return moment.unix(timestamp).tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
-  return timestamp;
+  return timestamp ? moment.unix(timestamp).tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss') || null : timestamp;
 }
 
 export function cleanWhiteSpaces(value: string | null): string | null {
@@ -123,22 +123,34 @@ export function dateSpanish(timestamp?: number): string | null {
   return timestamp ? moment.unix(timestamp).locale('es').format('DD [de] MMMM [de] YYYY') : null;
 }
 
-export async function checkAndUploadPicture(picture: string | null): Promise<string | null> {
+export async function checkAndUploadPicture(picture: string | null, pathFolder = ''): Promise<string | null> {
   if (!picture) return null;
 
+  const pathRoute = `images${pathFolder !== '' ? `/${pathFolder}` : ''}`;
+
   // check if exist folder
-  if (!fs.existsSync('./images')) fs.mkdirSync('./images');
+  if (!fs.existsSync(`./${pathRoute}`)) fs.mkdirSync(`./${pathRoute}`);
 
   // get extension file
   const extFile = picture.substring("data:image/".length, picture.indexOf(";base64"));
   // to convert base64 format into random filename
   const base64Data = picture.replace(/^data:([A-Za-z-+/]+);base64,/, '');
   // set path
-  const path = `images/${moment().unix()}.${extFile}`;
+  const path = `${pathRoute}/${moment().unix()}.${extFile}`;
   // write
   fs.writeFileSync(`./${path}`, base64Data,  { encoding: 'base64' });
 
   return path;
+}
+
+export function deleteImages(path: any) {
+  try {
+    if (path) unlinkSync(path);
+  }
+  catch (e: any) {
+    showConsoleError('src/Functions/GlobalFunctions/deleteImage', e);
+  }
+
 }
 
 export function createSlug(value: string | null) : string | null {

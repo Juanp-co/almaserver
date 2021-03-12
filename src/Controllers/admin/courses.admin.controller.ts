@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
-import {unlinkSync} from 'fs';
 import {
   checkIfExistSlug, checkIfUsersOwnCourse, checkPreviousIdsCourses,
   getCourseDetails,
@@ -8,7 +7,7 @@ import {
 } from '../../ActionsData/CoursesActions';
 import {
   checkAndUploadPicture,
-  createSlug,
+  createSlug, deleteImages,
   getLimitSkipSortSearch,
   returnError, returnErrorParams
 } from '../../Functions/GlobalFunctions';
@@ -122,7 +121,7 @@ export async function saveCourse(req: Request, res: Response) : Promise<Response
     validate.data.code = validate.data.slug;
 
     // save picture
-    validate.data.banner = await checkAndUploadPicture(validate.data.banner);
+    validate.data.banner = await checkAndUploadPicture(validate.data.banner, 'courses');
 
     // create
     const course = new Courses(validate.data);
@@ -211,9 +210,9 @@ export async function updateBannerCourse(req: Request, res: Response) : Promise<
     if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
 
     if (course.banner) {
-      unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+      deleteImages(`./${course.toObject({ getters: false }).banner}`);
     }
-    course.banner = await checkAndUploadPicture(validate.data.banner);
+    course.banner = await checkAndUploadPicture(validate.data.banner, 'courses');
     await course.save();
 
     return res.json({
@@ -307,7 +306,7 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
       });
 
     if (course.banner) {
-      unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+      deleteImages(`./${course.toObject({ getters: false }).banner}`);
     }
 
     await course.delete();

@@ -22,10 +22,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSlug = exports.checkAndUploadPicture = exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+exports.createSlug = exports.deleteImages = exports.checkAndUploadPicture = exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const slug_1 = __importDefault(require("slug"));
 const fs = __importStar(require("fs"));
+const fs_1 = require("fs");
 /*
   Console logs
  */
@@ -83,9 +84,7 @@ function setDate() {
 }
 exports.setDate = setDate;
 function getDate(timestamp) {
-    if (timestamp)
-        return moment_timezone_1.default.unix(timestamp).tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss');
-    return timestamp;
+    return timestamp ? moment_timezone_1.default.unix(timestamp).tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss') || null : timestamp;
 }
 exports.getDate = getDate;
 function cleanWhiteSpaces(value) {
@@ -148,23 +147,34 @@ function dateSpanish(timestamp) {
     return timestamp ? moment_timezone_1.default.unix(timestamp).locale('es').format('DD [de] MMMM [de] YYYY') : null;
 }
 exports.dateSpanish = dateSpanish;
-async function checkAndUploadPicture(picture) {
+async function checkAndUploadPicture(picture, pathFolder = '') {
     if (!picture)
         return null;
+    const pathRoute = `images${pathFolder !== '' ? `/${pathFolder}` : ''}`;
     // check if exist folder
-    if (!fs.existsSync('./images'))
-        fs.mkdirSync('./images');
+    if (!fs.existsSync(`./${pathRoute}`))
+        fs.mkdirSync(`./${pathRoute}`);
     // get extension file
     const extFile = picture.substring("data:image/".length, picture.indexOf(";base64"));
     // to convert base64 format into random filename
     const base64Data = picture.replace(/^data:([A-Za-z-+/]+);base64,/, '');
     // set path
-    const path = `images/${moment_timezone_1.default().unix()}.${extFile}`;
+    const path = `${pathRoute}/${moment_timezone_1.default().unix()}.${extFile}`;
     // write
     fs.writeFileSync(`./${path}`, base64Data, { encoding: 'base64' });
     return path;
 }
 exports.checkAndUploadPicture = checkAndUploadPicture;
+function deleteImages(path) {
+    try {
+        if (path)
+            fs_1.unlinkSync(path);
+    }
+    catch (e) {
+        showConsoleError('src/Functions/GlobalFunctions/deleteImage', e);
+    }
+}
+exports.deleteImages = deleteImages;
 function createSlug(value) {
     return value ? slug_1.default(value) : null;
 }

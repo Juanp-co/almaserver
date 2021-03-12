@@ -12,7 +12,7 @@
  * @apiParam (Query Params) {String} endDate Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object[]} events Listado de preguntas de seguridad.
+ * @apiSuccess {Object[]} events Listado de eventos.
  *
  * @apiSuccess (events Object[]) {String} _id ID del evento.
  * @apiSuccess (events Object[]) {String} title Título para el evento.

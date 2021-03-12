@@ -7,6 +7,7 @@ import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 import { checkDate, checkDocument, checkEmail, checkPassword } from '../../Functions/Validations';
+import AccountsBanks from '../../Models/AccountsBanks';
 
 const path = 'Controllers/publics/publics.controller';
 
@@ -192,6 +193,22 @@ export async function recoveryPassword(req: Request, res: Response): Promise<Res
     ret.changed = true;
 
     return res.json(ret);
+  } catch (error: any) {
+    return returnError(res, error, `${path}/logout`);
+  }
+}
+
+/*
+  BANKS
+ */
+export async function getBanks(req: Request, res: Response): Promise<Response> {
+  try {
+    const banks = await AccountsBanks.find({}, { title: 1, description: 1, picture: 1 }).exec();
+
+    return res.json({
+      msg: 'Bancos',
+      banks
+    });
   } catch (error: any) {
     return returnError(res, error, `${path}/logout`);
   }

@@ -8,6 +8,7 @@ import getCourses, {
 } from '../Controllers/publics/courses.controller';
 import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.controller';
 import {
+  getBanks,
   helloWorld,
   login,
   logout, recoveryPassword,
@@ -21,6 +22,10 @@ const router = Router();
 /* Test api */
 
 router.get(`/`, helloWorld);
+
+/* banks */
+
+router.get(`/banks`, getBanks);
 
 /*
   Courses

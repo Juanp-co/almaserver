@@ -24,7 +24,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteLevelThemeCourse = exports.addLevelsThemeCourse = exports.deleteQuestionTestThemeCourse = exports.updateQuestionTestThemeCourse = exports.addQuestionTestThemeCourse = exports.deleteContentThemeCourse = exports.updateContentThemeCourse = exports.addContentThemeCourse = exports.deleteThemeCourse = exports.updateThemeCourse = exports.addThemeCourse = exports.deleteCourse = exports.enableCourse = exports.updateBannerCourse = exports.updateInfoCourse = exports.saveCourse = exports.showCourse = exports.getCoursesCounters = void 0;
 const lodash_1 = __importDefault(require("lodash"));
-const fs_1 = require("fs");
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const CoursesRequest_1 = __importStar(require("../../FormRequest/CoursesRequest"));
@@ -127,7 +126,7 @@ async function saveCourse(req, res) {
             validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
         validate.data.code = validate.data.slug;
         // save picture
-        validate.data.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
+        validate.data.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner, 'courses');
         // create
         const course = new Courses_1.default(validate.data);
         course.userid = req.params.userid;
@@ -206,9 +205,9 @@ async function updateBannerCourse(req, res) {
         if (await (CoursesActions_1.checkIfUsersOwnCourse(course._id.toString())))
             return CoursesActions_1.returnCantEdit(res, 1);
         if (course.banner) {
-            fs_1.unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+            GlobalFunctions_1.deleteImages(`./${course.toObject({ getters: false }).banner}`);
         }
-        course.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner);
+        course.banner = await GlobalFunctions_1.checkAndUploadPicture(validate.data.banner, 'courses');
         await course.save();
         return res.json({
             msg: 'Se ha actualizado la imagen del curso exitosamente.',
@@ -291,7 +290,7 @@ async function deleteCourse(req, res) {
                 msg: 'Disculpe, pero el curso no puede ser eliminado. Los miembros ya poseen el curso en sus listados.',
             });
         if (course.banner) {
-            fs_1.unlinkSync(`./${course.toObject({ getters: false }).banner}`);
+            GlobalFunctions_1.deleteImages(`./${course.toObject({ getters: false }).banner}`);
         }
         await course.delete();
         return res.json({

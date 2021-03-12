@@ -28,6 +28,8 @@ const router = express_1.Router();
 // ===================================================================================
 /* Test api */
 router.get(`/`, public_controller_1.helloWorld);
+/* banks */
+router.get(`/banks`, public_controller_1.getBanks);
 /*
   Courses
 */
