@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = __importStar(require("../../FormRequest/UsersRequest"));
@@ -31,6 +31,7 @@ const TokenActions_1 = require("../../Functions/TokenActions");
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
 const Validations_1 = require("../../Functions/Validations");
+const AccountsBanks_1 = __importDefault(require("../../Models/AccountsBanks"));
 const path = 'Controllers/publics/publics.controller';
 function helloWorld(req, res) {
     return res.json({
@@ -195,3 +196,19 @@ async function recoveryPassword(req, res) {
     }
 }
 exports.recoveryPassword = recoveryPassword;
+/*
+  BANKS
+ */
+async function getBanks(req, res) {
+    try {
+        const banks = await AccountsBanks_1.default.find({}, { title: 1, description: 1, picture: 1 }).exec();
+        return res.json({
+            msg: 'Bancos',
+            banks
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/logout`);
+    }
+}
+exports.getBanks = getBanks;

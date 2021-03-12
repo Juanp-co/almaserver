@@ -29,8 +29,19 @@ const events_controller_1 = __importStar(require("../Controllers/events/events.c
 const groups_admin_controller_1 = __importStar(require("../Controllers/admin/groups.admin.controller"));
 const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
 const reports_admin_controller_1 = __importDefault(require("../Controllers/admin/reports.admin.controller"));
+const accounts_banks_admin_controllers_1 = __importStar(require("../Controllers/admin/accounts.banks.admin.controllers"));
 const router = express_1.Router();
 // ===================================================================================
+/*
+  Accounts Banks
+*/
+router.route('/banks')
+    .get(middleware_1.validateAdmin, accounts_banks_admin_controllers_1.default)
+    .post(middleware_1.validateAdmin, accounts_banks_admin_controllers_1.saveBank);
+router.route('/banks/:_id')
+    .get(middleware_1.validateAdmin, accounts_banks_admin_controllers_1.showBank)
+    .put(middleware_1.validateAdmin, accounts_banks_admin_controllers_1.updateBank)
+    .delete(middleware_1.validateAdmin, accounts_banks_admin_controllers_1.deleteBank);
 /*
   Events
 */

@@ -19,7 +19,6 @@ import getGroups, {
   saveGroup, showGroup, updateGroup
 } from '../Controllers/admin/groups.admin.controller';
 import getUsers, {
-  // changeRoleUser,
   deleteUser, getCoursesUser, getReferralsUser,
   getUsersCounters,
   saveUser,
@@ -27,10 +26,28 @@ import getUsers, {
   updateUser
 } from '../Controllers/admin/users.admin.controller';
 import getReports from '../Controllers/admin/reports.admin.controller';
+import getBanks, {
+  deleteBank,
+  saveBank,
+  showBank,
+  updateBank
+} from '../Controllers/admin/accounts.banks.admin.controllers';
 
 const router = Router();
 
 // ===================================================================================
+
+/*
+  Accounts Banks
+*/
+router.route('/banks')
+  .get(validateAdmin, getBanks)
+  .post(validateAdmin, saveBank);
+
+router.route('/banks/:_id')
+  .get(validateAdmin, showBank)
+  .put(validateAdmin, updateBank)
+  .delete(validateAdmin, deleteBank);
 
 /*
   Events

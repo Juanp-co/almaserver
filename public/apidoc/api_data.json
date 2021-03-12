@@ -1,6 +1,764 @@
 [
   {
     "type": "post",
+    "url": "/api/admin/banks",
+    "title": "(01) Agregar un banco.",
+    "version": "0.0.25",
+    "name": "createBanksAdmin",
+    "group": "BanksAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del banco.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 de la imagen.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"title\": \"BANCO 01\",\n\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010101.</p> .....\",\n\t\"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "bank",
+            "description": "<p>Detalles del banco.</p>"
+          }
+        ],
+        "bank Object": [
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título para el banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de registro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se registrado el banco exitosamente.\",\n\t\"bank\": {\n\t\t\"_id\": \"604be0e0ca004b1018e8a820\",\n\t\t\"title\": \"BANCO 01\",\n\t\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010101.</p>.....\",\n\t\t\"picture\": \"http://localhost:7000/images/banks/1615585504.jpeg\",\n\t\t\"created_at\": \"2021-03-12 16:45:04\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"title\",\n      \"msg\": \"Disculpe, pero indicar un título para el banco.\"\n    },\n    {\n      \"input\": \"description\",\n      \"msg\": \"Disculpe, pero debe indicar una descripción para el banco.\"\n    },\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, pero debe indicar una imagen para el banco.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/BanksAdmin.js",
+    "groupTitle": "BanksAdmin"
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/banks/:_id",
+    "title": "(04) Eliminar un banco.",
+    "version": "0.0.25",
+    "name": "deleteBanksAdmin",
+    "group": "BanksAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha eliminado el banco exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/BanksAdmin.js",
+    "groupTitle": "BanksAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el banco seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el banco seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/banks/:_id",
+    "title": "(02) Obtener detalles de un banco.",
+    "version": "0.0.25",
+    "name": "detailsBanksAdmin",
+    "group": "BanksAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "bank",
+            "description": "<p>Detalles del banco.</p>"
+          }
+        ],
+        "bank Object": [
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título para el banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Detalles banco.\",\n\t\"bank\": {\n\t\t\"_id\": \"604bdcd88150001af4c4b6f8\",\n\t\t\"title\": \"BANCO 02\",\n\t\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010101.</p>\",\n\t\t\"picture\": \"http://localhost:7000/images/banks/1615585136.jpeg\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/BanksAdmin.js",
+    "groupTitle": "BanksAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el banco seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el banco seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/banks",
+    "title": "(00) Obtener listado de bancos.",
+    "version": "0.0.25",
+    "name": "getBanksAdmin",
+    "group": "BanksAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "banks",
+            "description": "<p>Listado bancos.</p>"
+          }
+        ],
+        "banks Object[]": [
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco.</p>"
+          },
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título para el banco.</p>"
+          },
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del banco.</p>"
+          },
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Bancos\",\n\t\"banks\": [\n\t\t{\n\t\t\t\"_id\": \"604bdd2f5a94aa3824e40086\",\n\t\t\t\"title\": \"BANCO 02\",\n\t\t\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010101.</p>\",\n\t\t\t\"picture\": \"http://localhost:7000/images/banks/1615584559.jpeg\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Bancos\",\n\t\"banks\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/BanksAdmin.js",
+    "groupTitle": "BanksAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/banks/:_id",
+    "title": "(03) Actualizar datos de un banco.",
+    "version": "0.0.25",
+    "name": "updateBanksAdmin",
+    "group": "BanksAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco a editar.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del banco.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 de la imagen.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"title\": \"BANCO 01 - Editado\",\n\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010202.</p> .....\",\n\t\"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request with URL in picture",
+        "content": "{\n\t\"title\": \"BANCO 01 - Editado\",\n\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010202.</p> .....\",\n\t\"picture\": \"http://localhost:7000/images/banks/1615585504.jpeg\",\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "bank",
+            "description": "<p>Detalles del banco.</p>"
+          }
+        ],
+        "bank Object": [
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título para el banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del banco.</p>"
+          },
+          {
+            "group": "bank Object",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha actualizado el banco exitosamente.\",\n\t\"bank\": {\n\t\t\"_id\": \"604be0e0ca004b1018e8a820\",\n\t\t\"title\": \"BANCO 01 - Editado\",\n\t\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010202.</p>.....\",\n\t\t\"picture\": \"http://localhost:7000/images/banks/1615588099.jpeg\"\n\t}\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success with some url picture",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha actualizado el banco exitosamente.\",\n\t\"bank\": {\n\t\t\"_id\": \"604be0e0ca004b1018e8a820\",\n\t\t\"title\": \"BANCO 01 - Editado\",\n\t\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010202.</p>.....\",\n\t\t\"picture\": \"http://localhost:7000/images/banks/1615585504.jpeg\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"title\",\n      \"msg\": \"Disculpe, pero indicar un título para el banco.\"\n    },\n    {\n      \"input\": \"description\",\n      \"msg\": \"Disculpe, pero debe indicar una descripción para el banco.\"\n    },\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, pero debe indicar una imagen para el banco.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/BanksAdmin.js",
+    "groupTitle": "BanksAdmin"
+  },
+  {
+    "type": "post",
     "url": "/api/admin/courses/:_id/theme/:themeId/content",
     "title": "(12) Agregar contenido a un tema.",
     "version": "0.0.18",
@@ -6146,7 +6904,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "events",
-            "description": "<p>Listado de preguntas de seguridad.</p>"
+            "description": "<p>Listado de eventos.</p>"
           }
         ],
         "events Object[]": [
@@ -8106,6 +8864,121 @@
   },
   {
     "type": "get",
+    "url": "/api/banks",
+    "title": "(08) Obtener listado de bancos.",
+    "version": "0.0.25",
+    "name": "getPublicBanksPublic",
+    "group": "Public",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "banks",
+            "description": "<p>Listado de bancos.</p>"
+          }
+        ],
+        "banks Object[]": [
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banco.</p>"
+          },
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título para el banco.</p>"
+          },
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del banco.</p>"
+          },
+          {
+            "group": "banks Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Bancos\",\n\t\"banks\": [\n\t\t{\n\t\t\t\"_id\": \"604bdd2f5a94aa3824e40086\",\n\t\t\t\"title\": \"BANCO 02\",\n\t\t\t\"description\": \"<p><b>Núm. cuenta</b>: 01010101010101010101.</p>\",\n\t\t\t\"picture\": \"http://localhost:7000/images/banks/1615584559.jpeg\"\n\t\t}\n\t]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Bancos\",\n\t\"banks\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/events",
     "title": "(03) Obtener eventos públicos.",
     "version": "0.0.16",
@@ -8173,7 +9046,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "events",
-            "description": "<p>Listado de preguntas de seguridad.</p>"
+            "description": "<p>Listado de eventos.</p>"
           }
         ],
         "events Object[]": [
@@ -11972,7 +12845,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "totals",
-            "description": "<p>Listado de preguntas de seguridad.</p>"
+            "description": "<p>Total de miembros.</p>"
           }
         ]
       },
@@ -12842,7 +13715,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "users",
-            "description": "<p>Listado de preguntas de seguridad.</p>"
+            "description": "<p>Listado de usuarios.</p>"
           }
         ],
         "users Object[]": [

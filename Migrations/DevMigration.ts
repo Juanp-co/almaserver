@@ -75,7 +75,7 @@ async function migration() {
 
     showConsoleLog(1, `Importando cursos ...`);
 
-    const pathBanner = await checkAndUploadPicture(banner.base64);
+    const pathBanner = await checkAndUploadPicture(banner.base64, 'courses');
 
     if (pathBanner) {
       courses.forEach((c: any) => { c.banner = pathBanner; });

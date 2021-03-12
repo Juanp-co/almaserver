@@ -9,7 +9,7 @@
  * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object[]} totals Listado de preguntas de seguridad.
+ * @apiSuccess {Object[]} totals Total de miembros.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -40,7 +40,7 @@
  * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object[]} users Listado de preguntas de seguridad.
+ * @apiSuccess {Object[]} users Listado de usuarios.
  *
  * @apiSuccess (users Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (users Object[]) {Number} role Role del miembro.
