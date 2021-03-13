@@ -1,6 +1,6 @@
 import { setError } from '../Functions/GlobalFunctions';
 import {
-  checkBase64, checkTitlesOrDescriptions, checkUrl
+  checkBase64, checkTitlesOrDescriptions
 } from '../Functions/Validations';
 import {IAccountBankForm} from '../Interfaces/IAccountBank';
 
@@ -29,7 +29,7 @@ export default function validateSimpleRegister(data: IAccountBankForm): { data: 
   } else ret.description = data.description;
 
   // picture
-  if (!checkUrl(`${data.picture}`) && !checkBase64(`${data.picture}`)) {
+  if (!data.picture && !checkBase64(`${data.picture}`)) {
     errors.push(
       setError('Disculpe, pero debe indicar una imagen para el banco.', 'picture')
     );
