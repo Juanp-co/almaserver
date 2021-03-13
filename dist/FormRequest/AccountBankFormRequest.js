@@ -23,7 +23,7 @@ function validateSimpleRegister(data) {
     else
         ret.description = data.description;
     // picture
-    if (!Validations_1.checkUrl(`${data.picture}`) && !Validations_1.checkBase64(`${data.picture}`)) {
+    if (!data.picture && !Validations_1.checkBase64(`${data.picture}`)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una imagen para el banco.', 'picture'));
     }
     else

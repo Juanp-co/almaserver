@@ -52,13 +52,12 @@ async function updateBank(req, res) {
         const bank = await AccountsBanks_1.default.findOne({ _id }, { created_at: 0, updated_at: 0, __v: 0 }).exec();
         if (!bank)
             return AccountsBanksActions_1.default(res, 0);
-        if (!Validations_1.checkUrl(validate.data.picture)) {
+        if (Validations_1.checkBase64(`${validate.data.picture}`)) {
             GlobalFunctions_1.deleteImages(`./${bank.toObject({ getters: false }).picture}`);
-            validate.data.picture = await GlobalFunctions_1.checkAndUploadPicture(validate.data.picture, 'banks');
+            bank.picture = await GlobalFunctions_1.checkAndUploadPicture(validate.data.picture, 'banks');
         }
         bank.title = validate.data.title;
         bank.description = validate.data.description;
-        bank.picture = validate.data.picture;
         await bank.save();
         return res.json({
             msg: `Se ha actualizado el banco exitosamente.`,

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import AccountsBanks from '../../Models/AccountsBanks';
 import { checkAndUploadPicture, deleteImages, returnError } from '../../Functions/GlobalFunctions';
-import { checkObjectId, checkUrl } from '../../Functions/Validations';
+import { checkBase64, checkObjectId } from '../../Functions/Validations';
 import responsesBanks from '../../ActionsData/AccountsBanksActions';
 import validateSimpleRegister from '../../FormRequest/AccountBankFormRequest';
 
@@ -49,14 +49,13 @@ export async function updateBank(req: Request, res: Response): Promise<Response>
 
     if (!bank) return responsesBanks(res, 0);
 
-    if (!checkUrl(validate.data.picture)) {
+    if (checkBase64(`${validate.data.picture}`)) {
       deleteImages(`./${bank.toObject({ getters: false }).picture}`);
-      validate.data.picture = await checkAndUploadPicture(validate.data.picture, 'banks');
+      bank.picture = await checkAndUploadPicture(validate.data.picture, 'banks');
     }
 
     bank.title = validate.data.title;
     bank.description = validate.data.description;
-    bank.picture = validate.data.picture;
     await bank.save();
 
     return res.json({
