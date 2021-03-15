@@ -150,7 +150,10 @@ exports.dateSpanish = dateSpanish;
 async function checkAndUploadPicture(picture, pathFolder = '') {
     if (!picture)
         return null;
-    const pathRoute = `images${pathFolder !== '' ? `/${pathFolder}` : ''}`;
+    const pathImages = 'images';
+    if (!fs.existsSync(`./${pathImages}`))
+        fs.mkdirSync(`./${pathImages}`);
+    const pathRoute = `${pathFolder !== '' ? `${pathImages}/${pathFolder}` : pathImages}`;
     // check if exist folder
     if (!fs.existsSync(`./${pathRoute}`))
         fs.mkdirSync(`./${pathRoute}`);
