@@ -45,7 +45,7 @@ async function migration() {
 
     if (fs.existsSync('./images')) {
       const files = await fs.readdirSync('./images');
-      if (files.length > 0) files.forEach((file: any) => fs.unlinkSync(`./images/${file}`));
+      if (files.length > 0) await fs.rmdirSync(`./images`, { recursive: true });
     }
     showConsoleLog(1, '==========================================================');
 

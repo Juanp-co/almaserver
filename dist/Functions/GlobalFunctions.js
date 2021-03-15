@@ -151,10 +151,9 @@ async function checkAndUploadPicture(picture, pathFolder = '') {
     if (!picture)
         return null;
     // check if exist 'images' folder
-    const pathImages = 'images';
-    if (!fs.existsSync(`./${pathImages}`))
-        fs.mkdirSync(`./${pathImages}`);
-    const pathRoute = `${pathFolder !== '' ? `${pathImages}/${pathFolder}` : pathImages}`;
+    if (!fs.existsSync(`./images`))
+        fs.mkdirSync(`./images`);
+    const pathRoute = `${pathFolder !== '' ? `images/${pathFolder}` : 'images'}`;
     // check if exist folder
     if (!fs.existsSync(`./${pathRoute}`))
         fs.mkdirSync(`./${pathRoute}`);
