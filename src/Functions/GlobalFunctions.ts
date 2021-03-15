@@ -126,6 +126,7 @@ export function dateSpanish(timestamp?: number): string | null {
 export async function checkAndUploadPicture(picture: string | null, pathFolder = ''): Promise<string | null> {
   if (!picture) return null;
 
+  // check if exist 'images' folder
   const pathImages = 'images';
   if (!fs.existsSync(`./${pathImages}`)) fs.mkdirSync(`./${pathImages}`);
 
