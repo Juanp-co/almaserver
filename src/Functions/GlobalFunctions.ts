@@ -141,7 +141,7 @@ export async function checkAndUploadPicture(picture: string | null, pathFolder =
   // set path
   const path = `${pathRoute}/${moment().unix()}.${extFile}`;
   // write
-  fs.writeFileSync(`./${path}`, base64Data,  { encoding: 'base64' });
+  await fs.writeFileSync(`./${path}`, base64Data,  { encoding: 'base64' });
 
   return path;
 }

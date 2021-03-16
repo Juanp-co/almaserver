@@ -164,7 +164,7 @@ async function checkAndUploadPicture(picture, pathFolder = '') {
     // set path
     const path = `${pathRoute}/${moment_timezone_1.default().unix()}.${extFile}`;
     // write
-    fs.writeFileSync(`./${path}`, base64Data, { encoding: 'base64' });
+    await fs.writeFileSync(`./${path}`, base64Data, { encoding: 'base64' });
     return path;
 }
 exports.checkAndUploadPicture = checkAndUploadPicture;
