@@ -10924,7 +10924,7 @@
   {
     "type": "get",
     "url": "/api/user/referrals/:memberId",
-    "title": "(01) Obtener datos de un miembro referido.",
+    "title": "(01) Obtener datos de un hijo espiritual.",
     "version": "0.0.19",
     "name": "getDataMemberUserReferrals",
     "group": "UserReferrals",
@@ -10989,10 +10989,17 @@
           },
           {
             "group": "data Object",
-            "type": "String",
+            "type": "Number",
             "optional": false,
-            "field": "totalReferrals",
-            "description": "<p>Total de referidos.</p>"
+            "field": "totalsReferrals",
+            "description": "<p>Total de hijos espirituales del miembro (este incluye sus hijos y los hijos de sus hijos).</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "referrals",
+            "description": "<p>Listado de hijos espirituales.</p>"
           }
         ],
         "member Object": [
@@ -11073,12 +11080,49 @@
             "field": "email",
             "description": "<p>Correo electrónico.</p>"
           }
+        ],
+        "referrals Object[]": [
+          {
+            "group": "referrals Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalCourses\": 0,\n\t\t\"totalReferrals\": 12,\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"_id\": \"6045ebc578cb41018883d3ea\",\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"document\": \"CC11223344\",\n\t\t\t\t\"names\": \"JOSÉ\",\n\t\t\t\t\"lastNames\": \"ESPINOZA\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -11162,8 +11206,8 @@
   {
     "type": "get",
     "url": "/api/user/referrals",
-    "title": "(00) Obtener listado de referidos.",
-    "version": "0.0.16",
+    "title": "(00) Obtener listado de hijos espirituales.",
+    "version": "0.0.26",
     "name": "getUserReferrals",
     "group": "UserReferrals",
     "header": {
@@ -11191,10 +11235,17 @@
           },
           {
             "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Total de hijos espirituales del miembro (este incluye sus hijos y los hijos de sus hijos).</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Object[]",
             "optional": false,
             "field": "referrals",
-            "description": "<p>Listado de referidos del miembro.</p>"
+            "description": "<p>Listado de hijos espirituales.</p>"
           }
         ],
         "referrals Object[]": [
@@ -11238,12 +11289,12 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"document\": \"CC1234567777\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"totals\": 5\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"document\": \"CC1234567777\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
           "title": "Success without data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referrals\": []\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"totals\": 0,\n\t\"referrals\": []\n}",
           "type": "JSON"
         }
       ]

@@ -10,10 +10,12 @@ const Validations_1 = require("../../Functions/Validations");
 const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
+const ReferralsActions_1 = require("../../ActionsData/ReferralsActions");
 const path = 'src/Controllers/publics/referrals.controller';
 async function getReferrals(req, res) {
     try {
         const { userid } = req.params;
+        let totals = 0;
         let referrals = [];
         if (!Validations_1.checkObjectId(userid)) {
             return res.status(401).json({
@@ -21,10 +23,13 @@ async function getReferrals(req, res) {
             });
         }
         const data = await Referrals_1.default.findOne({ _id: userid }, { members: 1 }).exec();
-        if (data)
+        if (data) {
             referrals = await UsersActions_1.getNamesUsersList(data.members);
+            totals += await ReferralsActions_1.getTotalsReferrals(data.members);
+        }
         return res.json({
             msg: `Mis referidos.`,
+            totals,
             referrals
         });
     }
@@ -38,8 +43,9 @@ async function getMemberReferred(req, res) {
         const { userid, _id } = req.params;
         const ret = {
             member: null,
+            totalCourses: 0,
             totalReferrals: 0,
-            totalCourses: 0
+            referrals: []
         };
         if (!Validations_1.checkObjectId(userid)) {
             return res.status(401).json({
@@ -76,8 +82,11 @@ async function getMemberReferred(req, res) {
         }
         // get totals members referrals
         const referrals = await Referrals_1.default.findOne({ _id: ret.member._id }).exec();
-        if (referrals)
-            ret.totalReferrals = referrals.members.length || 0;
+        if (referrals) {
+            // get data referrals and get totals subreferrals
+            ret.referrals = await UsersActions_1.getNamesUsersList(referrals.members);
+            ret.totalReferrals += await ReferralsActions_1.getTotalsReferrals(referrals.members);
+        }
         // get totals courses
         ret.totalCourses = await CoursesUsers_1.default.find({ userid: ret.member._id.toString() }).countDocuments().exec();
         return res.json({

@@ -8,6 +8,7 @@ const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
+const ReferralsActions_1 = require("./ReferralsActions");
 async function checkIfExistDocument(document, _id) {
     return document ?
         (await Users_1.default.find({ document, _id: { $ne: _id } })
@@ -84,7 +85,10 @@ async function getUserData(_id, projection = null) {
             }
             // get totals courses, referrals and others
             user.totals.totalsCourses = await CoursesUsers_1.default.find({ userid: _id }).countDocuments().exec();
-            user.totals.totalsReferrals = await Referrals_1.default.find({ _id }).countDocuments().exec();
+            const referrals = await Referrals_1.default.findOne({ _id }, { members: 1 }).exec();
+            if (referrals) {
+                user.totals.totalsReferrals = await ReferralsActions_1.getTotalsReferrals(referrals.members);
+            }
         }
     }
     return user;

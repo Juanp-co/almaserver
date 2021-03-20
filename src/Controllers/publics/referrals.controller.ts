@@ -6,12 +6,14 @@ import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
+import { getTotalsReferrals } from '../../ActionsData/ReferralsActions';
 
 const path = 'src/Controllers/publics/referrals.controller';
 
 export async function getReferrals(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
+    let totals = 0;
     let referrals: IUserSimpleInfo[] = [];
 
     if (!checkObjectId(userid)) {
@@ -22,10 +24,14 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
 
     const data = await Referrals.findOne({ _id: userid }, { members: 1 }).exec();
 
-    if (data) referrals = await getNamesUsersList(data.members);
+    if (data) {
+      referrals = await getNamesUsersList(data.members);
+      totals += await getTotalsReferrals(data.members);
+    }
 
     return res.json({
       msg: `Mis referidos.`,
+      totals,
       referrals
     });
   } catch (error: any) {
@@ -38,8 +44,9 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
     const { userid, _id } = req.params;
     const ret: any = {
       member: null,
+      totalCourses: 0,
       totalReferrals: 0,
-      totalCourses: 0
+      referrals: []
     };
 
     if (!checkObjectId(userid)) {
@@ -87,7 +94,11 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
     // get totals members referrals
     const referrals = await Referrals.findOne({ _id: ret.member._id }).exec();
 
-    if (referrals) ret.totalReferrals = referrals.members.length || 0;
+    if (referrals) {
+      // get data referrals and get totals subreferrals
+      ret.referrals = await getNamesUsersList(referrals.members);
+      ret.totalReferrals += await getTotalsReferrals(referrals.members);
+    }
 
     // get totals courses
     ret.totalCourses = await CoursesUsers.find({ userid: ret.member._id.toString() }).countDocuments().exec();

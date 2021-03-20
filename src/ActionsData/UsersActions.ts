@@ -4,6 +4,7 @@ import IUser, { IUserData, IUserSimpleInfo } from '../Interfaces/IUser';
 import Users from '../Models/Users';
 import Referrals from '../Models/Referrals';
 import CoursesUsers from '../Models/CoursesUsers';
+import { getTotalsReferrals } from './ReferralsActions';
 
 export default async function checkIfExistDocument(document?: string, _id?: string | null): Promise<boolean> {
   return document ?
@@ -50,7 +51,7 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
     const data = await Users.findOne(
       { _id },
       projection || { __v: 0, password: 0 }
-      ).exec()
+      ).exec();
 
     if (data) {
       user = {
@@ -91,7 +92,10 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
 
       // get totals courses, referrals and others
       user.totals.totalsCourses = await CoursesUsers.find({ userid: _id }).countDocuments().exec();
-      user.totals.totalsReferrals = await Referrals.find({ _id }).countDocuments().exec();
+      const referrals = await Referrals.findOne({ _id }, { members: 1 }).exec();
+      if (referrals) {
+        user.totals.totalsReferrals = await getTotalsReferrals(referrals.members);
+      }
     }
   }
 

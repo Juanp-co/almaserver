@@ -29,3 +29,21 @@ export default async function getReferralsData(listIds: string[]) : Promise<IRef
 
   return ret;
 }
+
+export async function getTotalsReferrals(listIds: string[]) : Promise<number> {
+  let ret = 0;
+
+  if (listIds.length > 0) {
+    ret += listIds.length;
+
+    const refsData = await Referrals.find({ _id: { $in: listIds } }, { members: 1 }).exec();
+
+    if (refsData.length > 0) {
+      for (const d of refsData) {
+        ret += await getTotalsReferrals(d.members);
+      }
+    }
+  }
+
+  return ret;
+}

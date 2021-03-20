@@ -88,7 +88,7 @@ async function saveUser(req, res) {
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const user = new Users_1.default(validate.data);
-        const password = GlobalFunctions_1.generatePassword();
+        const password = 'alma1234'; // default password
         user.password = bcrypt_1.default.hashSync(password, 10);
         await user.save();
         const referrals = new Referrals_1.default({ _id: user._id });

@@ -1,13 +1,13 @@
 {
   "name": "almaserver",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "API to ALMA App.",
   "main": "./dist/index.js",
   "scripts": {
     "start": "NODE_ENV=production node ./dist/index.js ",
     "dev": "npm run lint && NODE_ENV=development nodemon ./src/index.ts",
     "build": "npm run lint && npm run clean && tsc -p ./",
-    "precommit": "npm run lint && npm run docs && npm run clean && tsc -p ./",
+    "precommit": "npm run docs && npm run build",
     "lint": "tsc --noEmit && eslint src/**/*.ts --quiet --fix --ignore-pattern \"node_modules/\"",
     "docs": "apidoc -i ./Docs -o public/apidoc/",
     "clean": "rimraf dist",
