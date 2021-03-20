@@ -8,13 +8,12 @@ import {
 } from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateUpdate } from '../../FormRequest/UsersRequest';
 import {
-  generatePassword,
   getLimitSkipSortSearch,
   returnError,
   returnErrorParams
 } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
-import { checkObjectId, checkRole } from '../../Functions/Validations';
+import { checkObjectId } from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Groups from '../../Models/Groups';
@@ -84,7 +83,7 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = new Users(validate.data);
-    const password = generatePassword();
+    const password = 'alma1234'; // default password
     user.password = bcrypt.hashSync(password, 10);
     await user.save();
 

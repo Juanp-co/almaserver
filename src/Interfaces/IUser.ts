@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 
-export interface IUserTotals {
+export interface IUserTotalsCoursesAndReferrals {
   totalsCourses: number;
   totalsReferrals: number;
 }
@@ -55,7 +55,7 @@ export interface IUserData {
   city: IUser['city'];
   locality: IUser['locality'];
   direction: IUser['direction'];
-  totals: IUserTotals;
+  totals: IUserTotalsCoursesAndReferrals;
   created_at?: IUser['created_at'];
   updated_at?: IUser['updated_at'];
 }
@@ -99,6 +99,7 @@ export interface IUserLogin {
 }
 
 export interface IUserSimpleInfo {
+  gender: number|null;
   _id: string;
   names: IUser['names'];
   lastNames: IUser['lastNames'];

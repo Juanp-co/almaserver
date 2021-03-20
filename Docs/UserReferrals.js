@@ -1,13 +1,14 @@
 /**
- * @api {get} /api/user/referrals (00) Obtener listado de referidos.
- * @apiVersion 0.0.16
+ * @api {get} /api/user/referrals (00) Obtener listado de hijos espirituales.
+ * @apiVersion 0.0.26
  * @apiName getUserReferrals
  * @apiGroup UserReferrals
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object[]} referrals Listado de referidos del miembro.
+ * @apiSuccess {Number} totals Total de hijos espirituales del miembro (este incluye sus hijos y los hijos de sus hijos).
+ * @apiSuccess {Object[]} referrals Listado de hijos espirituales.
  *
  * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
@@ -19,6 +20,7 @@
  * HTTP/1.1 200 Success
  * {
 	"msg": "Mis referidos.",
+	"totals": 5
 	"referrals": [
 		{
 			"gender": 0,
@@ -37,6 +39,7 @@
  * HTTP/1.1 200 Success
  * {
 	"msg": "Mis referidos.",
+	"totals": 0,
 	"referrals": []
 }
  *
@@ -60,7 +63,7 @@
  */
 
 /**
- * @api {get} /api/user/referrals/:memberId (01) Obtener datos de un miembro referido.
+ * @api {get} /api/user/referrals/:memberId (01) Obtener datos de un hijo espiritual.
  * @apiVersion 0.0.19
  * @apiName getDataMemberUserReferrals
  * @apiGroup UserReferrals
@@ -74,7 +77,8 @@
  *
  * @apiSuccess (data Object) {Object} member Datos del perfil del miembro.
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
- * @apiSuccess (data Object) {String} totalReferrals Total de referidos.
+ * @apiSuccess (data Object) {Number} totalsReferrals Total de hijos espirituales del miembro (este incluye sus hijos y los hijos de sus hijos).
+ * @apiSuccess (data Object) {Object[]} referrals Listado de hijos espirituales.
  *
  * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
@@ -87,6 +91,12 @@
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
  * @apiSuccess (member Object) {String|Null} email Correo electrónico.
+ *
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
+ * @apiSuccess (referrals Object[]) {String} document Número de documento.
+ * @apiSuccess (referrals Object[]) {String} names Nombres.
+ * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -106,8 +116,21 @@
 			"lastNames": "VELÁSQUEZ",
 			"email": "anthony@example.com"
 		},
-		"totalReferrals": 1,
-		"totalCourses": 0
+		"totalCourses": 0,
+		"totalReferrals": 12,
+		"referrals": [
+			{
+				"gender": null,
+				"_id": "6045ebc578cb41018883d3ea",
+				"phone": null,
+				"document": "CC11223344",
+				"names": "JOSÉ",
+				"lastNames": "ESPINOZA"
+			},
+			.
+			.
+			.
+		]
 	}
 }
  *

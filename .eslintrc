@@ -24,6 +24,7 @@
     "prefer-object-spread":"off",
     "camelcase":"off",
     "import/first": "off",
+    "import/no-cycle": "off",
     "no-restricted-syntax": "off"
   }
 }
