@@ -290,7 +290,7 @@ export async function getCoursesUser(req: Request, res: Response): Promise<Respo
       courses: ret
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/deleteUser`);
+    return returnError(res, error, `${path}/getCoursesUser`);
   }
 }
 
@@ -334,12 +334,11 @@ export async function getReferralsUser(req: Request, res: Response): Promise<Res
       }
     }
 
-
     return res.json({
       msg: `Listado de referidos del miembro.`,
       referrals: ret
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/deleteUser`);
+    return returnError(res, error, `${path}/getReferralsUser`);
   }
 }
