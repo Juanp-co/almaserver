@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import { getNamesUsersList } from '../../ActionsData/UsersActions';
+import { getNamesUsersList, getUserData } from '../../ActionsData/UsersActions';
 import { returnError } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
-import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
@@ -13,8 +12,11 @@ const path = 'src/Controllers/publics/referrals.controller';
 export async function getReferrals(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
-    let totals = 0;
-    let referrals: IUserSimpleInfo[] = [];
+    const ret: any = {
+      referred: null,
+      totals: null,
+      referrals: []
+    };
 
     if (!checkObjectId(userid)) {
       return res.status(401).json({
@@ -25,14 +27,29 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
     const data = await Referrals.findOne({ _id: userid }, { members: 1 }).exec();
 
     if (data) {
-      referrals = await getNamesUsersList(data.members);
-      totals += await getTotalsReferrals(data.members);
+      ret.referrals = await getNamesUsersList(data.members);
+      ret.totals += await getTotalsReferrals(data.members);
+
+      for (let [index, value] of ret.referrals.entries()) {
+        ret.referrals[index] = { ...value._doc, totalsReferrals: 0 };
+        const refMembers = await Referrals.findOne({ _id: value._id }).exec();
+        ret.referrals[index].totalsReferrals = refMembers ? refMembers.members.length : 0;
+      }
+
+      // get referred data
+      const u = await Users.findOne({ _id: userid }, { referred: 1 }).exec();
+      if (u && u.referred) {
+        const list = await getNamesUsersList([u.referred]);
+
+        if (list.length > 0) {
+          ret.referred = list[0] || null;
+        }
+      }
     }
 
     return res.json({
       msg: `Mis referidos.`,
-      totals,
-      referrals
+      ...ret
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getReferrals`);
@@ -62,10 +79,11 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
     }
 
     const checkMember = await Referrals.find({ _id: userid, members: _id }).countDocuments().exec();
+    const checkMember2 = await Users.find({ _id: userid, referred: _id }).countDocuments().exec();
 
-    if (checkMember === 0) {
+    if (checkMember === 0 && checkMember2 === 0) {
       return res.status(404).json({
-        msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo de hijos espirituales.'
+        msg: 'Disculpe, pero no está autorizado para visualizar la información de este miembro.'
       });
     }
 
@@ -98,6 +116,12 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
       // get data referrals and get totals subreferrals
       ret.referrals = await getNamesUsersList(referrals.members);
       ret.totalReferrals += await getTotalsReferrals(referrals.members);
+
+      for (let [index, value] of ret.referrals.entries()) {
+        ret.referrals[index] = { ...value._doc, totalsReferrals: 0 };
+        const refMembers = await Referrals.findOne({ _id: value._id }).exec();
+        ret.referrals[index].totalsReferrals = refMembers ? refMembers.members.length : 0;
+      }
     }
 
     // get totals courses
