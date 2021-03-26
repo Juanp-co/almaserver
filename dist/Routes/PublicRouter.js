@@ -37,7 +37,7 @@ router.get(`/banks`, public_controller_1.getBanks);
 router.get(`/courses`, middleware_1.validateUser, courses_controller_1.default);
 router.get(`/courses/counters`, middleware_1.validateUser, courses_controller_1.getCoursesCounters);
 router.get(`/courses/:slug`, middleware_1.validateUser, courses_controller_1.showCourse);
-router.post('/courses/:slug/add', middleware_1.validateUser, courses_controller_1.addCourseUser); // add course to user
+// router.post('/courses/:slug/add', validateUser, addCourseUser); // add course to user
 router.get(`/courses/:slug/theme/:_id`, middleware_1.validateUser, courses_controller_1.showCourseContentTheme); // get theme
 // get test
 router.route('/courses/:slug/theme/:_id/test')

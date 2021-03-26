@@ -101,15 +101,29 @@ exports.changePassword = changePassword;
 async function getCourses(req, res) {
     try {
         const { userid } = req.params;
-        let courses = [];
+        const courses = [];
         if (!Validations_1.checkObjectId(userid)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
         }
-        const myCourses = await CoursesUsers_1.default.find({ userid }, { courseId: 1 }).exec();
-        if (myCourses.length > 0) {
-            courses = await Courses_1.default.find({ _id: { $in: lodash_1.default.map(myCourses, 'courseId') || [] } }, { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }).exec();
+        const myCourses = await CoursesUsers_1.default.findOne({ userid }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
+        if (myCourses) {
+            const listIds = myCourses.courses.length > 0 ? myCourses.courses.map(c => c.courseId) : [];
+            if (listIds.length > 0) {
+                const listCourses = await Courses_1.default.find({ _id: { $in: listIds || [] } }, { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }).exec();
+                for (const course of listCourses) {
+                    const index = myCourses.courses.findIndex(c => c.courseId === course._id.toString());
+                    courses.push({
+                        _id: course._id,
+                        banner: course.banner,
+                        slug: course.slug,
+                        title: course.title,
+                        description: course.description,
+                        approved: myCourses.courses[index] ? (myCourses.courses[index].approved || false) : false
+                    });
+                }
+            }
         }
         return res.json({
             msg: `Mis cursos.`,
@@ -162,11 +176,6 @@ exports.getGroup = getGroup;
 async function getMemberGroup(req, res) {
     try {
         const { userid, memberId } = req.params;
-        const ret = {
-            member: null,
-            totalReferrals: 0,
-            totalCourses: 0
-        };
         if (!Validations_1.checkObjectId(userid)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
@@ -199,29 +208,12 @@ async function getMemberGroup(req, res) {
                 msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.'
             });
         }
-        ret.member = await Users_1.default.findOne({ _id: memberId }, {
-            names: 1,
-            lastNames: 1,
-            phone: 1,
-            email: 1,
-            gender: 1,
-            civilStatus: 1,
-            department: 1,
-            city: 1,
-            locality: 1,
-            direction: 1,
-        }).exec();
+        const ret = await UsersActions_1.getInfoUserReferred(memberId);
         if (!ret.member) {
             return res.status(404).json({
                 msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
             });
         }
-        // get totals members referrals
-        const referrals = await Referrals_1.default.findOne({ _id: ret.member._id }).exec();
-        if (referrals)
-            ret.totalReferrals = referrals.members.length || 0;
-        // get totals courses
-        ret.totalCourses = await CoursesUsers_1.default.find({ userid: ret.member._id.toString() }).countDocuments().exec();
         return res.json({
             msg: `Miembro.`,
             data: ret
@@ -256,11 +248,11 @@ async function getReports(req, res) {
             },
         };
         if (initDate) {
-            query.created_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+            query['courses.created_at'] = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
             queryReferrals.updated_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
         }
         if (endDate) {
-            query.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+            query['courses.created_at'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
             queryReferrals.updated_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
         }
         const { userid } = req.params;
@@ -269,11 +261,11 @@ async function getReports(req, res) {
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
         }
-        const myCourses = await CoursesUsers_1.default.find({ userid, ...query }, { approved: 1 }).exec();
+        const myCourses = await CoursesUsers_1.default.findOne({ userid, ...query }, { courses: 1 }).exec();
         const myReferrals = await Referrals_1.default.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
-        if (myCourses.length > 0) {
-            ret.courses.qty = myCourses.length;
-            for (const c of myCourses) {
+        if (myCourses) {
+            ret.courses.qty = myCourses.courses.length;
+            for (const c of myCourses.courses) {
                 if (c.approved)
                     ret.courses.data[0].qty += 1;
                 else

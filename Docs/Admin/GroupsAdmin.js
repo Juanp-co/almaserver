@@ -181,7 +181,7 @@
 
 /**
  * @api {get} /api/admin/groups/:_id (03) Obtener detalles de un grupo.
- * @apiVersion 0.0.8
+ * @apiVersion 0.0.27
  * @apiName detailsGroupsAdmin
  * @apiGroup GroupsAdmin
  *
@@ -201,40 +201,44 @@
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
  * @apiSuccess (members Object[]) {String} _id ID del miembro.
+ * @apiSuccess (members Object[]) {String} names Nombres.
+ * @apiSuccess (members Object[]) {String} lastNames Apellidos.
  * @apiSuccess (members Object[]) {String} document Número de documento.
- * @apiSuccess (members Object[]) {String} names Nombre(s).
- * @apiSuccess (members Object[]) {String} lastNames Apellido(s).
- * @apiSuccess (members Object[]) {String} phone Teléfono.
+ * @apiSuccess (members Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (members Object[]) {String|Null} phone Teléfono.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Grupo",
-    "group": {
-        "_id": "6018e503e02a45115407e82f",
-        "user": {
-            "_id": "5fcf0821fc917d476c1cf3e2",
-            "document": "CC123456789",
-            "names": "USUARIO",
-            "lastNames": "ADMIN"
-        },
-        "name": "FAMILIA VELASQUEZ RODRIGUEZ",
-        "code": "AAA-001",
-        "members": [
-            {
-                "_id": "5fcf0821fc917d476c1cf3e3",
-                "document": "CC12345678",
-                "names": "USUARIO TRES",
-                "lastNames": "PRUEBA TRES"
-                "phone": "563161234567"
-            },
-            .
-            .
-            .
-        ],
-        "created_at": "2021-02-02 00:37:07",
-        "updated_at": "2021-02-02 02:16:16"
-    }
+	"msg": "Grupo",
+	"group": {
+		"_id": "60330f5102626e2040bd2393",
+		"user": {
+			"_id": "5fcf0821fc917d476c1cf3e2",
+			"names": "ANTHONY",
+			"lastNames": "ADMINISTRADOR",
+			"document": "CC123456789",
+			"gender": 1,
+			"phone": "573161234567"
+		},
+		"name": "FAMILIA PEREZ",
+		"code": "GROUP-0",
+		"members": [
+			{
+				"_id": "5fcf0821fc917d476c1cf3e3",
+				"names": "PEDRO JOSÉ",
+				"lastNames": "PÉREZ RODRIGUEZ",
+				"document": "CC12345678",
+				"gender": 0,
+				"phone": "573161234567"
+			},
+			.
+			.
+			.
+		],
+		"created_at": "2021-02-21 20:56:33",
+		"updated_at": "2021-03-01 22:46:53"
+	}
 }
  *
  * @apiUse GlobalParamsErrors

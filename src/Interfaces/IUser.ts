@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { ICourseSimpleList } from './ICourse';
 
 export interface IUserTotalsCoursesAndReferrals {
   totalsCourses: number;
@@ -37,7 +38,7 @@ export interface IUserData {
   document: IUser['document'];
   email: IUser['email'];
   phone: IUser['phone'];
-  password: IUser['password'];
+  // password: IUser['password'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
   gender: IUser['gender'];
@@ -99,12 +100,36 @@ export interface IUserLogin {
 }
 
 export interface IUserSimpleInfo {
-  gender: number|null;
-  _id: string;
+  _id: any;
+  gender: IUser['gender'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
   document: IUser['document'];
+  phone: IUser['phone'];
   referred?: IUserSimpleInfo | null;
+  totalsReferrals?: number;
+}
+
+export interface IUserReferralSimpleData {
+  _id: any;
+  names: IUser['names'];
+  lastNames: IUser['lastNames'];
+  phone: IUser['phone'];
+  email: IUser['email'];
+  gender: IUser['gender'];
+  civilStatus: IUser['civilStatus'];
+  department: IUser['department'];
+  city: IUser['city'];
+  locality: IUser['locality'];
+  direction: IUser['direction'];
+}
+
+export interface IUserReferralInfo {
+  member: IUserReferralSimpleData | null;
+  totalCourses: number;
+  totalReferrals: number;
+  courses: ICourseSimpleList[];
+  referrals: IUserSimpleInfo[];
 }
 
 export interface IUserPasswords {

@@ -22,24 +22,45 @@ export interface ICourseUserTemary {
   approvedDate?: string | number | null;
 }
 
-export default interface ICourseUser extends Document {
-  _id: any | string;
-  userid: string | null;
+export interface ICoursesUser {
   courseId: string | null;
   temary: ICourseUserTemary[];
   approved: boolean;
+  created_at?: string | number;
+  updated_at?: string | number;
+}
+
+export default interface ICourseUser extends Document {
+  _id: any | string;
+  userid: string | null;
+  courses: ICoursesUser[];
   created_at: string | number;
   updated_at: string | number;
 }
 
+// export interface ICourseUserList {
+//   _id: ICourseUser['userid'];
+//   userid?: ICourseUser['userid'],
+//   courseId?: ICourseUser['courseId'],
+//   course?: ICourseList | null,
+//   temary?: ICourseUser['temary'],
+//   // tests?: ICourseUser['tests'],
+//   approved?: ICourseUser['approved'],
+//   created_at?: ICourseUser['created_at'],
+//   updated_at?: ICourseUser['updated_at'],
+// }
+
 export interface ICourseUserList {
   _id: ICourseUser['userid'];
   userid?: ICourseUser['userid'],
-  courseId?: ICourseUser['courseId'],
-  course?: ICourseList | null,
-  temary?: ICourseUser['temary'],
-  // tests?: ICourseUser['tests'],
-  approved?: ICourseUser['approved'],
+  courses?: ICourseUser['courses'],
+  created_at?: ICourseUser['created_at'],
+  updated_at?: ICourseUser['updated_at'],
+}
+
+export interface ICourseUserData {
+  _id: ICourseUser['userid'];
+  course?: ICoursesUser,
   created_at?: ICourseUser['created_at'],
   updated_at?: ICourseUser['updated_at'],
 }

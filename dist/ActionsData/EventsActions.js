@@ -68,7 +68,7 @@ async function getDetailsEvent({ query }) {
         };
         const users = await UsersActions_1.getNamesUsersList([event.userid]);
         if (users.length > 0)
-            ret.user = users[0] ? users[0] : null;
+            ret.user = users[0] || null;
         return ret;
     }
     return null;

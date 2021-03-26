@@ -95,7 +95,7 @@ async function getReports(req, res) {
         }
         if (!UsersActions_1.checkRoleToActions(userrole))
             return UsersActions_1.responseUsersAdmin(res, 3);
-        const courses = await Courses_1.default.find(query, { enable: 1, levels: 1 }).exec();
+        const courses = await Courses_1.default.find(query, { enable: 1 }).exec();
         const events = await Events_1.default.find(query, { date: 1 }).exec();
         const groups = await Groups_1.default.find(query, { members: 1 }).exec();
         const users = await Users_1.default.find(query, { gender: 1, role: 1, birthday: 1, group: 1 }).exec();

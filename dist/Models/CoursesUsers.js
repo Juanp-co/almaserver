@@ -20,12 +20,16 @@ const TemarySchema = new mongoose_1.Schema({
     approved: { type: Boolean, default: false },
     approvedDate: { type: Number, default: null, get: GlobalFunctions_1.getDate },
 }, { _id: false, id: false });
-const CoursesUsersSchema = new mongoose_1.Schema({
-    userid: { type: String, require: true },
+const CoursesSchema = new mongoose_1.Schema({
     courseId: { type: String, require: true },
     temary: { type: [TemarySchema], require: true },
-    // tests: { type: [TestsDoneSchema], require: true }, // tests done
     approved: { type: Boolean, default: false },
+    created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
+    updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
+}, { _id: false, id: false });
+const CoursesUsersSchema = new mongoose_1.Schema({
+    userid: { type: String, require: true },
+    courses: { type: [CoursesSchema], default: [] },
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
@@ -35,7 +39,8 @@ CoursesUsersSchema.pre('save', function (next) {
 });
 TestsDoneSchema.set('toJSON', { getters: true });
 ContentSchema.set('toJSON', { getters: true });
-CoursesUsersSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
+CoursesSchema.set('toJSON', { getters: true });
+CoursesUsersSchema.set('toJSON', { getters: true });
 const CoursesUsers = mongoose_1.model('courses_user', CoursesUsersSchema);
 exports.default = CoursesUsers;

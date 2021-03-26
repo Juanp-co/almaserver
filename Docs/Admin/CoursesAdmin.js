@@ -153,7 +153,7 @@
 
 /**
  * @api {get} /api/admin/courses/:_id (03) Obtener detalles de un curso.
- * @apiVersion 0.0.22
+ * @apiVersion 0.0.27
  * @apiName detailsCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -208,12 +208,12 @@
  * @apiSuccess (levels Object[]) {String} slug Slug del curso.
  * @apiSuccess (levels Object[]) {String} description Descripción del curso.
  *
- * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo.
  * @apiSuccess (user Object) {String} _id ID del miembro.
- * @apiSuccess (user Object) {String} phone Teléfono.
+ * @apiSuccess (user Object) {String} names Nombres.
+ * @apiSuccess (user Object) {String} lastNames Apellidos.
  * @apiSuccess (user Object) {String} document Número de documento.
- * @apiSuccess (user Object) {String} names Nombre(s).
- * @apiSuccess (user Object) {String} lastNames Apellido(s).
+ * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (user Object) {String|Null} phone Teléfono.
  *
  * @apiSuccessExample {JSON} Success with all data
  * HTTP/1.1 200 Success
@@ -222,12 +222,12 @@
 	"course": {
 		"_id": "603490a7cb2c7e406c5ff2b5",
 		"user": {
-			"gender": 0,
 			"_id": "5fcf0821fc917d476c1cf3e2",
-			"phone": "584121490196",
-			"document": "CC123456789",
 			"names": "ANTHONY",
-			"lastNames": "VELÁSQUEZ"
+			"lastNames": "ADMINISTRADOR",
+			"document": "CC123456789",
+			"gender": 1,
+			"phone": "573161234567"
 		},
 		"speaker": "ANTHONY VELASQUEZ",
 		"speakerPosition": "SOFTWARE DEVELOPER",

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import { getNamesUsersList, getUserData } from '../../ActionsData/UsersActions';
+import { getInfoUserReferred, getNamesUsersList } from '../../ActionsData/UsersActions';
 import { returnError } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
-import CoursesUsers from '../../Models/CoursesUsers';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 import { getTotalsReferrals } from '../../ActionsData/ReferralsActions';
@@ -30,10 +29,12 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
       ret.referrals = await getNamesUsersList(data.members);
       ret.totals += await getTotalsReferrals(data.members);
 
-      for (let [index, value] of ret.referrals.entries()) {
-        ret.referrals[index] = { ...value._doc, totalsReferrals: 0 };
+      for (const [index, value] of ret.referrals.entries()) {
         const refMembers = await Referrals.findOne({ _id: value._id }).exec();
-        ret.referrals[index].totalsReferrals = refMembers ? refMembers.members.length : 0;
+        ret.referrals[index] = {
+          ...value,
+          totalsReferrals: refMembers ? refMembers.members.length : 0
+        };
       }
 
       // get referred data
@@ -59,12 +60,6 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
 export async function getMemberReferred(req: Request, res: Response): Promise<Response> {
   try {
     const { userid, _id } = req.params;
-    const ret: any = {
-      member: null,
-      totalCourses: 0,
-      totalReferrals: 0,
-      referrals: []
-    };
 
     if (!checkObjectId(userid)) {
       return res.status(401).json({
@@ -87,45 +82,13 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
       });
     }
 
-    ret.member = await Users.findOne(
-      { _id },
-      {
-        names: 1,
-        lastNames: 1,
-        phone: 1,
-        email: 1,
-        gender: 1,
-        civilStatus: 1,
-        department: 1,
-        city: 1,
-        locality: 1 ,
-        direction: 1,
-      }
-    ).exec();
+    const ret = await getInfoUserReferred(_id);
 
-    if (!ret.member) {
+    if (!ret) {
       return res.status(404).json({
         msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
       });
     }
-
-    // get totals members referrals
-    const referrals = await Referrals.findOne({ _id: ret.member._id }).exec();
-
-    if (referrals) {
-      // get data referrals and get totals subreferrals
-      ret.referrals = await getNamesUsersList(referrals.members);
-      ret.totalReferrals += await getTotalsReferrals(referrals.members);
-
-      for (let [index, value] of ret.referrals.entries()) {
-        ret.referrals[index] = { ...value._doc, totalsReferrals: 0 };
-        const refMembers = await Referrals.findOne({ _id: value._id }).exec();
-        ret.referrals[index].totalsReferrals = refMembers ? refMembers.members.length : 0;
-      }
-    }
-
-    // get totals courses
-    ret.totalCourses = await CoursesUsers.find({ userid: ret.member._id.toString() }).countDocuments().exec();
 
     return res.json({
       msg: `Miembro.`,

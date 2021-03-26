@@ -372,7 +372,7 @@
 
 /**
  * @api {get} /api/admin/users/:_id/referrals (05) Obtener listado de referidos de un miembro.
- * @apiVersion 0.0.21
+ * @apiVersion 0.0.27
  * @apiName getReferralsUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -386,12 +386,13 @@
  * @apiSuccess {Object} user Datos del miembro.
  * @apiSuccess {Object[]} referrals Listado de referidos del miembro.
  *
- * @apiSuccess (referrals Object) {String|Null} referred Datos del miembro referido.
- * @apiSuccess (referrals Object) {String} _id ID del miembro.
- * @apiSuccess (referrals Object) {String} document Número de documento.
- * @apiSuccess (referrals Object) {String} names Nombres.
- * @apiSuccess (referrals Object) {String} lastNames Apellidos.
- * @apiSuccess (referrals Object) {Number} TotalReferrals Total de referidos.
+ * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
+ * @apiSuccess (referrals Object[]) {String} names Nombres.
+ * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (referrals Object[]) {String} document Número de documento.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
+ * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -399,12 +400,12 @@
 	"msg": "Listado de referidos del miembro.",
 	"referrals": [
 		{
-			"gender": 0,
-			"_id": "604068999b20e72f341972ec",
-			"document": "CC3123123123",
-			"names": "SUPERVISOR",
-			"lastNames": "PRUEBA",
-			"phone": "3161234567",
+			"_id": "604068461caad10e2c965406",
+			"names": "PRUEBA",
+			"lastNames": "USUARIO",
+			"document": "CC123123123",
+			"gender": null,
+			"phone": null,
 			"totalsReferrals": 0
 		},
 		.

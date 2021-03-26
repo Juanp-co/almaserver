@@ -260,14 +260,14 @@ export async function getCoursesUser(req: Request, res: Response): Promise<Respo
     // get all referrals
     const ret: any[] = [];
     let courses: any[] = [];
-    const coursesData = await CoursesUsers.find({ userid: _id }, { courseId: 1, approved: 1 }).exec();
+    const coursesData = await CoursesUsers.findOne({ userid: _id }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
 
-    if (coursesData.length > 0) {
-      const listIdsCourses = coursesData.map((cd: any) => cd.courseId);
+    if (coursesData) {
+      const listIdsCourses: any[] = coursesData.courses.length > 0 ? coursesData.courses.map(cd => cd.courseId) : [];
       courses = await getCoursesSimpleList(listIdsCourses || []);
 
-      for (const c of coursesData) {
-        if (courses.length > 0) {
+      if (courses.length > 0) {
+        for (const c of coursesData.courses) {
           const index = courses.findIndex(co => co._id.toString() === c.courseId);
           if (index > -1) {
             ret.push({
@@ -321,15 +321,18 @@ export async function getReferralsUser(req: Request, res: Response): Promise<Res
 
       if (referrals.length > 0) {
         const refMembers = await Referrals.find({ _id: { $in: referred.members } }).exec();
+        const existRefsMembers = refMembers.length > 0;
 
-        for (const ref of referrals) {
-          if (refMembers.length > 0) {
-            const index = refMembers.findIndex(rm => rm._id.toString() === ref._id.toString());
-
-            if (index > -1) ret.push({ ...ref._doc, totalsReferrals: refMembers[index].members.length });
-            else ret.push({ ...ref._doc, totalsReferrals: 0 });
+        for (const value of referrals) {
+          const model = {
+            ...value,
+            totalsReferrals: 0
+          };
+          if (existRefsMembers) {
+            const index = refMembers.findIndex(rm => rm._id.toString() === value._id.toString());
+            if (index > -1) model.totalsReferrals = refMembers[index].members.length;
           }
-          else ret.push({ ...ref._doc, totalsReferrals: 0 });
+          ret.push(model)
         }
       }
     }

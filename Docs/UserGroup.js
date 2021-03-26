@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/user/group (00) Obtener datos del grupo familiar.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.27
  * @apiName getFamilyUserGroup
  * @apiGroup UserGroup
  *
@@ -16,11 +16,12 @@
  * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (members Object[]) {String} _id ID del miembro.
- * @apiSuccess (members Object[]) {String} names Nombre(s).
- * @apiSuccess (members Object[]) {String} lastNames Apellido(s).
- * @apiSuccess (members Object[]) {String} direction Dirección del miembro.
+ * @apiSuccess (members Object[]) {String} names Nombres.
+ * @apiSuccess (members Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (members Object[]) {String} document Número de documento.
+ * @apiSuccess (members Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (members Object[]) {String|Null} phone Teléfono.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -32,12 +33,16 @@
 		"code": "AAA-001",
 		"members": [
 			{
-				"gender": 2,
 				"_id": "5fcf0821fc917d476c1cf3e3",
-				"names": "USUARIO TRES",
-				"lastNames": "PRUEBA TRES",
-				"direction": "any direction"
-			}
+				"names": "PEDRO JOSÉ",
+				"lastNames": "PÉREZ RODRIGUEZ",
+				"document": "CC12345678",
+				"gender": 0,
+				"phone": "573161234567"
+			},
+			.
+			.
+			.
 		],
 		"created_at": "2021-02-02 00:37:07",
 		"updated_at": "2021-02-02 02:45:50"
@@ -60,7 +65,7 @@
 
 /**
  * @api {get} /api/user/group/:memberId (01) Obtener datos de un miembro del grupo familiar.
- * @apiVersion 0.0.19
+ * @apiVersion 0.0.27
  * @apiName getDataMemberUserGroup
  * @apiGroup UserGroup
  *
@@ -74,6 +79,8 @@
  * @apiSuccess (data Object) {Object} member Datos del perfil del miembro.
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
  * @apiSuccess (data Object) {String} totalReferrals Total de referidos.
+ * @apiSuccess (data Object) {Object[]} courses Listado de cursos.
+ * @apiSuccess (data Object) {Object[]} referrals Listado de hijos espirituales.
  *
  * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
@@ -86,6 +93,21 @@
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
  * @apiSuccess (member Object) {String|Null} email Correo electrónico.
+ *
+ * @apiSuccess (courses Object[]) {String|Null} banner URL de la imagen del curso.
+ * @apiSuccess (courses Object[]) {String} _id ID del curso.
+ * @apiSuccess (courses Object[]) {String} title Título del curso.
+ * @apiSuccess (courses Object[]) {String} slug Slug (Valor url) del curso.
+ * @apiSuccess (courses Object[]) {String|Null} description Descripción del curso.
+ * @apiSuccess (courses Object[]) {String|Null} approved Indica si ha aprobado el curso o no.
+ *
+ * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
+ * @apiSuccess (referrals Object[]) {String} names Nombres.
+ * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (referrals Object[]) {String} document Número de documento.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
+ * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -106,7 +128,34 @@
 			"email": "anthony@example.com"
 		},
 		"totalReferrals": 1,
-		"totalCourses": 0
+		"totalCourses": 0,
+		"courses": [
+			{
+				"_id": "603afb2309bf7a3428ac58f7",
+				"banner": "http://url.com/images/1614926621.jpeg",
+				"slug": "curso-01",
+				"title": "CURSO 01",
+				"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.",
+				"approved": true
+			},
+			.
+			.
+			.
+		],
+		"referrals": [
+			{
+				"_id": "604068461caad10e2c965406",
+				"names": "PRUEBA",
+				"lastNames": "USUARIO",
+				"document": "CC123123123",
+				"gender": null,
+				"phone": null,
+				"totalsReferrals": 0
+			},
+			.
+			.
+			.
+		]
 	}
 }
  *

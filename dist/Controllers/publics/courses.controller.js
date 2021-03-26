@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.evaluateTest = exports.getTest = exports.updateHistoricalCourseContent = exports.showCourseContentTheme = exports.showCourse = exports.addCourseUser = exports.getCoursesCounters = void 0;
+exports.evaluateTest = exports.getTest = exports.updateHistoricalCourseContent = exports.showCourseContentTheme = exports.showCourse = exports.getCoursesCounters = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const CoursesActions_1 = __importStar(require("../../ActionsData/CoursesActions"));
 const CoursesRequest_1 = require("../../FormRequest/CoursesRequest");
@@ -75,58 +75,6 @@ async function getCoursesCounters(req, res) {
     }
 }
 exports.getCoursesCounters = getCoursesCounters;
-async function addCourseUser(req, res) {
-    try {
-        const { userid, slug } = req.params;
-        if (!Validations_1.checkSlug(slug))
-            return CoursesActions_1.returnNotFound(res, 'slug');
-        const courseExist = await CoursesActions_1.getCourseDetails({ query: { slug, enable: true } });
-        if (!courseExist)
-            return CoursesActions_1.returnNotFound(res, '404Course');
-        if (courseExist.temary && courseExist.temary.length === 0) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero el curso no se encuentra disponible.',
-            });
-        }
-        // check if exists course
-        const myCourse = await CoursesUsers_1.default.find({ userid, courseId: courseExist._id.toString() }).countDocuments().exec();
-        if (myCourse > 0) {
-            return res.status(422).json({
-                msg: 'Disculpe, pero ya tiene disponible este curso en su cuenta.'
-            });
-        }
-        const course = new CoursesUsers_1.default({
-            userid,
-            courseId: courseExist._id
-        });
-        let error = false;
-        for (const temary of courseExist.temary || []) {
-            const model = {
-                temaryId: temary._id.toString(),
-                content: [],
-                test: [],
-            };
-            for (const content of temary.content) {
-                model.content.push({ contentId: content._id.toString() });
-            }
-            if (model.content.length === 0) {
-                error = true;
-                break;
-            }
-            else
-                course.temary.push(model);
-        }
-        await course.save();
-        return res.status(201).json({
-            msg: 'Se ha agregado el curso exitosamente.',
-            added: course
-        });
-    }
-    catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/addCourseUser`);
-    }
-}
-exports.addCourseUser = addCourseUser;
 async function showCourse(req, res) {
     try {
         const { slug, userid } = req.params;
@@ -140,7 +88,7 @@ async function showCourse(req, res) {
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check and get data user course user
-        const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { userid, courseId: course._id.toString() } });
+        const dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { userid, 'courses.courseId': course._id.toString() } });
         if (!dataCourseUser && !course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
         delete course.enable;
@@ -165,30 +113,24 @@ async function showCourseContentTheme(req, res) {
         const course = await CoursesActions_1.getCourseDetails({
             query: { slug, 'temary._id': _id },
             isPublic: true,
-            projection: { 'temary.$': 1, levels: 1, enable: 1 }
+            projection: { 'temary.$': 1, enable: 1 }
         });
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id.toString() }, { temary: 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid, 'courses.courseId': course._id.toString() }, { 'courses.$.temary': 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (!myCourse && !course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
-        // check if previous courses is approved
-        if (course.levels
-            && course.levels.length > 0
-            && !(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
-            return CoursesActions_1.returnNotFound(res, 'wasNotPreviousCourse');
-        }
         const theme = await CoursesActions_1.getModelReturnCourseOrTheme({ data: course, theme: true, showContent: true });
         if (theme) {
             if (theme.content.length > 0) {
-                const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === theme._id.toString());
+                const index = lodash_1.default.findIndex(myCourse.courses[0].temary, t => t.temaryId === theme._id.toString());
                 if (index > -1) {
                     // set view values
-                    theme.view = myCourse.temary[index].view;
-                    myCourse.temary[index].content.forEach(c => {
+                    theme.view = myCourse.courses[0].temary[index].view;
+                    myCourse.courses[0].temary[index].content.forEach(c => {
                         const index2 = lodash_1.default.findIndex(theme.content, c2 => c2._id.toString() === c.contentId);
                         if (index2 > -1)
                             theme.content[index2].view = c.view;
@@ -220,22 +162,16 @@ async function updateHistoricalCourseContent(req, res) {
         const course = await CoursesActions_1.getCourseDetails({
             query: { slug, 'temary._id': _id },
             isPublic: true,
-            projection: { 'temary.$.content': 1, levels: 1, enable: 1 }
+            projection: { 'temary.$.content': 1, enable: 1 }
         });
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id }, { temary: 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid, 'courses.courseId': course._id }, { 'courses.$.temary': 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (!myCourse && !course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
-        // check if previous courses is approved
-        if (course.levels && course.levels.length > 0) {
-            if (!(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
-                return CoursesActions_1.returnNotFound(res, 'wasNotPreviousCourse');
-            }
-        }
         // get theme
         if ((!course.temary) || (course.temary && course.temary.length === 0)) {
             return CoursesActions_1.returnNotFound(res, '404Theme');
@@ -245,24 +181,24 @@ async function updateHistoricalCourseContent(req, res) {
         if (indexContent === -1)
             return CoursesActions_1.returnNotFound(res, '404Content');
         // set the new theme in viewing
-        const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
+        const index = lodash_1.default.findIndex(myCourse.courses[0].temary, t => t.temaryId === _id);
         if (index > -1) {
-            const index2 = lodash_1.default.findIndex(myCourse.temary[index].content, c => c.contentId === contentId);
+            const index2 = lodash_1.default.findIndex(myCourse.courses[0].temary[index].content, c => c.contentId === contentId);
             if (index2 > -1) {
-                myCourse.temary[index].content[index2].view = action === '1' ? 1 : 2;
-                myCourse.temary[index].content[index2].date = GlobalFunctions_1.setDate();
+                myCourse.courses[0].temary[index].content[index2].view = action === '1' ? 1 : 2;
+                myCourse.courses[0].temary[index].content[index2].date = GlobalFunctions_1.setDate();
             }
             // check if all content was viewed
             if (action === '2') {
                 let acc = 0;
-                myCourse.temary[index].content.forEach(c => {
+                myCourse.courses[0].temary[index].content.forEach(c => {
                     if (c.view === 2)
                         acc++;
                 });
-                if (myCourse.temary[index].content.length === acc)
-                    myCourse.temary[index].view = 2;
+                if (myCourse.courses[0].temary[index].content.length === acc)
+                    myCourse.courses[0].temary[index].view = 2;
             }
-            myCourse.temary[index].date = GlobalFunctions_1.setDate();
+            myCourse.courses[0].temary[index].date = GlobalFunctions_1.setDate();
             await myCourse.save();
         }
         return res.json({
@@ -286,32 +222,26 @@ async function getTest(req, res) {
             return CoursesActions_1.returnNotFound(res, 'slug');
         if (!Validations_1.checkObjectId(_id))
             return CoursesActions_1.returnNotFound(res, 'errorThemeId');
-        const course = await Courses_1.default.findOne({ slug, 'temary._id': _id }, { 'temary.$.test': 1, levels: 1, enable: 1 }).exec();
+        const course = await Courses_1.default.findOne({ slug, 'temary._id': _id }, { 'temary.$.test': 1, enable: 1 }).exec();
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         if (!course.temary)
             return CoursesActions_1.returnNotFound(res, '404Theme');
-        // check if previous courses is approved
-        if (course.levels && course.levels.length > 0) {
-            if (!(await CoursesActions_1.checkIfUserApprovedPreviousCourses(lodash_1.default.map(course.levels, '_id')))) {
-                return CoursesActions_1.returnNotFound(res, 'wasNotPreviousCourse');
-            }
-        }
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id }, { 'temary.temaryId': 1, 'temary.test': 1, 'temary.approved': 1, 'temary.view': 1, approved: 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid, 'courses.courseId': course._id }, { 'courses.$': 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (!myCourse && !course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if theme is approved or course
-        if (myCourse.approved)
+        if (myCourse.courses[0] && myCourse.courses[0].approved)
             return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');
-        const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
+        const index = lodash_1.default.findIndex(myCourse.courses[0].temary, t => t.temaryId === _id);
         if (index === -1)
             return CoursesActions_1.returnNotFound(res, '404GetDataTemaryUser');
-        if (myCourse.temary[index].view !== 2)
+        if (myCourse.courses[0].temary[index].view !== 2)
             return CoursesActions_1.returnNotFound(res, 'notFinishTheme');
-        if (myCourse.temary[index].approved)
+        if (myCourse.courses[0].temary[index].approved)
             return CoursesActions_1.returnNotFound(res, 'wasRealizedTest');
         course.temary[0].test.forEach(t => {
             ret.push({
@@ -350,19 +280,19 @@ async function evaluateTest(req, res) {
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ userid, courseId: course._id, 'temary.temaryId': _id }, { 'temary.temaryId': 1, 'temary.approved': 1, 'temary.test': 1, approved: 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid, 'courses.courseId': course._id, 'courses.temary.temaryId': _id }, { 'courses.$': 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (!myCourse && !course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if course is approved
-        if (myCourse.approved)
+        if (myCourse.courses[0] && myCourse.courses[0].approved)
             return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');
         // check if exists temary in myCourse data
-        const index = lodash_1.default.findIndex(myCourse.temary, t => t.temaryId === _id);
+        const index = lodash_1.default.findIndex(myCourse.courses[0].temary, t => t.temaryId === _id);
         if (index === -1)
             return CoursesActions_1.returnNotFound(res, '404GetDataTemaryUser');
-        if (myCourse.temary[index].approved)
+        if (myCourse.courses[0].temary[index].approved)
             return CoursesActions_1.returnNotFound(res, 'wasRealizedTest');
         // validate answer test
         validate.data.forEach(a => {
@@ -384,15 +314,15 @@ async function evaluateTest(req, res) {
             'Ha aprobado el examen exitosamente.' :
             'Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del examen.';
         // update data course user
-        myCourse.temary[index].test.push({ points: average });
-        myCourse.temary[index].approved = approved;
+        myCourse.courses[0].temary[index].test.push({ points: average });
+        myCourse.courses[0].temary[index].approved = approved;
         if (approved)
-            myCourse.temary[index].approvedDate = GlobalFunctions_1.setDate();
+            myCourse.courses[0].temary[index].approvedDate = GlobalFunctions_1.setDate();
         // check if approved all themes
-        const listApproved = lodash_1.default.map(myCourse.temary, 'approved');
+        const listApproved = lodash_1.default.map(myCourse.courses[0].temary, 'approved');
         const filter = lodash_1.default.filter(listApproved, v => v);
         if (filter.length === listApproved.length)
-            myCourse.approved = true;
+            myCourse.courses[0].approved = true;
         await myCourse.save();
         return res.json({
             msg,

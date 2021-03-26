@@ -3,12 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
+exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const ReferralsActions_1 = require("./ReferralsActions");
+const CoursesActions_1 = require("./CoursesActions");
 async function checkIfExistDocument(document, _id) {
     return document ?
         (await Users_1.default.find({ document, _id: { $ne: _id } })
@@ -32,9 +33,21 @@ async function getData(_id, projection = null) {
 }
 exports.getData = getData;
 async function getNamesUsersList(listIds, projection = null) {
-    return listIds.length > 0 ?
-        Users_1.default.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec()
-        : [];
+    const ret = [];
+    if (listIds.length > 0) {
+        const users = await Users_1.default.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec();
+        for (const value of users) {
+            ret.push({
+                _id: value._id,
+                names: value.names,
+                lastNames: value.lastNames,
+                document: value.document,
+                gender: value.gender,
+                phone: value.phone || null,
+            });
+        }
+    }
+    return ret;
 }
 exports.getNamesUsersList = getNamesUsersList;
 async function updateGroupIdInUsers(listIds, _id = null) {
@@ -53,7 +66,7 @@ async function getUserData(_id, projection = null) {
                 document: data.document,
                 email: data.email,
                 phone: data.phone,
-                password: data.password,
+                // password: data.password,
                 names: data.names,
                 lastNames: data.lastNames,
                 gender: data.gender,
@@ -103,6 +116,67 @@ async function getIdUserFromDocument(document) {
     return null;
 }
 exports.getIdUserFromDocument = getIdUserFromDocument;
+async function getInfoUserReferred(_id) {
+    const ret = {
+        member: null,
+        totalCourses: 0,
+        totalReferrals: 0,
+        courses: [],
+        referrals: [],
+    };
+    if (_id) {
+        ret.member = await Users_1.default.findOne({ _id }, {
+            _id: 1,
+            names: 1,
+            lastNames: 1,
+            phone: 1,
+            email: 1,
+            gender: 1,
+            civilStatus: 1,
+            department: 1,
+            city: 1,
+            locality: 1,
+            direction: 1,
+        }).exec();
+        if (!ret.member)
+            return ret;
+        // get totals members referrals
+        const referrals = await Referrals_1.default.findOne({ _id: ret.member._id }).exec();
+        if (referrals) {
+            // get data referrals and get totals subreferrals
+            ret.referrals = await getNamesUsersList(referrals.members);
+            ret.totalReferrals += await ReferralsActions_1.getTotalsReferrals(referrals.members);
+            for (const [index, value] of ret.referrals.entries()) {
+                const refMembers = await Referrals_1.default.findOne({ _id: value._id }).exec();
+                ret.referrals[index] = {
+                    ...value,
+                    totalsReferrals: refMembers ? refMembers.members.length : 0
+                };
+            }
+        }
+        // get totals courses
+        const coursesU = await CoursesUsers_1.default.findOne({ userid: ret.member._id.toString() }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
+        if (coursesU) {
+            ret.totalCourses = coursesU.courses.length;
+            // get data courses
+            const listIds = ret.totalCourses > 0 ? coursesU.courses.map(c => c.courseId) : [];
+            const courses = listIds.length > 0 ? await CoursesActions_1.getCoursesSimpleList(listIds) : [];
+            for (const course of courses) {
+                const index = coursesU.courses.findIndex(c => c.courseId === course._id.toString());
+                ret.courses.push({
+                    _id: course._id,
+                    banner: course.banner,
+                    slug: course.slug,
+                    title: course.title,
+                    description: course.description,
+                    approved: coursesU.courses[index] ? (coursesU.courses[index].approved || false) : false
+                });
+            }
+        }
+    }
+    return ret;
+}
+exports.getInfoUserReferred = getInfoUserReferred;
 /*
   Static functions
  */

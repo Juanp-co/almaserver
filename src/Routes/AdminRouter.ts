@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { validateAdmin } from '../middleware';
 import getCourses, {
-  addContentThemeCourse, addLevelsThemeCourse, addQuestionTestThemeCourse,
+  addContentThemeCourse, addQuestionTestThemeCourse,
   addThemeCourse,
   deleteContentThemeCourse,
-  deleteCourse, deleteLevelThemeCourse, deleteQuestionTestThemeCourse, deleteThemeCourse,
+  deleteCourse, deleteQuestionTestThemeCourse, deleteThemeCourse,
   enableCourse,
   getCoursesCounters,
   saveCourse,
@@ -65,10 +65,6 @@ router.route('/courses/:_id')
 router.put('/courses/:_id/banner',validateAdmin, updateBannerCourse);
 router.put('/courses/:_id/enable',validateAdmin, enableCourse);
 router.put('/courses/:_id/info',validateAdmin, updateInfoCourse);
-
-// levels
-router.post('/courses/:_id/levels', validateAdmin, addLevelsThemeCourse);
-router.delete('/courses/:_id/levels/:levelId', validateAdmin, deleteLevelThemeCourse);
 
 // themes
 router.post('/courses/:_id/theme',validateAdmin, addThemeCourse);

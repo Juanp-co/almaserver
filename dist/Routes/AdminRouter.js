@@ -55,9 +55,6 @@ router.route('/courses/:_id')
 router.put('/courses/:_id/banner', middleware_1.validateAdmin, courses_admin_controller_1.updateBannerCourse);
 router.put('/courses/:_id/enable', middleware_1.validateAdmin, courses_admin_controller_1.enableCourse);
 router.put('/courses/:_id/info', middleware_1.validateAdmin, courses_admin_controller_1.updateInfoCourse);
-// levels
-router.post('/courses/:_id/levels', middleware_1.validateAdmin, courses_admin_controller_1.addLevelsThemeCourse);
-router.delete('/courses/:_id/levels/:levelId', middleware_1.validateAdmin, courses_admin_controller_1.deleteLevelThemeCourse);
 // themes
 router.post('/courses/:_id/theme', middleware_1.validateAdmin, courses_admin_controller_1.addThemeCourse);
 router.put('/courses/:_id/theme/:themeId', middleware_1.validateAdmin, courses_admin_controller_1.updateThemeCourse);
