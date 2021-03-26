@@ -73,7 +73,7 @@ export async function getDetailsEvent({ query } : any) : Promise<IEventsList | n
 
     const users = await getNamesUsersList([event.userid]);
 
-    if (users.length > 0) ret.user = users[0] ? users[0] : null;
+    if (users.length > 0) ret.user = users[0] || null;
 
     return ret;
   }

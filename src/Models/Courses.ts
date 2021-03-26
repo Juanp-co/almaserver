@@ -62,7 +62,6 @@ const CoursesSchema = new Schema(
     description: { type: String, require: true, set: cleanWhiteSpaces },
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true }, // content
-    levels: { type: [String], default: [] }, // levels required
     toRoles: { type: [Number], require: true },
     enable: { type: Boolean, default: false },
     created_at: { type: Number, default: setDate, get: getDate },

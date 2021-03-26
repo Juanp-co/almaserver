@@ -254,7 +254,7 @@
 
 /**
  * @api {get} /api/user/courses (03) Obtener cursos de un miembro.
- * @apiVersion 0.0.19
+ * @apiVersion 0.0.27
  * @apiName getCoursesListUser
  * @apiGroup User
  *
@@ -268,6 +268,7 @@
  * @apiSuccess (courses Object[]) {String} title Título del curso.
  * @apiSuccess (courses Object[]) {String} slug Slug (Valor url) del curso.
  * @apiSuccess (courses Object[]) {String|Null} description Descripción del curso.
+ * @apiSuccess (courses Object[]) {String|Null} approved Indica si ha aprobado el curso o no.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -280,6 +281,7 @@
 			"title": "CURSO NUEVO 2",
 			"slug": "curso-nuevo-1",
 			"description": "Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada."
+			"approved": false
 		},
 		.
 		.

@@ -1,10 +1,11 @@
 import { Response } from 'express';
 import { checkNameOrLastName } from '../Functions/Validations';
-import IUser, { IUserData, IUserSimpleInfo } from '../Interfaces/IUser';
+import IUser, { IUserData, IUserReferralInfo, IUserReferralSimpleData, IUserSimpleInfo } from '../Interfaces/IUser';
 import Users from '../Models/Users';
 import Referrals from '../Models/Referrals';
 import CoursesUsers from '../Models/CoursesUsers';
 import { getTotalsReferrals } from './ReferralsActions';
+import { getCoursesSimpleList } from './CoursesActions';
 
 export default async function checkIfExistDocument(document?: string, _id?: string | null): Promise<boolean> {
   return document ?
@@ -29,9 +30,26 @@ export async function getData(_id?: string, projection: any | null = null): Prom
 }
 
 export async function getNamesUsersList(listIds: string|any[], projection: any|null = null): Promise<IUserSimpleInfo[] | any> {
-  return listIds.length > 0 ?
-    Users.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec()
-    : [];
+
+  const ret: IUserSimpleInfo[] = [];
+
+  if (listIds.length > 0) {
+    const users = await Users.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec();
+
+    for (const value of users) {
+      ret.push({
+        _id: value._id,
+        names: value.names,
+        lastNames: value.lastNames,
+        document: value.document,
+        gender: value.gender,
+        phone: value.phone || null,
+      });
+    }
+  }
+
+
+  return ret;
 }
 
 export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null) {
@@ -58,7 +76,7 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
         document: data.document,
         email: data.email,
         phone: data.phone,
-        password: data.password,
+        // password: data.password,
         names: data.names,
         lastNames: data.lastNames,
         gender: data.gender,
@@ -110,6 +128,82 @@ export async function getIdUserFromDocument(document: string|any): Promise<strin
   return null;
 }
 
+export async function getInfoUserReferred(_id: string|any): Promise<IUserReferralInfo> {
+
+  const ret = {
+    member: null,
+    totalCourses: 0,
+    totalReferrals: 0,
+    courses: [],
+    referrals: [],
+  } as IUserReferralInfo;
+
+  if (_id) {
+    ret.member = await Users.findOne({ _id }, {
+        _id: 1,
+        names: 1,
+        lastNames: 1,
+        phone: 1,
+        email: 1,
+        gender: 1,
+        civilStatus: 1,
+        department: 1,
+        city: 1,
+        locality: 1,
+        direction: 1,
+      }
+    ).exec() as IUserReferralSimpleData;
+
+    if (!ret.member) return ret;
+
+    // get totals members referrals
+    const referrals = await Referrals.findOne({ _id: ret.member._id }).exec();
+
+    if (referrals) {
+      // get data referrals and get totals subreferrals
+      ret.referrals = await getNamesUsersList(referrals.members);
+      ret.totalReferrals += await getTotalsReferrals(referrals.members);
+
+      for (const [index, value] of ret.referrals.entries()) {
+        const refMembers = await Referrals.findOne({ _id: value._id }).exec();
+
+        ret.referrals[index] = {
+          ...value,
+          totalsReferrals: refMembers ? refMembers.members.length : 0
+        };
+      }
+    }
+
+    // get totals courses
+    const coursesU = await CoursesUsers.findOne(
+      { userid: ret.member._id.toString() },
+      { 'courses.courseId': 1, 'courses.approved': 1 }
+    ).exec();
+
+    if (coursesU) {
+      ret.totalCourses = coursesU.courses.length;
+
+      // get data courses
+      const listIds: any[] = ret.totalCourses > 0 ? coursesU.courses.map(c => c.courseId) : [];
+      const courses = listIds.length > 0 ? await getCoursesSimpleList(listIds) : [];
+
+      for (const course of courses) {
+        const index = coursesU.courses.findIndex(c => c.courseId === course._id.toString());
+        ret.courses.push({
+          _id: course._id,
+          banner: course.banner,
+          slug: course.slug,
+          title: course.title,
+          description: course.description,
+          approved: coursesU.courses[index] ? (coursesU.courses[index].approved || false) : false
+        });
+      }
+    }
+  }
+
+  return ret;
+}
+
 /*
   Static functions
  */
@@ -159,7 +253,6 @@ export function responseUsersAdmin(res: Response, option: number) : Response {
     msg: '¡Error desconocido!',
   });
 }
-
 
 export function responseErrorsRecoveryPassword(res: Response, option: number) : Response {
   const ret = [

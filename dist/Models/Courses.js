@@ -51,7 +51,6 @@ const CoursesSchema = new mongoose_1.Schema({
     description: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
     slug: { type: String, require: true },
     temary: { type: [TemarySchema], require: true },
-    levels: { type: [String], default: [] },
     toRoles: { type: [Number], require: true },
     enable: { type: Boolean, default: false },
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },

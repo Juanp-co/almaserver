@@ -2217,7 +2217,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/courses/:_id",
     "title": "(03) Obtener detalles de un curso.",
-    "version": "0.0.22",
+    "version": "0.0.27",
     "name": "detailsCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -2550,13 +2550,6 @@ define({ "api": [
         "user Object": [
           {
             "group": "user Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo.</p>"
-          },
-          {
-            "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -2566,8 +2559,15 @@ define({ "api": [
             "group": "user Object",
             "type": "String",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
           },
           {
             "group": "user Object",
@@ -2578,24 +2578,24 @@ define({ "api": [
           },
           {
             "group": "user Object",
-            "type": "String",
+            "type": "Number|Null",
             "optional": false,
-            "field": "names",
-            "description": "<p>Nombre(s).</p>"
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
           },
           {
             "group": "user Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
-            "field": "lastNames",
-            "description": "<p>Apellido(s).</p>"
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success with all data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Curso\",\n\t\"course\": {\n\t\t\"_id\": \"603490a7cb2c7e406c5ff2b5\",\n\t\t\"user\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\"phone\": \"584121490196\",\n\t\t\t\"document\": \"CC123456789\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t\"speaker\": \"ANTHONY VELASQUEZ\",\n\t\t\"speakerPosition\": \"SOFTWARE DEVELOPER\",\n\t\t\"code\": \"CURSO-JAVASCRIPT-2021\",\n\t\t\"title\": \"CURSO JAVASCRIPT 2021\",\n\t\t\"slug\": \"curso-javascript-2021\",\n    \"banner\": \"http://url.com/images/1614664308734.jpeg\",\n\t\t\"description\": \"Donec sollicitudin molestie malesuada. ...,\n\t\t\"temary\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"6036d87e1d222f3680f3a1d5\",\n\t\t\t\t\"title\": \"TEMA 1\",\n\t\t\t\t\"description\": \"<h1>Proin eget tortor risus.</h1>...\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"6036d8c51d222f3680f3a1d7\",\n\t\t\t\t\t\t\"title\": \"CONTENIDO 1\",\n\t\t\t\t\t\t\"description\": \"<h1>Proin eget tortor risus.</h1>...\",\n\t\t\t\t\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=VopHjhP5d2E\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"6036f4b01d222f3680f3a1dd\",\n\t\t\t\t\t\t\"title\": \"CONTENIDO PRUEBA\",\n\t\t\t\t\t\t\"description\": \"<h1>Proin eget tortor risus.</h1>...\",\n\t\t\t\t\t\t\"urlVideo\": null\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"test\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Proin eget tortor risus.\",\n\t\t\t\t\t\t\"placeholder\": null,\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [],\n\t\t\t\t\t\t\"correctAnswer\": null,\n\t\t\t\t\t\t\"_id\": \"603748515407373ad46fa578\",\n\t\t\t\t\t\t\"title\": \"PREGUNTA 1\",\n\t\t\t\t\t\t\"inputType\": \"text\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Proin eget tortor risus.\",\n\t\t\t\t\t\t\"placeholder\": null,\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [\n\t\t\t\t\t\t\t\"Opción A\",\n\t\t\t\t\t\t\t\"Opción B\",\n\t\t\t\t\t\t\t\"Opción C\"\n\t\t\t\t\t\t],\n\t\t\t\t\t\t\"correctAnswer\": 1,\n\t\t\t\t\t\t\"_id\": \"6037491e5407373ad46fa579\",\n\t\t\t\t\t\t\"title\": \"PREGUNTA 2\",\n\t\t\t\t\t\t\"inputType\": \"radio\"\n\t\t\t\t\t},\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t\"levels\": [\n\t\t\t{\n        \"banner\": \"http://url.com/images/1614664308734.jpeg\",\n\t\t\t\t\"_id\": \"601f09f99775034e10510fa2\",\n\t\t\t\t\"title\": \"CURSO CON TEMAS Y PRUEBAS\",\n\t\t\t\t\"slug\": \"curso-con-temas-y-pruebas\",\n\t\t\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n\t\t\"enable\": false,\n\t\t\"created_at\": \"2021-02-23 00:20:39\",\n\t\t\"updated_at\": \"2021-02-26 16:02:50\",\n\t\t\"totalsUsers\": 0\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Curso\",\n\t\"course\": {\n\t\t\"_id\": \"603490a7cb2c7e406c5ff2b5\",\n\t\t\"user\": {\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"ADMINISTRADOR\",\n\t\t\t\"document\": \"CC123456789\",\n\t\t\t\"gender\": 1,\n\t\t\t\"phone\": \"573161234567\"\n\t\t},\n\t\t\"speaker\": \"ANTHONY VELASQUEZ\",\n\t\t\"speakerPosition\": \"SOFTWARE DEVELOPER\",\n\t\t\"code\": \"CURSO-JAVASCRIPT-2021\",\n\t\t\"title\": \"CURSO JAVASCRIPT 2021\",\n\t\t\"slug\": \"curso-javascript-2021\",\n    \"banner\": \"http://url.com/images/1614664308734.jpeg\",\n\t\t\"description\": \"Donec sollicitudin molestie malesuada. ...,\n\t\t\"temary\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"6036d87e1d222f3680f3a1d5\",\n\t\t\t\t\"title\": \"TEMA 1\",\n\t\t\t\t\"description\": \"<h1>Proin eget tortor risus.</h1>...\",\n\t\t\t\t\"content\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"6036d8c51d222f3680f3a1d7\",\n\t\t\t\t\t\t\"title\": \"CONTENIDO 1\",\n\t\t\t\t\t\t\"description\": \"<h1>Proin eget tortor risus.</h1>...\",\n\t\t\t\t\t\t\"urlVideo\": \"https://www.youtube.com/watch?v=VopHjhP5d2E\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"_id\": \"6036f4b01d222f3680f3a1dd\",\n\t\t\t\t\t\t\"title\": \"CONTENIDO PRUEBA\",\n\t\t\t\t\t\t\"description\": \"<h1>Proin eget tortor risus.</h1>...\",\n\t\t\t\t\t\t\"urlVideo\": null\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"test\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Proin eget tortor risus.\",\n\t\t\t\t\t\t\"placeholder\": null,\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [],\n\t\t\t\t\t\t\"correctAnswer\": null,\n\t\t\t\t\t\t\"_id\": \"603748515407373ad46fa578\",\n\t\t\t\t\t\t\"title\": \"PREGUNTA 1\",\n\t\t\t\t\t\t\"inputType\": \"text\"\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"description\": \"Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Proin eget tortor risus.\",\n\t\t\t\t\t\t\"placeholder\": null,\n\t\t\t\t\t\t\"require\": true,\n\t\t\t\t\t\t\"values\": [\n\t\t\t\t\t\t\t\"Opción A\",\n\t\t\t\t\t\t\t\"Opción B\",\n\t\t\t\t\t\t\t\"Opción C\"\n\t\t\t\t\t\t],\n\t\t\t\t\t\t\"correctAnswer\": 1,\n\t\t\t\t\t\t\"_id\": \"6037491e5407373ad46fa579\",\n\t\t\t\t\t\t\"title\": \"PREGUNTA 2\",\n\t\t\t\t\t\t\"inputType\": \"radio\"\n\t\t\t\t\t},\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t\t.\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t\"levels\": [\n\t\t\t{\n        \"banner\": \"http://url.com/images/1614664308734.jpeg\",\n\t\t\t\t\"_id\": \"601f09f99775034e10510fa2\",\n\t\t\t\t\"title\": \"CURSO CON TEMAS Y PRUEBAS\",\n\t\t\t\t\"slug\": \"curso-con-temas-y-pruebas\",\n\t\t\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n\t\t\"enable\": false,\n\t\t\"created_at\": \"2021-02-23 00:20:39\",\n\t\t\"updated_at\": \"2021-02-26 16:02:50\",\n\t\t\"totalsUsers\": 0\n\t}\n}",
           "type": "JSON"
         },
         {
@@ -5589,11 +5589,6 @@ define({ "api": [
           "type": "JSON"
         },
         {
-          "title": "Can't view the content",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.\"\n}",
-          "type": "JSON"
-        },
-        {
           "title": "The test was approved",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero ya ha aprobado este examen anteriormente.\"\n}",
           "type": "JSON"
@@ -5823,11 +5818,6 @@ define({ "api": [
         {
           "title": "Invalid themeId",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el tema seleccionado es incorrecto.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Can't view the content",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.\"\n}",
           "type": "JSON"
         },
         {
@@ -6208,11 +6198,6 @@ define({ "api": [
         {
           "title": "Invalid contentId",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el contenido seleccionado es incorrecto.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Can't view the content",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.\"\n}",
           "type": "JSON"
         },
         {
@@ -6747,29 +6732,43 @@ define({ "api": [
             "group": "user Object",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "user Object",
-            "type": "String",
-            "optional": false,
             "field": "names",
-            "description": "<p>Nombre(s).</p>"
+            "description": "<p>Nombres.</p>"
           },
           {
             "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellido(s).</p>"
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Evento.\",\n    \"event\": {\n        \"_id\": \"5fe00cf5e2c9942e5c866453\",\n        \"title\": \"EVENTO NUEVO\",\n        \"description\": \"description\",\n        \"date\": \"2020-07-07\",\n        \"initHour\": \"00:00\",\n        \"endHour\": \"00:00\",\n        \"toRoles\": [\n            5\n        ],\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        }\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Evento.\",\n    \"event\": {\n        \"_id\": \"5fe00cf5e2c9942e5c866453\",\n        \"title\": \"EVENTO NUEVO\",\n        \"description\": \"description\",\n        \"date\": \"2020-07-07\",\n        \"initHour\": \"00:00\",\n        \"endHour\": \"00:00\",\n        \"toRoles\": [\n            5\n        ],\n        \"user\": {\n          \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n          \"names\": \"ANTHONY\",\n          \"lastNames\": \"ADMINISTRADOR\",\n          \"document\": \"CC123456789\",\n          \"gender\": 1,\n          \"phone\": \"573161234567\"\n        }\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -7904,26 +7903,33 @@ define({ "api": [
             "group": "members Object[]",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "members Object[]",
-            "type": "String",
-            "optional": false,
             "field": "names",
-            "description": "<p>Nombre(s).</p>"
+            "description": "<p>Nombres.</p>"
           },
           {
             "group": "members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellido(s).</p>"
+            "description": "<p>Apellidos.</p>"
           },
           {
             "group": "members Object[]",
             "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String|Null",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono.</p>"
@@ -7933,7 +7939,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Grupo\",\n    \"group\": {\n        \"_id\": \"6018e503e02a45115407e82f\",\n        \"user\": {\n            \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n            \"document\": \"CC123456789\",\n            \"names\": \"USUARIO\",\n            \"lastNames\": \"ADMIN\"\n        },\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"members\": [\n            {\n                \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n                \"document\": \"CC12345678\",\n                \"names\": \"USUARIO TRES\",\n                \"lastNames\": \"PRUEBA TRES\"\n                \"phone\": \"563161234567\"\n            },\n            .\n            .\n            .\n        ],\n        \"created_at\": \"2021-02-02 00:37:07\",\n        \"updated_at\": \"2021-02-02 02:16:16\"\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo\",\n\t\"group\": {\n\t\t\"_id\": \"60330f5102626e2040bd2393\",\n\t\t\"user\": {\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"ADMINISTRADOR\",\n\t\t\t\"document\": \"CC123456789\",\n\t\t\t\"gender\": 1,\n\t\t\t\"phone\": \"573161234567\"\n\t\t},\n\t\t\"name\": \"FAMILIA PEREZ\",\n\t\t\"code\": \"GROUP-0\",\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"573161234567\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-21 20:56:33\",\n\t\t\"updated_at\": \"2021-03-01 22:46:53\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -10559,6 +10565,20 @@ define({ "api": [
             "optional": false,
             "field": "totalReferrals",
             "description": "<p>Total de referidos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Listado de cursos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "referrals",
+            "description": "<p>Listado de hijos espirituales.</p>"
           }
         ],
         "member Object": [
@@ -10639,12 +10659,107 @@ define({ "api": [
             "field": "email",
             "description": "<p>Correo electrónico.</p>"
           }
+        ],
+        "courses Object[]": [
+          {
+            "group": "courses Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "banner",
+            "description": "<p>URL de la imagen del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug (Valor url) del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "approved",
+            "description": "<p>Indica si ha aprobado el curso o no.</p>"
+          }
+        ],
+        "referrals Object[]": [
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "totalReferrals",
+            "description": "<p>Total de referidos.</p>"
+          }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 0,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f7\",\n\t\t\t\t\"banner\": \"http://url.com/images/1614926621.jpeg\",\n\t\t\t\t\"slug\": \"curso-01\",\n\t\t\t\t\"title\": \"CURSO 01\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"approved\": true\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"totalsReferrals\": 0\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -10817,15 +10932,6 @@ define({ "api": [
             "description": "<p>Fecha de la última actualización del grupo.</p>"
           }
         ],
-        "member Object": [
-          {
-            "group": "member Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
-          }
-        ],
         "members Object[]": [
           {
             "group": "members Object[]",
@@ -10839,28 +10945,42 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombre(s).</p>"
+            "description": "<p>Nombres.</p>"
           },
           {
             "group": "members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellido(s).</p>"
+            "description": "<p>Apellidos.</p>"
           },
           {
             "group": "members Object[]",
             "type": "String",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección del miembro.</p>"
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"gender\": 2,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"USUARIO TRES\",\n\t\t\t\t\"lastNames\": \"PRUEBA TRES\",\n\t\t\t\t\"direction\": \"any direction\"\n\t\t\t}\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"573161234567\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
           "type": "JSON"
         },
         {
@@ -11116,6 +11236,20 @@ define({ "api": [
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "totalReferrals",
+            "description": "<p>Total de referidos.</p>"
           }
         ]
       },
@@ -11235,6 +11369,13 @@ define({ "api": [
           },
           {
             "group": "Success 200",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "referred",
+            "description": "<p>Datos del padre espiritual de este usuario.</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "Number",
             "optional": false,
             "field": "totals",
@@ -11248,27 +11389,57 @@ define({ "api": [
             "description": "<p>Listado de hijos espirituales.</p>"
           }
         ],
-        "referrals Object[]": [
+        "referred Object": [
           {
-            "group": "referrals Object[]",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
-          },
-          {
-            "group": "referrals Object[]",
+            "group": "referred Object",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "referrals Object[]",
+            "group": "referred Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "referred Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "referred Object",
             "type": "String",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referred Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "referred Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ],
+        "referrals Object[]": [
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
           },
           {
             "group": "referrals Object[]",
@@ -11283,18 +11454,46 @@ define({ "api": [
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "totalReferrals",
+            "description": "<p>Total de referidos.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"totals\": 5\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"document\": \"CC1234567777\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referred\": {\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"ADMINISTRADOR\",\n\t\t\"document\": \"CC123456789\",\n\t\t\"gender\": 1,\n\t\t\"phone\": \"573161234567\"\n\t},\n\t\"totals\": 5,\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": null,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
           "title": "Success without data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"totals\": 0,\n\t\"referrals\": []\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referred\": null,\n\t\"totals\": 0,\n\t\"referrals\": []\n}",
           "type": "JSON"
         }
       ]
@@ -11482,7 +11681,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/user/courses",
     "title": "(03) Obtener cursos de un miembro.",
-    "version": "0.0.19",
+    "version": "0.0.27",
     "name": "getCoursesListUser",
     "group": "User",
     "header": {
@@ -11551,13 +11750,20 @@ define({ "api": [
             "optional": false,
             "field": "description",
             "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "approved",
+            "description": "<p>Indica si ha aprobado el curso o no.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis cursos.\",\n\t\"courses\": [\n\t\t{\n      \"banner\": \"http://url.com/images/1614664308734.jpeg\",\n\t\t\t\"_id\": \"5ff8d0c1fd462643e42df1f6\",\n\t\t\t\"title\": \"CURSO NUEVO 2\",\n\t\t\t\"slug\": \"curso-nuevo-1\",\n\t\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis cursos.\",\n\t\"courses\": [\n\t\t{\n      \"banner\": \"http://url.com/images/1614664308734.jpeg\",\n\t\t\t\"_id\": \"5ff8d0c1fd462643e42df1f6\",\n\t\t\t\"title\": \"CURSO NUEVO 2\",\n\t\t\t\"slug\": \"curso-nuevo-1\",\n\t\t\t\"description\": \"Sed porttitor lectus nibh. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Curabitur aliquet quam id dui posuere blandit. Donec rutrum congue leo eget malesuada. Cras ultricies ligula sed magna dictum porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Cras ultricies ligula sed magna dictum porta. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Nulla quis lorem ut libero malesuada feugiat. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Donec sollicitudin molestie malesuada. Pellentesque in ipsum id orci porta dapibus. Nulla quis lorem ut libero malesuada feugiat. Sed porttitor lectus nibh. Donec rutrum congue leo eget malesuada. Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Pellentesque in ipsum id orci porta dapibus. Donec rutrum congue leo eget malesuada.\"\n\t\t\t\"approved\": false\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -13576,47 +13782,54 @@ define({ "api": [
             "description": "<p>Listado de referidos del miembro.</p>"
           }
         ],
-        "referrals Object": [
+        "referrals Object[]": [
           {
-            "group": "referrals Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "referred",
-            "description": "<p>Datos del miembro referido.</p>"
-          },
-          {
-            "group": "referrals Object",
+            "group": "referrals Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "referrals Object",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "referrals Object",
+            "group": "referrals Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombres.</p>"
           },
           {
-            "group": "referrals Object",
+            "group": "referrals Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
           },
           {
-            "group": "referrals Object",
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          },
+          {
+            "group": "referrals Object[]",
             "type": "Number",
             "optional": false,
-            "field": "TotalReferrals",
+            "field": "totalReferrals",
             "description": "<p>Total de referidos.</p>"
           }
         ]
@@ -13624,7 +13837,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del miembro.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"604068999b20e72f341972ec\",\n\t\t\t\"document\": \"CC3123123123\",\n\t\t\t\"names\": \"SUPERVISOR\",\n\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del miembro.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": null,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         }
       ]

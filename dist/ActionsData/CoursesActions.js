@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateToPublish = exports.setPointToTest = exports.returnCantEdit = exports.returnErrorId = exports.return404 = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkPreviousIdsCourses = exports.checkIfExistSlug = exports.checkIfUsersOwnCourse = exports.getCourseDetails = exports.getCoursesSimpleList = exports.getPreviousIdsCourses = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
+exports.validateToPublish = exports.setPointToTest = exports.returnCantEdit = exports.returnErrorId = exports.return404 = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkIfExistSlug = exports.checkIfUsersOwnCourse = exports.getCourseDetails = exports.getCoursesSimpleList = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const Courses_1 = __importDefault(require("../Models/Courses"));
@@ -46,7 +46,6 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
         ret.banner = data.banner;
         ret.description = data.description;
         ret.temary = [];
-        ret.levels = data.levels;
         if (admin) {
             ret.toRoles = data.toRoles;
             ret.enable = data.enable;
@@ -54,7 +53,7 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
             ret.updated_at = data.updated_at;
         }
         if (counters)
-            ret.totalsUsers = await CoursesUsers_1.default.find({ courseId: data._id.toString() }).countDocuments().exec() || 0;
+            ret.totalsUsers = await CoursesUsers_1.default.find({ 'courses.courseId': data._id.toString() }).countDocuments().exec() || 0;
         const { temary } = data;
         const totalTemary = temary.length;
         for (let i = 0; i < totalTemary || 0; i++) {
@@ -96,13 +95,6 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
 }
 exports.getModelReturnCourseOrTheme = getModelReturnCourseOrTheme;
 // =====================================================================================================================
-async function getPreviousIdsCourses(listIds) {
-    return listIds.length > 0 ?
-        await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, slug: 1, banner: 1, description: 1, enable: 1 }).exec()
-        :
-            [];
-}
-exports.getPreviousIdsCourses = getPreviousIdsCourses;
 async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, projection }) {
     const ret = [];
     const courses = await Courses_1.default.find(query, projection || { __v: 0 })
@@ -177,7 +169,6 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             banner: course.banner,
             description: course.description,
             temary: course.temary,
-            levels: await getPreviousIdsCourses(course.levels),
             toRoles: course.toRoles,
             enable: course.enable,
             created_at: course.created_at,
@@ -190,7 +181,7 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
         if (infoUser) {
             const users = await UsersActions_1.getNamesUsersList([course.userid]);
             if (users.length > 0)
-                ret.user = users[0] ? users[0] : null;
+                ret.user = users[0] || null;
             else
                 delete ret.user;
         }
@@ -209,14 +200,6 @@ async function checkIfExistSlug(slug) {
     return Courses_1.default.find({ slug }).countDocuments().exec();
 }
 exports.checkIfExistSlug = checkIfExistSlug;
-async function checkPreviousIdsCourses(listIds) {
-    if (listIds.length > 0) {
-        const exist = await Courses_1.default.find({ _id: { $in: listIds }, enable: true }).countDocuments().exec();
-        return exist === listIds.length;
-    }
-    return false;
-}
-exports.checkPreviousIdsCourses = checkPreviousIdsCourses;
 async function checkIfUserApprovedPreviousCourses(listIds) {
     if (listIds.length > 0) {
         const totals = await Courses_1.default.find({ _id: { $in: listIds }, approved: { $eq: true } }).countDocuments().exec();
@@ -230,11 +213,10 @@ exports.checkIfUserApprovedPreviousCourses = checkIfUserApprovedPreviousCourses;
   PARTICULAR USERS
  */
 async function getCoursesDataUser({ query }) {
-    const course = await CoursesUsers_1.default.findOne(query, { __v: 0 }).exec();
+    const course = await CoursesUsers_1.default.findOne(query, { 'courses.$': 1 }).exec();
     return !course ? null : {
         _id: course._id,
-        temary: course.temary || [],
-        approved: course.approved,
+        course: course.courses[0] || null,
         created_at: course.created_at,
         updated_at: course.updated_at,
     };
@@ -306,10 +288,6 @@ function returnNotFound(res, code) {
     }
     else if (code === 'slug') {
         ret.msg = 'Disculpe, pero el curso seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'wasNotPreviousCourse') {
-        ret.msg = `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`;
         statusCode = 422;
     }
     else if (code === 'wasRealized') {

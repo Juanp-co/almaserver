@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { validatePublic, validateUser } from '../middleware';
+import { validateUser } from '../middleware';
 import getCourses, {
-  addCourseUser, evaluateTest,
+  evaluateTest,
   getCoursesCounters,
   getTest,
   showCourse, showCourseContentTheme, updateHistoricalCourseContent
@@ -34,7 +34,7 @@ router.get(`/banks`, getBanks);
 router.get(`/courses`, validateUser, getCourses);
 router.get(`/courses/counters`, validateUser, getCoursesCounters);
 router.get(`/courses/:slug`, validateUser, showCourse);
-router.post('/courses/:slug/add', validateUser, addCourseUser); // add course to user
+// router.post('/courses/:slug/add', validateUser, addCourseUser); // add course to user
 
 router.get(`/courses/:slug/theme/:_id`, validateUser, showCourseContentTheme);// get theme
 

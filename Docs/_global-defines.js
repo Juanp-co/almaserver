@@ -115,11 +115,6 @@
 /**
  * @apiDefine CommonCourseNotCompletedPreviousCourse
  *
- * @apiErrorExample {JSON} Can't view the content
- * HTTP/1.1 422 Unprocessable Entity
- * {
-  "msg": "Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este."
-}
  */
 
 /**

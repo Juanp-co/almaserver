@@ -4,10 +4,9 @@ import { getNamesUsersList } from './UsersActions';
 import ICourse, {
   ICourseList,
   ICourseTemary,
-  ICourseReference,
   ICourseContent, ICourseSimpleList
 } from '../Interfaces/ICourse';
-import { ICourseUserList } from '../Interfaces/ICourseUser';
+import { ICourseUserData } from '../Interfaces/ICourseUser';
 import { IUserSimpleInfo } from '../Interfaces/IUser';
 import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
@@ -54,7 +53,6 @@ export async function getModelReturnCourseOrTheme(
     ret.banner = data.banner;
     ret.description = data.description;
     ret.temary = [];
-    ret.levels = data.levels;
 
     if (admin) {
       ret.toRoles = data.toRoles;
@@ -64,7 +62,7 @@ export async function getModelReturnCourseOrTheme(
     }
 
     if (counters)
-      ret.totalsUsers = await CoursesUsers.find({ courseId: data._id.toString() }).countDocuments().exec() || 0;
+      ret.totalsUsers = await CoursesUsers.find({ 'courses.courseId': data._id.toString() }).countDocuments().exec() || 0;
 
     const { temary } = data;
     const totalTemary = temary.length;
@@ -112,16 +110,6 @@ export async function getModelReturnCourseOrTheme(
 }
 
 // =====================================================================================================================
-
-export async function getPreviousIdsCourses(listIds: any[]) : Promise<ICourseReference[]> {
-  return listIds.length > 0 ?
-    await Courses.find(
-      { _id: { $in: listIds } },
-      { _id: 1, title: 1, slug: 1, banner: 1, description: 1, enable: 1 }
-      ).exec() as ICourseReference[]
-    :
-    [];
-}
 
 export default async function getCoursesList(
   { query, skip, sort, limit, infoUser, isPublic, projection }: any
@@ -213,7 +201,6 @@ export async function getCourseDetails({ query, infoUser, isPublic, projection }
       banner: course.banner,
       description: course.description,
       temary: course.temary,
-      levels: await getPreviousIdsCourses(course.levels),
       toRoles: course.toRoles,
       enable: course.enable,
       created_at: course.created_at,
@@ -227,7 +214,7 @@ export async function getCourseDetails({ query, infoUser, isPublic, projection }
 
     if (infoUser) {
       const users: IUserSimpleInfo[] = await getNamesUsersList([course.userid]);
-      if (users.length > 0) ret.user = users[0] ? users[0] : null;
+      if (users.length > 0) ret.user = users[0] || null;
       else delete ret.user;
     }
     else delete ret.user;
@@ -245,14 +232,6 @@ export async function checkIfExistSlug(slug : string) : Promise<number> {
   return Courses.find({ slug }).countDocuments().exec();
 }
 
-export async function checkPreviousIdsCourses(listIds: string[]) : Promise<boolean> {
-  if (listIds.length > 0) {
-    const exist = await Courses.find({ _id: { $in: listIds }, enable: true }).countDocuments().exec();
-    return exist === listIds.length
-  }
-  return false;
-}
-
 export async function checkIfUserApprovedPreviousCourses(listIds: any[]) : Promise<boolean> {
   if (listIds.length > 0) {
     const totals = await Courses.find({ _id: { $in: listIds }, approved: { $eq: true } }).countDocuments().exec();
@@ -267,12 +246,11 @@ export async function checkIfUserApprovedPreviousCourses(listIds: any[]) : Promi
   PARTICULAR USERS
  */
 
-export async function getCoursesDataUser({ query } : any) : Promise<ICourseUserList | null> {
-  const course = await CoursesUsers.findOne(query, { __v: 0 }).exec() as ICourseUserList;
+export async function getCoursesDataUser({ query } : any) : Promise<ICourseUserData | null> {
+  const course = await CoursesUsers.findOne(query, { 'courses.$': 1 }).exec();
   return !course ? null : {
     _id: course._id,
-    temary: course.temary || [],
-    approved: course.approved,
+    course: course.courses[0] || null,
     created_at: course.created_at,
     updated_at: course.updated_at,
   }
@@ -348,10 +326,6 @@ export function returnNotFound(res: Response, code: string | null) : Response {
   else if (code === 'slug') {
     ret.msg = 'Disculpe, pero el curso seleccionado es incorrecto.';
     statusCode = 422;
-  }
-  else if (code === 'wasNotPreviousCourse') {
-    ret.msg = `Disculpe, pero no puede visualizar el contenido. Debe finalizar los cursos previos a este.`;
-    statusCode = 422
   }
   else if (code === 'wasRealized') {
     ret.msg = `Disculpe, pero ya has realizado esta acción anteriormente.`;

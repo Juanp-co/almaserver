@@ -1,7 +1,6 @@
-import _ from 'lodash';
 import { Request, Response } from 'express';
 import {
-  checkIfExistSlug, checkIfUsersOwnCourse, checkPreviousIdsCourses,
+  checkIfExistSlug, checkIfUsersOwnCourse,
   getCourseDetails,
   getModelReturnCourseOrTheme, return404, returnCantEdit, returnErrorId, validateToPublish
 } from '../../ActionsData/CoursesActions';
@@ -14,12 +13,14 @@ import {
 import validateSimpleRegister, {
   validateBannerUpdate,
   validateContentThemeUpdate,
-  validateInfoUpdate, validateLevelsData, validateQuestionTestUpdate,
+  validateInfoUpdate, validateQuestionTestUpdate,
   validateThemeUpdate
 } from '../../FormRequest/CoursesRequest';
 import { checkObjectId } from '../../Functions/Validations';
+import { ICourseUserTemary } from '../../Interfaces/ICourseUser';
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
+import Users from '../../Models/Users';
 
 const path = 'src/admin/courses.admin.controller';
 
@@ -227,9 +228,6 @@ export async function updateBannerCourse(req: Request, res: Response) : Promise<
 export async function enableCourse(req: Request, res: Response) : Promise<Response>{
   try {
     const { _id } = req.params;
-    const ret: any = {
-      enable: false
-    };
 
     if (!checkObjectId(_id)) return returnErrorId(res);
 
@@ -246,42 +244,93 @@ export async function enableCourse(req: Request, res: Response) : Promise<Respon
     }
     else course.enable = false;
 
-    ret.enable = course.enable;
+    await course.save();
 
-    if (course.levels.length > 0) {
-      const courses = await Courses.find(
-        { _id: { $in: course.levels } },
-        { _id: 1, title: 1, slug: 1, banner: 1, description: 1, enable: 1 }
-      ).exec();
-      if (courses.length > 0) {
-        if (!course.enable) {
-          for (const c of courses) {
-            if (c.enable) {
-              c.enable = false;
-              await c.save();
-            }
+    if (course.enable) {
+      const listIds: string[] = [];
+
+      // obtain those users who do not have the course in their list.
+      const coursesUsers = await CoursesUsers.find({ 'courses.courseId': { $ne: course._id.toString() } }).exec();
+
+      if (coursesUsers.length > 0) {
+        const totals = coursesUsers.length;
+        const temary: ICourseUserTemary[] = [];
+
+        for (const theme of course.temary || []) {
+          const model = {
+            temaryId: theme._id.toString(),
+            content: [],
+            test: [],
+          } as ICourseUserTemary;
+
+          for (const content of theme.content) {
+            model.content.push({ contentId: content._id.toString() });
           }
-          ret.levels = courses;
+
+          temary.push(model);
         }
-        else {
-          let counter = 0;
-          for (const c of courses) {
-            if (!c.enable) {
-              counter += 1;
-              break;
+
+        for (let i = 0; i < totals; i++) {
+          coursesUsers[i].courses.push({
+            courseId: course._id.toString(),
+            temary,
+            approved: false,
+          });
+          await coursesUsers[i].save();
+        }
+
+        // get others ids that not contains the courses.
+        if (listIds.length > 0) {
+          const users = await Users.find({ _id: { $nin: listIds }, role: { $in: course.toRoles || [] } }, { _id: 1 }).exec();
+
+          if (users.length > 0) {
+
+            // get all courses and prepare model
+            const courses = await Courses.find({ enable: { $eq: true } }).sort({ created_at: 1 }).exec();
+
+            if (courses.length > 0) {
+              const coursesList: any[] = [];
+
+              for (const theme of course.temary || []) {
+                const model = {
+                  temaryId: theme._id.toString(),
+                  content: [],
+                  test: [],
+                } as ICourseUserTemary;
+
+                for (const content of theme.content) {
+                  model.content.push({ contentId: content._id.toString() });
+                }
+
+                coursesList.push({
+                  courseId: course._id.toString(),
+                  temary: model,
+                  approved: false,
+                });
+              }
+
+              if (coursesList.length > 0) {
+                // create the new records
+                for (const user of users) {
+                  const cUser = new CoursesUsers({
+                    userid: user._id.toString(),
+                    courses: coursesList
+                  });
+                  await cUser.save();
+                }
+              }
+
             }
           }
-
-          if (counter > 0) return returnCantEdit(res, 2);
         }
       }
     }
 
-    await course.save();
-
     return res.json({
       msg: `Se ha ${course.enable ? 'publicado' : 'retirado'} el curso exitosamente.`,
-      data: ret
+      data: {
+        enable: course.enable
+      }
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/enableCourse`);
@@ -298,18 +347,19 @@ export async function deleteCourse(req: Request, res: Response) : Promise<Respon
 
     if (!course) return return404(res);
 
-    const exists = await CoursesUsers.find({ courseId: _id }).countDocuments().exec();
-
-    if (exists > 0)
-      return res.status(422).json({
-        msg: 'Disculpe, pero el curso no puede ser eliminado. Los miembros ya poseen el curso en sus listados.',
-      });
-
-    if (course.banner) {
-      deleteImages(`./${course.toObject({ getters: false }).banner}`);
-    }
-
+    const {banner} = course.toObject({ getters: false });
     await course.delete();
+
+    if (banner) deleteImages(`./${banner}`);
+
+    const coursesUsers = await CoursesUsers.find({ 'courses.courseId': _id }).exec();
+
+    if (coursesUsers.length > 0) {
+      for (const courseUser of coursesUsers) {
+        courseUser.courses = courseUser.courses.filter(c => c.courseId !== _id);
+        await courseUser.save();
+      }
+    }
 
     return res.json({
       msg: 'Se ha eliminado el curso exitosamente.'
@@ -685,71 +735,5 @@ export async function deleteQuestionTestThemeCourse(req: Request, res: Response)
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/deleteQuestionTestThemeCourse`);
-  }
-}
-
-/*
-  LEVELS
- */
-
-export async function addLevelsThemeCourse(req: Request, res: Response) : Promise<Response>{
-  try {
-    const { _id } = req.params;
-
-    if (!checkObjectId(_id)) return returnErrorId(res);
-
-    const validate = validateLevelsData(req.body);
-
-    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
-
-    const course = await Courses.findOne(
-      { _id },
-      { enable: 1, levels: 1 }
-    ).exec();
-
-    if (!course) return return404(res);
-    if (course.enable) return returnCantEdit(res, 0);
-    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
-
-    // check if all ids is enable
-    if (!await (checkPreviousIdsCourses(validate.data))) {
-      return returnErrorParams(res, [{
-        input: 'listIds',
-        msg: "Disculpe, pero uno de los cursos seleccionados no existe o no se encuentra disponible."
-      }]);
-    }
-
-    course.levels = _.uniq(course.levels.concat(validate.data));
-    await course.save();
-
-    return res.json({
-      msg: 'Se han agregado los cursos al listado exitosamente.'
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/addLevelsThemeCourse`);
-  }
-}
-
-export async function deleteLevelThemeCourse(req: Request, res: Response) : Promise<Response>{
-  try {
-    const { _id, levelId } = req.params;
-
-    if (!checkObjectId(_id)) returnErrorId(res, 0);
-    if (!checkObjectId(levelId)) returnErrorId(res, 4);
-
-    const course = await Courses.findOne({ _id }, { enable: 1, levels: 1 }).exec();
-
-    if (!course) return return404(res);
-    if (course.enable) return returnCantEdit(res, 0);
-    if (await (checkIfUsersOwnCourse(course._id.toString()))) return returnCantEdit(res, 1);
-
-    course.levels = course.levels.filter(l => l !== levelId);
-    await course.save();
-
-    return res.json({
-      msg: 'Se ha removido el curso del listado exitosamente.',
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/deleteLevelThemeCourse`);
   }
 }

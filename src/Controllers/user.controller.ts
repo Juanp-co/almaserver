@@ -2,7 +2,7 @@ import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import moment from 'moment-timezone';
-import { getNamesUsersList } from '../ActionsData/UsersActions';
+import { getInfoUserReferred, getNamesUsersList } from '../ActionsData/UsersActions';
 import { returnError, returnErrorParams } from '../Functions/GlobalFunctions';
 import { forceLogout } from '../Functions/TokenActions';
 import {
@@ -113,7 +113,7 @@ export async function changePassword(req: Request, res: Response): Promise<Respo
 export async function getCourses(req: Request, res: Response): Promise<Response> {
   try {
     const { userid } = req.params;
-    let courses: ICourseReference[] = [];
+    const courses: any[] = [];
 
     if (!checkObjectId(userid)) {
       return res.status(401).json({
@@ -121,13 +121,28 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
       });
     }
 
-    const myCourses = await CoursesUsers.find({ userid }, { courseId: 1 }).exec();
+    const myCourses = await CoursesUsers.findOne({ userid }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
 
-    if (myCourses.length > 0) {
-      courses = await Courses.find(
-        { _id: { $in: _.map(myCourses, 'courseId') || [] } },
-        { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }
-      ).exec() as ICourseReference[];
+    if (myCourses) {
+      const listIds = myCourses.courses.length > 0 ? myCourses.courses.map(c => c.courseId) : [];
+      if (listIds.length > 0) {
+        const listCourses = await Courses.find(
+          { _id: { $in: listIds || [] } },
+          { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }
+        ).exec();
+
+        for (const course of listCourses) {
+          const index = myCourses.courses.findIndex(c => c.courseId === course._id.toString());
+          courses.push({
+            _id: course._id,
+            banner: course.banner,
+            slug: course.slug,
+            title: course.title,
+            description: course.description,
+            approved: myCourses.courses[index] ? (myCourses.courses[index].approved || false) : false
+          });
+        }
+      }
     }
 
     return res.json({
@@ -188,11 +203,6 @@ export async function getGroup(req: Request, res: Response): Promise<Response> {
 export async function getMemberGroup(req: Request, res: Response): Promise<Response> {
   try {
     const { userid, memberId } = req.params;
-    const ret: any = {
-      member: null,
-      totalReferrals: 0,
-      totalCourses: 0
-    };
 
     if (!checkObjectId(userid)) {
       return res.status(401).json({
@@ -234,35 +244,13 @@ export async function getMemberGroup(req: Request, res: Response): Promise<Respo
       });
     }
 
-    ret.member = await Users.findOne(
-      { _id: memberId },
-      {
-        names: 1,
-        lastNames: 1,
-        phone: 1,
-        email: 1,
-        gender: 1,
-        civilStatus: 1,
-        department: 1,
-        city: 1,
-        locality: 1 ,
-        direction: 1,
-      }
-    ).exec();
+    const ret = await getInfoUserReferred(memberId);
 
     if (!ret.member) {
       return res.status(404).json({
         msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
       });
     }
-
-    // get totals members referrals
-    const referrals = await Referrals.findOne({ _id: ret.member._id }).exec();
-
-    if (referrals) ret.totalReferrals = referrals.members.length || 0;
-
-    // get totals courses
-    ret.totalCourses = await CoursesUsers.find({ userid: ret.member._id.toString() }).countDocuments().exec();
 
     return res.json({
       msg: `Miembro.`,
@@ -299,11 +287,11 @@ export async function getReports(req: Request, res: Response): Promise<Response>
     };
 
     if (initDate) {
-      query.created_at = { $gte: moment(`${initDate}`).startOf('d').unix() };
+      query['courses.created_at'] = { $gte: moment(`${initDate}`).startOf('d').unix() };
       queryReferrals.updated_at = { $gte: moment(`${initDate}`).startOf('d').unix() };
     }
     if (endDate) {
-      query.created_at.$lt = moment(`${endDate}`).endOf('d').unix();
+      query['courses.created_at'].$lt = moment(`${endDate}`).endOf('d').unix();
       queryReferrals.updated_at.$lt = moment(`${endDate}`).endOf('d').unix();
     }
 
@@ -315,12 +303,12 @@ export async function getReports(req: Request, res: Response): Promise<Response>
       });
     }
 
-    const myCourses = await CoursesUsers.find({ userid, ...query }, { approved: 1 }).exec();
+    const myCourses = await CoursesUsers.findOne({ userid, ...query }, { courses: 1 }).exec();
     const myReferrals = await Referrals.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
 
-    if (myCourses.length > 0) {
-      ret.courses.qty = myCourses.length;
-      for (const c of myCourses) {
+    if (myCourses) {
+      ret.courses.qty = myCourses.courses.length;
+      for (const c of myCourses.courses) {
         if (c.approved) ret.courses.data[0].qty += 1;
         else ret.courses.data[1].qty += 1;
       }

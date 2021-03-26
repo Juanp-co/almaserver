@@ -39,7 +39,7 @@ export default interface ICourse extends Document {
   description: string | null;
   slug: string | null;
   temary: ICourseTemary[];
-  levels: string[];
+  // levels: string[];
   toRoles: number[];
   enable: boolean;
   created_at: string | number;
@@ -109,7 +109,7 @@ export interface ICourseList {
   banner: ICourse['banner'],
   description?: ICourse['description'],
   temary?: ICourse['temary'],
-  levels?: ICourseReference[] | ICourse['levels'] | any[],
+  // levels?: ICourseReference[] | ICourse['levels'] | any[],
   toRoles: ICourse['toRoles'],
   enable?: ICourse['enable'],
   totalsUsers?: number;
@@ -123,6 +123,7 @@ export interface ICourseSimpleList {
   slug: ICourse['slug'],
   banner: ICourse['banner'],
   description?: ICourse['description'],
+  approved?: boolean,
 }
 
 export interface ICourseTestForm {

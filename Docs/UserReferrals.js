@@ -1,33 +1,53 @@
 /**
  * @api {get} /api/user/referrals (00) Obtener listado de hijos espirituales.
- * @apiVersion 0.0.26
+ * @apiVersion 0.0.27
  * @apiName getUserReferrals
  * @apiGroup UserReferrals
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object|Null} referred Datos del padre espiritual de este usuario.
  * @apiSuccess {Number} totals Total de hijos espirituales del miembro (este incluye sus hijos y los hijos de sus hijos).
  * @apiSuccess {Object[]} referrals Listado de hijos espirituales.
  *
- * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referred Object) {String} _id ID del miembro.
+ * @apiSuccess (referred Object) {String} names Nombres.
+ * @apiSuccess (referred Object) {String} lastNames Apellidos.
+ * @apiSuccess (referred Object) {String} document Número de documento.
+ * @apiSuccess (referred Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referred Object) {String|Null} phone Teléfono.
+ *
  * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
- * @apiSuccess (referrals Object[]) {String} document Número de documento.
  * @apiSuccess (referrals Object[]) {String} names Nombres.
  * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (referrals Object[]) {String} document Número de documento.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
+ * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
 	"msg": "Mis referidos.",
-	"totals": 5
+	"referred": {
+		"_id": "5fcf0821fc917d476c1cf3e2",
+		"names": "ANTHONY",
+		"lastNames": "ADMINISTRADOR",
+		"document": "CC123456789",
+		"gender": 1,
+		"phone": "573161234567"
+	},
+	"totals": 5,
 	"referrals": [
 		{
-			"gender": 0,
-			"_id": "6022194c88342006d4a700f3",
-			"document": "CC1234567777",
-			"names": "ANTHONY",
-			"lastNames": "VELÁSQUEZ"
+			"_id": "604068461caad10e2c965406",
+			"names": "PRUEBA",
+			"lastNames": "USUARIO",
+			"document": "CC123123123",
+			"gender": null,
+			"phone": null,
+			"totalsReferrals": 0
 		},
 		.
 		.
@@ -39,6 +59,7 @@
  * HTTP/1.1 200 Success
  * {
 	"msg": "Mis referidos.",
+	"referred": null,
 	"totals": 0,
 	"referrals": []
 }
@@ -64,7 +85,7 @@
 
 /**
  * @api {get} /api/user/referrals/:memberId (01) Obtener datos de un hijo espiritual.
- * @apiVersion 0.0.19
+ * @apiVersion 0.0.27
  * @apiName getDataMemberUserReferrals
  * @apiGroup UserReferrals
  *
@@ -97,6 +118,8 @@
  * @apiSuccess (referrals Object[]) {String} document Número de documento.
  * @apiSuccess (referrals Object[]) {String} names Nombres.
  * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
+ * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success

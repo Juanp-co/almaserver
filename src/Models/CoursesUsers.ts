@@ -32,13 +32,21 @@ const TemarySchema = new Schema(
   { _id: false, id: false }
 );
 
+const CoursesSchema = new Schema(
+  {
+    courseId: { type: String, require: true },
+    temary: { type: [TemarySchema], require: true }, // themes viewed
+    approved: { type: Boolean, default: false },
+    created_at: { type: Number, default: setDate, get: getDate },
+    updated_at: { type: Number, default: setDate, get: getDate }
+  },
+  { _id: false, id: false }
+);
+
 const CoursesUsersSchema = new Schema(
   {
     userid: { type: String, require: true },
-    courseId: { type: String, require: true },
-    temary: { type: [TemarySchema], require: true }, // themes viewed
-    // tests: { type: [TestsDoneSchema], require: true }, // tests done
-    approved: { type: Boolean, default: false },
+    courses: { type: [CoursesSchema], default: [] },
     created_at: { type: Number, default: setDate, get: getDate },
     updated_at: { type: Number, default: setDate, get: getDate }
   },
@@ -52,8 +60,9 @@ CoursesUsersSchema.pre<ICourseUser>('save', function (next) {
 
 TestsDoneSchema.set('toJSON', { getters: true });
 ContentSchema.set('toJSON', { getters: true });
-CoursesUsersSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
+CoursesSchema.set('toJSON', { getters: true });
+CoursesUsersSchema.set('toJSON', { getters: true });
 
 const CoursesUsers = model<ICourseUser>('courses_user', CoursesUsersSchema);
 

@@ -196,9 +196,11 @@
  * @apiSuccess (event Object) {Object} user Información del miembro que agregó el evento.
  *
  * @apiSuccess (user Object) {String} _id ID del miembro.
+ * @apiSuccess (user Object) {String} names Nombres.
+ * @apiSuccess (user Object) {String} lastNames Apellidos.
  * @apiSuccess (user Object) {String} document Número de documento.
- * @apiSuccess (user Object) {String} names Nombre(s).
- * @apiSuccess (user Object) {String} lastNames Apellido(s).
+ * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (user Object) {String|Null} phone Teléfono.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -215,10 +217,12 @@
             5
         ],
         "user": {
-            "_id": "5fcf0821fc917d476c1cf3e2",
-            "document": "CC123456789",
-            "names": "USUARIO",
-            "lastNames": "ADMIN"
+          "_id": "5fcf0821fc917d476c1cf3e2",
+          "names": "ANTHONY",
+          "lastNames": "ADMINISTRADOR",
+          "document": "CC123456789",
+          "gender": 1,
+          "phone": "573161234567"
         }
     }
 }
