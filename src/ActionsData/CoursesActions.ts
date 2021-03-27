@@ -6,10 +6,11 @@ import ICourse, {
   ICourseTemary,
   ICourseContent, ICourseSimpleList
 } from '../Interfaces/ICourse';
-import { ICourseUserData } from '../Interfaces/ICourseUser';
+import { ICourseUserData, ICourseUserTemary } from '../Interfaces/ICourseUser';
 import { IUserSimpleInfo } from '../Interfaces/IUser';
 import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
+import Users from '../Models/Users';
 
 export function getModelReturnContent(data: ICourseContent | null, allData = false, admin = false) : ICourseContent | null {
   if (!data) return null;
@@ -182,6 +183,55 @@ export async function getCoursesSimpleList(
   }
 
   return courses;
+}
+
+export async function addCoursesToUser(userid: string|null = null) {
+  if (userid) {
+
+    const courseUser = new CoursesUsers({
+      userid,
+      courses: []
+    });
+
+    // get all courses and prepare model
+    const courses = await Courses.find({ enable: { $eq: true } }).sort({ created_at: 1 }).exec();
+
+    if (courses.length > 0) {
+      const coursesList: any[] = [];
+
+      for (const course of courses) {
+
+        let model: ICourseUserTemary | null = null;
+        const temary: any[] = [];
+
+        for (const theme of course.temary || []) {
+          model = {
+            temaryId: theme._id.toString(),
+            content: [],
+            test: [],
+          };
+
+          for (const content of theme.content) {
+            model.content.push({ contentId: content._id.toString() });
+          }
+
+          temary.push(model);
+        }
+
+        if (temary.length > 0) {
+          coursesList.push({
+            courseId: course._id.toString(),
+            temary,
+            approved: false,
+          });
+        }
+      }
+
+      courseUser.courses = coursesList;
+    }
+
+    await courseUser.save();
+  }
 }
 
 export async function getCourseDetails({ query, infoUser, isPublic, projection } : any) : Promise<ICourseList | null> {

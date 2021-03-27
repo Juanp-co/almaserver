@@ -4,7 +4,8 @@
  * @apiName registerPublic
  * @apiGroup Public
  *
- * @apiParam {String} email Correo electrónico.
+ * @apiParam {String} phone Teléfono.
+ * @apiParam {String|Null} email Correo electrónico.
  * @apiParam {String} password Contraseña.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
@@ -13,6 +14,7 @@
  *
  * @apiExample {JSON} Example JSON Request with Referred
  * {
+	"phone": "3161234567",
 	"email": "user3@example.com",
 	"password": "password",
 	"names": "Anthony",
@@ -23,7 +25,19 @@
  *
  * @apiExample {JSON} Example JSON Request without Referred
  * {
+	"phone": "3161234567",
 	"email": "user3@example.com",
+	"password": "password",
+	"names": "Anthony",
+	"lastNames": "Velásquez",
+	"document": "CC12345675",
+	"referred": null
+}
+ *
+ * @apiExample {JSON} Example JSON Request without email
+ * {
+	"phone": "3161234567",
+	"email": null,
 	"password": "password",
 	"names": "Anthony",
 	"lastNames": "Velásquez",
@@ -62,19 +76,19 @@
  * @apiName loginPublic
  * @apiGroup Public
  *
- * @apiParam {String} document Número de documento.
+ * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} password Contraseña.
  * @apiParam {Boolean} admin Indica si inicia sesión como administrador.
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "document": "CC12345678",
+    "phone": "3161234567",
     "password": "password",
     "admin": true
 }
  * @apiExample {JSON} Example JSON Request with admin=false
  * {
-    "document": "CC12345678",
+    "phone": "3161234567",
     "password": "password",
     "admin": false
 }
@@ -121,19 +135,21 @@
 		"companyType": null,
 		"baptized": false,
 		"role": 5,
+		"group": null,
 		"department": null,
 		"city": null,
 		"locality": null,
 		"direction": null,
-		"created_at": "2021-02-18 19:23:23",
-		"updated_at": "2021-02-18 19:25:33",
-		"_id": "602f057d8d3e7d073cef3e87",
-		"email": "user3@example.com",
-		"document": "CC12345675",
+		"created_at": "2021-03-26 13:01:21",
+		"updated_at": "2021-03-26 13:03:05",
+		"_id": "605e21d8a4fe940ef4d7d28b",
+		"email": "3161234567@example.com",
+		"phone": "3161234567",
+		"document": "CC1490199",
 		"names": "ANTHONY",
 		"lastNames": "VELÁSQUEZ"
 	},
-	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDJmMDU3ZDhkM2U3ZDA3M2NlZjNlODciLCJkb2N1bWVudCI6IkNDMTIzNDU2NzUiLCJyb2xlIjo1LCJpYXQiOjE2MTM2OTUwMzIsImV4cCI6MTY0NTI1MjYzMn0.INSchol5fi6UAElm-d9hdYi95vq_U3leX59rKnCa9Y8"
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDVlMjFkOGE0ZmU5NDBlZjRkN2QyOGIiLCJyb2xlIjo1LCJpYXQiOjE2MTY3ODYzMDMsImV4cCI6MTY0ODM0MzkwM30.aWCtwE5ZOY6JtHcaMqRcf0WfmhE5mgVjhwLQuBIK9Uc"
 }
  *
  * @apiUse GlobalParamsErrors

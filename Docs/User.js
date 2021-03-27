@@ -76,7 +76,7 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
- * @apiParam {String} email Correo electrónico.
+ * @apiParam {String|Null} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
@@ -176,12 +176,8 @@
     "msg": "¡Error en los parámetros!",
     "errors": [
         {
-            "input": "email",
-            "msg": "Disculpe, pero debe asegurarse de indicar su correo electrónico."
-        },
-        {
             "input": "phone",
-            "msg": "Disculpe, pero debe indicar su número de teléfono. Sólo se permiten números (0-9)."
+            "msg": "Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9)."
         },
         {
             "input": "names",

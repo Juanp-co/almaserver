@@ -1,4 +1,7 @@
-import checkIfExistDocument, { checkIfExistEmail, getIdUserFromDocument } from '../ActionsData/UsersActions';
+import checkIfExistDocument, {
+  checkIfExistPhone,
+  getIdUserFromDocument
+} from '../ActionsData/UsersActions';
 import { setError } from '../Functions/GlobalFunctions';
 import {
   checkDate,
@@ -28,21 +31,19 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
   } as IUserSimpleRegister;
   const errors: any = [];
 
-  // email
-  if (!data.email || !checkEmail(data.email)) {
+  // phone
+  if (!checkPhone(data.phone)) {
     errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email')
+      setError('Disculpe, pero debe indicar un número de teléfono.', 'phone')
     );
-  } else if (await checkIfExistEmail(data.email.toLowerCase())) {
+  } else if (await checkIfExistPhone(data.phone)) {
     errors.push(
       setError(
-        'Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
+        'Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
         'email'
       )
     );
-  } else {
-    ret.email = data.email.toLowerCase();
-  }
+  } else ret.phone = data.phone;
 
   // document
   if (!data.document || !checkDocument(data.document)) {
@@ -88,8 +89,15 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     ret.referred = await getIdUserFromDocument(data.referred.toUpperCase());
   }
 
-  // phone
-  if (checkPhone(data.phone)) ret.phone = data.phone;
+  // email
+  if (data.email) {
+    if (!checkEmail(data.email)) {
+      errors.push(
+        setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email')
+      );
+    }
+    else ret.email = data.email.toLowerCase();
+  }
 
   if (admin) {
     if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
@@ -127,7 +135,7 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
     // document
     if (!data.document || !checkDocument(data.document)) {
       errors.push(
-        setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document')
+        setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document')
       );
     } else if (await checkIfExistDocument(data.document, _id)) {
       errors.push(
@@ -141,27 +149,29 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
     }
   }
 
-  // email
-  if (!data.email || !checkEmail(data.email)) {
-    errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email')
-    );
-  } else if (await checkIfExistEmail(data.email.toLowerCase(), _id)) {
-    errors.push(
-      setError(
-        'Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
-        'email'
-      )
-    );
-  } else {
-    ret.email = data.email.toLowerCase();
-  }
-
   // phone
   if (!checkPhone(data.phone)) {
-    errors.push(setError('Disculpe, pero debe indicar su número de teléfono. Sólo se permiten números (0-9).', 'phone'));
+    errors.push(
+      setError('Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9).', 'phone')
+    );
+  } else if (await checkIfExistPhone(data.phone, _id)) {
+    errors.push(
+      setError(
+        'Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
+        'phone'
+      )
+    );
+  } else ret.phone = data.phone;
+
+  // email
+  if (data.email) {
+    if (!checkEmail(data.email)) {
+      errors.push(
+        setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email')
+      );
+    }
+    else ret.email = data.email.toLowerCase();
   }
-  else ret.phone = data.phone?.trim() || null;
 
   // names
   if (!data.names || !checkNameOrLastName(data.names)) {
@@ -264,27 +274,23 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
 
 export function validateLogin(data: IUserLogin): { data: IUserLogin; errors: any } {
   const ret = {
-    document: null,
+    phone: null,
     password: null,
     admin: false,
   } as IUserLogin;
   const errors: any = [];
 
   // phone
-  if (!data.document || !checkDocument(data.document ? data.document.toUpperCase() : '')) {
+  if (!checkPhone(`${data.phone}`)) {
     errors.push(
-      setError('Disculpe, pero debe asegurarse de indicar su número de documento correctamete.', 'document')
+      setError('Disculpe, pero debe indicar su número de teléfono.', 'phone')
     );
-  } else {
-    ret.document = data.document.toUpperCase();
-  }
+  } else ret.phone = data.phone;
 
   // password
   if (!data.password || (data.password && data.password.length < 4)) {
     errors.push(setError('Disculpe, pero debe indicar su contraseña correctamente.', 'password'));
-  } else {
-    ret.password = data.password;
-  }
+  } else ret.password = data.password;
 
   if (data.admin) ret.admin = true;
 

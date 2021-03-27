@@ -11,7 +11,7 @@ export async function checkTokenDB(token?: string): Promise<boolean> {
 
 export async function getAccessToken(req: Request, data: IUserToToken): Promise<string | null> {
   const token = jwt.sign(
-    { _id: data._id, document: data.document, role: data.role },
+    { _id: data._id, phone: data.phone, role: data.role },
     req.app.get('secretKey'),
     { expiresIn: '1y' }
   );
