@@ -317,7 +317,7 @@
 		"user": {
 			"gender": 0,
 			"_id": "5fcf0821fc917d476c1cf3e2",
-			"phone": "584121490196",
+			"phone": "3161234567",
 			"document": "CC123456789",
 			"names": "ANTHONY",
 			"lastNames": "VELÁSQUEZ"

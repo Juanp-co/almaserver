@@ -217,7 +217,7 @@
         "created_at": "2020-12-07 23:59:12",
         "updated_at": "2020-12-13 12:57:12",
         "_id": "5fcf0821fc917d476c1cf3e3",
-        "phone": "584121490196",
+        "phone": "3161234567",
         "document": "CC12345678",
         "names": "USUARIO TRES",
         "lastNames": "PRUEBA TRES",
@@ -246,7 +246,7 @@
  *
  * @apiParam (Path params) {String} _id ID del miembro.
  *
- * @apiParam {String} email Correo electrónico.
+ * @apiParam {String|Null} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
@@ -268,7 +268,7 @@
  * @apiExample {JSON} Example JSON Request
  * {
     "email": "user@example.com",
-    "phone": "584121490196",
+    "phone": "3161234567",
     "names": "Usuario tres",
     "lastNames": "Prueba tres",
     "document": "CC12345678",
@@ -335,7 +335,7 @@
 		"created_at": "2020-12-07 23:59:12",
 		"updated_at": "2021-02-18 17:51:10",
 		"_id": "5fcf0821fc917d476c1cf3e3",
-		"phone": "584121490196",
+		"phone": "3161234567",
 		"document": "CC12345678",
 		"names": "USUARIO TRES",
 		"lastNames": "PRUEBA TRES",
@@ -357,6 +357,10 @@
         {
             "input": "document",
             "msg": "Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente."
+        },
+        {
+            "input": "phone",
+            "msg": "Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9)."
         },
         {
             "input": "names",

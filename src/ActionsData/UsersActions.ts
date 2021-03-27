@@ -15,12 +15,19 @@ export default async function checkIfExistDocument(document?: string, _id?: stri
     : false;
 }
 
-export async function checkIfExistEmail(email?: string, _id?: string | null): Promise<boolean> {
-  return email ?
-    (await Users.find({ email, _id: { $ne: _id } })
+export async function checkIfExistPhone(phone: string|null|undefined, _id?: string | null): Promise<boolean> {
+  const query: any = {};
+
+  if (phone) {
+    query.phone = phone;
+    if (_id) query._id = { $ne: _id };
+
+    return (await Users.find(query)
       .countDocuments()
       .exec()) > 0
-    : false;
+  }
+
+  return false;
 }
 
 export async function getData(_id?: string, projection: any | null = null): Promise<IUser | null> {

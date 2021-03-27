@@ -4,10 +4,11 @@ import { getData, responseErrorsRecoveryPassword } from '../../ActionsData/Users
 import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
+import { checkDate, checkDocument, checkEmail, checkPassword } from '../../Functions/Validations';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
-import { checkDate, checkDocument, checkEmail, checkPassword } from '../../Functions/Validations';
 import AccountsBanks from '../../Models/AccountsBanks';
+import { addCoursesToUser } from '../../ActionsData/CoursesActions';
 
 const path = 'Controllers/publics/publics.controller';
 
@@ -36,6 +37,8 @@ export async function register(req: Request, res: Response): Promise<Response> {
       _id: user._id
     });
     await referrals.save();
+
+    await addCoursesToUser(user._id.toString());
 
     // check if exist referred and update
     if (user.referred) {
@@ -66,7 +69,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const user = await Users.findOne(
-      { document: validate.data.document },
+      { phone: validate.data.phone },
       { password: 1, document: 1, role: 1 }
     ).exec();
 
@@ -92,7 +95,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     const token = await getAccessToken(req, {
       _id: user._id.toString(),
-      document: user.document,
+      phone: user.phone,
       role: user.role
     });
 

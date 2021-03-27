@@ -94,7 +94,7 @@ export interface IUserUpdate {
 }
 
 export interface IUserLogin {
-  document: IUser['document'];
+  phone: IUser['phone'];
   password: IUser['password'];
   admin: boolean | undefined;
 }
@@ -140,6 +140,6 @@ export interface IUserPasswords {
 export interface IUserToToken {
   _id?: string | any;
   userid?: string | any;
-  document?: IUser['document'];
+  phone?: IUser['phone'];
   role?: IUser['role'];
 }
