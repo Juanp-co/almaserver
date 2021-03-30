@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistEmail = void 0;
+exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
@@ -18,14 +18,19 @@ async function checkIfExistDocument(document, _id) {
         : false;
 }
 exports.default = checkIfExistDocument;
-async function checkIfExistEmail(email, _id) {
-    return email ?
-        (await Users_1.default.find({ email, _id: { $ne: _id } })
+async function checkIfExistPhone(phone, _id) {
+    const query = {};
+    if (phone) {
+        query.phone = phone;
+        if (_id)
+            query._id = { $ne: _id };
+        return (await Users_1.default.find(query)
             .countDocuments()
-            .exec()) > 0
-        : false;
+            .exec()) > 0;
+    }
+    return false;
 }
-exports.checkIfExistEmail = checkIfExistEmail;
+exports.checkIfExistPhone = checkIfExistPhone;
 async function getData(_id, projection = null) {
     return _id ?
         Users_1.default.findOne({ _id }, projection || { __v: 0, password: 0 }).exec()
@@ -165,10 +170,11 @@ async function getInfoUserReferred(_id) {
                 const index = coursesU.courses.findIndex(c => c.courseId === course._id.toString());
                 ret.courses.push({
                     _id: course._id,
-                    banner: course.banner,
+                    // banner: course.banner,
                     slug: course.slug,
                     title: course.title,
                     description: course.description,
+                    level: course.level,
                     approved: coursesU.courses[index] ? (coursesU.courses[index].approved || false) : false
                 });
             }

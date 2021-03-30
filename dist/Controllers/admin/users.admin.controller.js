@@ -259,6 +259,7 @@ async function getCoursesUser(req, res) {
                             slug: courses[index].slug,
                             title: courses[index].title,
                             description: courses[index].description,
+                            level: courses[index].level,
                             approved: c.approved
                         });
                     }

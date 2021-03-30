@@ -276,14 +276,13 @@ export async function getCoursesUser(req: Request, res: Response): Promise<Respo
               slug: courses[index].slug,
               title: courses[index].title,
               description: courses[index].description,
+              level: courses[index].level,
               approved: c.approved
             });
           }
         }
       }
-
     }
-
 
     return res.json({
       msg: `Listado de cursos del miembro.`,

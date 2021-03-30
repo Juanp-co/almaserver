@@ -1,15 +1,14 @@
 import { Router } from 'express';
 import { validateAdmin } from '../middleware';
 import getCourses, {
-  addContentThemeCourse, addQuestionTestThemeCourse,
   addThemeCourse,
-  deleteContentThemeCourse,
-  deleteCourse, deleteQuestionTestThemeCourse, deleteThemeCourse,
+  deleteCourse,
+  deleteThemeCourse,
   enableCourse,
-  getCoursesCounters,
   saveCourse,
-  showCourse, updateBannerCourse, updateContentThemeCourse,
-  updateInfoCourse, updateQuestionTestThemeCourse, updateThemeCourse
+  showCourse,
+  updateThemeCourse,
+  updateInfoCourse
 } from '../Controllers/admin/courses.admin.controller';
 import getEvents, { deleteEvent, saveEvent, showEvent, updateEvent } from '../Controllers/events/events.controller';
 import getGroups, {
@@ -56,30 +55,17 @@ router.route('/courses')
   .get(validateAdmin, getCourses)
   .post(validateAdmin, saveCourse);
 
-router.get('/courses/counters',validateAdmin, getCoursesCounters);
-
 router.route('/courses/:_id')
   .delete(validateAdmin, deleteCourse)
   .get(validateAdmin, showCourse);
 
-router.put('/courses/:_id/banner',validateAdmin, updateBannerCourse);
 router.put('/courses/:_id/enable',validateAdmin, enableCourse);
 router.put('/courses/:_id/info',validateAdmin, updateInfoCourse);
 
-// themes
-router.post('/courses/:_id/theme',validateAdmin, addThemeCourse);
+// theme
+router.post('/courses/:_id/theme/',validateAdmin, addThemeCourse);
 router.put('/courses/:_id/theme/:themeId',validateAdmin, updateThemeCourse);
 router.delete('/courses/:_id/theme/:themeId',validateAdmin, deleteThemeCourse);
-
-// content
-router.post('/courses/:_id/theme/:themeId/content',validateAdmin, addContentThemeCourse);
-router.put('/courses/:_id/theme/:themeId/content/:contentId',validateAdmin, updateContentThemeCourse);
-router.delete('/courses/:_id/theme/:themeId/content/:contentId',validateAdmin, deleteContentThemeCourse);
-
-// test
-router.post('/courses/:_id/theme/:themeId/test',validateAdmin, addQuestionTestThemeCourse);
-router.put('/courses/:_id/theme/:themeId/test/:questionId',validateAdmin, updateQuestionTestThemeCourse);
-router.delete('/courses/:_id/theme/:themeId/test/:questionId',validateAdmin, deleteQuestionTestThemeCourse);
 
 /*
   Events

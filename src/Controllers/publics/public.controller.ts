@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { addCoursesToUser } from '../../ActionsData/CoursesActions';
 import { getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import { checkDate, checkDocument, checkEmail, checkPassword } from '../../Functions/Validations';
+import AccountsBanks from '../../Models/AccountsBanks';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
-import AccountsBanks from '../../Models/AccountsBanks';
-import { addCoursesToUser } from '../../ActionsData/CoursesActions';
 
 const path = 'Controllers/publics/publics.controller';
 
@@ -33,9 +33,7 @@ export async function register(req: Request, res: Response): Promise<Response> {
     await user.save();
 
     // create referrals document
-    const referrals = new Referrals({
-      _id: user._id
-    });
+    const referrals = new Referrals({ _id: user._id });
     await referrals.save();
 
     await addCoursesToUser(user._id.toString());
@@ -75,7 +73,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     if (!user) {
       return res.status(404).json({
-        msg: `Disculpe, pero el número de documento no se encuentra registrado.`
+        msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
       });
     }
 
@@ -89,7 +87,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     if (!bcrypt.compareSync(`${validate.data.password}`, `${user.password}`)) {
       return res.status(422).json({
-        msg: 'Contraseña incorrecta.'
+        msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
       });
     }
 

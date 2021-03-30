@@ -2,7 +2,7 @@
 
 ## Install
 
-* Clone this repository: `git clone https://github.com/Juanp-co/alma_back.git`
+* Clone this repository: `git clone https://github.com/Juanp-co/almaserver.git`
 
 * You must have MongoDB installed.
 
@@ -39,7 +39,7 @@ NOTE: Is required run previously the `yarn add` or `npm install` to install the 
 
 To must run the following commands before to do merge in `main` branch.
 
-    # Run precommit - This check syntax, generate documentation and generate the 
+    # Run precommit - This check syntax, generate documentation and generate the folder dist with the compilated code.
     $ npm run precommit
     
     # Add changes 
@@ -54,18 +54,21 @@ Check the `package.json` file to more information.
 
 ## Required migrations 
 
-Execute the following command to generate test data.
+Execute the following command to generate data to database.
 
 _NOTE: You was must created a new database in mongodb and configure the `.env` file._
     
-    # Migration required.
+    # Migration to develop
     $ npm run migrations
     
-_NOTE: The migrations contain test data. To run in production server is necessary delete the data test. Evaluate what data will be delete before to do._
+    # Migration to production
+    $ npm run migrations-prod
+    
+_NOTE: The migration contains the necessary data to run the API. You must configure the values to database in the `.env.development` or `.env.production` file to run the preference case._
 
 ## Indicate the url API Server.
 
-In the .env.* file (of your preference), you must indicate the url of API Server. This values is REQUIRED to the show courses images.
+In the .env.* file (of your preference), you must indicate the url of API Server. This value is REQUIRED to load the images in the front-end.
 
     #example dev
     URL_API="http://localhost:7000"
@@ -74,7 +77,7 @@ In the .env.* file (of your preference), you must indicate the url of API Server
     URL_API="https://api.domain.com"
 
 
-## Configure Send Mail
+## Configure Send Mail (UNUSED)
 
 And now, to send mail you must configure the credentials in your `.env` file, just find the `# MAILER` comment and complete the require data:
 
@@ -86,17 +89,17 @@ And now, to send mail you must configure the credentials in your `.env` file, ju
     # emails to BCC when sending the invoice separated by comma
     BCC="" 
 
-## Users to Test
+## Users to connect the API
 
-    To access, you can create a new user (read documentation) or login with
-    the users to testing (run migrations previously).
+    To access to the API, you can create a new user (read documentation) or login with
+    the deefault users (run migrations previously).
     
-    # Particular admin to testing
-    user: CC123456789
+    # Admin (default)
+    phone: 31612345678
     pass: password
     
-    # Particular user to testing
-    user: CC12345678
+    # Particular user (default)
+    phone: 3161234567
     pass: password
 
 ## Authenticated for Middleware

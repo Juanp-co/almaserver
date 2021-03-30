@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSlug = exports.deleteImages = exports.checkAndUploadPicture = exports.dateSpanish = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+exports.createSlug = exports.deleteImages = exports.checkAndUploadPicture = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const slug_1 = __importDefault(require("slug"));
 const fs = __importStar(require("fs"));
@@ -134,7 +134,7 @@ function getLimitSkipSortSearch(data) {
     }
     // sort
     const v = value && /[1 -]/.test(value) && value.toString() === '1' ? 1 : -1;
-    const listCases = ['created_at', 'code', 'date', 'document', 'lastNames', 'name', 'names', 'role', 'status', 'title', 'updated_at'];
+    const listCases = ['created_at', 'code', 'date', 'document', 'lastNames', 'name', 'names', 'role', 'status', 'title', 'updated_at', 'level'];
     const index = listCases.indexOf(input);
     if (index > -1)
         retSort[listCases[index]] = v;
@@ -143,10 +143,6 @@ function getLimitSkipSortSearch(data) {
     return { limit: retLimit, skip: retSkip, sort: retSort };
 }
 exports.getLimitSkipSortSearch = getLimitSkipSortSearch;
-function dateSpanish(timestamp) {
-    return timestamp ? moment_timezone_1.default.unix(timestamp).locale('es').format('DD [de] MMMM [de] YYYY') : null;
-}
-exports.dateSpanish = dateSpanish;
 async function checkAndUploadPicture(picture, pathFolder = '') {
     if (!picture)
         return null;

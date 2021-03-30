@@ -1,16 +1,14 @@
 import { setError } from '../Functions/GlobalFunctions';
 import {
-  checkBase64,
   checkIfValueIsNumber,
   checkNameOrLastName, checkObjectId,
   checkTitlesOrDescriptions
 } from '../Functions/Validations';
 import {
-  ICourseBannerUpdateForm,
   ICourseContentThemeUpdateForm,
-  ICourseInfoUpdateForm, ICourseLevelsForm, ICourseQuestionUpdateForm,
+  ICourseInfoUpdateForm,
   ICourseSimpleRegisterForm,
-  ICourseTestForm, ICourseThemeUpdateForm
+  ICourseTestForm
 } from '../Interfaces/ICourse';
 
 export default function validateSimpleRegister(data: ICourseSimpleRegisterForm): { data: ICourseSimpleRegisterForm; errors: any[] } {
@@ -20,6 +18,7 @@ export default function validateSimpleRegister(data: ICourseSimpleRegisterForm):
     title: null,
     banner: null,
     description: null,
+    level: null,
     toRoles: [],
   } as ICourseSimpleRegisterForm;
   const errors: any = [];
@@ -42,6 +41,13 @@ export default function validateSimpleRegister(data: ICourseSimpleRegisterForm):
     ret.description = data.description;
   }
 
+  // level
+  if ([1, 2, 3, 4, 5].indexOf(data.level || -1) === -1) {
+    errors.push(
+      setError('Disculpe, pero seleccionar el nivel para el curso.', 'level')
+    );
+  } else ret.level = data.level;
+
   // toRoles
   if (!data.toRoles || typeof data.toRoles !== 'object' || (data.toRoles && data.toRoles.length === 0)) {
     errors.push(
@@ -50,62 +56,6 @@ export default function validateSimpleRegister(data: ICourseSimpleRegisterForm):
   } else {
     ret.toRoles = data.toRoles;
   }
-
-  // banner
-  if (!checkBase64(`${data.banner}`)) {
-    errors.push(
-      setError('Disculpe, pero indicar una imagen para el curso.', 'banner')
-    );
-  }
-  else ret.banner = data.banner ? data.banner.toString().trim() : null;
-
-  return { data: ret, errors };
-}
-
-export function validateBannerUpdate(data: ICourseBannerUpdateForm): { data: ICourseBannerUpdateForm; errors: any[] } {
-  const ret = {
-    banner: null,
-  } as ICourseBannerUpdateForm;
-  const errors: any = [];
-  // banner
-  if (!checkBase64(data.banner)) {
-    errors.push(
-      setError('Disculpe, pero la imagen seleccionada es incorrecta.', 'banner')
-    );
-  }
-  else ret.banner = data.banner;
-
-  return { data: ret, errors };
-}
-
-export function validateContentThemeUpdate(data: ICourseContentThemeUpdateForm): { data: ICourseContentThemeUpdateForm; errors: any[] } {
-  const ret = {
-    title: null,
-    description: null,
-    urlVideo: null,
-  } as ICourseContentThemeUpdateForm;
-  const errors: any = [];
-
-  // title
-  if (!data.title || !checkTitlesOrDescriptions(data.title)) {
-    errors.push(
-      setError('Disculpe, pero indicar un título válido para el contenido.', 'title')
-    );
-  } else {
-    ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
-  }
-
-  if (!data.description && !data.urlVideo) {
-    errors.push(
-      setError('Disculpe, pero debe indicar una descripción o un video para el contenido.', 'description')
-    );
-  }
-
-  // description
-  if (data.description) ret.description = data.description;
-
-  // urlVideo
-  if (data.urlVideo) ret.urlVideo = data.urlVideo;
 
   return { data: ret, errors };
 }
@@ -117,6 +67,7 @@ export function validateInfoUpdate(data: ICourseInfoUpdateForm): { data: ICourse
     speaker: null,
     speakerPosition: null,
     toRoles: [],
+    level: null,
   } as ICourseInfoUpdateForm;
   const errors: any = [];
 
@@ -156,10 +107,17 @@ export function validateInfoUpdate(data: ICourseInfoUpdateForm): { data: ICourse
     ret.speakerPosition = data.speakerPosition ? data.speakerPosition.toString().trim().toUpperCase() : data.speakerPosition;
   }
 
+  // level
+  if ([1, 2, 3, 4, 5].indexOf(data.level || -1) === -1) {
+    errors.push(
+      setError('Disculpe, pero seleccionar el nivel para el curso.', 'level')
+    );
+  } else ret.level = data.level;
+
   // toRoles
   if (!data.toRoles || typeof data.toRoles !== 'object' || (data.toRoles && data.toRoles.length === 0)) {
     errors.push(
-      setError('Disculpe, pero los roles a los que va digido el curso.', 'toRoles')
+      setError('Disculpe, pero debe indicar los roles a los que va digido el curso.', 'toRoles')
     );
   } else {
     ret.toRoles = data.toRoles;
@@ -168,118 +126,105 @@ export function validateInfoUpdate(data: ICourseInfoUpdateForm): { data: ICourse
   return { data: ret, errors };
 }
 
-export function validateLevelsData(data?: ICourseLevelsForm | null) : { data: string[], errors: any[] } {
-  const ret: string[] = [];
-  const errors: any = [];
-
-  if (!data || !data.listIds || (data && data.listIds && data.listIds.length === 0)) {
-    errors.push({
-      msg: 'Disculpe, pero no se logró recibir la información.',
-      input: 'listIds'
-    });
-  }
-  else {
-    const { listIds } = data;
-    const totalItems = listIds ?listIds.length : 0;
-
-    for (let i = 0; i < totalItems; i++) {
-      if (!checkObjectId(listIds[i])) {
-        errors.push({
-          msg: 'Disculpe, pero alguno de los cursos seleccionados es incorrecto.',
-          input: 'levelId'
-        });
-        break;
-      }
-      ret.push(listIds[i]);
-    }
-
-  }
-
-  return { data: ret, errors }
-}
-
-export function validateQuestionTestUpdate(data: ICourseQuestionUpdateForm): { data: ICourseQuestionUpdateForm; errors: any[] } {
+export function validateContentThemeUpdate(data: ICourseContentThemeUpdateForm): { data: ICourseContentThemeUpdateForm; errors: any[] } {
   const ret = {
     title: null,
     description: null,
-    placeholder: null,
-    inputType: '',
-    require: true,
-    values: [],
-    correctAnswer: null,
-  } as ICourseQuestionUpdateForm;
-  const errors: any = [];
-
-  // title
-  if (!checkTitlesOrDescriptions(data.title)) {
-    errors.push(
-      setError('Disculpe, pero indicar un título válido para el pregunta.', 'title')
-    );
-  }
-  else ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
-
-  // inputType
-  if (!data.inputType || (data.inputType && ['radio', 'checkbox', 'text', 'textarea'].indexOf(`${data.inputType}`) === -1)) {
-    errors.push(
-      setError('Disculpe, pero debe seleccionar un tipo de campo válido para la pregunta.', 'inputType')
-    );
-  }
-  else ret.inputType = data.inputType;
-
-  // check values in case inputType = 'radio' | 'select'
-  if (data.inputType && ['radio', 'checkbox'].indexOf(`${data.inputType}`) > -1) {
-    // values
-    if (!data.values || typeof data.values !== 'object') {
-      errors.push(
-        setError('Disculpe, pero las respuestas indicadas no son correctas.', 'values')
-      );
-    }
-    else if (data.values && data.values.length === 0) {
-      errors.push(
-        setError('Disculpe, pero debe indicar las opciones de respuestas para la pregunta.', 'values')
-      );
-    }
-    else ret.values = data.values;
-
-    // correctAnswer
-    if (!checkIfValueIsNumber(`${data.correctAnswer}`)) {
-      errors.push(
-        setError('Disculpe, pero debe indicar la respuesta correcta.', 'correctAnswer')
-      );
-    }
-    else ret.correctAnswer = data.correctAnswer;
-  }
-
-  // description
-  if (data.description) ret.description = data.description;
-
-  // placeholder
-  if (data.placeholder) ret.placeholder = data.placeholder;
-
-  // require
-  if (data.require !== null || data.require !== undefined && typeof data.require === 'boolean') ret.require = data.require;
-
-  return { data: ret, errors };
-}
-
-export function validateThemeUpdate(data: ICourseThemeUpdateForm): { data: ICourseThemeUpdateForm; errors: any[] } {
-  const ret = {
-    title: null,
-    description: null
-  } as ICourseThemeUpdateForm;
+    urlVideo: null,
+    quiz: null,
+  } as ICourseContentThemeUpdateForm;
   const errors: any = [];
 
   // title
   if (!data.title || !checkTitlesOrDescriptions(data.title)) {
     errors.push(
-      setError('Disculpe, pero indicar un título válido para el tema.', 'title')
+      setError('Disculpe, pero indicar un título válido para el contenido.', 'title')
     );
   } else {
     ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
   }
-
   // description
   if (data.description) ret.description = data.description;
+
+  if (data.quiz !== undefined && data.quiz !== null) {
+    if (data.quiz.length === 0) {
+      errors.push(
+        setError('Disculpe, pero debe indicar el contenido del QUIZ.', 'quiz')
+      );
+    }
+    else {
+      ret.quiz = [];
+
+      for (const q of data.quiz) {
+        const error = false;
+        const model: any = {
+          title: null,
+          description: null,
+          placeholder: null,
+          inputType: '',
+          require: true,
+          values: [],
+          correctAnswer: null,
+        };
+
+        if (q._id) model._id = q._id;
+
+        // title
+        if (!checkTitlesOrDescriptions(q.title)) {
+          errors.push(
+            setError('Disculpe, pero indicar un título válido para el pregunta.', 'title')
+          );
+        }
+        else model.title = q.title ? q.title.toString().trim().toUpperCase() : q.title;
+
+        // inputType
+        if (!q.inputType || (q.inputType && ['radio', 'checkbox', 'text', 'textarea'].indexOf(`${q.inputType}`) === -1)) {
+          errors.push(
+            setError('Disculpe, pero debe seleccionar un tipo de campo válido para la pregunta.', 'inputType')
+          );
+        }
+        else model.inputType = q.inputType;
+
+        // check values in case inputType = 'radio' | 'select'
+        if (q.inputType && ['radio', 'checkbox'].indexOf(`${q.inputType}`) > -1) {
+          // values
+          if (!q.values || typeof q.values !== 'object') {
+            errors.push(
+              setError('Disculpe, pero las respuestas indicadas no son correctas.', 'values')
+            );
+          }
+          else if (q.values && q.values.length === 0) {
+            errors.push(
+              setError('Disculpe, pero debe indicar las opciones de respuestas para la pregunta.', 'values')
+            );
+          }
+          else model.values = q.values;
+
+          // correctAnswer
+          if (!checkIfValueIsNumber(`${q.correctAnswer}`)) {
+            errors.push(
+              setError('Disculpe, pero debe indicar la respuesta correcta.', 'correctAnswer')
+            );
+          }
+          else model.correctAnswer = q.correctAnswer;
+        }
+
+        // description
+        if (q.description) model.description = q.description;
+
+        // placeholder
+        if (q.placeholder) model.placeholder = q.placeholder;
+
+        // require
+        if (q.require !== null || q.require !== undefined && typeof q.require === 'boolean') model.require = q.require;
+
+        if (!error) ret.quiz.push(model);
+        else break;
+      }
+    }
+  }
+  // urlVideo
+  else if (data.urlVideo) ret.urlVideo = data.urlVideo;
 
   return { data: ret, errors };
 }

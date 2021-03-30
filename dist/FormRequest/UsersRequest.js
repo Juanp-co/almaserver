@@ -35,16 +35,15 @@ async function validateSimpleRegister(data, admin) {
         referred: null
     };
     const errors = [];
-    // email
-    if (!data.email || !Validations_1.checkEmail(data.email)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
+    // phone
+    if (!Validations_1.checkPhone(data.phone)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
     }
-    else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
+    else if (await UsersActions_1.checkIfExistPhone(data.phone)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
     }
-    else {
-        ret.email = data.email.toLowerCase();
-    }
+    else
+        ret.phone = data.phone;
     // document
     if (!data.document || !Validations_1.checkDocument(data.document)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
@@ -79,9 +78,14 @@ async function validateSimpleRegister(data, admin) {
     if (data.referred && Validations_1.checkDocument(data.referred)) {
         ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred.toUpperCase());
     }
-    // phone
-    if (Validations_1.checkPhone(data.phone))
-        ret.phone = data.phone;
+    // email
+    if (data.email) {
+        if (!Validations_1.checkEmail(data.email)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        }
+        else
+            ret.email = data.email.toLowerCase();
+    }
     if (admin) {
         if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
             ret.role = data.role;
@@ -91,7 +95,7 @@ async function validateSimpleRegister(data, admin) {
 }
 exports.default = validateSimpleRegister;
 async function validateUpdate(data, _id, admin = false) {
-    var _a, _b;
+    var _a;
     const ret = {
         phone: null,
         email: null,
@@ -116,7 +120,7 @@ async function validateUpdate(data, _id, admin = false) {
     if (admin) {
         // document
         if (!data.document || !Validations_1.checkDocument(data.document)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document'));
         }
         else if (await UsersActions_1.default(data.document, _id)) {
             errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
@@ -125,22 +129,23 @@ async function validateUpdate(data, _id, admin = false) {
             ret.document = data.document.toLowerCase();
         }
     }
-    // email
-    if (!data.email || !Validations_1.checkEmail(data.email)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su correo electrónico.', 'email'));
-    }
-    else if (await UsersActions_1.checkIfExistEmail(data.email.toLowerCase(), _id)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
-    }
-    else {
-        ret.email = data.email.toLowerCase();
-    }
     // phone
     if (!Validations_1.checkPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su número de teléfono. Sólo se permiten números (0-9).', 'phone'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9).', 'phone'));
+    }
+    else if (await UsersActions_1.checkIfExistPhone(data.phone, _id)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'phone'));
     }
     else
-        ret.phone = ((_a = data.phone) === null || _a === void 0 ? void 0 : _a.trim()) || null;
+        ret.phone = data.phone;
+    // email
+    if (data.email) {
+        if (!Validations_1.checkEmail(data.email)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        }
+        else
+            ret.email = data.email.toLowerCase();
+    }
     // names
     if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
@@ -161,7 +166,7 @@ async function validateUpdate(data, _id, admin = false) {
             errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
         }
         else {
-            ret.birthday = ((_b = data.birthday) === null || _b === void 0 ? void 0 : _b.trim().toUpperCase()) || null;
+            ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
         }
     }
     // educationLevel
@@ -237,25 +242,23 @@ async function validateUpdate(data, _id, admin = false) {
 exports.validateUpdate = validateUpdate;
 function validateLogin(data) {
     const ret = {
-        document: null,
+        phone: null,
         password: null,
         admin: false,
     };
     const errors = [];
     // phone
-    if (!data.document || !Validations_1.checkDocument(data.document ? data.document.toUpperCase() : '')) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento correctamete.', 'document'));
+    if (!Validations_1.checkPhone(`${data.phone}`)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su número de teléfono.', 'phone'));
     }
-    else {
-        ret.document = data.document.toUpperCase();
-    }
+    else
+        ret.phone = data.phone;
     // password
     if (!data.password || (data.password && data.password.length < 4)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su contraseña correctamente.', 'password'));
     }
-    else {
+    else
         ret.password = data.password;
-    }
     if (data.admin)
         ret.admin = true;
     return { data: ret, errors };

@@ -1,31 +1,16 @@
 import { Document } from 'mongoose';
-import { ICourseList } from './ICourse';
-
-export interface ICourseUserTest {
-  points: number;
-  date?: string | number | null;
-}
 
 export interface ICourseUserContent {
-  contentId: string | any;
+  temaryId: any;
   view?: number;
   date?: string | number | null;
-}
-
-export interface ICourseUserTemary {
-  temaryId: string | any;
-  content: ICourseUserContent[];
-  test: ICourseUserTest[];
-  view?: number;
-  date?: string | number | null;
-  approved?: boolean | null;
-  approvedDate?: string | number | null;
 }
 
 export interface ICoursesUser {
   courseId: string | null;
-  temary: ICourseUserTemary[];
+  temary: ICourseUserContent[];
   approved: boolean;
+  level: number;
   created_at?: string | number;
   updated_at?: string | number;
 }
@@ -36,26 +21,6 @@ export default interface ICourseUser extends Document {
   courses: ICoursesUser[];
   created_at: string | number;
   updated_at: string | number;
-}
-
-// export interface ICourseUserList {
-//   _id: ICourseUser['userid'];
-//   userid?: ICourseUser['userid'],
-//   courseId?: ICourseUser['courseId'],
-//   course?: ICourseList | null,
-//   temary?: ICourseUser['temary'],
-//   // tests?: ICourseUser['tests'],
-//   approved?: ICourseUser['approved'],
-//   created_at?: ICourseUser['created_at'],
-//   updated_at?: ICourseUser['updated_at'],
-// }
-
-export interface ICourseUserList {
-  _id: ICourseUser['userid'];
-  userid?: ICourseUser['userid'],
-  courses?: ICourseUser['courses'],
-  created_at?: ICourseUser['created_at'],
-  updated_at?: ICourseUser['updated_at'],
 }
 
 export interface ICourseUserData {

@@ -65,7 +65,7 @@
 
 /**
  * @api {get} /api/user/group/:memberId (01) Obtener datos de un miembro del grupo familiar.
- * @apiVersion 0.0.27
+ * @apiVersion 0.0.28
  * @apiName getDataMemberUserGroup
  * @apiGroup UserGroup
  *
@@ -94,11 +94,11 @@
  * @apiSuccess (member Object) {String} lastNames Apellidos.
  * @apiSuccess (member Object) {String|Null} email Correo electrónico.
  *
- * @apiSuccess (courses Object[]) {String|Null} banner URL de la imagen del curso.
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
  * @apiSuccess (courses Object[]) {String} slug Slug (Valor url) del curso.
  * @apiSuccess (courses Object[]) {String|Null} description Descripción del curso.
+ * @apiSuccess (courses Object[]) {Number} level Nivel del curso.
  * @apiSuccess (courses Object[]) {String|Null} approved Indica si ha aprobado el curso o no.
  *
  * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
@@ -128,14 +128,14 @@
 			"email": "anthony@example.com"
 		},
 		"totalReferrals": 1,
-		"totalCourses": 0,
+		"totalCourses": 5,
 		"courses": [
 			{
 				"_id": "603afb2309bf7a3428ac58f7",
-				"banner": "http://url.com/images/1614926621.jpeg",
-				"slug": "curso-01",
-				"title": "CURSO 01",
+				"slug": "nivel-uno",
+				"title": "NIVEL UNO",
 				"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.",
+				"level": 1
 				"approved": true
 			},
 			.

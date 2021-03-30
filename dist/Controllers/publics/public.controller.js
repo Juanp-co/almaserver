@@ -24,14 +24,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = __importStar(require("../../FormRequest/UsersRequest"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const TokenActions_1 = require("../../Functions/TokenActions");
-const Referrals_1 = __importDefault(require("../../Models/Referrals"));
-const Users_1 = __importDefault(require("../../Models/Users"));
 const Validations_1 = require("../../Functions/Validations");
 const AccountsBanks_1 = __importDefault(require("../../Models/AccountsBanks"));
+const Referrals_1 = __importDefault(require("../../Models/Referrals"));
+const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'Controllers/publics/publics.controller';
 function helloWorld(req, res) {
     return res.json({
@@ -51,10 +52,9 @@ async function register(req, res) {
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         await user.save();
         // create referrals document
-        const referrals = new Referrals_1.default({
-            _id: user._id
-        });
+        const referrals = new Referrals_1.default({ _id: user._id });
         await referrals.save();
+        await CoursesActions_1.addCoursesToUser(user._id.toString());
         // check if exist referred and update
         if (user.referred) {
             // find the principal referrals document
@@ -83,10 +83,10 @@ async function login(req, res) {
         const validate = UsersRequest_1.validateLogin(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const user = await Users_1.default.findOne({ document: validate.data.document }, { password: 1, document: 1, role: 1 }).exec();
+        const user = await Users_1.default.findOne({ phone: validate.data.phone }, { password: 1, document: 1, role: 1 }).exec();
         if (!user) {
             return res.status(404).json({
-                msg: `Disculpe, pero el número de documento no se encuentra registrado.`
+                msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
             });
         }
         if (validate.data.admin) {
@@ -98,12 +98,12 @@ async function login(req, res) {
         }
         if (!bcrypt_1.default.compareSync(`${validate.data.password}`, `${user.password}`)) {
             return res.status(422).json({
-                msg: 'Contraseña incorrecta.'
+                msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
             });
         }
         const token = await TokenActions_1.getAccessToken(req, {
             _id: user._id.toString(),
-            document: user.document,
+            phone: user.phone,
             role: user.role
         });
         if (!token) {

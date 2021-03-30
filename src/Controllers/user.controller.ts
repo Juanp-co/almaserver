@@ -10,7 +10,6 @@ import {
   validateUpdate
 } from '../FormRequest/UsersRequest';
 import { checkObjectId } from '../Functions/Validations';
-import { ICourseReference } from '../Interfaces/ICourse';
 import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
 import Groups from '../Models/Groups';
@@ -128,17 +127,18 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
       if (listIds.length > 0) {
         const listCourses = await Courses.find(
           { _id: { $in: listIds || [] } },
-          { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }
+          { _id: 1, title: 1, slug: 1, description: 1, enable: 1, level: 1 }
         ).exec();
 
         for (const course of listCourses) {
           const index = myCourses.courses.findIndex(c => c.courseId === course._id.toString());
           courses.push({
             _id: course._id,
-            banner: course.banner,
+            // banner: course.banner,
             slug: course.slug,
             title: course.title,
             description: course.description,
+            level: course.level,
             approved: myCourses.courses[index] ? (myCourses.courses[index].approved || false) : false
           });
         }

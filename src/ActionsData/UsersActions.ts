@@ -198,10 +198,11 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         const index = coursesU.courses.findIndex(c => c.courseId === course._id.toString());
         ret.courses.push({
           _id: course._id,
-          banner: course.banner,
+          // banner: course.banner,
           slug: course.slug,
           title: course.title,
           description: course.description,
+          level: course.level,
           approved: coursesU.courses[index] ? (coursesU.courses[index].approved || false) : false
         });
       }
