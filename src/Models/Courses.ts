@@ -13,16 +13,7 @@ const getBannerUrl = (value: string | null) => {
   return `${process.env.URL_API}/${value}`;
 };
 
-const ContentSchema = new Schema(
-  {
-    title: { type: String, require: true },
-    description: { type: String, require: true },
-    urlVideo: { type: String, require: true }
-  },
-  { id: false }
-);
-
-const TestSchema = new Schema(
+const QuizSchema = new Schema(
   {
     title: { type: String, require: true, set: cleanWhiteSpaces },
     description: { type: String, default: null, set: cleanWhiteSpaces },
@@ -42,11 +33,9 @@ const TestSchema = new Schema(
 const TemarySchema = new Schema(
   {
     title: { type: String, require: true },
-    description: { type: String, require: true },
-    content: { type: [ContentSchema], require: true },
-    test: { type: [TestSchema], require: true },
-    created_at: { type: Number, default: setDate, get: getDate },
-    updated_at: { type: Number, default: setDate, get: getDate }
+    description: { type: String, default: null },
+    urlVideo: { type: String, default: null },
+    quiz: { type: [QuizSchema], default: null }
   },
   { id: false }
 );
@@ -57,11 +46,11 @@ const CoursesSchema = new Schema(
     speaker: { type: String, require: true }, // speaker fullname
     speakerPosition: { type: String, require: true }, // speaker position
     code: { type: String, require: true, set: toUpperValue }, // course code
-    title: { type: String, require: true, set: cleanWhiteSpaces },
-    banner: { type: String, default: null, get: getBannerUrl },
+    title: { type: String, require: true, set: cleanWhiteSpaces, get: toUpperValue },
     description: { type: String, require: true, set: cleanWhiteSpaces },
     slug: { type: String, require: true },
-    temary: { type: [TemarySchema], require: true }, // content
+    temary: { type: [TemarySchema], default: [] },
+    level: { type: Number, require: true },
     toRoles: { type: [Number], require: true },
     enable: { type: Boolean, default: false },
     created_at: { type: Number, default: setDate, get: getDate },
@@ -75,10 +64,10 @@ CoursesSchema.pre<ICourse>('save', function (next) {
   next();
 });
 
-CoursesSchema.set('toJSON', { getters: true });
+QuizSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
-CoursesSchema.index({ slug: 1 });
-ContentSchema.set('toJSON', { getters: true });
+CoursesSchema.set('toJSON', { getters: true });
+CoursesSchema.index({ slug: 1, level: 1 });
 
 const Courses = model<ICourse>('course', CoursesSchema);
 

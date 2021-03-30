@@ -430,7 +430,7 @@
 
 /**
  * @api {get} /api/admin/users/:_id/courses (06) Obtener listado de cursos de un miembro.
- * @apiVersion 0.0.21
+ * @apiVersion 0.0.28
  * @apiName getCoursesUsersListAdmin
  * @apiGroup UsersAdmin
  *
@@ -441,11 +441,11 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} courses Listado de cursos.
  *
- * @apiSuccess (courses Object[]) {String} banner URL de la imagen del curso.
  * @apiSuccess (courses Object[]) {Boolean} enable Indica si el curso se encuentra publicado.
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
  * @apiSuccess (courses Object[]) {String} description Descripción del curso.
+ * @apiSuccess (courses Object[]) {Boolean} level Nivel del curso.
  * @apiSuccess (courses Object[]) {Boolean} approved Indica si el curso fue aprobado o no.
  *
  * @apiSuccessExample {JSON} Success
@@ -455,10 +455,10 @@
 	"courses": [
 		{
 			"_id": "603afb2309bf7a3428ac58f7",
-			"banner": "http://localhost:9000/images/1614784438.jpeg",
-			"slug": "curso-01",
-			"title": "CURSO 01",
+			"slug": "nivel-uno",
+			"title": "NIVEL UNO",
 			"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.",
+			"level": 1
 			"approved": false
 		},
 		.
@@ -476,6 +476,8 @@
  * @apiUse GlobalErrorSystem
  *
  */
+
+
 
 /*
  * @api {put} /api/admin/users/:_id (06) Cambiar rol de un miembro.

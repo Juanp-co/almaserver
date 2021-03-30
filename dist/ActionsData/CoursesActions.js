@@ -3,37 +3,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateToPublish = exports.setPointToTest = exports.returnCantEdit = exports.returnErrorId = exports.return404 = exports.returnNotFound = exports.getCoursesDataUser = exports.checkIfUserApprovedPreviousCourses = exports.checkIfExistSlug = exports.checkIfUsersOwnCourse = exports.getCourseDetails = exports.getCoursesSimpleList = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
+exports.validateToPublish = exports.setPointToTest = exports.returnCantEdit = exports.returnErrorId = exports.return404 = exports.returnNotFound = exports.addCoursesToUser = exports.getCoursesDataUser = exports.checkIfExistSlug = exports.checkIfUsersOwnCourse = exports.getCourseDetails = exports.getCoursesSimpleList = exports.getModelReturnCourseOrTheme = exports.getModelReturnContent = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const Courses_1 = __importDefault(require("../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
-function getModelReturnContent(data, allData = false, admin = false) {
+function getModelReturnContent(data, admin = false) {
     if (!data)
         return null;
     const ret = {
         _id: data._id,
         title: data.title,
+        description: data.description,
+        urlVideo: data.urlVideo,
+        quiz: data.quiz,
     };
-    if (allData) {
-        ret.description = data.description;
-        ret.urlVideo = data.urlVideo;
-        if (!admin)
-            ret.view = 0;
-    }
+    if (!admin)
+        ret.view = 0;
     return ret;
 }
 exports.getModelReturnContent = getModelReturnContent;
 // =====================================================================================================================
 /*
-  data: ICourseList | ICourseTemary | ICourseContent      <= data with any this schemas
-  theme: boolean                                          <= to set 'ICourseList' or 'ICourseTemary' return model
-  admin: boolean                                          <= to get extra params
-  counters: boolean                                       <= to get totals users with the course
+  data: ICourseList      <= data with any this schemas
+  admin: boolean         <= to get extra params
+  counters: boolean      <= to get totals users with the course
  */
-async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showContent }) {
+async function getModelReturnCourseOrTheme({ data, admin, counters }) {
     let ret = null;
-    if (!theme || (!theme && admin)) {
+    if (data) {
         ret = {};
         ret._id = data._id;
         if (admin)
@@ -43,8 +41,8 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
         ret.code = data.code;
         ret.title = data.title;
         ret.slug = data.slug;
-        ret.banner = data.banner;
         ret.description = data.description;
+        ret.level = data.level;
         ret.temary = [];
         if (admin) {
             ret.toRoles = data.toRoles;
@@ -54,41 +52,10 @@ async function getModelReturnCourseOrTheme({ data, theme, admin, counters, showC
         }
         if (counters)
             ret.totalsUsers = await CoursesUsers_1.default.find({ 'courses.courseId': data._id.toString() }).countDocuments().exec() || 0;
-        const { temary } = data;
-        const totalTemary = temary.length;
-        for (let i = 0; i < totalTemary || 0; i++) {
-            const dTheme = {};
-            const { content } = temary[i];
-            dTheme._id = temary[i]._id;
-            dTheme.title = temary[i].title;
-            dTheme.description = temary[i].description || null;
-            dTheme.content = [];
-            if (admin)
-                dTheme.test = temary[i].test;
-            const totalsContent = content.length || 0;
-            for (let j = 0; j < totalsContent; j++) {
-                const dContent = getModelReturnContent(content[j], showContent, admin);
-                if (dContent)
-                    dTheme.content.push(dContent);
-            }
-            ret.temary.push(dTheme); // add in temary
-        }
-    }
-    else {
-        ret = {};
-        const temary = data.temary[0];
-        ret._id = temary._id;
-        ret.title = temary.title;
-        ret.description = temary.description || null;
-        if (!admin)
-            ret.view = 0;
-        ret.content = [];
-        if (temary && showContent) {
-            for (let i = 0; i < temary.content.length; i++) {
-                const dContent = getModelReturnContent(temary.content[i], true);
-                if (dContent)
-                    ret.content.push(dContent);
-            }
+        for (const t of data.temary) {
+            const themeD = getModelReturnContent(t, admin);
+            if (themeD)
+                ret.temary.push(themeD);
         }
     }
     return ret;
@@ -119,8 +86,8 @@ async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, pr
                 code: c.code,
                 title: c.title,
                 slug: c.slug,
-                banner: c.banner,
                 description: c.description,
+                level: c.level,
                 toRoles: c.toRoles,
                 enable: c.enable,
                 created_at: c.created_at,
@@ -149,14 +116,14 @@ exports.default = getCoursesList;
 async function getCoursesSimpleList(listIds) {
     let courses = [];
     if (listIds.length > 0) {
-        courses = await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, banner: 1, slug: 1, description: 1 }).exec();
+        courses = await Courses_1.default.find({ _id: { $in: listIds } }, { _id: 1, title: 1, slug: 1, description: 1, level: 1 }).exec();
     }
     return courses;
 }
 exports.getCoursesSimpleList = getCoursesSimpleList;
 async function getCourseDetails({ query, infoUser, isPublic, projection }) {
     let ret = null;
-    const course = await Courses_1.default.findOne(query, projection || { __v: 0 }).exec();
+    const course = await Courses_1.default.findOne(query, projection || { __v: 0, 'temary.quiz.correctAnswer': 0 }).exec();
     if (course) {
         ret = {
             _id: course._id,
@@ -166,9 +133,9 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             code: course.code,
             title: course.title,
             slug: course.slug,
-            banner: course.banner,
             description: course.description,
             temary: course.temary,
+            level: course.level,
             toRoles: course.toRoles,
             enable: course.enable,
             created_at: course.created_at,
@@ -200,14 +167,6 @@ async function checkIfExistSlug(slug) {
     return Courses_1.default.find({ slug }).countDocuments().exec();
 }
 exports.checkIfExistSlug = checkIfExistSlug;
-async function checkIfUserApprovedPreviousCourses(listIds) {
-    if (listIds.length > 0) {
-        const totals = await Courses_1.default.find({ _id: { $in: listIds }, approved: { $eq: true } }).countDocuments().exec();
-        return totals === listIds.length;
-    }
-    return false;
-}
-exports.checkIfUserApprovedPreviousCourses = checkIfUserApprovedPreviousCourses;
 // =====================================================================================================================
 /*
   PARTICULAR USERS
@@ -222,6 +181,33 @@ async function getCoursesDataUser({ query }) {
     };
 }
 exports.getCoursesDataUser = getCoursesDataUser;
+async function addCoursesToUser(userid) {
+    const courseList = [];
+    const courses = await Courses_1.default.find({}, { temary: 1, level: 1 }).exec();
+    // get list courses with temaryIds and levels
+    if (courses.length > 0) {
+        for (const c of courses) {
+            const temary = [];
+            for (const t of c.temary) {
+                temary.push({ temaryId: t._id });
+            }
+            courseList.push({
+                courseId: c._id.toString(),
+                level: c.level,
+                approved: false,
+                temary
+            });
+        }
+    }
+    // create register
+    const courseU = new CoursesUsers_1.default({
+        userid,
+        courses: courseList
+    });
+    await courseU.save();
+    return courseU;
+}
+exports.addCoursesToUser = addCoursesToUser;
 // =====================================================================================================================
 /*
   Others functions
@@ -229,16 +215,8 @@ exports.getCoursesDataUser = getCoursesDataUser;
 function returnNotFound(res, code) {
     const ret = { msg: 'Respuesta no determinada.' };
     let statusCode = 500;
-    if (code === '404Content') {
-        ret.msg = 'Disculpe, pero el contenido seleccionado no existe o ya no se encuentra disponible.';
-        statusCode = 404;
-    }
-    else if (code === '404Course') {
+    if (code === '404Course') {
         ret.msg = 'Disculpe, pero el curso seleccionado no existe o ya no se encuentra disponible.';
-        statusCode = 404;
-    }
-    else if (code === '404Comment') {
-        ret.msg = 'Disculpe, pero el comentario no existe o no se encuentra disponible.';
         statusCode = 404;
     }
     else if (code === '404CourseUser') {
@@ -254,36 +232,12 @@ function returnNotFound(res, code) {
         ret.msg = 'Disculpe, pero el tema seleccionado no existe o no se encuentra disponible.';
         statusCode = 404;
     }
-    else if (code === 'notFinishTheme') {
-        ret.msg = 'Disculpe, pero no puede realizar la prueba hasta haber completado el contenido del tema.';
-        statusCode = 403;
-    }
     else if (code === 'errorAction') {
         ret.msg = 'Disculpe, pero no se logró determinar la acción a realizar.';
         statusCode = 422;
     }
-    else if (code === 'errorCommentId') {
-        ret.msg = 'Disculpe, pero el comentario seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'errorComment') {
-        ret.msg = 'Disculpe, pero el comentario debe cumplir con los siguientes parámetros: 1. Letras o números (az-AZ 0-9) y los siguientes caracteres especiales: .,#*?¿¡!()\\-+"\'/@.';
-        statusCode = 422;
-    }
-    else if (code === 'errorGroupId') {
-        ret.msg = 'Disculpe, pero el grupo seleccionado es incorrecto.';
-        statusCode = 422;
-    }
     else if (code === 'errorThemeId') {
         ret.msg = 'Disculpe, pero el tema seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'errorContentId') {
-        ret.msg = 'Disculpe, pero el contenido seleccionado es incorrecto.';
-        statusCode = 422;
-    }
-    else if (code === 'like') {
-        ret.msg = 'Disculpe, pero no se determinó la acción a realizar.';
         statusCode = 422;
     }
     else if (code === 'slug') {
@@ -295,27 +249,27 @@ function returnNotFound(res, code) {
         statusCode = 422;
     }
     else if (code === 'wasRealizedAllTest') {
-        ret.msg = `Disculpe, pero ya ha aprobado todos los exámenes de este curso.`;
+        ret.msg = `Disculpe, pero ya ha aprobado este curso.`;
         statusCode = 422;
     }
     else if (code === 'wasRealizedTest') {
-        ret.msg = `Disculpe, pero ya ha aprobado este examen anteriormente.`;
+        ret.msg = `Disculpe, pero ya ha realizado este Quiz anteriormente.`;
         statusCode = 422;
     }
     return res.status(statusCode).json(ret);
 }
 exports.returnNotFound = returnNotFound;
 function return404(res, title = 0) {
-    const titles = ['curso', 'tema', 'contendo', 'pregunta'];
+    const titles = ['curso', 'tema'];
     return res.status(404).json({
-        msg: `Disculpe, pero ${title === 3 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 3 ? 'a' : 'o'} no existe o no se encuentra disponible.`,
+        msg: `Disculpe, pero el ${titles[title] || 'curso'} seleccionado no existe o no se encuentra disponible.`,
     });
 }
 exports.return404 = return404;
 function returnErrorId(res, title = 0) {
-    const titles = ['curso', 'tema', 'contendo', 'pregunta', 'tema previo'];
+    const titles = ['curso', 'tema'];
     return res.status(422).json({
-        msg: `Disculpe, pero ${title === 3 ? 'la' : 'el'} ${titles[title] || 'curso'} seleccionad${title === 3 ? 'a' : 'o'} es incorrecto.`,
+        msg: `Disculpe, pero el ${titles[title] || 'curso'} seleccionado es incorrecto.`,
     });
 }
 exports.returnErrorId = returnErrorId;
@@ -323,7 +277,6 @@ function returnCantEdit(res, index = 0) {
     const msg = [
         'Disculpe, pero este curso no puede ser modificado debido a que ya se encuentra publicado.',
         'Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listas.',
-        'Disculpe, pero los cursos previos deben estar publicados para poder realizar esta acción.',
     ];
     return res.status(422).json({
         msg: msg[index],
@@ -357,8 +310,6 @@ exports.setPointToTest = setPointToTest;
 function validateToPublish(data) {
     if (!data.description)
         return 'Disculpe, pero el curso debe contener una descripción.';
-    if (!data.banner)
-        return 'Disculpe, pero el curso debe contener una imagen.';
     if (!data.speaker)
         return 'Disculpe, pero el curso debe contener el nombre del ponente.';
     if (!data.speakerPosition)
@@ -367,23 +318,6 @@ function validateToPublish(data) {
         return 'Disculpe, pero se debe indicar a que roles va dirigido el curso.';
     if (!data.temary || (data.temary && data.temary.length === 0))
         return 'Disculpe, pero se debe el curso no puede ser publicado sin temas.';
-    if (data.temary) {
-        // validate content
-        const totalsThemes = data.temary.length;
-        let msg = null;
-        for (let i = 0; i < totalsThemes; i++) {
-            if (data.temary[i].content.length === 0) {
-                msg = 'Disculpe, pero los temas del curso deben tener al menos un contenido.';
-                break;
-            }
-            if (data.temary[i].test.length === 0) {
-                msg = 'Disculpe, pero los temas del curso contener pruebas con sus respectivas preguntas.';
-                break;
-            }
-        }
-        if (msg)
-            return msg;
-    }
     return null;
 }
 exports.validateToPublish = validateToPublish;

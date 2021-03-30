@@ -47,26 +47,6 @@
 }
  */
 
-
-// courses
-
-/**
- * @apiDefine EventsErrorIdOrNotFound
- *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-  "msg": "Disculpe, pero el evento seleccionado no existe o no se encuentra disponible."
-}
- *
- * @apiErrorExample {JSON} Invalid _id
- * HTTP/1.1 422 Unprocessable Entity
- * {
-  "msg": "Disculpe, pero el evento seleccionado es incorrecto."
-}
- */
-
-
 // courses
 
 /**
@@ -113,11 +93,6 @@
  */
 
 /**
- * @apiDefine CommonCourseNotCompletedPreviousCourse
- *
- */
-
-/**
  * @apiDefine CommonCourseAllCompleted
  *
  * @apiErrorExample {JSON} The test was approved
@@ -130,32 +105,6 @@
  * HTTP/1.1 422 Unprocessable Entity
  * {
     "msg": "Disculpe, pero ya ha aprobado todos los exámenes de este curso."
-}
- */
-
-/**
- * @apiDefine CommonCourseErrorIdOrNotFoundContent
- *
- * @apiErrorExample {JSON} Content not found
- * HTTP/1.1 404 Not found
- * {
-  "msg": "Disculpe, pero el contenido seleccionado no existe o no se encuentra disponible."
-}
- *
- * @apiErrorExample {JSON} Invalid contentId
- * HTTP/1.1 422 Unprocessable Entity
- * {
-  "msg": "Disculpe, pero el contenido seleccionado es incorrecto."
-}
- */
-
-/**
- * @apiDefine CommonCourseErrorIdOrNotFoundLevels
- *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-  "msg": "Disculpe, pero el tema previo seleccionado no existe o no se encuentra disponible."
 }
  */
 
@@ -176,22 +125,6 @@
  */
 
 /**
- * @apiDefine CommonCourseErrorIdOrNotFoundQuestion
- *
- * @apiErrorExample {JSON} Not found
- * HTTP/1.1 404 Not found
- * {
-  "msg": "Disculpe, pero la pregunta seleccionada no existe o no se encuentra disponible."
-}
- *
- * @apiErrorExample {JSON} Invalid contentId
- * HTTP/1.1 422 Unprocessable Entity
- * {
-  "msg": "Disculpe, pero la pregunta seleccionada es incorrecto."
-}
- */
-
-/**
  * @apiDefine CommonCourseCantEdit
  *
  * @apiErrorExample {JSON} Can't edit course published
@@ -205,6 +138,24 @@
     "msg": "Disculpe, pero este curso no puede ser modificado debido a que los miembros lo poseen en sus listados."
 }
  *
+ */
+
+// events
+
+/**
+ * @apiDefine EventsErrorIdOrNotFound
+ *
+ * @apiErrorExample {JSON} Not found
+ * HTTP/1.1 404 Not found
+ * {
+  "msg": "Disculpe, pero el evento seleccionado no existe o no se encuentra disponible."
+}
+ *
+ * @apiErrorExample {JSON} Invalid _id
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero el evento seleccionado es incorrecto."
+}
  */
 
 // groups

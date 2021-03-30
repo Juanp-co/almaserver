@@ -110,17 +110,13 @@ export function getLimitSkipSortSearch(data: any): any {
 
   // sort
   const v = value && /[1 -]/.test(value) && value.toString() === '1' ? 1 : -1;
-  const listCases = [ 'created_at', 'code', 'date', 'document', 'lastNames', 'name', 'names', 'role', 'status', 'title', 'updated_at' ];
+  const listCases = [ 'created_at', 'code', 'date', 'document', 'lastNames', 'name', 'names', 'role', 'status', 'title', 'updated_at', 'level' ];
   const index = listCases.indexOf(input);
 
   if (index > -1) retSort[listCases[index]] = v;
   else retSort.created_at = v;
 
   return { limit: retLimit, skip: retSkip, sort: retSort };
-}
-
-export function dateSpanish(timestamp?: number): string | null {
-  return timestamp ? moment.unix(timestamp).locale('es').format('DD [de] MMMM [de] YYYY') : null;
 }
 
 export async function checkAndUploadPicture(picture: string | null, pathFolder = ''): Promise<string | null> {

@@ -1,6 +1,6 @@
 {
   "name": "almaserver",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "API to ALMA App.",
   "main": "./dist/index.js",
   "scripts": {
@@ -12,6 +12,7 @@
     "docs": "apidoc -i ./Docs -o public/apidoc/",
     "clean": "rimraf dist",
     "migrations": "npx ts-node Migrations/DevMigration.ts",
+    "migrations-prod": "NODE_ENV=production npx ts-node Migrations/DevMigration.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

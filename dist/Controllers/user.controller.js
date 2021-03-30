@@ -111,15 +111,16 @@ async function getCourses(req, res) {
         if (myCourses) {
             const listIds = myCourses.courses.length > 0 ? myCourses.courses.map(c => c.courseId) : [];
             if (listIds.length > 0) {
-                const listCourses = await Courses_1.default.find({ _id: { $in: listIds || [] } }, { _id: 1, title: 1, banner: 1, slug: 1, description: 1, enable: 1 }).exec();
+                const listCourses = await Courses_1.default.find({ _id: { $in: listIds || [] } }, { _id: 1, title: 1, slug: 1, description: 1, enable: 1, level: 1 }).exec();
                 for (const course of listCourses) {
                     const index = myCourses.courses.findIndex(c => c.courseId === course._id.toString());
                     courses.push({
                         _id: course._id,
-                        banner: course.banner,
+                        // banner: course.banner,
                         slug: course.slug,
                         title: course.title,
                         description: course.description,
+                        level: course.level,
                         approved: myCourses.courses[index] ? (myCourses.courses[index].approved || false) : false
                     });
                 }

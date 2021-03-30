@@ -35,16 +35,9 @@ router.get(`/banks`, public_controller_1.getBanks);
 */
 // list and counters
 router.get(`/courses`, middleware_1.validateUser, courses_controller_1.default);
-router.get(`/courses/counters`, middleware_1.validateUser, courses_controller_1.getCoursesCounters);
 router.get(`/courses/:slug`, middleware_1.validateUser, courses_controller_1.showCourse);
-// router.post('/courses/:slug/add', validateUser, addCourseUser); // add course to user
-router.get(`/courses/:slug/theme/:_id`, middleware_1.validateUser, courses_controller_1.showCourseContentTheme); // get theme
-// get test
-router.route('/courses/:slug/theme/:_id/test')
-    .get(middleware_1.validateUser, courses_controller_1.getTest)
-    .post(middleware_1.validateUser, courses_controller_1.evaluateTest);
-// update historical content (action = watching | viewed)
-router.put(`/courses/:slug/theme/:_id/content/:contentId/:action`, middleware_1.validateUser, courses_controller_1.updateHistoricalCourseContent);
+router.post(`/courses/:slug/theme/:_id/quiz`, middleware_1.validateUser, courses_controller_1.evaluateQuiz);
+router.put(`/courses/:slug/theme/:_id/:action`, middleware_1.validateUser, courses_controller_1.updateHistoricalCourseContent);
 /*
   Events
 */
