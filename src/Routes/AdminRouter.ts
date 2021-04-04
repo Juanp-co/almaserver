@@ -24,13 +24,17 @@ import getUsers, {
   showUser,
   updateUser
 } from '../Controllers/admin/users.admin.controller';
-import getReports from '../Controllers/admin/reports.admin.controller';
+import getReports, { getFamiliesGroupsReports } from '../Controllers/admin/reports.admin.controller';
 import getBanks, {
   deleteBank,
   saveBank,
   showBank,
   updateBank
 } from '../Controllers/admin/accounts.banks.admin.controllers';
+import getFamiliesGroups, {
+  deleteFamilyGroup, getFamiliesGroupsCounters,
+  saveFamilyGroup, showFamilyGroup, updateFamilyGroup, updateMembersFamilyGroup
+} from '../Controllers/admin/families-groups.admin.controller';
 
 const router = Router();
 
@@ -80,6 +84,21 @@ router.route('/events/:_id')
   .put(validateAdmin, updateEvent);
 
 /*
+  Families Groups
+*/
+router.route('/families-groups')
+  .get(validateAdmin, getFamiliesGroups)
+  .post(validateAdmin, saveFamilyGroup);
+router.get('/families-groups/counters', validateAdmin, getFamiliesGroupsCounters);
+
+router.route('/families-groups/:_id')
+  .delete(validateAdmin, deleteFamilyGroup)
+  .get(validateAdmin, showFamilyGroup)
+  .put(validateAdmin, updateFamilyGroup);
+
+router.put('/families-groups/:_id/members', validateAdmin, updateMembersFamilyGroup);
+
+/*
   Groups
 */
 router.route('/groups')
@@ -96,9 +115,10 @@ router.get('/groups/:_id/find-members', validateAdmin, findNewMembers);
 router.put('/groups/:_id/members/:action', validateAdmin, addOrRemoveMembersGroup);
 
 /*
-  Users
+  Reports
 */
 router.get('/reports', validateAdmin, getReports);
+router.get('/reports/families-groups', validateAdmin, getFamiliesGroupsReports);
 
 /*
   Users

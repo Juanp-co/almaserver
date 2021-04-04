@@ -134,7 +134,23 @@ function getLimitSkipSortSearch(data) {
     }
     // sort
     const v = value && /[1 -]/.test(value) && value.toString() === '1' ? 1 : -1;
-    const listCases = ['created_at', 'code', 'date', 'document', 'lastNames', 'name', 'names', 'role', 'status', 'title', 'updated_at', 'level'];
+    const listCases = [
+        'created_at',
+        'code',
+        'date',
+        'document',
+        'lastNames',
+        'name',
+        'names',
+        'role',
+        'status',
+        'title',
+        'updated_at',
+        'level',
+        'sector',
+        'subSector',
+        'number',
+    ];
     const index = listCases.indexOf(input);
     if (index > -1)
         retSort[listCases[index]] = v;

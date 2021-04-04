@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { Types } from 'mongoose';
 
 export function checkNameOrLastName(value: any): boolean {
@@ -63,11 +64,17 @@ export function checkCodeValue(value: any): boolean {
 
 export function checkDate(value: any): boolean {
   // validate date (YYYY-MM-DD)
-  return value && /\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])*/.test(`${value}`);
+  const isValid = moment(`${value}`, 'YYYY-MM-DD', true).isValid();
+  return value && isValid;
+}
+
+export function checkDateAndHour(value: any): boolean {
+  // validate date (YYYY-MM-DD HH:mm)
+  return value && moment(`${value}`).isValid();
 }
 
 export function checkHour(value: any): boolean {
-  // validate hour (HH:MM)
+  // validate hour (HH:mm)
   return value && /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(value);
 }
 

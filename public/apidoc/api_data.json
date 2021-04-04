@@ -4779,6 +4779,1245 @@
     "groupTitle": "EventsAdmin"
   },
   {
+    "type": "post",
+    "url": "/api/admin/families-groups",
+    "title": "(01) Crear un grupo familiar.",
+    "version": "0.0.28",
+    "name": "createGroupFamiliesGroupsAdmin",
+    "group": "FamiliesGroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del admin.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"sector\": 1,\n\t\"subSector\": 2,\n\t\"number\": 3,\n\t\"direction\": \"Dirección cualquiera\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha creado el nuevo grupo exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"sector\",\n      \"msg\": \"Disculpe, pero debe indicar el sector.\"\n    },\n    {\n      \"input\": \"subSector\",\n      \"msg\": \"Disculpe, pero debe indica el sub-sector.\"\n    },\n    {\n      \"input\": \"number\",\n      \"msg\": \"Disculpe, pero debe indicar el número del grupo.\"\n    },\n    {\n      \"input\": \"direction\",\n      \"msg\": \"Disculpe, pero debe indicar una dirección.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Number group exists.",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el número del grupo ya se encuentra registrado para este sector y sub-sector.\",\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
+    "groupTitle": "FamiliesGroupsAdmin"
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/families-groups/:_id",
+    "title": "(05) Eliminar un grupo familiar.",
+    "version": "0.0.28",
+    "name": "deleteGroupFamiliesGroupsAdmin",
+    "group": "FamiliesGroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha eliminado el grupo familiar exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Can't delete",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero este grupo no puede eliminarse debido a que ya tiene reportes registrados.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
+    "groupTitle": "FamiliesGroupsAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/families-groups/:_id",
+    "title": "(02) Obtener detalles de un grupo familiar.",
+    "version": "0.0.28",
+    "name": "getDetailsGroupFamiliesGroupsAdmin",
+    "group": "FamiliesGroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del admin.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Datos del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Miembros del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ],
+        "members Object": [
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "leader",
+            "description": "<p>Datos del líder del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "host",
+            "description": "<p>Datos del anfitrión del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "assistant",
+            "description": "<p>Datos del asistente del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "master",
+            "description": "<p>Datos del maestro del grupo.</p>"
+          }
+        ],
+        "leader, host, assistant and master Object": [
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"584121490199\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-03 11:51:52\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Not belong at the group",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero usted no pertenece a ningún grupo familiar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
+    "groupTitle": "FamiliesGroupsAdmin"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/families-groups",
+    "title": "(00) Obtener listado de grupos familiares.",
+    "version": "0.0.28",
+    "name": "getFamiliesGroupsAdmin",
+    "group": "FamiliesGroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>Total de resultados por página (por defecto = 10).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "page",
+            "description": "<p>Página (por defecto = 1).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "input",
+            "description": "<p>Campo a ordenar (valores: sector | subSector | number).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>Ordenado de input (1 = ASC | -1 = DESC) (Opcional).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>Listado de grupos familiares.</p>"
+          }
+        ],
+        "groups Object": [
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n\t\t{\n\t\t\t\"_id\": \"6069917b2760da31bcd519be\",\n\t\t\t\"number\": 3,\n\t\t\t\"sector\": 1,\n\t\t\t\"subSector\": 2,\n\t\t\t\"created_at\": \"2021-04-04 05:14:19\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
+    "groupTitle": "FamiliesGroupsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/families-groups/:_id",
+    "title": "(03) Actualizar datos de un grupo familiar.",
+    "version": "0.0.28",
+    "name": "updateGroupFamiliesGroupsAdmin",
+    "group": "FamiliesGroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"sector\": 4,\n\t\"subSector\": 2,\n\t\"number\": 2,\n\t\"direction\": \"Dirección cualquiera editada\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Datos del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Miembros del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ],
+        "members Object": [
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "leader",
+            "description": "<p>Datos del líder del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "host",
+            "description": "<p>Datos del anfitrión del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "assistant",
+            "description": "<p>Datos del asistente del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "master",
+            "description": "<p>Datos del maestro del grupo.</p>"
+          }
+        ],
+        "leader, host, assistant and master Object": [
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"584121490199\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-04 06:54:31\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"sector\",\n      \"msg\": \"Disculpe, pero debe indicar el sector.\"\n    },\n    {\n      \"input\": \"subSector\",\n      \"msg\": \"Disculpe, pero debe indica el sub-sector.\"\n    },\n    {\n      \"input\": \"number\",\n      \"msg\": \"Disculpe, pero debe indicar el número del grupo.\"\n    },\n    {\n      \"input\": \"direction\",\n      \"msg\": \"Disculpe, pero debe indicar una dirección.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Number group exists.",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el número del grupo ya se encuentra registrado para este sector y sub-sector.\",\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
+    "groupTitle": "FamiliesGroupsAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/families-groups/:_id/members",
+    "title": "(04) Actualizar miembros de un grupo familiar.",
+    "version": "0.0.28",
+    "name": "updateMembersGroupFamiliesGroupsAdmin",
+    "group": "FamiliesGroupsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>IDs de los miembros.</p>"
+          }
+        ],
+        "member Object": [
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "leaderId",
+            "description": "<p>ID del miembro líder.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "hostId",
+            "description": "<p>ID del miembro anfitrión.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "assistantId",
+            "description": "<p>ID del miembro asistente.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "masterId",
+            "description": "<p>ID del miembro maestro.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"members\": {\n\t\t\"leaderId\": \"604068b49b20e72f341972ed\",\n\t\t\"hostId\": \"604068461caad10e2c965406\",\n\t\t\"assistantId\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"masterId\": null\n\t}\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Datos de los miembros.</p>"
+          }
+        ],
+        "members Object": [
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "leader",
+            "description": "<p>Datos del líder del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "host",
+            "description": "<p>Datos del anfitrión del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "assistant",
+            "description": "<p>Datos del asistente del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "master",
+            "description": "<p>Datos del maestro del grupo.</p>"
+          }
+        ],
+        "leader, host, assistant and master Object": [
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"members\": {\n\t\t\"leader\": {\n\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\"names\": \"LIDER\",\n\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": null\n\t\t},\n\t\t\"host\": {\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"584121490199\"\n\t\t},\n\t\t\"assistant\": {\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"gender\": 0,\n\t\t\t\"phone\": \"3161234567\"\n\t\t},\n\t\t\"master\": null\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero no se recibió la información a actualizar.\"\n    },\n    {\n      \"input\": \"leaderId\",\n      \"msg\": \"Disculpe, pero debe seleccionar a un miembro como líder del grupo.\"\n    },\n    {\n      \"input\": \"leaderId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como líder es incorrecto.\"\n    },\n    {\n      \"input\": \"hostId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como anfitrión es incorrecto.\"\n    },\n    {\n      \"input\": \"assistantId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como asistente es incorrecto.\"\n    },\n    {\n      \"input\": \"masterId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como maestro es incorrecto.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
+    "groupTitle": "FamiliesGroupsAdmin"
+  },
+  {
     "type": "put",
     "url": "/api/admin/groups/:_id/members/add",
     "title": "(06) Agregar miembros al grupo.",
@@ -7728,6 +8967,335 @@
   },
   {
     "type": "get",
+    "url": "/api/admin/reports/families-groups",
+    "title": "(01) Obtener reportes de los grupos familiares.",
+    "version": "0.0.28",
+    "name": "getFamiliesGroupsReportsAdmin",
+    "group": "ReportsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "initDate",
+            "description": "<p>Fecha de inicio de la consulta (formato: YYYY-MM-DD) (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "endDate",
+            "description": "<p>Fecha de final de la consulta (formato: YYYY-MM-DD) (opcional) (Si se envía este parámetro, se requerirá la fecha de inicio. Sino, las fechas de filtrado se ignorarán).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reports",
+            "description": "<p>Datos del reporte.</p>"
+          }
+        ],
+        "reports Object[]": [
+          {
+            "group": "reports Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Datos del grupo.</p>"
+          },
+          {
+            "group": "reports Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "report",
+            "description": "<p>Datos del reporte.</p>"
+          },
+          {
+            "group": "reports Object[]",
+            "type": "Object[]",
+            "optional": false,
+            "field": "observations",
+            "description": "<p>Listado de observaciones.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ],
+        "report Object": [
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "brethren",
+            "description": "<p>Número de hermanos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "friends",
+            "description": "<p>Número de amigos de los hermanos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "scheduledVisits",
+            "description": "<p>Número de visitas programadas.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "discipleshipVisits",
+            "description": "<p>Número de visitas al disipulado.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildren",
+            "description": "<p>Número de niños cristianos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildrenFriends",
+            "description": "<p>Número de amigos de los niños cristianos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Número de total de hermanos y sus amigos, y niños y sus amigos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "offering",
+            "description": "<p>Total de ofrendas.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendance",
+            "description": "<p>Número de asistencias a la iglesia.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendanceChildren",
+            "description": "<p>Número de asistencia de niños a la iglesia.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "conversions",
+            "description": "<p>Número de conversiones.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "reconciliations",
+            "description": "<p>Número de reconciliaciones.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "conversionsChildren",
+            "description": "<p>Número de conversiones de niños.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "brethrenPlanning",
+            "description": "<p>Número de hermanos planeando.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "bibleReading",
+            "description": "<p>Número de lecturas bíblicas.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Número de consolidados.</p>"
+          }
+        ],
+        "observations Object[]": [
+          {
+            "group": "observations Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "observations",
+            "description": "<p>Observaciones.</p>"
+          },
+          {
+            "group": "observations Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha del reporte.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reportes de grupos familiares.\",\n\t\"reports\": [\n\t\t{\n\t\t\t\"group\": {\n\t\t\t\t\"_id\": \"6063385c98fc731c04777827\",\n\t\t\t\t\"sector\": 1,\n\t\t\t\t\"subSector\": 1,\n\t\t\t\t\"number\": 1,\n\t\t\t\t\"created_at\": \"2021-03-30 09:40:28\"\n\t\t\t},\n\t\t\t\"report\": {\n\t\t\t\t\"brethren\": 0,\n\t\t\t\t\"friends\": 0,\n\t\t\t\t\"scheduledVisits\": 0,\n\t\t\t\t\"discipleshipVisits\": 0,\n\t\t\t\t\"christianChildren\": 0,\n\t\t\t\t\"christianChildrenFriends\": 0,\n\t\t\t\t\"total\": 0,\n\t\t\t\t\"offering\": 0,\n\t\t\t\t\"churchAttendance\": 0,\n\t\t\t\t\"churchAttendanceChildren\": 0,\n\t\t\t\t\"conversions\": 0,\n\t\t\t\t\"reconciliations\": 0,\n\t\t\t\t\"conversionsChildren\": 0,\n\t\t\t\t\"brethrenPlanning\": 0,\n\t\t\t\t\"bibleReading\": 0,\n\t\t\t\t\"consolidated\": 0\n\t\t\t},\n\t\t\t\"observations\": []\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t\t{\n\t\t\t\"group\": {\n\t\t\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\t\t\"sector\": 4,\n\t\t\t\t\"subSector\": 2,\n\t\t\t\t\"number\": 2,\n\t\t\t\t\"created_at\": \"2021-03-30 09:40:28\"\n\t\t\t},\n\t\t\t\"report\": {\n\t\t\t\t\"brethren\": 16,\n\t\t\t\t\"friends\": 15,\n\t\t\t\t\"scheduledVisits\": 3,\n\t\t\t\t\"discipleshipVisits\": 6,\n\t\t\t\t\"christianChildren\": 10,\n\t\t\t\t\"christianChildrenFriends\": 8,\n\t\t\t\t\"total\": 2173,\n\t\t\t\t\"offering\": 35000,\n\t\t\t\t\"churchAttendance\": 6,\n\t\t\t\t\"churchAttendanceChildren\": 5,\n\t\t\t\t\"conversions\": 3,\n\t\t\t\t\"reconciliations\": 1,\n\t\t\t\t\"conversionsChildren\": 5,\n\t\t\t\t\"brethrenPlanning\": 3,\n\t\t\t\t\"bibleReading\": 9,\n\t\t\t\t\"consolidated\": 8\n\t\t\t},\n\t\t\t\"observations\": [\n\t\t\t\t{\n\t\t\t\t\t\"observations\": \"VESTIBULUM AC DIAM SIT AMET QUAM VEHICULA ELEMENTUM SED SIT AMET DUI. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. SED PORTTITOR LECTUS NIBH.\\nLOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. CURABITUR ARCU ERAT, ACCUMSAN ID IMPERDIET ET, PORTTITOR AT SEM. CRAS ULTRICIES LIGULA SED MAGNA DICTUM PORTA.\\nVESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. CRAS ULTRICIES LIGULA SED MAGNA DICTUM PORTA. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. VIVAMUS MAGNA JUSTO, LACINIA EGET CONSECTETUR SED, CONVALLIS AT TELLUS.\",\n\t\t\t\t\t\"date\": \"2021-04-01 00:15:00\"\n\t\t\t\t},\n\t\t\t\t.\n\t\t\t\t.\n\t\t\t\t.\n\t\t\t]\n\t\t}\n\t]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ReportsAdmin.js",
+    "groupTitle": "ReportsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/admin/reports",
     "title": "(00) Obtener reportes.",
     "version": "0.0.20",
@@ -7741,7 +9309,7 @@
             "type": "String",
             "optional": false,
             "field": "x-access-token",
-            "description": "<p>Token de la sesión (admin | pastor | lider)</p>"
+            "description": "<p>Token de la sesión del administrador.</p>"
           }
         ]
       }
@@ -7995,6 +9563,1075 @@
     },
     "filename": "Docs/Test.js",
     "groupTitle": "Test"
+  },
+  {
+    "type": "post",
+    "url": "/api/user/families-groups/:_id/reports",
+    "title": "(03) Crear reporte a un grupo familiar.",
+    "version": "0.0.28",
+    "name": "createReportsGroupUserFamiliesGroups",
+    "group": "UserFamiliesGroups",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "brethren",
+            "description": "<p>Número de hermanos.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "friends",
+            "description": "<p>Número de amigos de los hermanos.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "scheduledVisits",
+            "description": "<p>Número de visitas programadas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "discipleshipVisits",
+            "description": "<p>Número de visitas al disipulado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildren",
+            "description": "<p>Número de niños cristianos.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildrenFriends",
+            "description": "<p>Número de amigos de los niños cristianos.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Número de total de hermanos y sus amigos, y niños y sus amigos.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "offering",
+            "description": "<p>Total de ofrendas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendance",
+            "description": "<p>Número de asistencias a la iglesia.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendanceChildren",
+            "description": "<p>Número de asistencia de niños a la iglesia.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "conversions",
+            "description": "<p>Número de conversiones.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "reconciliations",
+            "description": "<p>Número de reconciliaciones.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "conversionsChildren",
+            "description": "<p>Número de conversiones de niños.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "brethrenPlanning",
+            "description": "<p>Número de hermanos planeando.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "bibleReading",
+            "description": "<p>Número de lecturas bíblicas.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Número de consolidados.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "observations",
+            "description": "<p>Observaciones.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha del reporte.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"brethren\": 2,\n  \"friends\": 2,\n  \"christianChildren\": 1,\n  \"christianChildrenFriends\": 1,\n  \"scheduledVisits\": 0,\n  \"discipleshipVisits\": 0,\n  \"offering\": 0,\n  \"churchAttendance\": 0,\n  \"churchAttendanceChildren\": 0,\n  \"conversions\": 0,\n  \"reconciliations\": 0,\n  \"conversationsWithChildren\": 0,\n  \"brethrenPlanning\": 0,\n  \"bibleReading\": 0,\n  \"consolidated\": 0,\n  \"observations\": \"Vestibulum ac diam sit amet quam vehicula elementum sed sit amet dui. Vivamus suscipit tortor eget felis porttitor volutpat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Sed porttitor lectus nibh.\\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Cras ultricies ligula sed magna dictum porta.\\nVestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Cras ultricies ligula sed magna dictum porta. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus.\",\n  \"date\": \"2021-04-10 01:15\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del reporte.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "brethren",
+            "description": "<p>Número de hermanos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "friends",
+            "description": "<p>Número de amigos de los hermanos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "scheduledVisits",
+            "description": "<p>Número de visitas programadas.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "discipleshipVisits",
+            "description": "<p>Número de visitas al disipulado.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildren",
+            "description": "<p>Número de niños cristianos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildrenFriends",
+            "description": "<p>Número de amigos de los niños cristianos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Número de total de hermanos y sus amigos, y niños y sus amigos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "offering",
+            "description": "<p>Total de ofrendas.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendance",
+            "description": "<p>Número de asistencias a la iglesia.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendanceChildren",
+            "description": "<p>Número de asistencia de niños a la iglesia.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "conversions",
+            "description": "<p>Número de conversiones.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "reconciliations",
+            "description": "<p>Número de reconciliaciones.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "conversionsChildren",
+            "description": "<p>Número de conversiones de niños.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "brethrenPlanning",
+            "description": "<p>Número de hermanos planeando.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "bibleReading",
+            "description": "<p>Número de lecturas bíblicas.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Número de consolidados.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "observations",
+            "description": "<p>Observaciones.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha del reporte.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha agregado el reporte exitosamente.\",\n\t\"data\": {\n\t\t\"brethren\": 2,\n\t\t\"friends\": 2,\n\t\t\"scheduledVisits\": 0,\n\t\t\"discipleshipVisits\": 0,\n\t\t\"christianChildren\": 1,\n\t\t\"christianChildrenFriends\": 1,\n\t\t\"total\": 6,\n\t\t\"offering\": 0,\n\t\t\"churchAttendance\": 0,\n\t\t\"churchAttendanceChildren\": 0,\n\t\t\"conversions\": 0,\n\t\t\"reconciliations\": 0,\n\t\t\"conversationsWithChildren\": 0,\n\t\t\"brethrenPlanning\": 0,\n\t\t\"bibleReading\": 0,\n\t\t\"consolidated\": 0,\n\t\t\"observations\": \"VESTIBULUM AC DIAM SIT AMET QUAM VEHICULA ELEMENTUM SED SIT AMET DUI. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. SED PORTTITOR LECTUS NIBH.\\nLOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. CURABITUR ARCU ERAT, ACCUMSAN ID IMPERDIET ET, PORTTITOR AT SEM. CRAS ULTRICIES LIGULA SED MAGNA DICTUM PORTA.\\nVESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. CRAS ULTRICIES LIGULA SED MAGNA DICTUM PORTA. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. VIVAMUS MAGNA JUSTO, LACINIA EGET CONSECTETUR SED, CONVALLIS AT TELLUS.\",\n\t\t\"date\": \"2021-04-10 00:15:00\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Not belong at the group",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero usted no pertenece a ningún grupo familiar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parametros!\",\n    \"errors\": [\n        {\n            \"input\": \"brethren\",\n            \"msg\": \"Disculpe, pero debe indicar el número de hermanos.\"\n        },\n        .\n        .\n        .\n        {\n            \"input\": \"observations\",\n            \"msg\": \"Disculpe, pero debe indicar una dirección.\"\n        },\n        {\n            \"input\": \"date\",\n            \"msg\": \"Disculpe, pero debe indicar la fecha y hora del reporte.\"\n        }\n    ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/FamiliesGroups.js",
+    "groupTitle": "UserFamiliesGroups"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/families-groups/:_id",
+    "title": "(01) Obtener detalles de un grupo familiar.",
+    "version": "0.0.28",
+    "name": "getDetailsGroupUserFamiliesGroups",
+    "group": "UserFamiliesGroups",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Datos del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Miembros del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ],
+        "members Object": [
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "leader",
+            "description": "<p>Datos del líder del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "host",
+            "description": "<p>Datos del anfitrión del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "assistant",
+            "description": "<p>Datos del asistente del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "master",
+            "description": "<p>Datos del maestro del grupo.</p>"
+          }
+        ],
+        "leader, host, assistant and master Object": [
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"584121490199\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-03 11:51:52\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Not belong at the group",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero usted no pertenece a ningún grupo familiar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/FamiliesGroups.js",
+    "groupTitle": "UserFamiliesGroups"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/families-groups/:_id/reports",
+    "title": "(02) Obtener reportes de un grupo familiar.",
+    "version": "0.0.28",
+    "name": "getReportsGroupUserFamiliesGroups",
+    "group": "UserFamiliesGroups",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del reporte.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Object",
+            "optional": false,
+            "field": "report",
+            "description": "<p>Datos del reporte.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "observations",
+            "description": "<p>Listado de observaciones.</p>"
+          }
+        ],
+        "report Object": [
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "brethren",
+            "description": "<p>Número de hermanos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "friends",
+            "description": "<p>Número de amigos de los hermanos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "scheduledVisits",
+            "description": "<p>Número de visitas programadas.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "discipleshipVisits",
+            "description": "<p>Número de visitas al disipulado.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildren",
+            "description": "<p>Número de niños cristianos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "christianChildrenFriends",
+            "description": "<p>Número de amigos de los niños cristianos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Número de total de hermanos y sus amigos, y niños y sus amigos.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "offering",
+            "description": "<p>Total de ofrendas.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendance",
+            "description": "<p>Número de asistencias a la iglesia.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "churchAttendanceChildren",
+            "description": "<p>Número de asistencia de niños a la iglesia.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "conversions",
+            "description": "<p>Número de conversiones.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "reconciliations",
+            "description": "<p>Número de reconciliaciones.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "conversionsChildren",
+            "description": "<p>Número de conversiones de niños.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "brethrenPlanning",
+            "description": "<p>Número de hermanos planeando.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "bibleReading",
+            "description": "<p>Número de lecturas bíblicas.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Number",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Número de consolidados.</p>"
+          }
+        ],
+        "observations Object[]": [
+          {
+            "group": "observations Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "observations",
+            "description": "<p>Observaciones.</p>"
+          },
+          {
+            "group": "observations Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha del reporte.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reporte del grupo familiar\",\n\t\"data\": {\n\t\t\"report\": {\n\t\t\t\"brethren\": 16,\n\t\t\t\"friends\": 15,\n\t\t\t\"scheduledVisits\": 3,\n\t\t\t\"discipleshipVisits\": 6,\n\t\t\t\"christianChildren\": 10,\n\t\t\t\"christianChildrenFriends\": 8,\n\t\t\t\"total\": 2173,\n\t\t\t\"offering\": 35000,\n\t\t\t\"churchAttendance\": 6,\n\t\t\t\"churchAttendanceChildren\": 5,\n\t\t\t\"conversions\": 3,\n\t\t\t\"reconciliations\": 1,\n\t\t\t\"conversionsChildren\": 5,\n\t\t\t\"brethrenPlanning\": 3,\n\t\t\t\"bibleReading\": 9,\n\t\t\t\"consolidated\": 8\n\t\t},\n\t\t\"observations\": [\n\t\t\t{\n\t\t\t\t\"observations\": \"VESTIBULUM AC DIAM SIT AMET QUAM VEHICULA ELEMENTUM SED SIT AMET DUI. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. SED PORTTITOR LECTUS NIBH.\\nLOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. CURABITUR ARCU ERAT, ACCUMSAN ID IMPERDIET ET, PORTTITOR AT SEM. CRAS ULTRICIES LIGULA SED MAGNA DICTUM PORTA.\\nVESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. CRAS ULTRICIES LIGULA SED MAGNA DICTUM PORTA. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. VIVAMUS MAGNA JUSTO, LACINIA EGET CONSECTETUR SED, CONVALLIS AT TELLUS.\",\n\t\t\t\t\"date\": \"2021-04-01 00:15:00\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without information",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reporte del grupo familiar\",\n\t\"data\": {\n\t\t\"report\": {\n\t\t\t\"brethren\": 0,\n\t\t\t\"friends\": 0,\n\t\t\t\"scheduledVisits\": 0,\n\t\t\t\"discipleshipVisits\": 0,\n\t\t\t\"christianChildren\": 0,\n\t\t\t\"christianChildrenFriends\": 0,\n\t\t\t\"total\": 0,\n\t\t\t\"offering\": 0,\n\t\t\t\"churchAttendance\": 0,\n\t\t\t\"churchAttendanceChildren\": 0,\n\t\t\t\"conversions\": 0,\n\t\t\t\"reconciliations\": 0,\n\t\t\t\"conversionsChildren\": 0,\n\t\t\t\"brethrenPlanning\": 0,\n\t\t\t\"bibleReading\": 0,\n\t\t\t\"consolidated\": 0\n\t\t},\n\t\t\"observations\": []\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Not belong at the group",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero usted no pertenece a ningún grupo familiar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/FamiliesGroups.js",
+    "groupTitle": "UserFamiliesGroups"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/families-groups",
+    "title": "(00) Obtener listado de grupos familiares.",
+    "version": "0.0.28",
+    "name": "getUserFamiliesGroups",
+    "group": "UserFamiliesGroups",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>Listado de grupos familiares asociados al usuario.</p>"
+          }
+        ],
+        "groups Object": [
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "groups Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n\t\t{\n\t\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\t\"sector\": 4,\n\t\t\t\"subSector\": 2,\n\t\t\t\"number\": 2,\n\t\t\t\"created_at\": \"2021-03-30 09:40:28\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/FamiliesGroups.js",
+    "groupTitle": "UserFamiliesGroups",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
   },
   {
     "type": "get",
@@ -10637,6 +13274,13 @@
             "optional": false,
             "field": "word",
             "description": "<p>Número de documento o nombre a buscar (Opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "admins",
+            "description": "<p>Obtiene los usuarios de tipo admin (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder) (Opcional).</p>"
           }
         ]
       }

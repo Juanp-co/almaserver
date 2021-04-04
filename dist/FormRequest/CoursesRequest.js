@@ -182,8 +182,13 @@ function validateContentThemeUpdate(data) {
         }
     }
     // urlVideo
-    else if (data.urlVideo)
-        ret.urlVideo = data.urlVideo;
+    if (data.urlVideo) {
+        if (!Validations_1.checkYoutubeUrl(data.urlVideo)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero la URL del vídeo solo debe prevenir de youtube.', 'urlVideo'));
+        }
+        else
+            ret.urlVideo = data.urlVideo;
+    }
     return { data: ret, errors };
 }
 exports.validateContentThemeUpdate = validateContentThemeUpdate;

@@ -3,14 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getFamiliesGroupsReports = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
-const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
-const Users_1 = __importDefault(require("../../Models/Users"));
-const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
+const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
+const Validations_1 = require("../../Functions/Validations");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
+const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const Events_1 = __importDefault(require("../../Models/Events"));
+const FamiliesGroups_1 = __importDefault(require("../../Models/FamiliesGroups"));
+const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGroupsReports"));
 const Groups_1 = __importDefault(require("../../Models/Groups"));
+const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'src/admin/reports.admin.controller';
 async function getReports(req, res) {
     try {
@@ -36,7 +41,7 @@ async function getReports(req, res) {
                 qty: 0,
             },
             groups: {
-                title: 'Grupos',
+                title: 'Familias',
                 data: [
                     { label: 'Sin miembros', qty: 0 },
                     { label: 'Con miembros', qty: 0 },
@@ -60,7 +65,7 @@ async function getReports(req, res) {
                     ]
                 },
                 families: {
-                    title: 'Miembros y grupos',
+                    title: 'Miembros en familia',
                     data: [
                         { label: 'No pertenece', qty: 0 },
                         { label: 'Pertenece', qty: 0 },
@@ -87,11 +92,10 @@ async function getReports(req, res) {
                 },
             },
         };
-        if (initDate) {
+        if (initDate && Validations_1.checkDate(initDate)) {
             query.created_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-        }
-        if (endDate) {
-            query.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+            if (Validations_1.checkDate(endDate))
+                query.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
         }
         if (!UsersActions_1.checkRoleToActions(userrole))
             return UsersActions_1.responseUsersAdmin(res, 3);
@@ -172,3 +176,133 @@ async function getReports(req, res) {
     }
 }
 exports.default = getReports;
+async function getFamiliesGroupsReports(req, res) {
+    try {
+        const { userrole } = req.body;
+        const { initDate, endDate, sector, subSector, number } = req.query;
+        const query1 = {};
+        const query2 = {};
+        let ret = [];
+        if (/[0-9]{1,3}/.test(`${sector}`))
+            query1.sector = parseInt(`${sector}`, 10);
+        if (/[0-9]{1,3}/.test(`${subSector}`))
+            query1.subSector = parseInt(`${subSector}`, 10);
+        if (/[0-9]{1,3}/.test(`${number}`))
+            query1.number = parseInt(`${number}`, 10);
+        if (initDate && Validations_1.checkDate(initDate)) {
+            query2['report.date'] = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+            if (Validations_1.checkDate(endDate))
+                query2['report.date'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        }
+        if (!UsersActions_1.checkRoleToActions(userrole))
+            return UsersActions_1.responseUsersAdmin(res, 3);
+        // get all families groups
+        const familiesGroups = await FamiliesGroups_1.default.find(query1, { number: 1, sector: 1, subSector: 1, created_at: 1, })
+            .sort({
+            sector: 1,
+            subSector: 1,
+            number: 1
+        })
+            .exec();
+        if (familiesGroups.length > 0) {
+            const listIds = familiesGroups.map(fg => fg._id.toString());
+            query2.familyGroupId = { $in: listIds };
+            // get reports
+            const reports = await FamiliesGroupsReports_1.default.find(query2, { familyGroupId: 1, report: 1 }).exec();
+            if (reports.length > 0) {
+                for (const value of listIds) {
+                    const group = familiesGroups.find(fg => fg._id.toString() === value);
+                    if (group) {
+                        const data = {
+                            group,
+                            report: {
+                                brethren: 0,
+                                friends: 0,
+                                scheduledVisits: 0,
+                                discipleshipVisits: 0,
+                                christianChildren: 0,
+                                christianChildrenFriends: 0,
+                                total: 0,
+                                offering: 0,
+                                churchAttendance: 0,
+                                churchAttendanceChildren: 0,
+                                conversions: 0,
+                                reconciliations: 0,
+                                conversionsChildren: 0,
+                                brethrenPlanning: 0,
+                                bibleReading: 0,
+                                consolidated: 0,
+                            },
+                            observations: []
+                        };
+                        const filterReports = reports.filter(r => r.familyGroupId === value);
+                        if (filterReports.length > 0) {
+                            for (const fr of filterReports) {
+                                data.report.brethren += fr.report.brethren;
+                                data.report.friends += fr.report.friends;
+                                data.report.scheduledVisits += fr.report.scheduledVisits;
+                                data.report.discipleshipVisits += fr.report.discipleshipVisits;
+                                data.report.christianChildren += fr.report.christianChildren;
+                                data.report.christianChildrenFriends += fr.report.christianChildrenFriends;
+                                data.report.total += fr.report.total;
+                                data.report.offering += fr.report.offering;
+                                data.report.churchAttendance += fr.report.churchAttendance;
+                                data.report.churchAttendanceChildren += fr.report.churchAttendanceChildren;
+                                data.report.conversions += fr.report.conversions;
+                                data.report.reconciliations += fr.report.reconciliations;
+                                data.report.conversionsChildren += fr.report.conversionsChildren;
+                                data.report.brethrenPlanning += fr.report.brethrenPlanning;
+                                data.report.bibleReading += fr.report.bibleReading;
+                                data.report.consolidated += fr.report.consolidated;
+                                data.observations.push({
+                                    observations: fr.report.observations,
+                                    date: fr.report.date,
+                                });
+                            }
+                        }
+                        ret.push(data);
+                    }
+                }
+            }
+            else {
+                for (const value of listIds) {
+                    const group = familiesGroups.find(fg => fg._id.toString() === value);
+                    if (group) {
+                        const data = {
+                            group,
+                            report: {
+                                brethren: 0,
+                                friends: 0,
+                                scheduledVisits: 0,
+                                discipleshipVisits: 0,
+                                christianChildren: 0,
+                                christianChildrenFriends: 0,
+                                total: 0,
+                                offering: 0,
+                                churchAttendance: 0,
+                                churchAttendanceChildren: 0,
+                                conversions: 0,
+                                reconciliations: 0,
+                                conversionsChildren: 0,
+                                brethrenPlanning: 0,
+                                bibleReading: 0,
+                                consolidated: 0,
+                            },
+                            observations: []
+                        };
+                        ret.push(data);
+                    }
+                }
+            }
+            ret = lodash_1.default.sortBy(ret, ['group.sector', 'group.subSector', 'group.number'], ['asc', 'asc', 'asc']);
+        }
+        return res.json({
+            msg: 'Reportes de grupos familiares.',
+            reports: ret
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getFamiliesGroupsReports`);
+    }
+}
+exports.getFamiliesGroupsReports = getFamiliesGroupsReports;

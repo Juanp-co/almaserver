@@ -24,6 +24,7 @@ const UserSchema = new Schema(
     role: { type: Number, default: 5 },
     referred: { type: String, default: null },
     group: { type: String, default: null },
+    familyGroupId: { type: [String], default: [] },
     department: { type: Number, default: null },
     city: { type: Number, default: null },
     locality: { type: String, default: null, set: toUpperValue },

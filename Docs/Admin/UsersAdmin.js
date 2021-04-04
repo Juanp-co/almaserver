@@ -7,6 +7,7 @@
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
  * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
+ * @apiParam (Query Params) {String} admins Obtiene los usuarios de tipo admin (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder) (Opcional).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} totals Total de miembros.

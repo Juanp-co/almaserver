@@ -41,6 +41,18 @@ async function getUsers(req, res) {
         const { userid } = req.params;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
         const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
+        // if (req.query.admins === 'true') {
+        //   query.role = { $in: [ 0, 1, 2, 3 ] }
+        // }
+        if (req.query.ignoreIds) {
+            const ids = req.query.ignoreIds.toString().split(',');
+            if (ids.length > 0) {
+                const list = [userid];
+                ids.forEach(i => { if (Validations_1.checkObjectId(i))
+                    list.push(i); });
+                query._id = { $nin: list };
+            }
+        }
         const users = await Users_1.default.find(query, {
             names: 1,
             lastNames: 1,

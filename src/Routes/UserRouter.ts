@@ -6,6 +6,11 @@ import {
   update
 } from '../Controllers/user.controller';
 import { getMemberReferred, getReferrals } from '../Controllers/publics/referrals.controller';
+import getFamiliesGroups, {
+  reportsFamilyGroup,
+  saveFamilyGroupReport,
+  showFamilyGroup
+} from '../Controllers/publics/family-group.controller';
 
 const router = Router();
 
@@ -16,6 +21,16 @@ const router = Router();
 router.route('/').get(validateUser, get).put(validateUser, update);
 router.put('/change-password', validateUser, changePassword);
 router.get('/courses', validateUser, getCourses);
+
+/*
+  Families Group
+*/
+
+router.get(`/families-groups`, validateUser, getFamiliesGroups);
+router.get(`/families-groups/:_id`, validateUser, showFamilyGroup);
+router.route(`/families-groups/:_id/reports`)
+  .get(validateUser, reportsFamilyGroup)
+  .post(validateUser, saveFamilyGroupReport);
 
 /*
   Group

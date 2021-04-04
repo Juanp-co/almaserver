@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
+exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDateAndHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
+const moment_1 = __importDefault(require("moment"));
 const mongoose_1 = require("mongoose");
 function checkNameOrLastName(value) {
     return (value &&
@@ -55,11 +59,17 @@ function checkCodeValue(value) {
 exports.checkCodeValue = checkCodeValue;
 function checkDate(value) {
     // validate date (YYYY-MM-DD)
-    return value && /\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])*/.test(`${value}`);
+    const isValid = moment_1.default(`${value}`, 'YYYY-MM-DD', true).isValid();
+    return value && isValid;
 }
 exports.checkDate = checkDate;
+function checkDateAndHour(value) {
+    // validate date (YYYY-MM-DD HH:mm)
+    return value && moment_1.default(`${value}`).isValid();
+}
+exports.checkDateAndHour = checkDateAndHour;
 function checkHour(value) {
-    // validate hour (HH:MM)
+    // validate hour (HH:mm)
     return value && /^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$/.test(value);
 }
 exports.checkHour = checkHour;

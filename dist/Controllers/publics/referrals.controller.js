@@ -16,6 +16,7 @@ async function getReferrals(req, res) {
         const { userid } = req.params;
         const ret = {
             referred: null,
+            totalsGroups: null,
             totals: null,
             referrals: []
         };
@@ -44,6 +45,8 @@ async function getReferrals(req, res) {
                 }
             }
         }
+        const user = await Users_1.default.findOne({ _id: userid }, { familyGroupId: 1 }).exec();
+        ret.totalsGroups = user && user.familyGroupId ? (user.familyGroupId.length || 0) : 0;
         return res.json({
             msg: `Mis referidos.`,
             ...ret
