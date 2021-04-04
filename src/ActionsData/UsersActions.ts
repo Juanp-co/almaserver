@@ -212,6 +212,22 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
   return ret;
 }
 
+export async function setFamilyGroupIdValueUsers(listIds: string[], groupId: string, remove = false) {
+  // check the list users
+  if (listIds.length > 0) {
+    const users = await Users.find({ _id: { $in: listIds } }, { familyGroupId: 1 }).exec();
+
+    if (users.length > 0) {
+      for (const user of users) {
+        // set or remove the familyGroupId
+        if (remove) user.familyGroupId = user.familyGroupId.filter(fg => fg !== groupId);
+        else user.familyGroupId.push(groupId);
+        await user.save();
+      }
+    }
+  }
+}
+
 /*
   Static functions
  */

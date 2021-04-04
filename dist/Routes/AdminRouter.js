@@ -18,9 +18,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../middleware");
@@ -28,8 +25,9 @@ const courses_admin_controller_1 = __importStar(require("../Controllers/admin/co
 const events_controller_1 = __importStar(require("../Controllers/events/events.controller"));
 const groups_admin_controller_1 = __importStar(require("../Controllers/admin/groups.admin.controller"));
 const users_admin_controller_1 = __importStar(require("../Controllers/admin/users.admin.controller"));
-const reports_admin_controller_1 = __importDefault(require("../Controllers/admin/reports.admin.controller"));
+const reports_admin_controller_1 = __importStar(require("../Controllers/admin/reports.admin.controller"));
 const accounts_banks_admin_controllers_1 = __importStar(require("../Controllers/admin/accounts.banks.admin.controllers"));
+const families_groups_admin_controller_1 = __importStar(require("../Controllers/admin/families-groups.admin.controller"));
 const router = express_1.Router();
 // ===================================================================================
 /*
@@ -68,6 +66,18 @@ router.route('/events/:_id')
     .get(middleware_1.validateAdmin, events_controller_1.showEvent)
     .put(middleware_1.validateAdmin, events_controller_1.updateEvent);
 /*
+  Families Groups
+*/
+router.route('/families-groups')
+    .get(middleware_1.validateAdmin, families_groups_admin_controller_1.default)
+    .post(middleware_1.validateAdmin, families_groups_admin_controller_1.saveFamilyGroup);
+router.get('/families-groups/counters', middleware_1.validateAdmin, families_groups_admin_controller_1.getFamiliesGroupsCounters);
+router.route('/families-groups/:_id')
+    .delete(middleware_1.validateAdmin, families_groups_admin_controller_1.deleteFamilyGroup)
+    .get(middleware_1.validateAdmin, families_groups_admin_controller_1.showFamilyGroup)
+    .put(middleware_1.validateAdmin, families_groups_admin_controller_1.updateFamilyGroup);
+router.put('/families-groups/:_id/members', middleware_1.validateAdmin, families_groups_admin_controller_1.updateMembersFamilyGroup);
+/*
   Groups
 */
 router.route('/groups')
@@ -81,9 +91,10 @@ router.route('/groups/:_id')
 router.get('/groups/:_id/find-members', middleware_1.validateAdmin, groups_admin_controller_1.findNewMembers);
 router.put('/groups/:_id/members/:action', middleware_1.validateAdmin, groups_admin_controller_1.addOrRemoveMembersGroup);
 /*
-  Users
+  Reports
 */
 router.get('/reports', middleware_1.validateAdmin, reports_admin_controller_1.default);
+router.get('/reports/families-groups', middleware_1.validateAdmin, reports_admin_controller_1.getFamiliesGroupsReports);
 /*
   Users
 */

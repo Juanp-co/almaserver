@@ -2,7 +2,7 @@ import { setError } from '../Functions/GlobalFunctions';
 import {
   checkIfValueIsNumber,
   checkNameOrLastName, checkObjectId,
-  checkTitlesOrDescriptions
+  checkTitlesOrDescriptions, checkYoutubeUrl
 } from '../Functions/Validations';
 import {
   ICourseContentThemeUpdateForm,
@@ -223,8 +223,16 @@ export function validateContentThemeUpdate(data: ICourseContentThemeUpdateForm):
       }
     }
   }
+
   // urlVideo
-  else if (data.urlVideo) ret.urlVideo = data.urlVideo;
+  if (data.urlVideo) {
+    if (!checkYoutubeUrl(data.urlVideo)) {
+      errors.push(
+        setError('Disculpe, pero la URL del vídeo solo debe prevenir de youtube.', 'urlVideo')
+      );
+    }
+    else ret.urlVideo = data.urlVideo;
+  }
 
   return { data: ret, errors };
 }

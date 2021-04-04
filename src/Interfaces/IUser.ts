@@ -25,6 +25,7 @@ export default interface IUser extends Document {
   role?: number | null;
   referred?: any;
   group?: any;
+  familyGroupId: string[];
   department: number | null;
   city: number | null;
   locality: string | null;

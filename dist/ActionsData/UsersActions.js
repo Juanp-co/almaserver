@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
+exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
@@ -183,6 +183,23 @@ async function getInfoUserReferred(_id) {
     return ret;
 }
 exports.getInfoUserReferred = getInfoUserReferred;
+async function setFamilyGroupIdValueUsers(listIds, groupId, remove = false) {
+    // check the list users
+    if (listIds.length > 0) {
+        const users = await Users_1.default.find({ _id: { $in: listIds } }, { familyGroupId: 1 }).exec();
+        if (users.length > 0) {
+            for (const user of users) {
+                // set or remove the familyGroupId
+                if (remove)
+                    user.familyGroupId = user.familyGroupId.filter(fg => fg !== groupId);
+                else
+                    user.familyGroupId.push(groupId);
+                await user.save();
+            }
+        }
+    }
+}
+exports.setFamilyGroupIdValueUsers = setFamilyGroupIdValueUsers;
 /*
   Static functions
  */
