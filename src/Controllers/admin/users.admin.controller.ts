@@ -13,7 +13,7 @@ import {
   returnErrorParams
 } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
-import { checkObjectId } from '../../Functions/Validations';
+import { checkObjectId, checkRole } from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Groups from '../../Models/Groups';
@@ -183,32 +183,32 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
   }
 }
 
-// export async function changeRoleUser(req: Request, res: Response): Promise<Response> {
-//   try {
-//     const { _id } = req.params;
-//     const { role } = req.body;
-//
-//     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
-//
-//     if (!checkRole(role)) return responseUsersAdmin(res, 2);
-//
-//     const user = await Users.findOne({_id}, { role: 1 }).exec();
-//
-//     if (!user) return responseUsersAdmin(res, 1);
-//
-//     user.role = role;
-//     await user.save();
-//
-//     // disconnect user
-//     await disableTokenDBForUserId([_id]);
-//
-//     return res.json({
-//       msg: `Se asignado el nuevo rol al miembro exitosamente.`
-//     });
-//   } catch (error: any) {
-//     return returnError(res, error, `${path}/changeRoleUser`);
-//   }
-// }
+export async function changeRoleUser(req: Request, res: Response): Promise<Response> {
+  try {
+    const { _id } = req.params;
+    const { role } = req.body;
+
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
+
+    if (!checkRole(role)) return responseUsersAdmin(res, 2);
+
+    const user = await Users.findOne({_id}, { role: 1 }).exec();
+
+    if (!user) return responseUsersAdmin(res, 1);
+
+    user.role = role;
+    await user.save();
+
+    // disconnect user
+    await disableTokenDBForUserId([_id]);
+
+    return res.json({
+      msg: `Se asignado el nuevo rol al miembro exitosamente.`
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/changeRoleUser`);
+  }
+}
 
 export async function deleteUser(req: Request, res: Response): Promise<Response> {
   try {

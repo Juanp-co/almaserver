@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReferralsUser = exports.getCoursesUser = exports.deleteUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
+exports.getReferralsUser = exports.getCoursesUser = exports.deleteUser = exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = __importStar(require("../../FormRequest/UsersRequest"));
@@ -176,32 +176,30 @@ async function updateUser(req, res) {
     }
 }
 exports.updateUser = updateUser;
-// export async function changeRoleUser(req: Request, res: Response): Promise<Response> {
-//   try {
-//     const { _id } = req.params;
-//     const { role } = req.body;
-//
-//     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
-//
-//     if (!checkRole(role)) return responseUsersAdmin(res, 2);
-//
-//     const user = await Users.findOne({_id}, { role: 1 }).exec();
-//
-//     if (!user) return responseUsersAdmin(res, 1);
-//
-//     user.role = role;
-//     await user.save();
-//
-//     // disconnect user
-//     await disableTokenDBForUserId([_id]);
-//
-//     return res.json({
-//       msg: `Se asignado el nuevo rol al miembro exitosamente.`
-//     });
-//   } catch (error: any) {
-//     return returnError(res, error, `${path}/changeRoleUser`);
-//   }
-// }
+async function changeRoleUser(req, res) {
+    try {
+        const { _id } = req.params;
+        const { role } = req.body;
+        if (!Validations_1.checkObjectId(_id))
+            return UsersActions_1.responseUsersAdmin(res, 0);
+        if (!Validations_1.checkRole(role))
+            return UsersActions_1.responseUsersAdmin(res, 2);
+        const user = await Users_1.default.findOne({ _id }, { role: 1 }).exec();
+        if (!user)
+            return UsersActions_1.responseUsersAdmin(res, 1);
+        user.role = role;
+        await user.save();
+        // disconnect user
+        await TokenActions_1.disableTokenDBForUserId([_id]);
+        return res.json({
+            msg: `Se asignado el nuevo rol al miembro exitosamente.`
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/changeRoleUser`);
+    }
+}
+exports.changeRoleUser = changeRoleUser;
 async function deleteUser(req, res) {
     try {
         const { userrole } = req.body;

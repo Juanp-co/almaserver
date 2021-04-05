@@ -73,7 +73,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     if (!user) {
       return res.status(404).json({
-        msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
+        msg: `Disculpe, pero el número de teléfono o la contraseña son incorrectos.`
       });
     }
 
@@ -87,7 +87,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     if (!bcrypt.compareSync(`${validate.data.password}`, `${user.password}`)) {
       return res.status(422).json({
-        msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
+        msg: `Disculpe, pero el número de teléfono o la contraseña son incorrectos.`
       });
     }
 

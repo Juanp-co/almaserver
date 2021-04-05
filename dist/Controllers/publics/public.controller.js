@@ -86,7 +86,7 @@ async function login(req, res) {
         const user = await Users_1.default.findOne({ phone: validate.data.phone }, { password: 1, document: 1, role: 1 }).exec();
         if (!user) {
             return res.status(404).json({
-                msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
+                msg: `Disculpe, pero el número de teléfono o la contraseña son incorrectos.`
             });
         }
         if (validate.data.admin) {
@@ -98,7 +98,7 @@ async function login(req, res) {
         }
         if (!bcrypt_1.default.compareSync(`${validate.data.password}`, `${user.password}`)) {
             return res.status(422).json({
-                msg: `Disculpe, pero el usuario o la contraseña son incorrectos.`
+                msg: `Disculpe, pero el número de teléfono o la contraseña son incorrectos.`
             });
         }
         const token = await TokenActions_1.getAccessToken(req, {
