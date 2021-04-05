@@ -478,11 +478,9 @@
  *
  */
 
-
-
-/*
- * @api {put} /api/admin/users/:_id (06) Cambiar rol de un miembro.
- * @apiVersion 0.0.3
+/**
+ * @api {put} /api/admin/users/:_id (07) Cambiar rol de un miembro.
+ * @apiVersion 0.0.29
  * @apiName updateUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -490,7 +488,7 @@
  *
  * @apiParam (Path params) {String} _id ID del miembro.
  *
- * @apiParam {Number} role Role para el miembro.
+ * @apiParam {Number} role Rol para el miembro (valores: 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  *
  * @apiExample {JSON} Example JSON Request
  * {

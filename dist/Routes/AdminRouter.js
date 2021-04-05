@@ -108,5 +108,5 @@ router.route('/users/:_id')
     .delete(middleware_1.validateAdmin, users_admin_controller_1.deleteUser);
 router.get('/users/:_id/courses', middleware_1.validateAdmin, users_admin_controller_1.getCoursesUser);
 router.get('/users/:_id/referrals', middleware_1.validateAdmin, users_admin_controller_1.getReferralsUser);
-// router.put('/users/:_id/role', validateAdmin, changeRoleUser);
+router.put('/users/:_id/role', middleware_1.validateAdmin, users_admin_controller_1.changeRoleUser);
 exports.default = router;

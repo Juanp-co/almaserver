@@ -12,11 +12,11 @@ function checkNameOrLastName(value) {
 }
 exports.checkNameOrLastName = checkNameOrLastName;
 function checkRole(value) {
-    return value && /^[012345]{1}/.test(`${value}`);
+    return /^[012345]{1}/.test(`${value}`);
 }
 exports.checkRole = checkRole;
 function checkIfValueIsNumber(value) {
-    return value && /^[0-9]{1,3}/.test(`${value}`);
+    return /^[0-9]{1,3}/.test(`${value}`);
 }
 exports.checkIfValueIsNumber = checkIfValueIsNumber;
 function checkDocument(value) {
