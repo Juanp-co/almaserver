@@ -24,7 +24,7 @@ function validateSimpleRegister(data) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una fecha para la visita.', 'date'));
     }
     else
-        ret.date = moment_timezone_1.default(data.date).unix();
+        ret.date = moment_timezone_1.default(data.date, 'YYYY-MM-DD', true).unix();
     // observation
     if (!Validations_1.checkTitlesOrDescriptions(data.observation)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un observación válida.', 'observation'));

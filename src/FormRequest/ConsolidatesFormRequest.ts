@@ -25,7 +25,7 @@ export default function validateSimpleRegister(data: IConsolidatesForm): { data:
     errors.push(
       setError('Disculpe, pero indicar una fecha para la visita.', 'date')
     );
-  } else ret.date = moment(data.date).unix();
+  } else ret.date = moment(data.date, 'YYYY-MM-DD', true).unix();
 
   // observation
   if (!checkTitlesOrDescriptions(data.observation)) {

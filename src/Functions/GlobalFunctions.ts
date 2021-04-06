@@ -66,7 +66,7 @@ export function getDate(timestamp: number | null | undefined): string | any {
 }
 
 export function getSimpleDate(timestamp: number | null | undefined): string | any {
-  return timestamp ? moment.unix(timestamp).format('DD-MM-YYYY') || null : timestamp;
+  return timestamp ? moment.unix(timestamp).format('YYYY-MM-DD') || null : timestamp;
 }
 
 export function cleanWhiteSpaces(value: string | null): string | null {
