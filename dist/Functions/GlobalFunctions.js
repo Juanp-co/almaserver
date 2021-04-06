@@ -88,7 +88,7 @@ function getDate(timestamp) {
 }
 exports.getDate = getDate;
 function getSimpleDate(timestamp) {
-    return timestamp ? moment_timezone_1.default.unix(timestamp).format('DD-MM-YYYY') || null : timestamp;
+    return timestamp ? moment_timezone_1.default.unix(timestamp).format('YYYY-MM-DD') || null : timestamp;
 }
 exports.getSimpleDate = getSimpleDate;
 function cleanWhiteSpaces(value) {

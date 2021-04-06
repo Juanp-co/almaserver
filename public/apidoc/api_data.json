@@ -879,7 +879,7 @@
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha de la visita (DD-MM-YYYY).</p>"
+            "description": "<p>Fecha de la visita (YYYY-MM-DD).</p>"
           },
           {
             "group": "consolidates Object[]",
@@ -937,7 +937,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Consolidaciones.\",\n\t\"data\": {\n\t\t\"consolidates\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"606bdbf35fd5900c1092d191\",\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t\t},\n\t\t\t\t\"member\": {\n\t\t\t\t\t\"gender\": null,\n\t\t\t\t\t\"_id\": \"606b6b833784652d9c46eb04\",\n\t\t\t\t\t\"phone\": \"3161231231\",\n\t\t\t\t\t\"document\": \"CC11123123\",\n\t\t\t\t\t\"names\": \"MILEIDY\",\n\t\t\t\t\t\"lastNames\": \"CABELLO\"\n\t\t\t\t},\n\t\t\t\t\"date\": \"04-02-2021\",\n\t\t\t\t\"observation\": \"LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. SED PORTTITOR LECTUS NIBH. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. SED PORTTITOR LECTUS NIBH. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. NULLA QUIS LOREM UT LIBERO MALESUADA FEUGIAT.\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"pendingVisits\": [\n\t\t\t\"606b6b833784652d9c46eb04\",\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Consolidaciones.\",\n\t\"data\": {\n\t\t\"consolidates\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"606bdbf35fd5900c1092d191\",\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t\t},\n\t\t\t\t\"member\": {\n\t\t\t\t\t\"gender\": null,\n\t\t\t\t\t\"_id\": \"606b6b833784652d9c46eb04\",\n\t\t\t\t\t\"phone\": \"3161231231\",\n\t\t\t\t\t\"document\": \"CC11123123\",\n\t\t\t\t\t\"names\": \"MILEIDY\",\n\t\t\t\t\t\"lastNames\": \"CABELLO\"\n\t\t\t\t},\n\t\t\t\t\"date\": \"2021-04-05\",\n\t\t\t\t\"observation\": \"LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. SED PORTTITOR LECTUS NIBH. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. SED PORTTITOR LECTUS NIBH. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. NULLA QUIS LOREM UT LIBERO MALESUADA FEUGIAT.\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"pendingVisits\": [\n\t\t\t\"606b6b833784652d9c46eb04\",\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]

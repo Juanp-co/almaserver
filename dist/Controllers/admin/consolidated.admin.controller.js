@@ -18,52 +18,51 @@ async function getConsolidates(req, res) {
         const { initDate, endDate, input, value } = req.query;
         const query = {};
         const query2 = {};
-        let query3 = null;
-        let pending = false;
         const sort = {};
         const ret = {
             consolidates: [],
             members: [],
             pendingVisits: []
         };
-        if (input && input === 'date') {
+        if (input && input === 'date')
             sort.date = value && value === '1' ? 1 : -1;
-        }
         if (initDate && Validations_1.checkDate(initDate)) {
-            // get pending
-            const compare = moment_timezone_1.default().startOf('d');
-            pending = compare.diff(moment_timezone_1.default(`${initDate}`).startOf('d'), 'months') >= 1;
-            query3 = {};
             query.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
             query2.created_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            query3.date = { $lt: moment_timezone_1.default(`${initDate}`).startOf('d').subtract(1, 'months').endOf('d').unix() };
             if (Validations_1.checkDate(endDate)) {
                 query.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
                 query2.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
-                query3.date = { $lt: moment_timezone_1.default(`${endDate}`).startOf('d').subtract(1, 'months').endOf('d').unix() };
             }
         }
         const consolidates = await Consolidates_1.default.find(query).sort(sort).exec();
         if (consolidates.length > 0) {
             const listIds = [];
             consolidates.forEach(c => {
-                if (c.userid)
+                if (c.userid && !listIds.includes(c.userid))
                     listIds.push(c.userid);
-                if (c.consolidatorId)
+                if (c.consolidatorId && listIds.includes(c.consolidatorId))
                     listIds.push(c.consolidatorId);
             });
             // find all members
             ret.members = await Users_1.default.find({
                 $or: [
                     { consolidatorId: { $ne: null }, ...query2 },
-                    { _id: { $in: lodash_1.default.uniq(listIds) || [] } }
+                    { _id: { $in: listIds || [] } }
                 ]
             }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec();
-            let pendingForVisits = false;
+            const listToCheck = [];
+            let listIdsPending = [];
             for (const c of consolidates) {
-                if (!pendingForVisits) {
-                    pendingForVisits = moment_timezone_1.default().diff(moment_timezone_1.default(`${c.date}`, 'DD-MM-YYYY', true), 'months') >= 1;
+                // add to list for the next check
+                if (c.userid && !listToCheck.includes(c.userid))
+                    listToCheck.push(c.userid);
+                // check last visit and add or remove id from list
+                if (moment_timezone_1.default().diff(moment_timezone_1.default(`${c.date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+                    if (c.userid && !listIdsPending.includes(c.userid))
+                        listIdsPending.push(c.userid);
                 }
+                else
+                    listIdsPending = listIdsPending.filter(lip => lip !== c.userid);
                 ret.consolidates.push({
                     _id: c._id,
                     consolidator: ret.members.find((m) => m._id.toString() === c.consolidatorId) || null,
@@ -72,13 +71,10 @@ async function getConsolidates(req, res) {
                     observation: c.observation
                 });
             }
-            // check pendings for visits
-            if (pending) {
-                if (pendingForVisits) {
-                    const list = await Consolidates_1.default.find(query3 || { date: { $lt: moment_timezone_1.default().startOf('d').subtract(1, 'months').endOf('d').unix() } }, { userid: 1 }).exec();
-                    ret.pendingVisits = list.length > 0 ? lodash_1.default.uniq(list.map(l => l.userid)) : [];
-                }
-            }
+            // check whats ids was not recived visits
+            const idsMembers = ret.members.length > 0 ? ret.members.map((m) => m._id.toString()) : [];
+            const diff = lodash_1.default.difference(idsMembers, listToCheck);
+            ret.pendingVisits = lodash_1.default.uniq(listIdsPending.concat(diff || []));
         }
         return res.json({
             msg: `Consolidaciones.`,

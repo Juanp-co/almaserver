@@ -22,7 +22,7 @@
  * @apiSuccess (consolidates Object[]) {String} _id ID del registro de la visita.
  * @apiSuccess (consolidates Object[]) {Object|Null} consolidator Miembro que registró la información.
  * @apiSuccess (consolidates Object[]) {Object|Null} member Datos del miembro consolidado.
- * @apiSuccess (consolidates Object[]) {String} date Fecha de la visita (DD-MM-YYYY).
+ * @apiSuccess (consolidates Object[]) {String} date Fecha de la visita (YYYY-MM-DD).
  * @apiSuccess (consolidates Object[]) {String} observation Observación agregada en la visita.
  *
  * @apiSuccess (consolidator, members and member Object) {String} _id ID del miembro.
@@ -56,7 +56,7 @@
 					"names": "MILEIDY",
 					"lastNames": "CABELLO"
 				},
-				"date": "04-02-2021",
+				"date": "2021-04-05",
 				"observation": "LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. SED PORTTITOR LECTUS NIBH. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. SED PORTTITOR LECTUS NIBH. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. NULLA QUIS LOREM UT LIBERO MALESUADA FEUGIAT."
 			},
 			.

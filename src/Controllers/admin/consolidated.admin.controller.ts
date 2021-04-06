@@ -16,8 +16,6 @@ export default async function getConsolidates(req: Request, res: Response): Prom
     const { initDate, endDate, input, value } = req.query;
     const query: any = {};
     const query2: any = {};
-    let query3: any = null;
-    let pending = false;
     const sort: any = {};
     const ret: any = {
       consolidates: [],
@@ -25,24 +23,14 @@ export default async function getConsolidates(req: Request, res: Response): Prom
       pendingVisits: []
     };
 
-    if (input && input === 'date') {
-      sort.date = value && value === '1' ? 1 : -1;
-    }
+    if (input && input === 'date') sort.date = value && value === '1' ? 1 : -1;
 
     if (initDate && checkDate(initDate)) {
-
-      // get pending
-      const compare = moment().startOf('d');
-      pending = compare.diff(moment(`${initDate}`).startOf('d'), 'months') >= 1;
-
-      query3 = {};
       query.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
       query2.created_at = { $gte: moment(`${initDate}`).startOf('d').unix() };
-      query3.date = { $lt: moment(`${initDate}`).startOf('d').subtract(1, 'months').endOf('d').unix() };
       if (checkDate(endDate)) {
         query.date.$lt = moment(`${endDate}`).endOf('d').unix();
         query2.created_at.$lt = moment(`${endDate}`).endOf('d').unix();
-        query3.date = { $lt: moment(`${endDate}`).startOf('d').subtract(1, 'months').endOf('d').unix() };
       }
     }
 
@@ -51,8 +39,8 @@ export default async function getConsolidates(req: Request, res: Response): Prom
     if (consolidates.length > 0) {
       const listIds: string[] = [];
       consolidates.forEach(c => {
-        if (c.userid) listIds.push(c.userid);
-        if (c.consolidatorId) listIds.push(c.consolidatorId);
+        if (c.userid && !listIds.includes(c.userid)) listIds.push(c.userid);
+        if (c.consolidatorId && listIds.includes(c.consolidatorId)) listIds.push(c.consolidatorId);
       });
 
       // find all members
@@ -60,19 +48,25 @@ export default async function getConsolidates(req: Request, res: Response): Prom
         {
           $or: [
             { consolidatorId: { $ne: null }, ...query2 },
-            { _id: { $in: _.uniq(listIds) || [] } }
+            { _id: { $in: listIds || [] } }
           ]
         },
         { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }
       ).exec() as any;
 
-      let pendingForVisits = false;
+      const listToCheck: string[] = [];
+      let listIdsPending: string[] = [];
 
       for (const c of consolidates) {
 
-        if (!pendingForVisits) {
-          pendingForVisits = moment().diff(moment(`${c.date}`, 'DD-MM-YYYY', true), 'months') >= 1;
+        // add to list for the next check
+        if (c.userid && !listToCheck.includes(c.userid)) listToCheck.push(c.userid);
+
+        // check last visit and add or remove id from list
+        if (moment().diff(moment(`${c.date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+          if (c.userid && !listIdsPending.includes(c.userid)) listIdsPending.push(c.userid);
         }
+        else listIdsPending = listIdsPending.filter( lip => lip !== c.userid);
 
         ret.consolidates.push({
           _id: c._id,
@@ -83,17 +77,10 @@ export default async function getConsolidates(req: Request, res: Response): Prom
         });
       }
 
-      // check pendings for visits
-      if (pending) {
-        if (pendingForVisits) {
-          const list = await Consolidates.find(
-            query3 || { date: { $lt: moment().startOf('d').subtract(1, 'months').endOf('d').unix() } },
-            { userid: 1 }
-          ).exec();
-
-          ret.pendingVisits = list.length > 0 ? _.uniq(list.map(l => l.userid)) : [];
-        }
-      }
+      // check whats ids was not recived visits
+      const idsMembers = ret.members.length > 0 ? ret.members.map((m: any) => m._id.toString()) : [];
+      const diff = _.difference(idsMembers, listToCheck);
+      ret.pendingVisits = _.uniq(listIdsPending.concat(diff || []));
     }
 
     return res.json({
