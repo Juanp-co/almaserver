@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSlug = exports.deleteImages = exports.checkAndUploadPicture = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+exports.createSlug = exports.deleteImages = exports.checkAndUploadPicture = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getSimpleDate = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const slug_1 = __importDefault(require("slug"));
 const fs = __importStar(require("fs"));
@@ -87,6 +87,10 @@ function getDate(timestamp) {
     return timestamp ? moment_timezone_1.default.unix(timestamp).tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss') || null : timestamp;
 }
 exports.getDate = getDate;
+function getSimpleDate(timestamp) {
+    return timestamp ? moment_timezone_1.default.unix(timestamp).format('DD-MM-YYYY') || null : timestamp;
+}
+exports.getSimpleDate = getSimpleDate;
 function cleanWhiteSpaces(value) {
     if (value)
         return value.toString().trim();

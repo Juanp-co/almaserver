@@ -16,13 +16,23 @@ const FamiliesGroups_1 = __importDefault(require("../../Models/FamiliesGroups"))
 const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGroupsReports"));
 const Groups_1 = __importDefault(require("../../Models/Groups"));
 const Users_1 = __importDefault(require("../../Models/Users"));
+const Consolidates_1 = __importDefault(require("../../Models/Consolidates"));
 const path = 'src/admin/reports.admin.controller';
 async function getReports(req, res) {
     try {
         const { userrole } = req.body;
         const { initDate, endDate } = req.query;
         const query = {};
+        const query2 = {};
         const ret = {
+            consolidates: {
+                title: 'Consolidaciones',
+                data: [
+                    { label: 'Miembros registrados', qty: 0 },
+                    { label: 'Miembros visitados', qty: 0 },
+                ],
+                qty: 0,
+            },
             courses: {
                 title: 'Cursos',
                 data: [
@@ -97,12 +107,18 @@ async function getReports(req, res) {
             if (Validations_1.checkDate(endDate))
                 query.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
         }
+        if (initDate && Validations_1.checkDate(initDate)) {
+            query2.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+            if (Validations_1.checkDate(endDate))
+                query2.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        }
         if (!UsersActions_1.checkRoleToActions(userrole))
             return UsersActions_1.responseUsersAdmin(res, 3);
+        const consolidates = await Consolidates_1.default.find(query2).countDocuments().exec();
         const courses = await Courses_1.default.find(query, { enable: 1 }).exec();
         const events = await Events_1.default.find(query, { date: 1 }).exec();
         const groups = await Groups_1.default.find(query, { members: 1 }).exec();
-        const users = await Users_1.default.find(query, { gender: 1, role: 1, birthday: 1, group: 1 }).exec();
+        const users = await Users_1.default.find(query, { gender: 1, role: 1, birthday: 1, group: 1, consolidatorId: 1 }).exec();
         if (users.length > 0) {
             ret.users.qty = users.length;
             const today = moment_timezone_1.default().tz('America/Bogota').startOf('d');
@@ -133,6 +149,7 @@ async function getReports(req, res) {
                 ret.users.families.data[(u.group ? 1 : 0)].qty += 1;
                 if (u.role !== null && u.role !== undefined && !!ret.users.roles.data[u.role])
                     ret.users.roles.data[u.role].qty += 1;
+                ret.consolidates.data[0].qty += u.consolidatorId ? 1 : 0;
             });
         }
         if (courses.length > 0) {
@@ -166,6 +183,9 @@ async function getReports(req, res) {
                     ret.groups.data[0].qty += 1;
             });
         }
+        // consolidates
+        ret.consolidates.data[1].qty = consolidates;
+        ret.consolidates.qty = ret.consolidates.data[0].qty + ret.consolidates.data[1].qty;
         return res.json({
             msg: 'Reporte',
             report: ret

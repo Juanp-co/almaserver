@@ -19,7 +19,7 @@ import CoursesUsers from '../../Models/CoursesUsers';
 import Groups from '../../Models/Groups';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
-import { getCoursesSimpleList } from '../../ActionsData/CoursesActions';
+import { addCoursesToUser, getCoursesSimpleList } from '../../ActionsData/CoursesActions';
 
 const path = 'Controllers/admin/users.admin.controller';
 
@@ -103,6 +103,9 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
 
     const referrals = new Referrals({ _id: user._id });
     await referrals.save();
+
+    // save currents courses
+    await addCoursesToUser(user._id.toString());
 
     return res.status(201).json({
       msg: `Se ha registrado el nuevo miembro exitosamente.`,

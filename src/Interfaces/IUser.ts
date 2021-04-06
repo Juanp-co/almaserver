@@ -26,6 +26,7 @@ export default interface IUser extends Document {
   referred?: any;
   group?: any;
   familyGroupId: string[];
+  consolidatorId: string|null;
   department: number | null;
   city: number | null;
   locality: string | null;
@@ -39,7 +40,6 @@ export interface IUserData {
   document: IUser['document'];
   email: IUser['email'];
   phone: IUser['phone'];
-  // password: IUser['password'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
   gender: IUser['gender'];
@@ -71,6 +71,7 @@ export interface IUserSimpleRegister {
   lastNames: IUser['lastNames'];
   role: number | null;
   referred: string | null;
+  consolidatorId: string | null;
 }
 
 export interface IUserUpdate {

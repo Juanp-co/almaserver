@@ -13,6 +13,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} report Datos para los reportes.
  *
+ * @apiSuccess (report Object) {Object} consolidates Datos de los reportes para consolidación.
  * @apiSuccess (report Object) {Object} courses Datos de los reportes para cursos.
  * @apiSuccess (report Object) {Object} events Datos de los reportes para eventos.
  * @apiSuccess (report Object) {Object} groups Datos de los reportes para grupos.
@@ -40,6 +41,20 @@
  * {
 	"msg": "Reporte",
 	"report": {
+		"consolidations": {
+			"title": "Consolidaciones",
+			"data": [
+				{
+					"label": "Miembros registrados",
+					"qty": 6
+				},
+				{
+					"label": "Miembros visitados",
+					"qty": 2
+				}
+			],
+			"qty": 8
+		},
 		"courses": {
 			"title": "Cursos",
 			"data": [

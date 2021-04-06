@@ -758,6 +758,519 @@
     "groupTitle": "BanksAdmin"
   },
   {
+    "type": "get",
+    "url": "/api/admin/consolidates",
+    "title": "(00) Obtener reporte de consolidación.",
+    "version": "0.0.30",
+    "name": "getConsolidatesAdmin",
+    "group": "ConsolidatesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión admin.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "input",
+            "description": "<p>Campo a ordenar (valor = date [requerido]).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Number",
+            "optional": false,
+            "field": "value",
+            "description": "<p>Ordenado de input (1 = ASC | -1 = DESC) (Opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "initDate",
+            "description": "<p>Fecha de inicio de la consulta (formato: YYYY-MM-DD) (opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "endDate",
+            "description": "<p>Fecha de final de la consulta (formato: YYYY-MM-DD) (opcional) (Si se envía este parámetro, se requerirá la fecha de inicio. Sino, las fechas de filtrado se ignorarán).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del reporte de consolidación.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "consolidates",
+            "description": "<p>Datos de visitas a consolidados.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Datos de los miembros de consolidación.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String[]",
+            "optional": false,
+            "field": "pendingVisits",
+            "description": "<p>Listado de los IDs de los miembros consolidados pendientes por visitas.</p>"
+          }
+        ],
+        "consolidates Object[]": [
+          {
+            "group": "consolidates Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del registro de la visita.</p>"
+          },
+          {
+            "group": "consolidates Object[]",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "consolidator",
+            "description": "<p>Miembro que registró la información.</p>"
+          },
+          {
+            "group": "consolidates Object[]",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "member",
+            "description": "<p>Datos del miembro consolidado.</p>"
+          },
+          {
+            "group": "consolidates Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha de la visita (DD-MM-YYYY).</p>"
+          },
+          {
+            "group": "consolidates Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "observation",
+            "description": "<p>Observación agregada en la visita.</p>"
+          }
+        ],
+        "consolidator, members and member Object": [
+          {
+            "group": "consolidator, members and member Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "consolidator, members and member Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "consolidator, members and member Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "consolidator, members and member Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "consolidator, members and member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "consolidator, members and member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Consolidaciones.\",\n\t\"data\": {\n\t\t\"consolidates\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"606bdbf35fd5900c1092d191\",\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t\t},\n\t\t\t\t\"member\": {\n\t\t\t\t\t\"gender\": null,\n\t\t\t\t\t\"_id\": \"606b6b833784652d9c46eb04\",\n\t\t\t\t\t\"phone\": \"3161231231\",\n\t\t\t\t\t\"document\": \"CC11123123\",\n\t\t\t\t\t\"names\": \"MILEIDY\",\n\t\t\t\t\t\"lastNames\": \"CABELLO\"\n\t\t\t\t},\n\t\t\t\t\"date\": \"04-02-2021\",\n\t\t\t\t\"observation\": \"LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. SED PORTTITOR LECTUS NIBH. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. SED PORTTITOR LECTUS NIBH. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. NULLA QUIS LOREM UT LIBERO MALESUADA FEUGIAT.\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"pendingVisits\": [\n\t\t\t\"606b6b833784652d9c46eb04\",\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ConsolidatesAdmin.js",
+    "groupTitle": "ConsolidatesAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/consolidates/members",
+    "title": "(02) Obtener listado de miembros consolidados.",
+    "version": "0.0.30",
+    "name": "getMembersConsolidatesAdmin",
+    "group": "ConsolidatesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión admin.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de miembros.</p>"
+          }
+        ],
+        "members Object[]": [
+          {
+            "group": "members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembros\",\n\t\"members\": [\n\t\t{\n\t\t\t\"gender\": null,\n\t\t\t\"_id\": \"606b5e0d2aa2d1032873d03a\",\n\t\t\t\"phone\": \"563169999999\",\n\t\t\t\"document\": \"CC9999999999\",\n\t\t\t\"names\": \"NUMERO NUEVE\",\n\t\t\t\"lastNames\": \"NUEVE\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembros\",\n\t\"members\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ConsolidatesAdmin.js",
+    "groupTitle": "ConsolidatesAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/consolidates/report",
+    "title": "(01) Registrar visita de consolidación.",
+    "version": "0.0.30",
+    "name": "registerVisitConsolidatesAdmin",
+    "group": "ConsolidatesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión admin.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>ID del miembro consolidado que ha sido visitado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha de registro de la visita.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "Observation",
+            "description": "<p>Observación indicada de la visita.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"userId\": \"606b6b833784652d9c46eb04\",\n  \"date\": \"2021-02-05\",\n  \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha registrado la visita al consolidado exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"userId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n    },\n    {\n      \"input\": \"date\",\n      \"msg\": \"Disculpe, pero indicar una fecha para la visita.\"\n    },\n    {\n      \"input\": \"observation\",\n      \"msg\": \"Disculpe, pero indicar un observación válida.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/ConsolidatesAdmin.js",
+    "groupTitle": "ConsolidatesAdmin"
+  },
+  {
     "type": "post",
     "url": "/api/admin/courses/:_id/theme",
     "title": "(05) Agregar tema a un curso.",
@@ -9357,6 +9870,13 @@
             "group": "report Object",
             "type": "Object",
             "optional": false,
+            "field": "consolidates",
+            "description": "<p>Datos de los reportes para consolidación.</p>"
+          },
+          {
+            "group": "report Object",
+            "type": "Object",
+            "optional": false,
             "field": "courses",
             "description": "<p>Datos de los reportes para cursos.</p>"
           },
@@ -9478,7 +9998,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reporte\",\n\t\"report\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Publicados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Borradores\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Viendo\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 2\n\t\t},\n\t\t\"events\": {\n\t\t\t\"title\": \"Eventos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Finalizados\",\n\t\t\t\t\t\"qty\": 7\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 7\n\t\t},\n\t\t\"groups\": {\n\t\t\t\"title\": \"Grupos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Sin miembros\",\n\t\t\t\t\t\"qty\": 3\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Con miembros\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"users\": {\n\t\t\t\"title\": \"Miembros\",\n\t\t\t\"qty\": 8,\n\t\t\t\"ages\": {\n\t\t\t\t\"title\": \"Edades\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"0 a 15 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"16 a 20 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"21 a 30 años\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"31 a 40 años\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"41 a 50 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"51 a 60 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mayores de 61 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No indicados\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"families\": {\n\t\t\t\t\"title\": \"Miembros y grupos\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No pertenece\",\n\t\t\t\t\t\t\"qty\": 7\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pertenece\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"gender\": {\n\t\t\t\t\"title\": \"Géneros\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Hombres\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mujeres\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Otro\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"roles\": {\n\t\t\t\t\"title\": \"Roles\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Admins\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pastores\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Supervisores\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Líderes\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Padres espirituales\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Personas\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reporte\",\n\t\"report\": {\n\t\t\"consolidations\": {\n\t\t\t\"title\": \"Consolidaciones\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Miembros registrados\",\n\t\t\t\t\t\"qty\": 6\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Miembros visitados\",\n\t\t\t\t\t\"qty\": 2\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 8\n\t\t},\n\t\t\"courses\": {\n\t\t\t\"title\": \"Cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Publicados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Borradores\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Viendo\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 2\n\t\t},\n\t\t\"events\": {\n\t\t\t\"title\": \"Eventos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Finalizados\",\n\t\t\t\t\t\"qty\": 7\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 7\n\t\t},\n\t\t\"groups\": {\n\t\t\t\"title\": \"Grupos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Sin miembros\",\n\t\t\t\t\t\"qty\": 3\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Con miembros\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"users\": {\n\t\t\t\"title\": \"Miembros\",\n\t\t\t\"qty\": 8,\n\t\t\t\"ages\": {\n\t\t\t\t\"title\": \"Edades\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"0 a 15 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"16 a 20 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"21 a 30 años\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"31 a 40 años\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"41 a 50 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"51 a 60 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mayores de 61 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No indicados\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"families\": {\n\t\t\t\t\"title\": \"Miembros y grupos\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No pertenece\",\n\t\t\t\t\t\t\"qty\": 7\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pertenece\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"gender\": {\n\t\t\t\t\"title\": \"Géneros\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Hombres\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mujeres\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Otro\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"roles\": {\n\t\t\t\t\"title\": \"Roles\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Admins\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pastores\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Supervisores\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Líderes\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Padres espirituales\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Personas\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -13414,6 +13934,13 @@
             "optional": false,
             "field": "role",
             "description": "<p>Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "consolidatorId",
+            "description": "<p>ID del miembro consolidador.</p>"
           }
         ]
       }
@@ -13421,7 +13948,12 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5\n}",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"consolidatorId\": \"5fcf0821fc917d476c1cf3e2\",\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without consolidatorId",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"consolidatorId\": null,\n}",
         "type": "JSON"
       }
     ],

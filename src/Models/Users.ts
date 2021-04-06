@@ -6,8 +6,8 @@ import { getDate, setDate, toUpperValue } from '../Functions/GlobalFunctions';
 const UserSchema = new Schema(
   {
     document: { type: String, require: true, unique: true, set: toUpperValue },
-    email: { type: String, require: true, unique: true },
-    phone: { type: String, require: true },
+    email: { type: String, default: null },
+    phone: { type: String, require: true, unique: true },
     password: { type: String, require: true },
     names: { type: String, require: true, set: toUpperValue },
     lastNames: { type: String, require: true, set: toUpperValue },
@@ -25,6 +25,7 @@ const UserSchema = new Schema(
     referred: { type: String, default: null },
     group: { type: String, default: null },
     familyGroupId: { type: [String], default: [] },
+    consolidatorId: { type: String, default: null },
     department: { type: Number, default: null },
     city: { type: Number, default: null },
     locality: { type: String, default: null, set: toUpperValue },
