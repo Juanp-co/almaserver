@@ -16,6 +16,7 @@ import FamiliesGroups from '../../Models/FamiliesGroups';
 import FamiliesGroupsReports from '../../Models/FamiliesGroupsReports';
 import Groups from '../../Models/Groups';
 import Users from '../../Models/Users';
+import Consolidates from '../../Models/Consolidates';
 
 const path = 'src/admin/reports.admin.controller';
 
@@ -24,7 +25,16 @@ export default async function getReports(req: Request, res: Response) : Promise<
     const { userrole } = req.body;
     const { initDate, endDate } = req.query;
     const query: any = {};
-    const ret = {
+    const query2: any = {};
+    const ret: any = {
+      consolidates: {
+        title: 'Consolidaciones',
+        data: [
+          { label: 'Miembros registrados', qty: 0 },
+          { label: 'Miembros visitados', qty: 0 },
+        ],
+        qty: 0,
+      },
       courses: {
         title: 'Cursos',
         data: [
@@ -101,12 +111,19 @@ export default async function getReports(req: Request, res: Response) : Promise<
         query.created_at.$lt = moment(`${endDate}`).endOf('d').unix();
     }
 
+    if (initDate && checkDate(initDate)) {
+      query2.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
+      if (checkDate(endDate))
+        query2.date.$lt = moment(`${endDate}`).endOf('d').unix();
+    }
+
     if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
 
+    const consolidates = await Consolidates.find(query2).countDocuments().exec();
     const courses = await Courses.find(query, { enable: 1 }).exec();
     const events = await Events.find(query, { date: 1 }).exec();
     const groups = await Groups.find(query, { members: 1 }).exec();
-    const users = await Users.find(query, { gender: 1, role: 1, birthday: 1, group: 1 }).exec();
+    const users = await Users.find(query, { gender: 1, role: 1, birthday: 1, group: 1, consolidatorId: 1 }).exec();
 
     if (users.length > 0) {
       ret.users.qty = users.length;
@@ -134,6 +151,8 @@ export default async function getReports(req: Request, res: Response) : Promise<
 
         if (u.role !== null && u.role !== undefined && !!ret.users.roles.data[u.role])
           ret.users.roles.data[u.role].qty += 1;
+
+        ret.consolidates.data[0].qty += u.consolidatorId ? 1 : 0;
       });
     }
 
@@ -167,6 +186,10 @@ export default async function getReports(req: Request, res: Response) : Promise<
         else ret.groups.data[0].qty += 1;
       })
     }
+
+    // consolidates
+    ret.consolidates.data[1].qty = consolidates;
+    ret.consolidates.qty = ret.consolidates.data[0].qty + ret.consolidates.data[1].qty;
 
     return res.json({
       msg: 'Reporte',

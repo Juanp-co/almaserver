@@ -31,11 +31,15 @@ import getBanks, {
   saveBank,
   showBank,
   updateBank
-} from '../Controllers/admin/accounts.banks.admin.controllers';
+} from '../Controllers/admin/accounts.banks.admin.controller';
 import getFamiliesGroups, {
   deleteFamilyGroup, getFamiliesGroupsCounters,
   saveFamilyGroup, showFamilyGroup, updateFamilyGroup, updateMembersFamilyGroup
 } from '../Controllers/admin/families-groups.admin.controller';
+import getConsolidates, {
+  getConsolidatesMembers,
+  saveConsolidateVisit
+} from '../Controllers/admin/consolidated.admin.controller';
 
 const router = Router();
 
@@ -52,6 +56,13 @@ router.route('/banks/:_id')
   .get(validateAdmin, showBank)
   .put(validateAdmin, updateBank)
   .delete(validateAdmin, deleteBank);
+
+/*
+  Consolidates
+*/
+router.get('/consolidates', validateAdmin, getConsolidates);
+router.post('/consolidates/report', validateAdmin, saveConsolidateVisit);
+router.get('/consolidates/members', validateAdmin, getConsolidatesMembers);
 
 /*
   Events

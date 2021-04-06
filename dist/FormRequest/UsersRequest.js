@@ -32,7 +32,8 @@ async function validateSimpleRegister(data, admin) {
         names: null,
         lastNames: null,
         role: 5,
-        referred: null
+        referred: null,
+        consolidatorId: null
     };
     const errors = [];
     // phone
@@ -90,6 +91,14 @@ async function validateSimpleRegister(data, admin) {
         if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
             ret.role = data.role;
         }
+    }
+    // consolidatorId
+    if (data.consolidatorId) {
+        if (!Validations_1.checkObjectId(data.consolidatorId)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el consolidador seleccionado es incorrecto.', 'consolidatorId'));
+        }
+        else
+            ret.consolidatorId = data.consolidatorId;
     }
     return { data: ret, errors };
 }

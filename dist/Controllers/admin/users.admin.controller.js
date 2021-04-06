@@ -105,6 +105,8 @@ async function saveUser(req, res) {
         await user.save();
         const referrals = new Referrals_1.default({ _id: user._id });
         await referrals.save();
+        // save currents courses
+        await CoursesActions_1.addCoursesToUser(user._id.toString());
         return res.status(201).json({
             msg: `Se ha registrado el nuevo miembro exitosamente.`,
             password

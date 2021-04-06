@@ -24,8 +24,8 @@ const mongoose_1 = require("mongoose");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const UserSchema = new mongoose_1.Schema({
     document: { type: String, require: true, unique: true, set: GlobalFunctions_1.toUpperValue },
-    email: { type: String, require: true, unique: true },
-    phone: { type: String, require: true },
+    email: { type: String, default: null },
+    phone: { type: String, require: true, unique: true },
     password: { type: String, require: true },
     names: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
     lastNames: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
@@ -43,6 +43,7 @@ const UserSchema = new mongoose_1.Schema({
     referred: { type: String, default: null },
     group: { type: String, default: null },
     familyGroupId: { type: [String], default: [] },
+    consolidatorId: { type: String, default: null },
     department: { type: Number, default: null },
     city: { type: Number, default: null },
     locality: { type: String, default: null, set: GlobalFunctions_1.toUpperValue },

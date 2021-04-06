@@ -54,8 +54,6 @@ export async function getNamesUsersList(listIds: string|any[], projection: any|n
       });
     }
   }
-
-
   return ret;
 }
 

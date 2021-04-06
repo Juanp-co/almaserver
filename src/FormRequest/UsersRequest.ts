@@ -7,7 +7,7 @@ import {
   checkDate,
   checkDocument, checkEmail,
   checkIfValueIsNumber,
-  checkNameOrLastName,
+  checkNameOrLastName, checkObjectId,
   checkPassword,
   checkPhone, checkTitlesOrDescriptions
 } from '../Functions/Validations';
@@ -27,7 +27,8 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     names: null,
     lastNames: null,
     role: 5,
-    referred: null
+    referred: null,
+    consolidatorId: null
   } as IUserSimpleRegister;
   const errors: any = [];
 
@@ -103,6 +104,16 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
       ret.role = data.role;
     }
+  }
+
+  // consolidatorId
+  if (data.consolidatorId) {
+    if (!checkObjectId(data.consolidatorId)) {
+      errors.push(
+        setError('Disculpe, pero el consolidador seleccionado es incorrecto.', 'consolidatorId')
+      );
+    }
+    else ret.consolidatorId = data.consolidatorId;
   }
 
   return { data: ret, errors };
@@ -297,9 +308,7 @@ export function validateLogin(data: IUserLogin): { data: IUserLogin; errors: any
   return { data: ret, errors };
 }
 
-export async function validatePasswords(
-  data: IUserPasswords
-): Promise<{ data: IUserPasswords; errors: any }> {
+export async function validatePasswords(data: IUserPasswords): Promise<{ data: IUserPasswords; errors: any }> {
   const ret = {
     password: null,
     newPassword: null

@@ -4,6 +4,7 @@ import { Response } from 'express';
 import * as fs from 'fs';
 import { unlinkSync } from "fs";
 import { IInfoErrors } from '../Interfaces/IErrorResponse';
+import { checkDate } from './Validations';
 
 /*
   Console logs
@@ -62,6 +63,10 @@ export function setDate(): number {
 
 export function getDate(timestamp: number | null | undefined): string | any {
   return timestamp ? moment.unix(timestamp).tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss') || null : timestamp;
+}
+
+export function getSimpleDate(timestamp: number | null | undefined): string | any {
+  return timestamp ? moment.unix(timestamp).format('DD-MM-YYYY') || null : timestamp;
 }
 
 export function cleanWhiteSpaces(value: string | null): string | null {
