@@ -28,7 +28,7 @@ export default async function getFamiliesGroups(req: Request, res: Response): Pr
     if (user.familyGroupId && user.familyGroupId.length > 0) {
       ret = await FamiliesGroups.find(
         { _id: { $in: user.familyGroupId } },
-        { number: 1, sector: 1, subSector: 1, created_at: 1, }
+        { number: 1, sector: 1, subSector: 1, direction: 1, created_at: 1, }
         ).exec() as IFamiliesGroupsList[];
     }
 

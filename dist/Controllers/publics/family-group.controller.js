@@ -40,7 +40,7 @@ async function getFamiliesGroups(req, res) {
         if (!user)
             return FamiliesGroupsActions_1.returnFamilyGroup404(res);
         if (user.familyGroupId && user.familyGroupId.length > 0) {
-            ret = await FamiliesGroups_1.default.find({ _id: { $in: user.familyGroupId } }, { number: 1, sector: 1, subSector: 1, created_at: 1, }).exec();
+            ret = await FamiliesGroups_1.default.find({ _id: { $in: user.familyGroupId } }, { number: 1, sector: 1, subSector: 1, direction: 1, created_at: 1, }).exec();
         }
         return res.json({
             msg: 'Grupos familiares',

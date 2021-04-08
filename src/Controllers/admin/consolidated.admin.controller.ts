@@ -40,7 +40,7 @@ export default async function getConsolidates(req: Request, res: Response): Prom
       const listIds: string[] = [];
       consolidates.forEach(c => {
         if (c.userid && !listIds.includes(c.userid)) listIds.push(c.userid);
-        if (c.consolidatorId && listIds.includes(c.consolidatorId)) listIds.push(c.consolidatorId);
+        if (c.consolidatorId && !listIds.includes(c.consolidatorId)) listIds.push(c.consolidatorId);
       });
 
       // find all members
