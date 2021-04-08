@@ -129,11 +129,6 @@ export function validateUpdateMembersForm(data: IFamiliesGroupsUpdateMembersForm
         }
         else ret.members[value] = members[value];
       }
-      else if (index === 0 && !members[`${value}`]) {
-        errors.push(
-          setError(`Disculpe, pero debe seleccionar a un miembro como líder del grupo.`, value)
-        );
-      }
     }
   }
 

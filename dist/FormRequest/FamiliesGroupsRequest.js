@@ -101,9 +101,6 @@ function validateUpdateMembersForm(data) {
                 else
                     ret.members[value] = members[value];
             }
-            else if (index === 0 && !members[`${value}`]) {
-                errors.push(GlobalFunctions_1.setError(`Disculpe, pero debe seleccionar a un miembro como líder del grupo.`, value));
-            }
         }
     }
     return { data: ret, errors };
