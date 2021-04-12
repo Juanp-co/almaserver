@@ -1,10 +1,16 @@
+import _ from 'lodash';
+import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { getInfoUserReferred, getNamesUsersList } from '../../ActionsData/UsersActions';
-import { returnError } from '../../Functions/GlobalFunctions';
+import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 import { getTotalsReferrals } from '../../ActionsData/ReferralsActions';
+import { validateFormMemberRegisterFromUser } from '../../FormRequest/UsersRequest';
+import { addCoursesToUser } from '../../ActionsData/CoursesActions';
+import Consolidates from '../../Models/Consolidates';
+import validateSimpleRegister from '../../FormRequest/ConsolidatesFormRequest';
 
 const path = 'src/Controllers/publics/referrals.controller';
 
@@ -28,6 +34,7 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
 
     if (data) {
       ret.referrals = await getNamesUsersList(data.members);
+      ret.referrals = _.sortBy(ret.referrals, ['names'], ['asc']);
       ret.totals += await getTotalsReferrals(data.members);
 
       for (const [index, value] of ret.referrals.entries()) {
@@ -58,6 +65,42 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getReferrals`);
+  }
+}
+
+export async function saveReferral(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userid } = req.params;
+
+    const validate = await validateFormMemberRegisterFromUser(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    validate.data.referred = userid; // set current id to referred
+
+    const user = new Users(validate.data);
+    const password = 'alma1234'; // default password
+    user.password = bcrypt.hashSync(password, 10);
+    await user.save();
+
+    const referrals = new Referrals({ _id: user._id });
+    await referrals.save();
+
+    // save currents courses
+    await addCoursesToUser(user._id.toString());
+
+    // get my referrals
+    const myReferrals = await Referrals.findOne({ _id: userid }).exec();
+    if (myReferrals) {
+      myReferrals.members.push(user._id.toString());
+      await myReferrals.save();
+    }
+
+    return res.status(201).json({
+      msg: `Se ha registrado el nuevo miebro exitosamente.`,
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/saveReferral`);
   }
 }
 
@@ -94,11 +137,54 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
       });
     }
 
+    // get visits
+
+    ret.visits = [];
+    const visits = await Consolidates.find({ userid: _id }).sort({ date: -1, created_at: -1 }).exec();
+
+    if (visits.length > 0) {
+      const listIds: any[] = _.uniq(visits.map(v => v.referred));
+      listIds.push(userid);
+
+      const members = await getNamesUsersList(listIds) || [];
+
+      for (const v of visits) {
+        ret.visits.push({
+          consolidator: members.find((md: any) => md._id.toString() === v.referred) || null,
+          date: v.date || null,
+          observation: v.observation || null,
+        });
+      }
+    }
+
     return res.json({
       msg: `Miembro.`,
       data: ret
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getMemberReferred`);
+  }
+}
+
+export async function saveReferralVisit(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userid } = req.params;
+    const validate = validateSimpleRegister(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const consolidate = new Consolidates({
+      referred: userid,
+      userid: validate.data.userId,
+      ...validate.data
+    });
+    await consolidate.save();
+
+    return res.status(201).json({
+      msg: `Se ha registrado la visita al consolidado exitosamente.`
+    });
+
+  } catch (error: any) {
+    return returnError(res, error, `${path}/saveVisit`);
   }
 }

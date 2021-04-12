@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validatePasswords = exports.validateLogin = exports.validateUpdate = void 0;
+exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
 const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
@@ -32,8 +32,7 @@ async function validateSimpleRegister(data, admin) {
         names: null,
         lastNames: null,
         role: 5,
-        referred: null,
-        consolidatorId: null
+        referred: null
     };
     const errors = [];
     // phone
@@ -92,17 +91,113 @@ async function validateSimpleRegister(data, admin) {
             ret.role = data.role;
         }
     }
-    // consolidatorId
-    if (data.consolidatorId) {
-        if (!Validations_1.checkObjectId(data.consolidatorId)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el consolidador seleccionado es incorrecto.', 'consolidatorId'));
-        }
-        else
-            ret.consolidatorId = data.consolidatorId;
-    }
     return { data: ret, errors };
 }
 exports.default = validateSimpleRegister;
+async function validateFormMemberRegisterAdmin(data) {
+    const ret = {
+        email: null,
+        phone: null,
+        password: null,
+        document: null,
+        names: null,
+        lastNames: null,
+        role: 5,
+        referred: null
+    };
+    const errors = [];
+    // phone
+    if (!Validations_1.checkPhone(data.phone)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
+    }
+    else if (await UsersActions_1.checkIfExistPhone(data.phone)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
+    }
+    else
+        ret.phone = data.phone;
+    // document
+    if (!data.document || !Validations_1.checkDocument(data.document)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+    }
+    else if (await UsersActions_1.default(data.document.toUpperCase())) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
+    }
+    else
+        ret.document = data.document.toUpperCase();
+    // names
+    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+    }
+    else
+        ret.names = data.names.toUpperCase();
+    // lastNames
+    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
+    }
+    else
+        ret.lastNames = data.lastNames.toUpperCase();
+    // referred
+    if (Validations_1.checkObjectId(data.referred)) {
+        ret.referred = data.referred;
+    }
+    // email
+    if (data.email) {
+        if (!Validations_1.checkEmail(data.email)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        }
+        else
+            ret.email = data.email.toLowerCase();
+    }
+    if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
+        ret.role = data.role;
+    }
+    return { data: ret, errors };
+}
+exports.validateFormMemberRegisterAdmin = validateFormMemberRegisterAdmin;
+async function validateFormMemberRegisterFromUser(data) {
+    const ret = {
+        email: null,
+        phone: null,
+        password: null,
+        document: null,
+        names: null,
+        lastNames: null,
+        role: 5
+    };
+    const errors = [];
+    // phone
+    if (!Validations_1.checkPhone(data.phone)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
+    }
+    else if (await UsersActions_1.checkIfExistPhone(data.phone)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
+    }
+    else
+        ret.phone = data.phone;
+    // document
+    if (!data.document || !Validations_1.checkDocument(data.document)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+    }
+    else if (await UsersActions_1.default(data.document.toUpperCase())) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
+    }
+    else
+        ret.document = data.document.toUpperCase();
+    // names
+    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+    }
+    else
+        ret.names = data.names.toUpperCase();
+    // lastNames
+    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
+    }
+    else
+        ret.lastNames = data.lastNames.toUpperCase();
+    return { data: ret, errors };
+}
+exports.validateFormMemberRegisterFromUser = validateFormMemberRegisterFromUser;
 async function validateUpdate(data, _id, admin = false) {
     var _a;
     const ret = {

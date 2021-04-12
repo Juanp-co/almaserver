@@ -4,7 +4,7 @@ import IConsolidates from '../Interfaces/IConsolidates';
 
 const ConsolidatesSchema = new Schema(
   {
-    consolidatorId: { type: String, require: true },
+    referred: { type: String, require: true },
     userid: { type: String, require: true },
     date: { type: Number, require: true, get: getSimpleDate },
     observation: { type: String, require: true, set: toUpperValue },

@@ -6,7 +6,7 @@ import {
   getUserData,
   responseUsersAdmin
 } from '../../ActionsData/UsersActions';
-import validateSimpleRegister, { validateUpdate } from '../../FormRequest/UsersRequest';
+import { validateFormMemberRegisterAdmin, validateUpdate } from '../../FormRequest/UsersRequest';
 import {
   getLimitSkipSortSearch,
   returnError,
@@ -92,7 +92,7 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
 
     if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
 
-    const validate = await validateSimpleRegister(req.body, true);
+    const validate = await validateFormMemberRegisterAdmin(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
@@ -103,6 +103,15 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
 
     const referrals = new Referrals({ _id: user._id });
     await referrals.save();
+
+    // get referrals of referred
+    if (validate.data.referred) {
+      const referredData = await Referrals.findOne({ _id: validate.data.referred }).exec();
+      if (referredData) {
+        referredData.members.push(user._id.toString());
+        await referredData.save();
+      }
+    }
 
     // save currents courses
     await addCoursesToUser(user._id.toString());

@@ -9,12 +9,13 @@ import {
   validatePasswords,
   validateUpdate
 } from '../FormRequest/UsersRequest';
-import { checkObjectId } from '../Functions/Validations';
+import { checkDate, checkObjectId } from '../Functions/Validations';
 import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
 import Groups from '../Models/Groups';
 import Users from '../Models/Users';
 import Referrals from '../Models/Referrals';
+import Consolidates from '../Models/Consolidates';
 
 const path = 'Controllers/user.controller';
 
@@ -269,6 +270,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
   try {
     const { initDate, endDate } = req.query;
     const query: any = {};
+    const query2: any = {};
     const queryReferrals: any = {};
     const ret: any = {
       courses: {
@@ -284,15 +286,25 @@ export async function getReports(req: Request, res: Response): Promise<Response>
         data: [],
         qty: 0,
       },
+      visits: {
+        title: 'Visitas',
+        data: [
+          { label: 'Pendientes', qty: 0 },
+          { label: 'Realizadas', qty: 0 }
+        ],
+        qty: 0,
+      },
     };
 
-    if (initDate) {
+    if (initDate && checkDate(initDate)) {
       query['courses.created_at'] = { $gte: moment(`${initDate}`).startOf('d').unix() };
       queryReferrals.updated_at = { $gte: moment(`${initDate}`).startOf('d').unix() };
-    }
-    if (endDate) {
-      query['courses.created_at'].$lt = moment(`${endDate}`).endOf('d').unix();
-      queryReferrals.updated_at.$lt = moment(`${endDate}`).endOf('d').unix();
+      query2.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
+      if (checkDate(endDate)) {
+        query['courses.created_at'].$lt = moment(`${endDate}`).endOf('d').unix();
+        queryReferrals.updated_at.$lt = moment(`${endDate}`).endOf('d').unix();
+        query2.date.$lt = moment(`${endDate}`).endOf('d').unix();;
+      }
     }
 
     const { userid } = req.params;
@@ -305,6 +317,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
 
     const myCourses = await CoursesUsers.findOne({ userid, ...query }, { courses: 1 }).exec();
     const myReferrals = await Referrals.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
+    const visits = await Consolidates.find({ consolidatorId: userid, ...query2 }, { date: 1 }).exec();
 
     if (myCourses) {
       ret.courses.qty = myCourses.courses.length;
@@ -323,6 +336,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
 
         if (members.length > 0) {
           let listsMembersDetails: any = []; // generate a new array data
+          let listIdsPending: any = []; // generate a new array data
           let limit = 0;
 
           for (const m of members) {
@@ -346,11 +360,32 @@ export async function getReports(req: Request, res: Response): Promise<Response>
               listsMembersDetails = [];
               limit = 0;
             }
+
+            // VISITS
+
+            // add to list for the next check
+            const index = visits.findIndex(v => v.userid === m._id.toString());
+
+            // check last visit and add or remove id from list
+            if (index > -1) {
+              if (moment().diff(moment(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+                if (!listIdsPending.includes(m._id.toString())) listIdsPending.push(m._id.toString());
+              }
+              else listIdsPending = listIdsPending.filter((lip: string) => lip !== m._id.toString());
+            }
+            else if (!listIdsPending.includes(m._id.toString())) listIdsPending.push(m._id.toString());
           }
 
           if (listsMembersDetails.length > 0) {
             ret.referrals.data.push(listsMembersDetails);
           }
+
+          if (listIdsPending.length > 0) {
+            ret.visits.data[1].qty = listIdsPending.length;
+            ret.visits.data[0].qty = visits.length;
+          }
+
+
         }
       }
     }

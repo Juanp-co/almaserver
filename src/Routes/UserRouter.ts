@@ -5,7 +5,12 @@ import {
   get, getCourses, getGroup, getMemberGroup, getReports,
   update
 } from '../Controllers/user.controller';
-import { getMemberReferred, getReferrals } from '../Controllers/publics/referrals.controller';
+import {
+  getMemberReferred,
+  getReferrals,
+  saveReferral,
+  saveReferralVisit
+} from '../Controllers/publics/referrals.controller';
 import getFamiliesGroups, {
   reportsFamilyGroup,
   saveFamilyGroupReport,
@@ -41,7 +46,10 @@ router.get('/group/:memberId', validateUser, getMemberGroup);
 /*
   Referrals
  */
-router.get('/referrals', validateUser, getReferrals);
+router.route('/referrals')
+  .get(validateUser, getReferrals)
+  .post(validateUser, saveReferral);
+router.post('/referrals/visit', validateUser, saveReferralVisit);
 router.get('/referrals/:_id', validateUser, getMemberReferred);
 
 /*

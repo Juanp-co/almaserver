@@ -27,8 +27,7 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     names: null,
     lastNames: null,
     role: 5,
-    referred: null,
-    consolidatorId: null
+    referred: null
   } as IUserSimpleRegister;
   const errors: any = [];
 
@@ -106,15 +105,135 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     }
   }
 
-  // consolidatorId
-  if (data.consolidatorId) {
-    if (!checkObjectId(data.consolidatorId)) {
+  return { data: ret, errors };
+}
+
+export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegister): Promise<{ data: IUserSimpleRegister; errors: any }> {
+  const ret = {
+    email: null,
+    phone: null,
+    password: null,
+    document: null,
+    names: null,
+    lastNames: null,
+    role: 5,
+    referred: null
+  } as IUserSimpleRegister;
+  const errors: any = [];
+
+  // phone
+  if (!checkPhone(data.phone)) {
+    errors.push(
+      setError('Disculpe, pero debe indicar un número de teléfono.', 'phone')
+    );
+  } else if (await checkIfExistPhone(data.phone)) {
+    errors.push(
+      setError(
+        'Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
+        'email'
+      )
+    );
+  } else ret.phone = data.phone;
+
+  // document
+  if (!data.document || !checkDocument(data.document)) {
+    errors.push(
+      setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document')
+    );
+  } else if (await checkIfExistDocument(data.document.toUpperCase())) {
+    errors.push(
+      setError(
+        'Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.',
+        'document'
+      )
+    );
+  } else ret.document = data.document.toUpperCase();
+
+  // names
+  if (!data.names || !checkNameOrLastName(data.names)) {
+    errors.push(setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+  } else ret.names = data.names.toUpperCase();
+
+  // lastNames
+  if (!data.lastNames || !checkNameOrLastName(data.lastNames)) {
+    errors.push(
+      setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames')
+    );
+  } else ret.lastNames = data.lastNames.toUpperCase();
+
+  // referred
+  if (checkObjectId(data.referred)) {
+    ret.referred = data.referred;
+  }
+
+  // email
+  if (data.email) {
+    if (!checkEmail(data.email)) {
       errors.push(
-        setError('Disculpe, pero el consolidador seleccionado es incorrecto.', 'consolidatorId')
+        setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email')
       );
     }
-    else ret.consolidatorId = data.consolidatorId;
+    else ret.email = data.email.toLowerCase();
   }
+
+  if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
+    ret.role = data.role;
+  }
+
+  return { data: ret, errors };
+}
+
+export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegister): Promise<{ data: IUserSimpleRegister; errors: any }> {
+  const ret = {
+    email: null,
+    phone: null,
+    password: null,
+    document: null,
+    names: null,
+    lastNames: null,
+    role: 5
+  } as IUserSimpleRegister;
+  const errors: any = [];
+
+  // phone
+  if (!checkPhone(data.phone)) {
+    errors.push(
+      setError('Disculpe, pero debe indicar un número de teléfono.', 'phone')
+    );
+  } else if (await checkIfExistPhone(data.phone)) {
+    errors.push(
+      setError(
+        'Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
+        'email'
+      )
+    );
+  } else ret.phone = data.phone;
+
+  // document
+  if (!data.document || !checkDocument(data.document)) {
+    errors.push(
+      setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document')
+    );
+  } else if (await checkIfExistDocument(data.document.toUpperCase())) {
+    errors.push(
+      setError(
+        'Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.',
+        'document'
+      )
+    );
+  } else ret.document = data.document.toUpperCase();
+
+  // names
+  if (!data.names || !checkNameOrLastName(data.names)) {
+    errors.push(setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+  } else ret.names = data.names.toUpperCase();
+
+  // lastNames
+  if (!data.lastNames || !checkNameOrLastName(data.lastNames)) {
+    errors.push(
+      setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames')
+    );
+  } else ret.lastNames = data.lastNames.toUpperCase();
 
   return { data: ret, errors };
 }

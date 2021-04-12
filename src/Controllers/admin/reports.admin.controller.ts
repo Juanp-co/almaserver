@@ -123,7 +123,7 @@ export default async function getReports(req: Request, res: Response) : Promise<
     const courses = await Courses.find(query, { enable: 1 }).exec();
     const events = await Events.find(query, { date: 1 }).exec();
     const groups = await Groups.find(query, { members: 1 }).exec();
-    const users = await Users.find(query, { gender: 1, role: 1, birthday: 1, group: 1, consolidatorId: 1 }).exec();
+    const users = await Users.find(query, { gender: 1, role: 1, birthday: 1, group: 1, referred: 1 }).exec();
 
     if (users.length > 0) {
       ret.users.qty = users.length;
@@ -152,7 +152,7 @@ export default async function getReports(req: Request, res: Response) : Promise<
         if (u.role !== null && u.role !== undefined && !!ret.users.roles.data[u.role])
           ret.users.roles.data[u.role].qty += 1;
 
-        ret.consolidates.data[0].qty += u.consolidatorId ? 1 : 0;
+        ret.consolidates.data[0].qty += u.referred ? 1 : 0;
       });
     }
 
@@ -196,7 +196,7 @@ export default async function getReports(req: Request, res: Response) : Promise<
       report: ret
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/saveCourse`);
+    return returnError(res, error, `${path}/getReports`);
   }
 }
 

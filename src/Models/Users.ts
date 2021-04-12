@@ -25,7 +25,6 @@ const UserSchema = new Schema(
     referred: { type: String, default: null },
     group: { type: String, default: null },
     familyGroupId: { type: [String], default: [] },
-    consolidatorId: { type: String, default: null },
     department: { type: Number, default: null },
     city: { type: Number, default: null },
     locality: { type: String, default: null, set: toUpperValue },
