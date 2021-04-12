@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 export default interface IConsolidates extends Document {
-  consolidatorId: string | null;
+  referred: string | null;
   userid: string | null;
   date: number | null;
   observation: string | null;

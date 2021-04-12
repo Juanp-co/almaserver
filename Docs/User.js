@@ -371,7 +371,21 @@
 				]
 			],
 			"qty": 4
-		}
+		},
+		"visits": {
+			"title": "Visitas",
+			"data": [
+				{
+					"label": "Pendientes",
+					"qty": 1
+				},
+				{
+					"label": "Realizadas",
+					"qty": 2
+				}
+			],
+			"qty": 3
+		},
 	}
 }
  *

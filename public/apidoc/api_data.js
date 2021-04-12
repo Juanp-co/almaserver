@@ -11787,6 +11787,13 @@ define({ "api": [
             "optional": false,
             "field": "referrals",
             "description": "<p>Listado de hijos espirituales.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "visits",
+            "description": "<p>Listado de visitas.</p>"
           }
         ],
         "member Object": [
@@ -11912,51 +11919,74 @@ define({ "api": [
             "description": "<p>Indica si ha aprobado el curso o no.</p>"
           }
         ],
-        "referrals Object[]": [
+        "visits Object[]": [
           {
-            "group": "referrals Object[]",
+            "group": "visits Object[]",
+            "type": "Object|Nukk",
+            "optional": false,
+            "field": "consolidator",
+            "description": "<p>ID del curso.</p>"
+          },
+          {
+            "group": "visits Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha de la visita (YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "visits Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "observation",
+            "description": "<p>Observaciones obtenidas en la visita.</p>"
+          }
+        ],
+        "referrals and consolidator Object[]": [
+          {
+            "group": "referrals and consolidator Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo del miembro.</p>"
           },
           {
-            "group": "referrals Object[]",
+            "group": "referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "referrals Object[]",
+            "group": "referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "referrals Object[]",
+            "group": "referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombres.</p>"
           },
           {
-            "group": "referrals Object[]",
+            "group": "referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
           },
           {
-            "group": "referrals Object[]",
+            "group": "referrals and consolidator Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono.</p>"
           },
           {
-            "group": "referrals Object[]",
+            "group": "referrals and consolidator Object[]",
             "type": "Number",
             "optional": false,
             "field": "totalReferrals",
@@ -11967,7 +11997,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalCourses\": 5,\n\t\t\"totalReferrals\": 12,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f1\",\n\t\t\t\t\"slug\": \"nivel-uno\",\n\t\t\t\t\"title\": \"NIVEL UNO\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"level\": 1,\n\t\t\t\t\"approved\": false\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"_id\": \"6045ebc578cb41018883d3ea\",\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"document\": \"CC11223344\",\n\t\t\t\t\"names\": \"JOSÉ\",\n\t\t\t\t\"lastNames\": \"ESPINOZA\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalCourses\": 5,\n\t\t\"totalReferrals\": 12,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f1\",\n\t\t\t\t\"slug\": \"nivel-uno\",\n\t\t\t\t\"title\": \"NIVEL UNO\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"level\": 1,\n\t\t\t\t\"approved\": false\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"_id\": \"6045ebc578cb41018883d3ea\",\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"document\": \"CC11223344\",\n\t\t\t\t\"names\": \"JOSÉ\",\n\t\t\t\t\"lastNames\": \"ESPINOZA\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"visits\": [\n\t\t\t{\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t\t},\n\t\t\t\t\"date\": \"2021-04-12\",\n\t\t\t\t\"observation\": \"ACURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. NULLA PORTTITOR ACCUMSAN TINCIDUNT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. DONEC SOLLICITUDIN MOLESTIE MALESUADA. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\"\n\t\t\t},\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -12209,6 +12239,8 @@ define({ "api": [
         }
       ]
     },
+    "filename": "Docs/UserReferrals.js",
+    "groupTitle": "UserReferrals",
     "error": {
       "fields": {
         "Error 4xx": [
@@ -12247,15 +12279,143 @@ define({ "api": [
       "examples": [
         {
           "title": "Error token",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n    \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n  }",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
           "type": "JSON"
         },
         {
           "title": "Error internal server",
-          "content": "HTTP/1.1 500 Internal Error Server\n{\n    \"msg\": \"Ha ocurrido un error inesperado.\",\n    \"errors\": [${err}]\n  }",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
           "type": "JSON"
         }
       ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/user/referrals/visit",
+    "title": "(02) Registrar visita a un hijo espiritual.",
+    "version": "0.0.31",
+    "name": "saveVisitUserReferrals",
+    "group": "UserReferrals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>ID del usuario visitado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha de la visita (YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "observation",
+            "description": "<p>Observaciones de la visita.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request with Referred",
+        "content": "{\n\t\"userId\": \"5fcf0821fc917d476c1cf3e2\",\n\t\"date\": \"2021-04-01\",\n\t\"observation\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha registrado la visita al consolidado exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"userId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n    },\n    {\n      \"input\": \"date\",\n      \"msg\": \"Disculpe, pero indicar una fecha para la visita.\"\n    },\n    {\n      \"input\": \"observation\",\n      \"msg\": \"Disculpe, pero indicar un observación válida.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
     },
     "filename": "Docs/UserReferrals.js",
     "groupTitle": "UserReferrals"
@@ -12908,7 +13068,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 1\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PRUEBA USUARIO\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PADRE PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"SUPERVISOR PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t}\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 1\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PRUEBA USUARIO\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PADRE PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"SUPERVISOR PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"visits\": {\n\t\t\t\"title\": \"Visitas\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Realizadas\",\n\t\t\t\t\t\"qty\": 2\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 3\n\t\t},\n\t}\n}",
           "type": "JSON"
         },
         {
@@ -13939,7 +14099,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "String|Null",
             "optional": false,
-            "field": "consolidatorId",
+            "field": "referred",
             "description": "<p>ID del miembro consolidador.</p>"
           }
         ]
@@ -13948,12 +14108,12 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"consolidatorId\": \"5fcf0821fc917d476c1cf3e2\",\n}",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"referred\": \"5fcf0821fc917d476c1cf3e2\",\n}",
         "type": "JSON"
       },
       {
-        "title": "Example JSON Request without consolidatorId",
-        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"consolidatorId\": null,\n}",
+        "title": "Example JSON Request without referred",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"referred\": null,\n}",
         "type": "JSON"
       }
     ],

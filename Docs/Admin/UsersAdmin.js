@@ -116,7 +116,7 @@
  * @apiParam {String} lastNames Apellidos.
  * @apiParam {String} document Número de documento del identidad.
  * @apiParam {Number} role Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
- * @apiParam {String|Null} consolidatorId ID del miembro consolidador.
+ * @apiParam {String|Null} referred ID del miembro consolidador.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -126,10 +126,10 @@
   "lastNames": "velasquez rodriguez",
   "document": "CC24402234",
   "role": 5,
-  "consolidatorId": "5fcf0821fc917d476c1cf3e2",
+  "referred": "5fcf0821fc917d476c1cf3e2",
 }
  *
- * @apiExample {JSON} Example JSON Request without consolidatorId
+ * @apiExample {JSON} Example JSON Request without referred
  * {
   "email": "user2@example.com",
   "phone": "573161234567",
@@ -137,7 +137,7 @@
   "lastNames": "velasquez rodriguez",
   "document": "CC24402234",
   "role": 5,
-  "consolidatorId": null,
+  "referred": null,
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.

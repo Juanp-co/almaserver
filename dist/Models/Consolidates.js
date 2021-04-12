@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const ConsolidatesSchema = new mongoose_1.Schema({
-    consolidatorId: { type: String, require: true },
+    referred: { type: String, require: true },
     userid: { type: String, require: true },
     date: { type: Number, require: true, get: GlobalFunctions_1.getSimpleDate },
     observation: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },

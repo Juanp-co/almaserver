@@ -46,7 +46,10 @@ router.get('/group/:memberId', middleware_1.validateUser, user_controller_1.getM
 /*
   Referrals
  */
-router.get('/referrals', middleware_1.validateUser, referrals_controller_1.getReferrals);
+router.route('/referrals')
+    .get(middleware_1.validateUser, referrals_controller_1.getReferrals)
+    .post(middleware_1.validateUser, referrals_controller_1.saveReferral);
+router.post('/referrals/visit', middleware_1.validateUser, referrals_controller_1.saveReferralVisit);
 router.get('/referrals/:_id', middleware_1.validateUser, referrals_controller_1.getMemberReferred);
 /*
   Reports

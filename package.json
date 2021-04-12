@@ -1,6 +1,6 @@
 {
   "name": "almaserver",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "API to ALMA App.",
   "main": "./dist/index.js",
   "scripts": {

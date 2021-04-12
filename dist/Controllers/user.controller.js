@@ -17,6 +17,7 @@ const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const Groups_1 = __importDefault(require("../Models/Groups"));
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
+const Consolidates_1 = __importDefault(require("../Models/Consolidates"));
 const path = 'Controllers/user.controller';
 async function get(req, res) {
     try {
@@ -232,6 +233,7 @@ async function getReports(req, res) {
     try {
         const { initDate, endDate } = req.query;
         const query = {};
+        const query2 = {};
         const queryReferrals = {};
         const ret = {
             courses: {
@@ -247,14 +249,25 @@ async function getReports(req, res) {
                 data: [],
                 qty: 0,
             },
+            visits: {
+                title: 'Visitas',
+                data: [
+                    { label: 'Pendientes', qty: 0 },
+                    { label: 'Realizadas', qty: 0 }
+                ],
+                qty: 0,
+            },
         };
-        if (initDate) {
+        if (initDate && Validations_1.checkDate(initDate)) {
             query['courses.created_at'] = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
             queryReferrals.updated_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-        }
-        if (endDate) {
-            query['courses.created_at'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
-            queryReferrals.updated_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+            query2.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+            if (Validations_1.checkDate(endDate)) {
+                query['courses.created_at'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+                queryReferrals.updated_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+                query2.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+                ;
+            }
         }
         const { userid } = req.params;
         if (!Validations_1.checkObjectId(userid)) {
@@ -264,6 +277,7 @@ async function getReports(req, res) {
         }
         const myCourses = await CoursesUsers_1.default.findOne({ userid, ...query }, { courses: 1 }).exec();
         const myReferrals = await Referrals_1.default.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
+        const visits = await Consolidates_1.default.find({ consolidatorId: userid, ...query2 }, { date: 1 }).exec();
         if (myCourses) {
             ret.courses.qty = myCourses.courses.length;
             for (const c of myCourses.courses) {
@@ -280,6 +294,7 @@ async function getReports(req, res) {
                 const users = await Users_1.default.find({ _id: { $in: myReferrals.members } }, { names: 1, lastNames: 1 }).exec();
                 if (members.length > 0) {
                     let listsMembersDetails = []; // generate a new array data
+                    let listIdsPending = []; // generate a new array data
                     let limit = 0;
                     for (const m of members) {
                         const data = {
@@ -299,9 +314,27 @@ async function getReports(req, res) {
                             listsMembersDetails = [];
                             limit = 0;
                         }
+                        // VISITS
+                        // add to list for the next check
+                        const index = visits.findIndex(v => v.userid === m._id.toString());
+                        // check last visit and add or remove id from list
+                        if (index > -1) {
+                            if (moment_timezone_1.default().diff(moment_timezone_1.default(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+                                if (!listIdsPending.includes(m._id.toString()))
+                                    listIdsPending.push(m._id.toString());
+                            }
+                            else
+                                listIdsPending = listIdsPending.filter((lip) => lip !== m._id.toString());
+                        }
+                        else if (!listIdsPending.includes(m._id.toString()))
+                            listIdsPending.push(m._id.toString());
                     }
                     if (listsMembersDetails.length > 0) {
                         ret.referrals.data.push(listsMembersDetails);
+                    }
+                    if (listIdsPending.length > 0) {
+                        ret.visits.data[1].qty = listIdsPending.length;
+                        ret.visits.data[0].qty = visits.length;
                     }
                 }
             }

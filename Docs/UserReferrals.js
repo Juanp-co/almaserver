@@ -64,23 +64,12 @@
 	"referrals": []
 }
  *
- * @apiError {String} msg Mensaje general.
- * @apiError {Object[]} errors Listado de errores a mostrar.
- * @apiError (errors Object[]) {String} msg[msg] Mensaje de error.
- * @apiError (errors Object[]) {String} input[input] Nombre del campo fallo (Solo aplica en validaciones).
+ * @apiUse GlobalParamsErrors
  *
- * @apiErrorExample {JSON} Error token
- * HTTP/1.1 401 Unauthorized
- * {
-    "msg": "Disculpe, pero no se logró encontrar los datos de su sesión."
-  }
+ * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Error internal server
- * HTTP/1.1 500 Internal Error Server
- * {
-    "msg": "Ha ocurrido un error inesperado.",
-    "errors": [${err}]
-  }
+ * @apiUse GlobalErrorSystem
+ *
  */
 
 /**
@@ -101,6 +90,7 @@
  * @apiSuccess (data Object) {Number} totalsReferrals Total de hijos espirituales del miembro (este incluye sus hijos y los hijos de sus hijos).
  * @apiSuccess (data Object) {Object[]} courses Listado de cursos.
  * @apiSuccess (data Object) {Object[]} referrals Listado de hijos espirituales.
+ * @apiSuccess (data Object) {Object[]} visits Listado de visitas.
  *
  * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
@@ -121,13 +111,17 @@
  * @apiSuccess (courses Object[]) {Number} level Nivel del curso.
  * @apiSuccess (courses Object[]) {String|Null} approved Indica si ha aprobado el curso o no.
  *
- * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
- * @apiSuccess (referrals Object[]) {String} document Número de documento.
- * @apiSuccess (referrals Object[]) {String} names Nombres.
- * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
- * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
- * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
+ * @apiSuccess (visits Object[]) {Object|Nukk} consolidator ID del curso.
+ * @apiSuccess (visits Object[]) {String} date Fecha de la visita (YYYY-MM-DD).
+ * @apiSuccess (visits Object[]) {String} observation Observaciones obtenidas en la visita.
+ *
+ * @apiSuccess (referrals and consolidator Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (referrals and consolidator Object[]) {String} _id ID del miembro.
+ * @apiSuccess (referrals and consolidator Object[]) {String} document Número de documento.
+ * @apiSuccess (referrals and consolidator Object[]) {String} names Nombres.
+ * @apiSuccess (referrals and consolidator Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (referrals and consolidator Object[]) {String|Null} phone Teléfono.
+ * @apiSuccess (referrals and consolidator Object[]) {Number} totalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -174,6 +168,20 @@
 			.
 			.
 			.
+		],
+		"visits": [
+			{
+				"consolidator": {
+					"_id": "5fcf0821fc917d476c1cf3e3",
+					"names": "PEDRO JOSÉ",
+					"lastNames": "PÉREZ RODRIGUEZ",
+					"document": "CC12345678",
+					"gender": 0,
+					"phone": "3161234567"
+				},
+				"date": "2021-04-12",
+				"observation": "ACURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. NULLA PORTTITOR ACCUMSAN TINCIDUNT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\n\nCURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\n\nCURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. DONEC SOLLICITUDIN MOLESTIE MALESUADA. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A."
+			},
 		]
 	}
 }
@@ -204,4 +212,58 @@
  *
  * @apiUse GlobalErrorSystem
  *
+ */
+
+/**
+ * @api {post} /api/user/referrals/visit (02) Registrar visita a un hijo espiritual.
+ * @apiVersion 0.0.31
+ * @apiName saveVisitUserReferrals
+ * @apiGroup UserReferrals
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam {String} userId ID del usuario visitado.
+ * @apiParam {String} date Fecha de la visita (YYYY-MM-DD).
+ * @apiParam {String} observation Observaciones de la visita.
+ *
+ * @apiExample {JSON} Example JSON Request with Referred
+ * {
+	"userId": "5fcf0821fc917d476c1cf3e2",
+	"date": "2021-04-01",
+	"observation": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat."
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Se ha registrado la visita al consolidado exitosamente."
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiErrorExample {JSON} Validation fields
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "userId",
+      "msg": "Disculpe, pero el miembro seleccionado es incorrecto."
+    },
+    {
+      "input": "date",
+      "msg": "Disculpe, pero indicar una fecha para la visita."
+    },
+    {
+      "input": "observation",
+      "msg": "Disculpe, pero indicar un observación válida."
+    }
+  ]
+}
+ *
+ * @apiUse GlobalErrorSystem
  */
