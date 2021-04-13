@@ -39,30 +39,39 @@ exports.get = get;
 async function update(req, res) {
     try {
         const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, { _id: 1, document: 1 }).exec();
+        const user = await Users_1.default.findOne({ _id: userid }, {
+            password: 0,
+            role: 0,
+            referred: 0,
+            __v: 0,
+        }).exec();
         // logout
         if (!user)
             return TokenActions_1.forceLogout(res, `${req.query.token}`);
         const validate = await UsersRequest_1.validateUpdate(req.body, userid);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        if (!validate.data.document)
-            validate.data.document = user.document;
-        const updated = await Users_1.default.findByIdAndUpdate(userid, validate.data, {
-            projection: {
-                document: 0,
-                password: 0,
-                __v: 0,
-                created_at: 0,
-                updated_at: 0,
-                role: 0,
-                referred: 0,
-            },
-            new: true
-        });
+        user.phone = validate.data.phone || user.phone;
+        user.names = validate.data.names || user.names;
+        user.lastNames = validate.data.lastNames || user.lastNames;
+        user.email = validate.data.email;
+        user.birthday = validate.data.birthday;
+        user.gender = validate.data.gender !== null ? validate.data.gender : user.gender;
+        user.civilStatus = validate.data.civilStatus !== null ? validate.data.civilStatus : user.civilStatus;
+        user.educationLevel = validate.data.educationLevel !== null ? validate.data.educationLevel : user.educationLevel;
+        user.profession = validate.data.profession !== null ? validate.data.profession : user.profession;
+        user.bloodType = validate.data.bloodType !== null ? validate.data.bloodType : user.bloodType;
+        user.company = validate.data.company !== null ? validate.data.company : user.company;
+        user.companyType = validate.data.companyType !== null ? validate.data.companyType : user.companyType;
+        user.baptized = validate.data.baptized || user.baptized;
+        user.department = validate.data.department !== null ? validate.data.department : user.department;
+        user.city = validate.data.city !== null ? validate.data.city : user.city;
+        user.locality = validate.data.locality || user.locality;
+        user.direction = validate.data.direction || user.direction;
+        await user.save();
         return res.json({
             msg: 'Se ha actualizado la información exitosamente.',
-            data: updated
+            data: user
         });
     }
     catch (error) {

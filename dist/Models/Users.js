@@ -23,9 +23,9 @@ const bcrypt = __importStar(require("bcrypt"));
 const mongoose_1 = require("mongoose");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const UserSchema = new mongoose_1.Schema({
-    document: { type: String, require: true, unique: true, set: GlobalFunctions_1.toUpperValue },
-    email: { type: String, default: null },
     phone: { type: String, require: true, unique: true },
+    document: { type: String, require: true },
+    email: { type: String, default: null },
     password: { type: String, require: true },
     names: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
     lastNames: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
