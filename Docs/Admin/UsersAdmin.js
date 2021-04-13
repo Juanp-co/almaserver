@@ -106,15 +106,13 @@
 
 /**
  * @api {post} /api/admin/users (02) Crear nuevo miembro.
- * @apiVersion 0.0.17
+ * @apiVersion 0.0.32
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
  *
- * @apiParam {String} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {String} document Número de documento del identidad.
  * @apiParam {Number} role Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  * @apiParam {String|Null} referred ID del miembro consolidador.
  *
@@ -124,7 +122,6 @@
   "phone": "573161234567",
   "names": "Anthony alejandro",
   "lastNames": "velasquez rodriguez",
-  "document": "CC24402234",
   "role": 5,
   "referred": "5fcf0821fc917d476c1cf3e2",
 }
@@ -135,7 +132,6 @@
   "phone": "573161234567",
   "names": "Anthony alejandro",
   "lastNames": "velasquez rodriguez",
-  "document": "CC24402234",
   "role": 5,
   "referred": null,
 }
@@ -164,16 +160,16 @@
     "msg": "¡Error en los parámetros!",
     "errors": [
         {
-            "input": "email",
-            "msg": "Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente."
-        },
-        {
-            "input": "document",
-            "msg": "Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente."
+            "input": "phone",
+            "msg": "Disculpe, pero debe indicar un número de teléfono."
         },
         {
             "input": "names",
-            "msg": "Disculpe, pero debe asegurarse de indicar su(s) nombre(s)."
+            "msg": "Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro."
+        },
+        {
+            "input": "lastNames",
+            "msg": "Disculpe, pero debe asegurarse de indicar el apellido del miembro."
         }
     ]
   }
@@ -252,7 +248,7 @@
 
 /**
  * @api {put} /api/admin/users/:_id (04) Actualizar datos de un miembro.
- * @apiVersion 0.0.3
+ * @apiVersion 0.0.32
  * @apiName changeRoleUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -260,24 +256,24 @@
  *
  * @apiParam (Path params) {String} _id ID del miembro.
  *
- * @apiParam {String|Null} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {String} document Número de documento del identidad.
- * @apiParam {Number} gender ID (index array) del sexo.
- * @apiParam {Number} birthday Fecha de nacimiento (Formato: YYYY-MM-DD).
- * @apiParam {Number} civilStatus ID (index array) del estado civil.
- * @apiParam {Number} educationLevel ID (index array) Nivel educativo.
- * @apiParam {Number} profession ID (index array) de la profesión.
- * @apiParam {Number} bloodType ID (index array) del tipo de sangre.
+ * @apiParam {String|Null} document Número de documento del identidad.
+ * @apiParam {String|Null} email Correo electrónico.
+ * @apiParam {Number|Null} gender ID (index array) del sexo.
+ * @apiParam {Number|Null} birthday Fecha de nacimiento (Formato: YYYY-MM-DD).
+ * @apiParam {Number|Null} civilStatus ID (index array) del estado civil.
+ * @apiParam {Number|Null} educationLevel ID (index array) Nivel educativo.
+ * @apiParam {Number|Null} profession ID (index array) de la profesión.
+ * @apiParam {Number|Null} bloodType ID (index array) del tipo de sangre.
  * @apiParam {Boolean} company Indica si posee una empresa.
  * @apiParam {Number|Null} companyType ID (index array) del tipo de empresa en caso de que posea.
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
- * @apiParam {Number} department ID (index array) del departamento.
- * @apiParam {Number} city ID (index array) de la ciudad.
- * @apiParam {String} locality Nombredel sector o localidad.
- * @apiParam {String} direction Dirección.
+ * @apiParam {Number|Null} department ID (index array) del departamento.
+ * @apiParam {Number|Null} city ID (index array) de la ciudad.
+ * @apiParam {String|Null} locality Nombredel sector o localidad.
+ * @apiParam {String|Null} direction Dirección.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -366,22 +362,22 @@
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "¡Error en los parámetros!",
-    "errors": [
-        {
-            "input": "document",
-            "msg": "Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente."
-        },
-        {
-            "input": "phone",
-            "msg": "Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9)."
-        },
-        {
-            "input": "names",
-            "msg": "Disculpe, pero debe asegurarse de indicar su(s) nombre(s)."
-        }
-    ]
-  }
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "phone",
+      "msg": "Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9)."
+    },
+    {
+      "input": "names",
+      "msg": "Disculpe, pero debe asegurarse de indicar el nombre."
+    },
+    {
+      "input": "lastNames",
+      "msg": "Disculpe, pero debe asegurarse de indicar el apellido."
+    }
+  ]
+}
  *
  *
  * @apiUse GlobalErrorSystem

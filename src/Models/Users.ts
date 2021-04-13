@@ -5,9 +5,9 @@ import { getDate, setDate, toUpperValue } from '../Functions/GlobalFunctions';
 
 const UserSchema = new Schema(
   {
-    document: { type: String, require: true, unique: true, set: toUpperValue },
-    email: { type: String, default: null },
     phone: { type: String, require: true, unique: true },
+    document: { type: String, require: true },
+    email: { type: String, default: null },
     password: { type: String, require: true },
     names: { type: String, require: true, set: toUpperValue },
     lastNames: { type: String, require: true, set: toUpperValue },

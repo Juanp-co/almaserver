@@ -44,15 +44,6 @@ async function validateSimpleRegister(data, admin) {
     }
     else
         ret.phone = data.phone;
-    // document
-    if (!data.document || !Validations_1.checkDocument(data.document)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
-    }
-    else if (await UsersActions_1.default(data.document.toUpperCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
-    }
-    else
-        ret.document = data.document.toUpperCase();
     // password
     if (!admin) {
         if (!data.password || !Validations_1.checkPassword(data.password)) {
@@ -77,14 +68,6 @@ async function validateSimpleRegister(data, admin) {
     // referred
     if (data.referred && Validations_1.checkDocument(data.referred)) {
         ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred.toUpperCase());
-    }
-    // email
-    if (data.email) {
-        if (!Validations_1.checkEmail(data.email)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
-        }
-        else
-            ret.email = data.email.toLowerCase();
     }
     if (admin) {
         if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
@@ -115,27 +98,29 @@ async function validateFormMemberRegisterAdmin(data) {
     }
     else
         ret.phone = data.phone;
-    // document
-    if (!data.document || !Validations_1.checkDocument(data.document)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
-    }
-    else if (await UsersActions_1.default(data.document.toUpperCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
-    }
-    else
-        ret.document = data.document.toUpperCase();
     // names
     if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro.', 'names'));
     }
     else
         ret.names = data.names.toUpperCase();
     // lastNames
     if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el apellido del miembro.', 'lastNames'));
     }
     else
         ret.lastNames = data.lastNames.toUpperCase();
+    // document
+    if (data.document) {
+        if (!Validations_1.checkDocument(data.document)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+        }
+        else if (await UsersActions_1.default(data.document.toUpperCase())) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
+        }
+        else
+            ret.document = data.document.toUpperCase();
+    }
     // referred
     if (Validations_1.checkObjectId(data.referred)) {
         ret.referred = data.referred;
@@ -175,14 +160,16 @@ async function validateFormMemberRegisterFromUser(data) {
     else
         ret.phone = data.phone;
     // document
-    if (!data.document || !Validations_1.checkDocument(data.document)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+    if (data.document) {
+        if (!data.document || !Validations_1.checkDocument(data.document)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document'));
+        }
+        else if (await UsersActions_1.default(data.document.toUpperCase())) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
+        }
+        else
+            ret.document = data.document.toUpperCase();
     }
-    else if (await UsersActions_1.default(data.document.toUpperCase())) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.', 'document'));
-    }
-    else
-        ret.document = data.document.toUpperCase();
     // names
     if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
@@ -221,18 +208,6 @@ async function validateUpdate(data, _id, admin = false) {
         direction: null,
     };
     const errors = [];
-    if (admin) {
-        // document
-        if (!data.document || !Validations_1.checkDocument(data.document)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document'));
-        }
-        else if (await UsersActions_1.default(data.document, _id)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
-        }
-        else {
-            ret.document = data.document.toLowerCase();
-        }
-    }
     // phone
     if (!Validations_1.checkPhone(data.phone)) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9).', 'phone'));
@@ -242,6 +217,33 @@ async function validateUpdate(data, _id, admin = false) {
     }
     else
         ret.phone = data.phone;
+    // names
+    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el nombre.', 'names'));
+    }
+    else {
+        ret.names = data.names.trim();
+    }
+    // lastNames
+    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el apellido.', 'lastNames'));
+    }
+    else {
+        ret.lastNames = data.lastNames.trim();
+    }
+    if (admin) {
+        // document
+        if (data.document) {
+            if (!data.document || !Validations_1.checkDocument(data.document)) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document'));
+            }
+            else if (await UsersActions_1.default(data.document, _id)) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
+            }
+            else
+                ret.document = data.document.toLowerCase();
+        }
+    }
     // email
     if (data.email) {
         if (!Validations_1.checkEmail(data.email)) {
@@ -249,20 +251,6 @@ async function validateUpdate(data, _id, admin = false) {
         }
         else
             ret.email = data.email.toLowerCase();
-    }
-    // names
-    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
-    }
-    else {
-        ret.names = data.names.trim();
-    }
-    // lastNames
-    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
-    }
-    else {
-        ret.lastNames = data.lastNames.trim();
     }
     // birthday
     if (data.birthday) {
@@ -274,58 +262,31 @@ async function validateUpdate(data, _id, admin = false) {
         }
     }
     // educationLevel
-    if (!Validations_1.checkIfValueIsNumber(`${data.educationLevel}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su nivel educativo.', 'educationLevel'));
-    }
-    else
+    if (Validations_1.checkIfValueIsNumber(`${data.educationLevel}`))
         ret.educationLevel = data.educationLevel;
     // profession
-    if (!Validations_1.checkIfValueIsNumber(`${data.profession}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su profesión.', 'profession'));
-    }
-    else
+    if (Validations_1.checkIfValueIsNumber(`${data.profession}`))
         ret.profession = data.profession;
     // bloodType
-    if (!Validations_1.checkIfValueIsNumber(`${data.bloodType}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su tipo de sangre.', 'bloodType'));
-    }
-    else
+    if (Validations_1.checkIfValueIsNumber(`${data.bloodType}`))
         ret.bloodType = data.bloodType;
     // gender
-    if (!Validations_1.checkIfValueIsNumber(`${data.gender}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su sexo.', 'gender'));
-    }
-    else
+    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
         ret.gender = data.gender;
     // civilStatus
-    if (!Validations_1.checkIfValueIsNumber(`${data.civilStatus}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su estado civil.', 'civilStatus'));
-    }
-    else
+    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
         ret.civilStatus = data.civilStatus;
     // department
-    if (!Validations_1.checkIfValueIsNumber(`${data.department}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el departamento de residencia.', 'department'));
-    }
-    else
+    if (Validations_1.checkIfValueIsNumber(`${data.department}`))
         ret.department = data.department;
     // city
-    if (!Validations_1.checkIfValueIsNumber(`${data.city}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la ciudad de residencia.', 'city'));
-    }
-    else
+    if (Validations_1.checkIfValueIsNumber(`${data.city}`))
         ret.city = data.city;
     // locality
-    if (!data.locality || !Validations_1.checkTitlesOrDescriptions(`${data.locality}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el nombre del barrio o localidad en la que reside.', 'locality'));
-    }
-    else
+    if (Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
         ret.locality = data.locality || null;
     // direction
-    if (!data.direction || !Validations_1.checkTitlesOrDescriptions(`${data.direction}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su dirección.', 'direction'));
-    }
-    else
+    if (Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
         ret.direction = data.direction || null;
     // baptized
     if (data.baptized)
@@ -334,12 +295,8 @@ async function validateUpdate(data, _id, admin = false) {
     if (data.company) {
         ret.company = true;
         // companyType
-        if (!Validations_1.checkIfValueIsNumber(`${data.companyType}`)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar a qué se dedica su empresa.', 'companyType'));
-        }
-        else {
+        if (Validations_1.checkIfValueIsNumber(`${data.companyType}`))
             ret.companyType = data.companyType;
-        }
     }
     return { data: ret, errors };
 }

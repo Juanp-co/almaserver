@@ -1,48 +1,20 @@
 /**
  * @api {post} /api/register (00) Registro.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.32
  * @apiName registerPublic
  * @apiGroup Public
  *
  * @apiParam {String} phone Teléfono.
- * @apiParam {String|Null} email Correo electrónico.
  * @apiParam {String} password Contraseña.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {String} document Número de documento del identidad.
- * @apiParam {String|Null} referred Número de documento del referido (Opcional)
  *
- * @apiExample {JSON} Example JSON Request with Referred
+ * @apiExample {JSON} Example JSON Request
  * {
 	"phone": "3161234567",
-	"email": "user3@example.com",
 	"password": "password",
 	"names": "Anthony",
-	"lastNames": "Velásquez",
-	"document": "CC12345675",
-	"referred": "CC12345678"
-}
- *
- * @apiExample {JSON} Example JSON Request without Referred
- * {
-	"phone": "3161234567",
-	"email": "user3@example.com",
-	"password": "password",
-	"names": "Anthony",
-	"lastNames": "Velásquez",
-	"document": "CC12345675",
-	"referred": null
-}
- *
- * @apiExample {JSON} Example JSON Request without email
- * {
-	"phone": "3161234567",
-	"email": null,
-	"password": "password",
-	"names": "Anthony",
-	"lastNames": "Velásquez",
-	"document": "CC12345675",
-	"referred": null
+	"lastNames": "Velásquez"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -58,14 +30,26 @@
  * @apiErrorExample {JSON} Validation fields
  * HTTP/1.1 422 Unprocessable Entity
  * {
-    "msg": "¡Error en los parámetros!",
-    "errors": [
-        {
-            "input": "document",
-            "msg": "Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente."
-        }
-    ]
-  }
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "phone",
+      "msg": "Disculpe, pero debe indicar un número de teléfono."
+    },
+    {
+      "input": "names",
+      "msg": "Disculpe, pero debe asegurarse de indicar su(s) nombre(s)."
+    },
+    {
+      "input": "lastNames",
+      "msg": "Disculpe, pero debe asegurarse de indicar su(s) apellido(s)."
+    },
+    {
+      "input": "password",
+      "msg": "Disculpe, pero debe asignar una contraseña. Esta debe contener letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres."
+    }
+  ]
+}
  *
  * @apiUse GlobalErrorSystem
  */

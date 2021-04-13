@@ -9332,7 +9332,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/register",
     "title": "(00) Registro.",
-    "version": "0.0.16",
+    "version": "0.0.32",
     "name": "registerPublic",
     "group": "Public",
     "parameter": {
@@ -9344,13 +9344,6 @@ define({ "api": [
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
           },
           {
             "group": "Parameter",
@@ -9372,38 +9365,14 @@ define({ "api": [
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento del identidad.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "referred",
-            "description": "<p>Número de documento del referido (Opcional)</p>"
           }
         ]
       }
     },
     "examples": [
       {
-        "title": "Example JSON Request with Referred",
-        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"email\": \"user3@example.com\",\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\",\n\t\"document\": \"CC12345675\",\n\t\"referred\": \"CC12345678\"\n}",
-        "type": "JSON"
-      },
-      {
-        "title": "Example JSON Request without Referred",
-        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"email\": \"user3@example.com\",\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\",\n\t\"document\": \"CC12345675\",\n\t\"referred\": null\n}",
-        "type": "JSON"
-      },
-      {
-        "title": "Example JSON Request without email",
-        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"email\": null,\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\",\n\t\"document\": \"CC12345675\",\n\t\"referred\": null\n}",
+        "title": "Example JSON Request",
+        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\"\n}",
         "type": "JSON"
       }
     ],
@@ -9431,7 +9400,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"phone\",\n      \"msg\": \"Disculpe, pero debe indicar un número de teléfono.\"\n    },\n    {\n      \"input\": \"names\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n    },\n    {\n      \"input\": \"lastNames\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) apellido(s).\"\n    },\n    {\n      \"input\": \"password\",\n      \"msg\": \"Disculpe, pero debe asignar una contraseña. Esta debe contener letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -13133,7 +13102,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/user",
     "title": "(01) Actualizar datos del perfil.",
-    "version": "0.0.14",
+    "version": "0.0.32",
     "name": "registerUser",
     "group": "User",
     "header": {
@@ -13152,13 +13121,6 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
-          },
           {
             "group": "Parameter",
             "type": "String",
@@ -13182,42 +13144,49 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (index array) del sexo.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "birthday",
             "description": "<p>Fecha de nacimiento (YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "civilStatus",
             "description": "<p>ID (index array) del estado civil.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (index array) Nivel educativo.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "profession",
             "description": "<p>ID (index array) de la profesión.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "bloodType",
             "description": "<p>ID (index array) del tipo de sangre.</p>"
@@ -13245,28 +13214,28 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "department",
             "description": "<p>ID (index array)del departamento.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "city",
             "description": "<p>ID (index array)de la ciudad.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "locality",
             "description": "<p>Nombredel barrio o vereda.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "direction",
             "description": "<p>Dirección.</p>"
@@ -13512,7 +13481,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/admin/users/:_id",
     "title": "(04) Actualizar datos de un miembro.",
-    "version": "0.0.3",
+    "version": "0.0.32",
     "name": "changeRoleUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -13542,13 +13511,6 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "phone",
@@ -13570,49 +13532,56 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento del identidad.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (index array) del sexo.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "birthday",
             "description": "<p>Fecha de nacimiento (Formato: YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "civilStatus",
             "description": "<p>ID (index array) del estado civil.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (index array) Nivel educativo.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "profession",
             "description": "<p>ID (index array) de la profesión.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "bloodType",
             "description": "<p>ID (index array) del tipo de sangre.</p>"
@@ -13640,28 +13609,28 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "department",
             "description": "<p>ID (index array) del departamento.</p>"
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
             "field": "city",
             "description": "<p>ID (index array) de la ciudad.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "locality",
             "description": "<p>Nombredel sector o localidad.</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "direction",
             "description": "<p>Dirección.</p>"
@@ -13863,7 +13832,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"phone\",\n            \"msg\": \"Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9).\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"phone\",\n      \"msg\": \"Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9).\"\n    },\n    {\n      \"input\": \"names\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar el nombre.\"\n    },\n    {\n      \"input\": \"lastNames\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar el apellido.\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -14047,19 +14016,12 @@ define({ "api": [
     "type": "post",
     "url": "/api/admin/users",
     "title": "(02) Crear nuevo miembro.",
-    "version": "0.0.17",
+    "version": "0.0.32",
     "name": "createUsersAdmin",
     "group": "UsersAdmin",
     "parameter": {
       "fields": {
         "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
-          },
           {
             "group": "Parameter",
             "type": "String",
@@ -14083,13 +14045,6 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento del identidad.</p>"
-          },
-          {
-            "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "role",
@@ -14108,12 +14063,12 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"referred\": \"5fcf0821fc917d476c1cf3e2\",\n}",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"role\": 5,\n  \"referred\": \"5fcf0821fc917d476c1cf3e2\",\n}",
         "type": "JSON"
       },
       {
         "title": "Example JSON Request without referred",
-        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"document\": \"CC24402234\",\n  \"role\": 5,\n  \"referred\": null,\n}",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"role\": 5,\n  \"referred\": null,\n}",
         "type": "JSON"
       }
     ],
@@ -14146,7 +14101,7 @@ define({ "api": [
         },
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"email\",\n            \"msg\": \"Disculpe, pero el correo electrónico ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"document\",\n            \"msg\": \"Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar su(s) nombre(s).\"\n        }\n    ]\n  }",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"¡Error en los parámetros!\",\n    \"errors\": [\n        {\n            \"input\": \"phone\",\n            \"msg\": \"Disculpe, pero debe indicar un número de teléfono.\"\n        },\n        {\n            \"input\": \"names\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro.\"\n        },\n        {\n            \"input\": \"lastNames\",\n            \"msg\": \"Disculpe, pero debe asegurarse de indicar el apellido del miembro.\"\n        }\n    ]\n  }",
           "type": "JSON"
         },
         {

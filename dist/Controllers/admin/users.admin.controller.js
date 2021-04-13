@@ -138,24 +138,24 @@ async function updateUser(req, res) {
         const user = await Users_1.default.findOne({ _id }, { __v: 0, password: 0, referred: 0 }).exec();
         if (!user)
             return UsersActions_1.responseUsersAdmin(res, 1);
-        user.email = validate.data.email;
-        user.phone = validate.data.phone;
-        user.names = validate.data.names;
-        user.lastNames = validate.data.lastNames;
-        user.document = validate.data.document;
-        user.gender = validate.data.gender;
-        user.birthday = validate.data.birthday;
-        user.civilStatus = validate.data.civilStatus;
-        user.educationLevel = validate.data.educationLevel;
-        user.profession = validate.data.profession;
-        user.bloodType = validate.data.bloodType;
-        user.company = validate.data.company;
-        user.companyType = validate.data.companyType;
-        user.baptized = validate.data.baptized;
-        user.department = validate.data.department;
-        user.city = validate.data.city;
-        user.locality = validate.data.locality;
-        user.direction = validate.data.direction;
+        user.phone = validate.data.phone || user.phone;
+        user.document = validate.data.document || user.document;
+        user.email = validate.data.email || user.email;
+        user.names = validate.data.names || user.names;
+        user.lastNames = validate.data.lastNames || user.lastNames;
+        user.birthday = validate.data.birthday || user.birthday;
+        user.gender = validate.data.gender !== null ? validate.data.gender : user.gender;
+        user.civilStatus = validate.data.civilStatus !== null ? validate.data.civilStatus : user.civilStatus;
+        user.educationLevel = validate.data.educationLevel !== null ? validate.data.educationLevel : user.educationLevel;
+        user.profession = validate.data.profession !== null ? validate.data.profession : user.profession;
+        user.bloodType = validate.data.bloodType !== null ? validate.data.bloodType : user.bloodType;
+        user.company = validate.data.company !== null ? validate.data.company : user.company;
+        user.companyType = validate.data.companyType !== null ? validate.data.companyType : user.companyType;
+        user.baptized = validate.data.baptized || user.baptized;
+        user.department = validate.data.department !== null ? validate.data.department : user.department;
+        user.city = validate.data.city !== null ? validate.data.city : user.city;
+        user.locality = validate.data.locality || user.locality;
+        user.direction = validate.data.direction || user.direction;
         await user.save();
         return res.json({
             msg: `Se han actualizado los datos del miembro exitosamente.`,

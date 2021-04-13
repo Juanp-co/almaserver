@@ -70,29 +70,29 @@
 
 /**
  * @api {put} /api/user (01) Actualizar datos del perfil.
- * @apiVersion 0.0.14
+ * @apiVersion 0.0.32
  * @apiName registerUser
  * @apiGroup User
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
- * @apiParam {String|Null} email Correo electrónico.
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {Number} gender ID (index array) del sexo.
- * @apiParam {String} birthday Fecha de nacimiento (YYYY-MM-DD).
- * @apiParam {Number} civilStatus ID (index array) del estado civil.
- * @apiParam {Number} educationLevel ID (index array) Nivel educativo.
- * @apiParam {Number} profession ID (index array) de la profesión.
- * @apiParam {Number} bloodType ID (index array) del tipo de sangre.
+ * @apiParam {String|Null} email Correo electrónico.
+ * @apiParam {Number|Null} gender ID (index array) del sexo.
+ * @apiParam {String|Null} birthday Fecha de nacimiento (YYYY-MM-DD).
+ * @apiParam {Number|Null} civilStatus ID (index array) del estado civil.
+ * @apiParam {Number|Null} educationLevel ID (index array) Nivel educativo.
+ * @apiParam {Number|Null} profession ID (index array) de la profesión.
+ * @apiParam {Number|Null} bloodType ID (index array) del tipo de sangre.
  * @apiParam {Boolean} company Indica si posee una empresa.
  * @apiParam {Number|Null} companyType ID (index array) del tipo de empresa en caso de que posea.
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
- * @apiParam {Number} department ID (index array)del departamento.
- * @apiParam {Number} city ID (index array)de la ciudad.
- * @apiParam {String} locality Nombredel barrio o vereda.
- * @apiParam {String} direction Dirección.
+ * @apiParam {Number|Null} department ID (index array)del departamento.
+ * @apiParam {Number|Null} city ID (index array)de la ciudad.
+ * @apiParam {String|Null} locality Nombredel barrio o vereda.
+ * @apiParam {String|Null} direction Dirección.
  *
  * @apiExample {JSON} Example JSON Request
  * {
