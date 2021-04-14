@@ -16,7 +16,7 @@ export default async function getConsolidates(req: Request, res: Response): Prom
     const { userid } = req.params;
     const { initDate, endDate, input, value } = req.query;
     const query: any = {};
-    const query2: any = { referred: { $ne: null } };
+    const query2: any = { referred: { $ne: null }, consolidated: { $ne: false } };
     const sort: any = {};
     const ret: any = {
       consolidates: [],
@@ -125,8 +125,8 @@ export async function saveConsolidateVisit(req: Request, res: Response): Promise
 export async function getConsolidatesMembers(req: Request, res: Response): Promise<Response> {
   try {
     const members = await Users.find(
-      { referred: { $ne: null } },
-      { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }
+      { referred: { $ne: null }, consolidated: { $ne: false } },
+      { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }
       ).exec();
 
     return res.json({

@@ -18,7 +18,7 @@ async function getConsolidates(req, res) {
         const { userid } = req.params;
         const { initDate, endDate, input, value } = req.query;
         const query = {};
-        const query2 = { referred: { $ne: null } };
+        const query2 = { referred: { $ne: null }, consolidated: { $ne: false } };
         const sort = {};
         const ret = {
             consolidates: [],
@@ -116,7 +116,7 @@ async function saveConsolidateVisit(req, res) {
 exports.saveConsolidateVisit = saveConsolidateVisit;
 async function getConsolidatesMembers(req, res) {
     try {
-        const members = await Users_1.default.find({ referred: { $ne: null } }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec();
+        const members = await Users_1.default.find({ referred: { $ne: null }, consolidated: { $ne: false } }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }).exec();
         return res.json({
             msg: `Miembros`,
             members

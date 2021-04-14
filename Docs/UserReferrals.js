@@ -1,5 +1,69 @@
 /**
- * @api {get} /api/user/referrals (00) Obtener listado de hijos espirituales.
+ * @api {post} /api/user/referrals (00) Registrar nuevo referido (hijo espiritual).
+ * @apiVersion 0.0.31
+ * @apiName saveVisitUserReferrals
+ * @apiGroup UserReferrals
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam {String} phone ID del usuario visitado.
+ * @apiParam {String} names Fecha de la visita (YYYY-MM-DD).
+ * @apiParam {String} lastNames Observaciones de la visita.
+ * @apiParam {boolean} consolidated Indica si el miembro fue consolidado.
+ *
+ * @apiExample {JSON} Example JSON Request Consolidated
+ * {
+  "phone": "573161234567",
+  "names": "Anthony alejandro",
+  "lastNames": "Velasquez rodriguez",
+  "consolidated": true
+}
+ *
+ * @apiExample {JSON} Example JSON Request not consolidated
+ * {
+  "phone": "573161234567",
+  "names": "Anthony alejandro",
+  "lastNames": "Velasquez rodriguez",
+  "consolidated": false
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Se ha registrado la visita al consolidado exitosamente."
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiErrorExample {JSON} Validation fields
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "phone",
+      "msg": "Disculpe, pero debe indicar un número de teléfono."
+    },
+    {
+      "input": "names",
+      "msg": "Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro."
+    },
+    {
+      "input": "lastNames",
+      "msg": "Disculpe, pero debe asegurarse de indicar el apellido del miembro."
+    }
+  ]
+}
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {get} /api/user/referrals (01) Obtener listado de hijos espirituales.
  * @apiVersion 0.0.27
  * @apiName getUserReferrals
  * @apiGroup UserReferrals
@@ -73,7 +137,7 @@
  */
 
 /**
- * @api {get} /api/user/referrals/:memberId (01) Obtener datos de un hijo espiritual.
+ * @api {get} /api/user/referrals/:memberId (02) Obtener datos de un hijo espiritual.
  * @apiVersion 0.0.28
  * @apiName getDataMemberUserReferrals
  * @apiGroup UserReferrals
@@ -103,6 +167,7 @@
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
  * @apiSuccess (member Object) {String|Null} email Correo electrónico.
+ * @apiSuccess (member Object) {String|Null} position Cargo o posición.
  *
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
@@ -139,7 +204,8 @@
 			"phone": "563161234567",
 			"names": "ANTHONY",
 			"lastNames": "VELÁSQUEZ",
-			"email": "anthony@example.com"
+			"email": "anthony@example.com",
+			"position": null
 		},
 		"totalCourses": 5,
 		"totalReferrals": 12,
@@ -215,7 +281,7 @@
  */
 
 /**
- * @api {post} /api/user/referrals/visit (02) Registrar visita a un hijo espiritual.
+ * @api {post} /api/user/referrals/visit (03) Registrar visita a un hijo espiritual.
  * @apiVersion 0.0.31
  * @apiName saveVisitUserReferrals
  * @apiGroup UserReferrals

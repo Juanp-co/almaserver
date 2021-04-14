@@ -13,6 +13,7 @@ export default interface IUser extends Document {
   password: string | null;
   names: string | null;
   lastNames: string | null;
+  position: string | null;
   gender: number | null;
   birthday: string | null;
   civilStatus: string | null;
@@ -24,6 +25,7 @@ export default interface IUser extends Document {
   baptized?: boolean | null;
   role?: number | null;
   referred?: any;
+  consolidated?: boolean;
   group?: any;
   familyGroupId: string[];
   department: number | null;
@@ -41,6 +43,7 @@ export interface IUserData {
   phone: IUser['phone'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
+  position: IUser['position'] | null;
   gender: IUser['gender'];
   birthday: IUser['birthday'];
   civilStatus: IUser['civilStatus'];
@@ -52,6 +55,7 @@ export interface IUserData {
   baptized?: IUser['baptized'];
   role?: IUser['role'];
   referred?: any;
+  consolidated?: boolean;
   department: IUser['department'];
   city: IUser['city'];
   locality: IUser['locality'];
@@ -62,14 +66,13 @@ export interface IUserData {
 }
 
 export interface IUserSimpleRegister {
-  email: IUser['email'];
-  phone?: IUser['phone'];
+  phone: IUser['phone'];
   password: IUser['password'];
-  document: IUser['document'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
   role: number | null;
   referred: string | null;
+  consolidated: boolean,
 }
 
 export interface IUserUpdate {
@@ -78,6 +81,7 @@ export interface IUserUpdate {
   document: IUser['document'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
+  position: IUser['position'];
   gender: IUser['gender'];
   birthday: IUser['birthday'];
   civilStatus: IUser['civilStatus'];
@@ -107,6 +111,7 @@ export interface IUserSimpleInfo {
   document: IUser['document'];
   phone: IUser['phone'];
   referred?: IUserSimpleInfo | null;
+  position?: IUser['position'] | null;
   totalsReferrals?: number;
 }
 
@@ -117,6 +122,7 @@ export interface IUserReferralSimpleData {
   phone: IUser['phone'];
   email: IUser['email'];
   gender: IUser['gender'];
+  position: IUser['position'];
   civilStatus: IUser['civilStatus'];
   department: IUser['department'];
   city: IUser['city'];

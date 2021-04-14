@@ -11673,7 +11673,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/user/referrals/:memberId",
-    "title": "(01) Obtener datos de un hijo espiritual.",
+    "title": "(02) Obtener datos de un hijo espiritual.",
     "version": "0.0.28",
     "name": "getDataMemberUserReferrals",
     "group": "UserReferrals",
@@ -11842,6 +11842,13 @@ define({ "api": [
             "optional": false,
             "field": "email",
             "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición.</p>"
           }
         ],
         "courses Object[]": [
@@ -11966,7 +11973,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalCourses\": 5,\n\t\t\"totalReferrals\": 12,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f1\",\n\t\t\t\t\"slug\": \"nivel-uno\",\n\t\t\t\t\"title\": \"NIVEL UNO\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"level\": 1,\n\t\t\t\t\"approved\": false\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"_id\": \"6045ebc578cb41018883d3ea\",\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"document\": \"CC11223344\",\n\t\t\t\t\"names\": \"JOSÉ\",\n\t\t\t\t\"lastNames\": \"ESPINOZA\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"visits\": [\n\t\t\t{\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t\t},\n\t\t\t\t\"date\": \"2021-04-12\",\n\t\t\t\t\"observation\": \"ACURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. NULLA PORTTITOR ACCUMSAN TINCIDUNT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. DONEC SOLLICITUDIN MOLESTIE MALESUADA. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\"\n\t\t\t},\n\t\t]\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\",\n\t\t\t\"position\": null\n\t\t},\n\t\t\"totalCourses\": 5,\n\t\t\"totalReferrals\": 12,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f1\",\n\t\t\t\t\"slug\": \"nivel-uno\",\n\t\t\t\t\"title\": \"NIVEL UNO\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"level\": 1,\n\t\t\t\t\"approved\": false\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"_id\": \"6045ebc578cb41018883d3ea\",\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"document\": \"CC11223344\",\n\t\t\t\t\"names\": \"JOSÉ\",\n\t\t\t\t\"lastNames\": \"ESPINOZA\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"visits\": [\n\t\t\t{\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t\t},\n\t\t\t\t\"date\": \"2021-04-12\",\n\t\t\t\t\"observation\": \"ACURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. NULLA PORTTITOR ACCUMSAN TINCIDUNT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. DONEC SOLLICITUDIN MOLESTIE MALESUADA. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\"\n\t\t\t},\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -12050,7 +12057,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/user/referrals",
-    "title": "(00) Obtener listado de hijos espirituales.",
+    "title": "(01) Obtener listado de hijos espirituales.",
     "version": "0.0.27",
     "name": "getUserReferrals",
     "group": "UserReferrals",
@@ -12261,8 +12268,150 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/api/user/referrals",
+    "title": "(00) Registrar nuevo referido (hijo espiritual).",
+    "version": "0.0.31",
+    "name": "saveVisitUserReferrals",
+    "group": "UserReferrals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>ID del usuario visitado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Fecha de la visita (YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Observaciones de la visita.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Indica si el miembro fue consolidado.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request Consolidated",
+        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"consolidated\": true\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request not consolidated",
+        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"consolidated\": false\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha registrado la visita al consolidado exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"phone\",\n      \"msg\": \"Disculpe, pero debe indicar un número de teléfono.\"\n    },\n    {\n      \"input\": \"names\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro.\"\n    },\n    {\n      \"input\": \"lastNames\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar el apellido del miembro.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserReferrals.js",
+    "groupTitle": "UserReferrals"
+  },
+  {
+    "type": "post",
     "url": "/api/user/referrals/visit",
-    "title": "(02) Registrar visita a un hijo espiritual.",
+    "title": "(03) Registrar visita a un hijo espiritual.",
     "version": "0.0.31",
     "name": "saveVisitUserReferrals",
     "group": "UserReferrals",
@@ -13634,6 +13783,13 @@ define({ "api": [
             "optional": false,
             "field": "direction",
             "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo(s) o posición.</p>"
           }
         ]
       }
@@ -13641,7 +13797,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": \"user@example.com\",\n    \"phone\": \"3161234567\",\n    \"names\": \"Usuario tres\",\n    \"lastNames\": \"Prueba tres\",\n    \"document\": \"CC12345678\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
+        "content": "{\n    \"email\": null,\n\t\t\"phone\": \"584121490192\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n    \"document\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\"\n}",
         "type": "JSON"
       }
     ],
@@ -13817,13 +13973,20 @@ define({ "api": [
             "optional": false,
             "field": "email",
             "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"role\": 5,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\"updated_at\": \"2021-02-18 17:51:10\",\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"phone\": \"3161234567\",\n\t\t\"document\": \"CC12345678\",\n\t\t\"names\": \"USUARIO TRES\",\n\t\t\"lastNames\": \"PRUEBA TRES\",\n\t\t\"email\": \"user@example.com\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"email\": null,\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"consolidated\": true,\n\t\t\"group\": null,\n\t\t\"familyGroupId\": [],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"phone\": \"584121490192\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 22:24:50\",\n\t\t\"document\": null\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -14056,6 +14219,13 @@ define({ "api": [
             "optional": false,
             "field": "referred",
             "description": "<p>ID del miembro consolidador.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "false",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Indica si el nuevo miembro fue consolidado.</p>"
           }
         ]
       }
@@ -14063,12 +14233,12 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"role\": 5,\n  \"referred\": \"5fcf0821fc917d476c1cf3e2\",\n}",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"role\": 5,\n  \"referred\": \"5fcf0821fc917d476c1cf3e2\",\n  \"consolidated\": true\n}",
         "type": "JSON"
       },
       {
         "title": "Example JSON Request without referred",
-        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"role\": 5,\n  \"referred\": null,\n}",
+        "content": "{\n  \"email\": \"user2@example.com\",\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"velasquez rodriguez\",\n  \"role\": 5,\n  \"referred\": null,\n  \"consolidated\": false\n}",
         "type": "JSON"
       }
     ],
@@ -14372,10 +14542,87 @@ define({ "api": [
         "data Object": [
           {
             "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Número de teléfono.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo(s) o posición.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "civilStatus",
+            "description": "<p>ID (array index) del estado civil.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Number|Null",
             "optional": false,
             "field": "educationLevel",
             "description": "<p>ID (array index) del nivel educativo.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "profession",
+            "description": "<p>ID (array index) de la profesión.</p>"
           },
           {
             "group": "data Object",
@@ -14414,10 +14661,52 @@ define({ "api": [
           },
           {
             "group": "data Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "referred",
+            "description": "<p>Datos del referido (padre espiritual).</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Indica si el miembro fue consolidado.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "department",
+            "description": "<p>ID (array index) del departamento.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "city",
+            "description": "<p>ID (array index) de la ciudad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "locality",
+            "description": "<p>Nombrede la localidad.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Object",
             "optional": false,
-            "field": "securityQuestion",
-            "description": "<p>Datos de la pregunta de seguridad.</p>"
+            "field": "totals",
+            "description": "<p>Totales de cursos e hijos espirituales.</p>"
           },
           {
             "group": "data Object",
@@ -14432,71 +14721,73 @@ define({ "api": [
             "optional": false,
             "field": "updated_at",
             "description": "<p>Fecha de la última actualización del perfil.</p>"
-          },
+          }
+        ],
+        "members Object": [
           {
-            "group": "data Object",
+            "group": "members Object",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>Número de teléfono.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "data Object",
+            "group": "members Object",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombres.</p>"
           },
           {
-            "group": "data Object",
+            "group": "members Object",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
           },
           {
-            "group": "data Object",
+            "group": "members Object",
             "type": "String",
             "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección.</p>"
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "data Object",
+            "group": "members Object",
             "type": "Number|Null",
             "optional": false,
-            "field": "profession",
-            "description": "<p>ID (array index) de la profesión.</p>"
-          }
-        ],
-        "securityQuestion Object": [
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
           {
-            "group": "securityQuestion Object",
+            "group": "members Object",
             "type": "String|Null",
             "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad.</p>"
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          }
+        ],
+        "totals Object": [
+          {
+            "group": "totals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalsCourses",
+            "description": "<p>Cursos totales.</p>"
+          },
+          {
+            "group": "totals Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalsReferrals",
+            "description": "<p>Total de referidos (Hijos espirituales).</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Detalles del miembro.\",\n    \"user\": {\n        \"educationLevel\": null,\n        \"bloodType\": 1,\n        \"company\": false,\n        \"companyType\": null,\n        \"baptized\": false,\n        \"role\": 5,\n        \"securityQuestion\": {\n            \"questionId\": \"5f8608596cd607042cdbea86\"\n        },\n        \"created_at\": \"2020-12-07 23:59:12\",\n        \"updated_at\": \"2020-12-13 12:57:12\",\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"phone\": \"3161234567\",\n        \"document\": \"CC12345678\",\n        \"names\": \"USUARIO TRES\",\n        \"lastNames\": \"PRUEBA TRES\",\n        \"direction\": \"any direction\",\n        \"profession\": null\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Detalles del miembro.\",\n\t\"user\": {\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"document\": null,\n\t\t\"email\": null,\n\t\t\"phone\": \"584121490192\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"position\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"referred\": {\n\t\t\t\"_id\": \"607658ff598ae749a42a0143\",\n\t\t\t\"names\": \"KRHYSTAL\",\n\t\t\t\"lastNames\": \"TIRADO\",\n\t\t\t\"document\": null,\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"4262755110\",\n\t\t\t\"position\": \"ASDASDASDASDASD\"\n\t\t},\n\t\t\"consolidated\": true,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"totals\": {\n\t\t\t\"totalsCourses\": 1,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 21:55:09\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -14672,6 +14963,13 @@ define({ "api": [
           },
           {
             "group": "referrals Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
             "type": "Number",
             "optional": false,
             "field": "totalReferrals",
@@ -14682,7 +14980,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del miembro.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": null,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del miembro.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"584121490199\",\n\t\t\t\"position\": null,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         }
       ]

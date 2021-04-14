@@ -19,16 +19,15 @@ import IUser, {
 } from '../Interfaces/IUser';
 
 export default async function validateSimpleRegister(data: IUserSimpleRegister, admin?: boolean | null): Promise<{ data: IUserSimpleRegister; errors: any }> {
-  const ret = {
-    email: null,
+  const ret: IUserSimpleRegister = {
     phone: null,
     password: null,
-    document: null,
     names: null,
     lastNames: null,
     role: 5,
-    referred: null
-  } as IUserSimpleRegister;
+    referred: null,
+    consolidated: false,
+  };
   const errors: any = [];
 
   // phone
@@ -76,25 +75,22 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
   }
 
   if (admin) {
-    if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
-      ret.role = data.role;
-    }
+    ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
   }
 
   return { data: ret, errors };
 }
 
 export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegister): Promise<{ data: IUserSimpleRegister; errors: any }> {
-  const ret = {
-    email: null,
+  const ret: IUserSimpleRegister = {
     phone: null,
     password: null,
-    document: null,
     names: null,
     lastNames: null,
     role: 5,
-    referred: null
-  } as IUserSimpleRegister;
+    referred: null,
+    consolidated: false,
+  };
   const errors: any = [];
 
   // phone
@@ -123,54 +119,28 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegister)
     );
   } else ret.lastNames = data.lastNames.toUpperCase();
 
-  // document
-  if (data.document) {
-    if (!checkDocument(data.document)) {
-      errors.push(
-        setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document')
-      );
-    } else if (await checkIfExistDocument(data.document.toUpperCase())) {
-      errors.push(
-        setError(
-          'Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.',
-          'document'
-        )
-      );
-    } else ret.document = data.document.toUpperCase();
-  }
-
   // referred
-  if (checkObjectId(data.referred)) {
-    ret.referred = data.referred;
-  }
+  ret.referred = checkObjectId(data.referred) ? data.referred : null;
 
-  // email
-  if (data.email) {
-    if (!checkEmail(data.email)) {
-      errors.push(
-        setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email')
-      );
-    }
-    else ret.email = data.email.toLowerCase();
-  }
+  // role
+  ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
 
-  if (data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1) {
-    ret.role = data.role;
-  }
+  // consolidated
+  ret.consolidated = data.consolidated || false;
 
   return { data: ret, errors };
 }
 
 export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegister): Promise<{ data: IUserSimpleRegister; errors: any }> {
-  const ret = {
-    email: null,
+  const ret: IUserSimpleRegister = {
     phone: null,
     password: null,
-    document: null,
     names: null,
     lastNames: null,
-    role: 5
-  } as IUserSimpleRegister;
+    role: 5,
+    referred: null,
+    consolidated: false,
+  };
   const errors: any = [];
 
   // phone
@@ -187,22 +157,6 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     );
   } else ret.phone = data.phone;
 
-  // document
-  if (data.document) {
-    if (!data.document || !checkDocument(data.document)) {
-      errors.push(
-        setError('Disculpe, pero debe asegurarse de indicar su número de documento.', 'document')
-      );
-    } else if (await checkIfExistDocument(data.document.toUpperCase())) {
-      errors.push(
-        setError(
-          'Disculpe, pero el número de documento ya se encuentra registrado. Verifíquelo e intente nuevamente.',
-          'document'
-        )
-      );
-    } else ret.document = data.document.toUpperCase();
-  }
-
   // names
   if (!data.names || !checkNameOrLastName(data.names)) {
     errors.push(setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
@@ -215,6 +169,9 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     );
   } else ret.lastNames = data.lastNames.toUpperCase();
 
+  // consolidated
+  ret.consolidated = data.consolidated || false;
+
   return { data: ret, errors };
 }
 
@@ -225,6 +182,7 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
     document: null,
     names: null,
     lastNames: null,
+    position: null,
     gender: null,
     birthday: null,
     civilStatus: null,
@@ -334,6 +292,9 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
 
   // direction
   if (checkTitlesOrDescriptions(`${data.direction}`)) ret.direction = data.direction || null;
+
+  // position
+  if (checkTitlesOrDescriptions(`${data.position}`)) ret.position = data.position || null;
 
   // baptized
   if (data.baptized) ret.baptized = data.baptized;
