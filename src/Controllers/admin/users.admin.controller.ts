@@ -171,6 +171,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     user.names = validate.data.names || user.names;
     user.lastNames = validate.data.lastNames || user.lastNames;
     user.birthday = validate.data.birthday || user.birthday;
+    user.position = validate.data.position !== null ? validate.data.position : (user.position || null);
     user.gender = validate.data.gender !== null ? validate.data.gender : user.gender;
     user.civilStatus = validate.data.civilStatus !== null ? validate.data.civilStatus : user.civilStatus;
     user.educationLevel = validate.data.educationLevel !== null ? validate.data.educationLevel : user.educationLevel;

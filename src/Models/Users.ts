@@ -6,11 +6,12 @@ import { getDate, setDate, toUpperValue } from '../Functions/GlobalFunctions';
 const UserSchema = new Schema(
   {
     phone: { type: String, require: true, unique: true },
-    document: { type: String, require: true },
+    document: { type: String, require: true, get: toUpperValue },
     email: { type: String, default: null },
     password: { type: String, require: true },
     names: { type: String, require: true, set: toUpperValue },
     lastNames: { type: String, require: true, set: toUpperValue },
+    position: { type: String, default: null, set: toUpperValue },
     gender: { type: Number, default: null },
     birthday: { type: String, default: null },
     civilStatus: { type: Number, default: null },
@@ -23,14 +24,15 @@ const UserSchema = new Schema(
     // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona
     role: { type: Number, default: 5 },
     referred: { type: String, default: null },
+    consolidated: { type: Boolean, default: false },
     group: { type: String, default: null },
     familyGroupId: { type: [String], default: [] },
     department: { type: Number, default: null },
     city: { type: Number, default: null },
     locality: { type: String, default: null, set: toUpperValue },
     direction: { type: String, default: null, set: toUpperValue },
-    created_at: { type: Number, default: setDate(), get: getDate },
-    updated_at: { type: Number, default: setDate(), get: getDate }
+    created_at: { type: Number, default: setDate, get: getDate },
+    updated_at: { type: Number, default: setDate, get: getDate }
   },
   { id: false }
 );

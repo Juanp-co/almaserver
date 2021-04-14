@@ -115,6 +115,7 @@
  * @apiParam {String} lastNames Apellidos.
  * @apiParam {Number} role Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  * @apiParam {String|Null} referred ID del miembro consolidador.
+ * @apiParam {false} consolidated Indica si el nuevo miembro fue consolidado.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -124,6 +125,7 @@
   "lastNames": "velasquez rodriguez",
   "role": 5,
   "referred": "5fcf0821fc917d476c1cf3e2",
+  "consolidated": true
 }
  *
  * @apiExample {JSON} Example JSON Request without referred
@@ -134,6 +136,7 @@
   "lastNames": "velasquez rodriguez",
   "role": 5,
   "referred": null,
+  "consolidated": false
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -191,49 +194,86 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos de la sesión.
  *
+ * @apiSuccess (data Object) {String} _id ID del miembro.
+ * @apiSuccess (data Object) {String} document Número de documento.
+ * @apiSuccess (data Object) {String|Null} email Correo electrónico.
+ * @apiSuccess (data Object) {String} phone Número de teléfono.
+ * @apiSuccess (data Object) {String} names Nombres.
+ * @apiSuccess (data Object) {String} lastNames Apellidos.
+ * @apiSuccess (data Object) {String|Null} position Cargo(s) o posición.
+ * @apiSuccess (data Object) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (data Object) {String|Null} birthday Fecha de nacimiento.
+ * @apiSuccess (data Object) {Number|Null} civilStatus ID (array index) del estado civil.
  * @apiSuccess (data Object) {Number|Null} educationLevel ID (array index) del nivel educativo.
+ * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
  * @apiSuccess (data Object) {Number|Null} bloodType ID (array index) del tipo de sangre.
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
  * @apiSuccess (data Object) {Number} role Role del miembro.
- * @apiSuccess (data Object) {Object} securityQuestion Datos de la pregunta de seguridad.
+ * @apiSuccess (data Object) {Object|Null} referred Datos del referido (padre espiritual).
+ * @apiSuccess (data Object) {Boolean} consolidated Indica si el miembro fue consolidado.
+ * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
+ * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
+ * @apiSuccess (data Object) {String} locality Nombrede la localidad.
+ * @apiSuccess (data Object) {String} direction Dirección.
+ * @apiSuccess (data Object) {Object} totals Totales de cursos e hijos espirituales.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
- * @apiSuccess (data Object) {String} _id ID del miembro.
- * @apiSuccess (data Object) {String} phone Número de teléfono.
- * @apiSuccess (data Object) {String} document Número de documento.
- * @apiSuccess (data Object) {String} names Nombres.
- * @apiSuccess (data Object) {String} lastNames Apellidos.
- * @apiSuccess (data Object) {String} direction Dirección.
- * @apiSuccess (data Object) {Number|Null} profession ID (array index) de la profesión.
  *
- * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
+ * @apiSuccess (members Object) {String} _id ID del miembro.
+ * @apiSuccess (members Object) {String} names Nombres.
+ * @apiSuccess (members Object) {String} lastNames Apellidos.
+ * @apiSuccess (members Object) {String} document Número de documento.
+ * @apiSuccess (members Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (members Object) {String|Null} phone Teléfono.
+ *
+ * @apiSuccess (totals Object) {Number} totalsCourses Cursos totales.
+ * @apiSuccess (totals Object) {Number} totalsReferrals Total de referidos (Hijos espirituales).
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Detalles del miembro.",
-    "user": {
-        "educationLevel": null,
-        "bloodType": 1,
-        "company": false,
-        "companyType": null,
-        "baptized": false,
-        "role": 5,
-        "securityQuestion": {
-            "questionId": "5f8608596cd607042cdbea86"
-        },
-        "created_at": "2020-12-07 23:59:12",
-        "updated_at": "2020-12-13 12:57:12",
-        "_id": "5fcf0821fc917d476c1cf3e3",
-        "phone": "3161234567",
-        "document": "CC12345678",
-        "names": "USUARIO TRES",
-        "lastNames": "PRUEBA TRES",
-        "direction": "any direction",
-        "profession": null
-    }
+	"msg": "Detalles del miembro.",
+	"user": {
+		"_id": "6076598d598ae749a42a0147",
+		"document": null,
+		"email": null,
+		"phone": "584121490192",
+		"names": "AMBERCITA",
+		"lastNames": "VELASQUEZ",
+		"position": null,
+		"gender": null,
+		"birthday": null,
+		"civilStatus": null,
+		"educationLevel": null,
+		"profession": null,
+		"bloodType": null,
+		"company": false,
+		"companyType": null,
+		"baptized": false,
+		"role": 5,
+		"referred": {
+			"_id": "607658ff598ae749a42a0143",
+			"names": "KRHYSTAL",
+			"lastNames": "TIRADO",
+			"document": null,
+			"gender": null,
+			"phone": "4262755110",
+			"position": "ASDASDASDASDASD"
+		},
+		"consolidated": true,
+		"department": null,
+		"city": null,
+		"locality": null,
+		"direction": null,
+		"totals": {
+			"totalsCourses": 1,
+			"totalsReferrals": 0
+		},
+		"created_at": "2021-04-13 21:55:09",
+		"updated_at": "2021-04-13 21:55:09"
+	}
 }
  *
  * @apiUse GlobalParamsErrors
@@ -274,27 +314,29 @@
  * @apiParam {Number|Null} city ID (index array) de la ciudad.
  * @apiParam {String|Null} locality Nombredel sector o localidad.
  * @apiParam {String|Null} direction Dirección.
+ * @apiParam {String|Null} position Cargo(s) o posición.
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "email": "user@example.com",
-    "phone": "3161234567",
-    "names": "Usuario tres",
-    "lastNames": "Prueba tres",
-    "document": "CC12345678",
-		"gender": 2,
-		"birthday": "1994-07-07",
-		"civilStatus": 0,
-		"educationLevel": 0,
-		"profession": 90,
-		"bloodType": 7,
+    "email": null,
+		"phone": "584121490192",
+		"names": "AMBERCITA",
+		"lastNames": "VELASQUEZ",
+    "document": null,
+		"gender": null,
+		"birthday": null,
+		"civilStatus": null,
+		"educationLevel": null,
+		"profession": null,
+		"bloodType": null,
     "company": false,
     "companyType": null,
-    "baptized": true,
-    "department": 19,
-    "city": 18,
+    "baptized": false,
+    "department": null,
+    "city": null,
     "locality": "URB. NUEVO MUNDO",
-    "direction": "URB. NUEVO MUNDO #66"
+    "direction": "URB. NUEVO MUNDO #66",
+		"position": "PADRE ESPIRITUAL Y LIDER"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -322,34 +364,39 @@
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
  * @apiSuccess (data Object) {String} email Correo electrónico.
+ * @apiSuccess (data Object) {String} position Cargo o posición del miembro.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
 	"msg": "Se han actualizado los datos del miembro exitosamente.",
 	"user": {
-		"gender": 2,
-		"birthday": "1994-07-07",
-		"civilStatus": 0,
-		"educationLevel": 0,
-		"profession": 90,
-		"bloodType": 7,
+		"email": null,
+		"position": "PADRE ESPIRITUAL Y LIDER",
+		"gender": null,
+		"birthday": null,
+		"civilStatus": null,
+		"educationLevel": null,
+		"profession": null,
+		"bloodType": null,
 		"company": false,
 		"companyType": null,
-		"baptized": true,
+		"baptized": false,
 		"role": 5,
-		"department": 19,
-		"city": 18,
+		"consolidated": true,
+		"group": null,
+		"familyGroupId": [],
+		"department": null,
+		"city": null,
 		"locality": "URB. NUEVO MUNDO",
 		"direction": "URB. NUEVO MUNDO #66",
-		"created_at": "2020-12-07 23:59:12",
-		"updated_at": "2021-02-18 17:51:10",
-		"_id": "5fcf0821fc917d476c1cf3e3",
-		"phone": "3161234567",
-		"document": "CC12345678",
-		"names": "USUARIO TRES",
-		"lastNames": "PRUEBA TRES",
-		"email": "user@example.com"
+		"_id": "6076598d598ae749a42a0147",
+		"phone": "584121490192",
+		"names": "AMBERCITA",
+		"lastNames": "VELASQUEZ",
+		"created_at": "2021-04-13 21:55:09",
+		"updated_at": "2021-04-13 22:24:50",
+		"document": null
 	}
 }
  *
@@ -406,6 +453,7 @@
  * @apiSuccess (referrals Object[]) {String} document Número de documento.
  * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
+ * @apiSuccess (referrals Object[]) {String|Null} position Cargo o posición del miembro.
  * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
@@ -419,7 +467,8 @@
 			"lastNames": "USUARIO",
 			"document": "CC123123123",
 			"gender": null,
-			"phone": null,
+			"phone": "584121490199",
+			"position": null,
 			"totalsReferrals": 0
 		},
 		.

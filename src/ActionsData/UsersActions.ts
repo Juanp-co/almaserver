@@ -37,20 +37,23 @@ export async function getData(_id?: string, projection: any | null = null): Prom
 }
 
 export async function getNamesUsersList(listIds: string|any[], projection: any|null = null): Promise<IUserSimpleInfo[] | any> {
-
   const ret: IUserSimpleInfo[] = [];
 
   if (listIds.length > 0) {
-    const users = await Users.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec();
+    const users = await Users.find(
+      { _id: { $in: listIds } },
+      projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }
+    ).exec();
 
     for (const value of users) {
       ret.push({
         _id: value._id,
         names: value.names,
         lastNames: value.lastNames,
-        document: value.document,
-        gender: value.gender,
-        phone: value.phone || null,
+        document: value.document || null,
+        gender: value.gender || null,
+        phone: value.phone,
+        position: value.position || null,
       });
     }
   }
@@ -81,9 +84,9 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
         document: data.document,
         email: data.email,
         phone: data.phone,
-        // password: data.password,
         names: data.names,
         lastNames: data.lastNames,
+        position: data.position || null,
         gender: data.gender,
         birthday: data.birthday,
         civilStatus: data.civilStatus,
@@ -95,6 +98,7 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
         baptized: data.baptized,
         role: data.role,
         referred: data.referred,
+        consolidated: data.consolidated || false,
         department: data.department,
         city: data.city,
         locality: data.locality,
@@ -151,6 +155,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         phone: 1,
         email: 1,
         gender: 1,
+        position: 1,
         civilStatus: 1,
         department: 1,
         city: 1,
