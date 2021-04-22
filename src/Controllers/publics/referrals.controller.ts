@@ -76,7 +76,8 @@ export async function saveReferral(req: Request, res: Response): Promise<Respons
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    validate.data.referred = userid; // set current id to referred
+    // set current id to referred
+    if (validate.data.referred) validate.data.referred = userid;
 
     const user = new Users(validate.data);
     const password = 'alma1234'; // default password

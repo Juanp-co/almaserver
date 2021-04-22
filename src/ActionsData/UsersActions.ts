@@ -98,6 +98,8 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
         baptized: data.baptized,
         role: data.role,
         referred: data.referred,
+        petition: data.petition,
+        attendGroup: data.attendGroup,
         consolidated: data.consolidated || false,
         department: data.department,
         city: data.city,
@@ -160,7 +162,10 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         department: 1,
         city: 1,
         locality: 1,
+        petition: 1,
+        consolidated: 1,
         direction: 1,
+        birthday: 1,
       }
     ).exec() as IUserReferralSimpleData;
 
@@ -239,15 +244,10 @@ export function checkFindValueSearch(query: any, value: any): any {
     if (checkNameOrLastName(value)) {
       const pattern = value ? value.toString().trim().replace(' ', '|') : null;
       if (pattern) {
-        query = {
-          ...query,
-          ...{
-            $or: [
-              { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-              { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-            ]
-          }
-        };
+        query.$or = [
+          { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+          { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+        ];
       }
     }
     else

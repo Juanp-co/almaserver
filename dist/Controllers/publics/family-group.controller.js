@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reportsFamilyGroup = exports.saveFamilyGroupReport = exports.showFamilyGroup = void 0;
+exports.reportsFamilyGroup = exports.saveFamilyGroupReport = exports.showFamilyGroup = exports.getFamiliesGroupsPublic = void 0;
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const FamiliesGroupsReportsRequest_1 = __importDefault(require("../../FormRequest/FamiliesGroupsReportsRequest"));
@@ -52,6 +52,30 @@ async function getFamiliesGroups(req, res) {
     }
 }
 exports.default = getFamiliesGroups;
+async function getFamiliesGroupsPublic(req, res) {
+    try {
+        const { sector, subSector, number } = req.query;
+        const query = {};
+        let ret = [];
+        if (/[0-9]{1,3}/.test(`${sector}`))
+            query.sector = Number.parseInt(`${sector}`, 10);
+        if (/[0-9]{1,3}/.test(`${subSector}`))
+            query.subSector = Number.parseInt(`${subSector}`, 10);
+        if (/[0-9]{1,3}/.test(`${number}`))
+            query.number = Number.parseInt(`${number}`, 10);
+        if (Object.keys(query).length > 0) {
+            ret = await FamiliesGroups_1.default.find(query, { number: 1, sector: 1, subSector: 1, direction: 1 }).exec();
+        }
+        return res.json({
+            msg: 'Grupos familiares',
+            groups: ret
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getReports`);
+    }
+}
+exports.getFamiliesGroupsPublic = getFamiliesGroupsPublic;
 async function showFamilyGroup(req, res) {
     try {
         const { userid, _id } = req.params;

@@ -70,7 +70,9 @@ async function saveReferral(req, res) {
         const validate = await UsersRequest_1.validateFormMemberRegisterFromUser(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        validate.data.referred = userid; // set current id to referred
+        // set current id to referred
+        if (validate.data.referred)
+            validate.data.referred = userid;
         const user = new Users_1.default(validate.data);
         const password = 'alma1234'; // default password
         user.password = bcrypt_1.default.hashSync(password, 10);

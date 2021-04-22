@@ -486,6 +486,8 @@
  * @apiName getPublicBanksPublic
  * @apiGroup Public
  *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} banks Listado de bancos.
  *
@@ -516,6 +518,117 @@
 }
  *
  * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {get} /api/members (09) Obtener listado de miembros.
+ * @apiVersion 0.0.25
+ * @apiName getMembersPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam (Query Params) {String} input Campo a ordenar (valor = names).
+ * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional si input no se enviado).
+ * @apiParam (Query Params) {Number} page Página a visualizar (Por defecto = 1).
+ * @apiParam (Query Params) {Number} limit Total de resultados por página (Por defecto = 10).
+ * @apiParam (Query Params) {String} word Número de teléfono o nombre para filtrar el listado.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} members Listado de miembros.
+ *
+ * @apiSuccess (members Object[]) {Number|Null} gender Género (sexo) del miembro.
+ * @apiSuccess (members Object[]) {String} _id ID del miembro.
+ * @apiSuccess (members Object[]) {String} phone Número de teléfono.
+ * @apiSuccess (members Object[]) {String} names Nombre(s).
+ * @apiSuccess (members Object[]) {String} lastNames Apellido(s).
+ *
+ * @apiSuccessExample {JSON} Success with data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Listado de miembros.",
+	"members": [
+		{
+			"gender": null,
+		  "_id": "5fcf0821fc917d476c1cf3e3",
+			"phone": "3161234567",
+			"names": "PEDRO",
+			"lastNames": "PEREZ"
+		},
+		.
+		.
+		.
+	]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Listado de miembros.",
+	"members": []
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {get} /api/members (10) Obtener listado de grupos familiares.
+ * @apiVersion 0.0.25
+ * @apiName getFamiliesGroupsPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam (Query Params) {String} input Campo a ordenar (valores = sector | subSector | number).
+ * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional si input no se enviado).
+ * @apiParam (Query Params) {Number} page Página a visualizar (Por defecto = 1).
+ * @apiParam (Query Params) {Number} limit Total de resultados por página (Por defecto = 10).
+ * @apiParam (Query Params) {Number} sector Número del sector a filtrar (opcional si se envía subSector o number).
+ * @apiParam (Query Params) {Number} subSector Número del sub-sector a filtrar (opcional si se envía sector o number).
+ * @apiParam (Query Params) {Number} number Número del grupo a filtrar (opcional si se envía sector o subSector).
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} groups Listado de miembros.
+ *
+ * @apiSuccess (groups Object[]) {String} _id ID del grupo.
+ * @apiSuccess (groups Object[]) {Number} sector Número del sector.
+ * @apiSuccess (groups Object[]) {Number} subSector Número del sub-sector.
+ * @apiSuccess (groups Object[]) {Number} number Número del grupo.
+ * @apiSuccess (groups Object[]) {String} direction Dirección.
+ *
+ * @apiSuccessExample {JSON} Success with data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Grupos familiares",
+	"groups": [
+		{
+			"_id": "6063385c98fc731c04777829",
+			"sector": 1,
+			"subSector": 1,
+			"number": 1,
+			"direction": "DIRECCIÓN CUALQUIERA EDITADA"
+		}
+	]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Grupos familiares",
+	"groups": []
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
  *
  * @apiUse GlobalErrorSystem
  */

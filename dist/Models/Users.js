@@ -44,6 +44,8 @@ const UserSchema = new mongoose_1.Schema({
     referred: { type: String, default: null },
     consolidated: { type: Boolean, default: false },
     group: { type: String, default: null },
+    petition: { type: String, default: null, set: GlobalFunctions_1.toUpperValue },
+    attendGroup: { type: Boolean, default: false },
     familyGroupId: { type: [String], default: [] },
     department: { type: Number, default: null },
     city: { type: Number, default: null },

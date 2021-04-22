@@ -1,30 +1,44 @@
 /**
- * @api {post} /api/user/referrals (00) Registrar nuevo referido (hijo espiritual).
+ * @api {post} /api/user/referrals (00) Registrar nuevo referido (hijo espiritual/consolidado).
  * @apiVersion 0.0.31
  * @apiName saveVisitUserReferrals
  * @apiGroup UserReferrals
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
- * @apiParam {String} phone ID del usuario visitado.
+ * @apiParam {String} phone Teléfono.
+ * @apiParam {String} names Nombres.
+ * @apiParam {String} lastNames Apellidos.
  * @apiParam {String} names Fecha de la visita (YYYY-MM-DD).
- * @apiParam {String} lastNames Observaciones de la visita.
+ * @apiParam {String|Null} email Correo electrónico.
+ * @apiParam {String} birthday Fecha de nacimiento (YYYY-MM-DD).
+ * @apiParam {Number|Null} civilStatus ID (array index) Estado civil.
+ * @apiParam {Number|Null} gender ID (array index) del genero (sexo).
+ * @apiParam {String|Null} gender Observaciones de la visita.
+ * @apiParam {String|Null} locality Barrio o localidad.
+ * @apiParam {String|Null} direction Dirección.
  * @apiParam {boolean} consolidated Indica si el miembro fue consolidado.
+ * @apiParam {String|Null} referred ID del miembro consolidador.
+ * @apiParam {String|Null} petition Petición solicitada por el nuevo miembro.
+ * @apiParam {boolean} attendGroup Indica si el miembro asiste a un grupo.
+ * @apiParam {String|Null} groupId ID del grupo al que asiste el nuevo miembro.
  *
  * @apiExample {JSON} Example JSON Request Consolidated
  * {
   "phone": "573161234567",
   "names": "Anthony alejandro",
   "lastNames": "Velasquez rodriguez",
-  "consolidated": true
-}
- *
- * @apiExample {JSON} Example JSON Request not consolidated
- * {
-  "phone": "573161234567",
-  "names": "Anthony alejandro",
-  "lastNames": "Velasquez rodriguez",
-  "consolidated": false
+  "email": "anthony@example.com",
+  "birthday": "1994-07-07",
+  "civilStatus": 0,
+  "gender": 0,
+  "locality": 'Barrio nuevo',
+  "direction": 'Dirección cualquiera',
+  "consolidated": true,
+  "referred": "605e37d154abd33060a689dc",
+  "petition": "Por la familia, por salud y por mejora económica.",
+  "attendGroup": true,
+  "groupId": "6063385c98fc731c04777829",
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -32,7 +46,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Se ha registrado la visita al consolidado exitosamente."
+	"msg": "Se ha registrado el nuevo miebro exitosamente."
 }
  *
  * @apiUse GlobalParamsErrors
@@ -158,6 +172,8 @@
  *
  * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
+ * @apiSuccess (member Object) {Boolean} consolidated Indica si el miembro fue consolidado.
+ * @apiSuccess (member Object) {String|Null} petition Petición realizada por el miembro al momento de registrarse.
  * @apiSuccess (member Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (member Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (member Object) {String|Null} locality Nombre de la localidad.
@@ -196,6 +212,8 @@
 		"member": {
 			"gender": 0,
 			"civilStatus": 0,
+			"consolidated": false,
+			"petition": null,
 			"department": 19,
 			"city": 18,
 			"locality": "CRUZ ROJA",

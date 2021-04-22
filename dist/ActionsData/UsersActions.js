@@ -86,6 +86,8 @@ async function getUserData(_id, projection = null) {
                 baptized: data.baptized,
                 role: data.role,
                 referred: data.referred,
+                petition: data.petition,
+                attendGroup: data.attendGroup,
                 consolidated: data.consolidated || false,
                 department: data.department,
                 city: data.city,
@@ -144,7 +146,10 @@ async function getInfoUserReferred(_id) {
             department: 1,
             city: 1,
             locality: 1,
+            petition: 1,
+            consolidated: 1,
             direction: 1,
+            birthday: 1,
         }).exec();
         if (!ret.member)
             return ret;
@@ -211,15 +216,10 @@ function checkFindValueSearch(query, value) {
         if (Validations_1.checkNameOrLastName(value)) {
             const pattern = value ? value.toString().trim().replace(' ', '|') : null;
             if (pattern) {
-                query = {
-                    ...query,
-                    ...{
-                        $or: [
-                            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                        ]
-                    }
-                };
+                query.$or = [
+                    { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                    { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                ];
             }
         }
         else

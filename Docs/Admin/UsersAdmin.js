@@ -110,33 +110,41 @@
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
  *
- * @apiParam {String} phone Número de teléfono.
+ * @apiParam {String} phone Teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
- * @apiParam {Number} role Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
+ * @apiParam {String} names Fecha de la visita (YYYY-MM-DD).
+ * @apiParam {String|Null} email Correo electrónico.
+ * @apiParam {String} birthday Fecha de nacimiento (YYYY-MM-DD).
+ * @apiParam {Number|Null} civilStatus ID (array index) Estado civil.
+ * @apiParam {Number|Null} gender ID (array index) del genero (sexo).
+ * @apiParam {String|Null} gender Observaciones de la visita.
+ * @apiParam {String|Null} locality Barrio o localidad.
+ * @apiParam {String|Null} direction Dirección.
+ * @apiParam {boolean} consolidated Indica si el miembro fue consolidado.
  * @apiParam {String|Null} referred ID del miembro consolidador.
- * @apiParam {false} consolidated Indica si el nuevo miembro fue consolidado.
+ * @apiParam {String|Null} petition Petición solicitada por el nuevo miembro.
+ * @apiParam {boolean} attendGroup Indica si el miembro asiste a un grupo.
+ * @apiParam {String|Null} groupId ID del grupo al que asiste el nuevo miembro.
+ * @apiParam {Number} role Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  *
  * @apiExample {JSON} Example JSON Request
- * {
-  "email": "user2@example.com",
+ *{
   "phone": "573161234567",
   "names": "Anthony alejandro",
-  "lastNames": "velasquez rodriguez",
-  "role": 5,
-  "referred": "5fcf0821fc917d476c1cf3e2",
-  "consolidated": true
-}
- *
- * @apiExample {JSON} Example JSON Request without referred
- * {
-  "email": "user2@example.com",
-  "phone": "573161234567",
-  "names": "Anthony alejandro",
-  "lastNames": "velasquez rodriguez",
-  "role": 5,
-  "referred": null,
-  "consolidated": false
+  "lastNames": "Velasquez rodriguez",
+  "email": "anthony@example.com",
+  "birthday": "1994-07-07",
+  "civilStatus": 0,
+  "gender": 0,
+  "locality": 'Barrio nuevo',
+  "direction": 'Dirección cualquiera',
+  "consolidated": true,
+  "referred": "605e37d154abd33060a689dc",
+  "petition": "Por la familia, por salud y por mejora económica.",
+  "attendGroup": true,
+  "groupId": "6063385c98fc731c04777829",
+  "role": 5
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -212,6 +220,8 @@
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
  * @apiSuccess (data Object) {Number} role Role del miembro.
  * @apiSuccess (data Object) {Object|Null} referred Datos del referido (padre espiritual).
+ * @apiSuccess (data Object) {String|Null} petition Petición realizada por el mimebto al momento de registrarse.
+ * @apiSuccess (data Object) {Boolean} attendGroup Asiste a un grupo familiar.
  * @apiSuccess (data Object) {Boolean} consolidated Indica si el miembro fue consolidado.
  * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
@@ -262,6 +272,8 @@
 			"phone": "4262755110",
 			"position": "ASDASDASDASDASD"
 		},
+		"petition": null,
+		"attendGroup": false,
 		"consolidated": true,
 		"department": null,
 		"city": null,
