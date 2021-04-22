@@ -75,11 +75,22 @@ async function validateSimpleRegister(data, admin) {
 }
 exports.default = validateSimpleRegister;
 async function validateFormMemberRegisterAdmin(data) {
+    var _a;
     const ret = {
+        email: null,
         phone: null,
         password: null,
         names: null,
         lastNames: null,
+        gender: null,
+        birthday: null,
+        civilStatus: null,
+        locality: null,
+        direction: null,
+        petition: null,
+        attendGroup: false,
+        groupId: null,
+        familyGroupId: [],
         role: 5,
         referred: null,
         consolidated: false,
@@ -106,21 +117,83 @@ async function validateFormMemberRegisterAdmin(data) {
     }
     else
         ret.lastNames = data.lastNames.toUpperCase();
-    // referred
-    ret.referred = Validations_1.checkObjectId(data.referred) ? data.referred : null;
+    // email
+    if (data.email) {
+        if (!Validations_1.checkEmail(data.email)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        }
+        else
+            ret.email = data.email.toLowerCase();
+    }
+    // birthday
+    if (data.birthday) {
+        if (!Validations_1.checkDate(data.birthday)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+        }
+        else
+            ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
+    }
+    // locality
+    if (Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
+        ret.locality = data.locality || null;
+    // direction
+    if (Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
+        ret.direction = data.direction || null;
+    // petition
+    if (Validations_1.checkTitlesOrDescriptions(`${data.petition}`))
+        ret.petition = data.petition || null;
+    // civilStatus
+    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
+        ret.civilStatus = data.civilStatus;
+    // gender
+    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
+        ret.gender = data.gender;
+    // attendGroup
+    if (data.attendGroup) {
+        ret.attendGroup = true;
+        // familyGroupId
+        if (data.groupId) {
+            if (!Validations_1.checkObjectId(`${data.groupId}`)) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
+            }
+            else
+                ret.familyGroupId.push(data.groupId);
+        }
+    }
+    // consolidated
+    if (data.consolidated) {
+        ret.consolidated = data.consolidated || false;
+        // referred
+        if (data.referred) {
+            if (!Validations_1.checkObjectId(`${data.referred}`)) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
+            }
+            else
+                ret.referred = data.referred;
+        }
+    }
     // role
     ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
-    // consolidated
-    ret.consolidated = data.consolidated || false;
     return { data: ret, errors };
 }
 exports.validateFormMemberRegisterAdmin = validateFormMemberRegisterAdmin;
 async function validateFormMemberRegisterFromUser(data) {
+    var _a;
     const ret = {
+        email: null,
         phone: null,
         password: null,
         names: null,
         lastNames: null,
+        gender: null,
+        birthday: null,
+        civilStatus: null,
+        locality: null,
+        direction: null,
+        petition: null,
+        attendGroup: false,
+        groupId: null,
+        familyGroupId: [],
         role: 5,
         referred: null,
         consolidated: false,
@@ -147,8 +220,59 @@ async function validateFormMemberRegisterFromUser(data) {
     }
     else
         ret.lastNames = data.lastNames.toUpperCase();
+    // email
+    if (data.email) {
+        if (!Validations_1.checkEmail(data.email)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        }
+        else
+            ret.email = data.email.toLowerCase();
+    }
+    // birthday
+    if (data.birthday) {
+        if (!Validations_1.checkDate(data.birthday)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+        }
+        else
+            ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
+    }
+    // locality
+    if (Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
+        ret.locality = data.locality || null;
+    // direction
+    if (Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
+        ret.direction = data.direction || null;
+    // petition
+    if (Validations_1.checkTitlesOrDescriptions(`${data.petition}`))
+        ret.petition = data.petition || null;
+    // gender
+    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
+        ret.gender = data.gender;
+    // civilStatus
+    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
+        ret.civilStatus = data.civilStatus;
+    // attendGroup
+    if (data.attendGroup) {
+        ret.attendGroup = true;
+        // familyGroupId
+        if (data.groupId) {
+            if (!Validations_1.checkObjectId(`${data.groupId}`)) {
+                errors.push(GlobalFunctions_1.setError('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
+            }
+            else
+                ret.familyGroupId.push(data.groupId);
+        }
+    }
     // consolidated
     ret.consolidated = data.consolidated || false;
+    // referred
+    if (data.referred) {
+        if (!Validations_1.checkObjectId(`${data.referred}`)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
+        }
+        else
+            ret.referred = data.referred;
+    }
     return { data: ret, errors };
 }
 exports.validateFormMemberRegisterFromUser = validateFormMemberRegisterFromUser;

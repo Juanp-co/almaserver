@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+exports.getPublicMembers = exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
@@ -212,3 +212,47 @@ async function getBanks(req, res) {
     }
 }
 exports.getBanks = getBanks;
+/*
+  MEMBERS
+ */
+async function getPublicMembers(req, res) {
+    try {
+        const { userid } = req.params;
+        const { word } = req.query;
+        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const query = { _id: { $ne: userid } };
+        let members = [];
+        if (/^[0-9]{1,13}/.test(`${word}`.trim())) {
+            query.phone = { $regex: new RegExp(`${word}`, 'i') };
+        }
+        else if (Validations_1.checkNameOrLastName(word)) {
+            const pattern = word ? word.toString().trim().replace(' ', '|') : null;
+            if (pattern) {
+                query.$or = [
+                    { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                    { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                ];
+            }
+        }
+        if (query.phone || query.$or) {
+            members = await Users_1.default.find(query, {
+                names: 1,
+                lastNames: 1,
+                gender: 1,
+                phone: 1
+            })
+                .skip(skip)
+                .limit(limit)
+                .sort(sort)
+                .exec();
+        }
+        return res.json({
+            msg: `Listado de miembros.`,
+            members
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getUsers`);
+    }
+}
+exports.getPublicMembers = getPublicMembers;

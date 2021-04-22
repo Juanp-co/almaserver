@@ -24,12 +24,13 @@ const middleware_1 = require("../middleware");
 const courses_controller_1 = __importStar(require("../Controllers/publics/courses.controller"));
 const events_controller_1 = require("../Controllers/events/events.controller");
 const public_controller_1 = require("../Controllers/publics/public.controller");
+const family_group_controller_1 = require("../Controllers/publics/family-group.controller");
 const router = express_1.Router();
 // ===================================================================================
 /* Test api */
 router.get(`/`, public_controller_1.helloWorld);
 /* banks */
-router.get(`/banks`, public_controller_1.getBanks);
+router.get(`/banks`, middleware_1.validateUser, public_controller_1.getBanks);
 /*
   Courses
 */
@@ -38,6 +39,10 @@ router.get(`/courses`, middleware_1.validateUser, courses_controller_1.default);
 router.get(`/courses/:slug`, middleware_1.validateUser, courses_controller_1.showCourse);
 router.post(`/courses/:slug/theme/:_id/quiz`, middleware_1.validateUser, courses_controller_1.evaluateQuiz);
 router.put(`/courses/:slug/theme/:_id/:action`, middleware_1.validateUser, courses_controller_1.updateHistoricalCourseContent);
+/*
+  Families Groups
+*/
+router.get(`/families-groups`, middleware_1.validateUser, family_group_controller_1.getFamiliesGroupsPublic);
 /*
   Events
 */
@@ -48,6 +53,10 @@ router.get(`/events/:_id`, events_controller_1.showPublicEvent);
 */
 router.post(`/login`, public_controller_1.login);
 router.delete(`/logout`, middleware_1.validateUser, public_controller_1.logout);
+/*
+  Families Groups
+*/
+router.get(`/members`, middleware_1.validateUser, public_controller_1.getPublicMembers);
 /*
   Recovery Password
  */

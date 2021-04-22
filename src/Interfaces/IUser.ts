@@ -27,6 +27,8 @@ export default interface IUser extends Document {
   referred?: any;
   consolidated?: boolean;
   group?: any;
+  petition?: string|null;
+  attendGroup?: boolean;
   familyGroupId: string[];
   department: number | null;
   city: number | null;
@@ -56,6 +58,8 @@ export interface IUserData {
   role?: IUser['role'];
   referred?: any;
   consolidated?: boolean;
+  petition?: IUser['petition'];
+  attendGroup?: IUser['attendGroup'];
   department: IUser['department'];
   city: IUser['city'];
   locality: IUser['locality'];
@@ -70,6 +74,26 @@ export interface IUserSimpleRegister {
   password: IUser['password'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
+  role: number | null;
+  referred: string | null;
+  consolidated: boolean,
+}
+
+export interface IUserSimpleRegisterConsolidate {
+  email: IUser['email'];
+  phone: IUser['phone'];
+  password: IUser['password'];
+  names: IUser['names'];
+  lastNames: IUser['lastNames'];
+  civilStatus: IUser['civilStatus'];
+  gender: IUser['gender'];
+  birthday: IUser['birthday'];
+  locality: IUser['locality'];
+  direction: IUser['direction'];
+  attendGroup: IUser['attendGroup'];
+  petition: IUser['petition'];
+  groupId: string|null;
+  familyGroupId: IUser['familyGroupId'];
   role: number | null;
   referred: string | null;
   consolidated: boolean,

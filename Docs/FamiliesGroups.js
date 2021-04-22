@@ -80,6 +80,7 @@
  * @apiSuccess (leader, host, assistant and master Object) {String} document Número de documento.
  * @apiSuccess (leader, host, assistant and master Object) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (leader, host, assistant and master Object) {String|Null} phone Teléfono.
+ * @apiSuccess (leader, host, assistant and master Object) {String|Null} position Cargo que realiza el usuario.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -98,7 +99,8 @@
 				"lastNames": "PRUEBA",
 				"document": "CC1234123411",
 				"gender": null,
-				"phone": null
+				"phone": 584121490191,
+				"position": null
 			},
 			"host": {
 				"_id": "604068461caad10e2c965406",
@@ -106,7 +108,8 @@
 				"lastNames": "USUARIO",
 				"document": "CC123123123",
 				"gender": null,
-				"phone": "584121490199"
+				"phone": "584121490199",
+				"position": "ANFITRIÓN Y LÍDER"
 			},
 			"assistant": {
 				"_id": "5fcf0821fc917d476c1cf3e3",
@@ -114,7 +117,8 @@
 				"lastNames": "PÉREZ RODRIGUEZ",
 				"document": "CC12345678",
 				"gender": 0,
-				"phone": "3161234567"
+				"phone": "3161234567",
+				"position": null
 			},
 			"master": null
 		},

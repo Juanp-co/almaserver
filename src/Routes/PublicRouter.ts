@@ -6,12 +6,13 @@ import getCourses, {
 } from '../Controllers/publics/courses.controller';
 import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.controller';
 import {
-  getBanks,
+  getBanks, getPublicMembers,
   helloWorld,
   login,
   logout, recoveryPassword,
   register
 } from '../Controllers/publics/public.controller';
+import { getFamiliesGroupsPublic } from '../Controllers/publics/family-group.controller';
 
 const router = Router();
 
@@ -23,7 +24,7 @@ router.get(`/`, helloWorld);
 
 /* banks */
 
-router.get(`/banks`, getBanks);
+router.get(`/banks`, validateUser, getBanks);
 
 /*
   Courses
@@ -33,6 +34,11 @@ router.get(`/courses`, validateUser, getCourses);
 router.get(`/courses/:slug`, validateUser, showCourse);
 router.post(`/courses/:slug/theme/:_id/quiz`, validateUser, evaluateQuiz);
 router.put(`/courses/:slug/theme/:_id/:action`, validateUser, updateHistoricalCourseContent);
+
+/*
+  Families Groups
+*/
+router.get(`/families-groups`, validateUser, getFamiliesGroupsPublic);
 
 /*
   Events
@@ -47,6 +53,11 @@ router.get(`/events/:_id`, showPublicEvent);
 
 router.post(`/login`, login);
 router.delete(`/logout`, validateUser, logout);
+
+/*
+  Families Groups
+*/
+router.get(`/members`, validateUser, getPublicMembers);
 
 /*
   Recovery Password

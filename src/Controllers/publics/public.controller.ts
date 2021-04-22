@@ -1,14 +1,22 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { addCoursesToUser } from '../../ActionsData/CoursesActions';
-import { getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
+import { checkFindValueSearch, getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
-import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
-import { checkDate, checkDocument, checkEmail, checkPassword } from '../../Functions/Validations';
+import {
+  checkDate,
+  checkDocument,
+  checkEmail,
+  checkNameOrLastName,
+  checkObjectId,
+  checkPassword
+} from '../../Functions/Validations';
 import AccountsBanks from '../../Models/AccountsBanks';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
+import { IUserSimpleInfo } from '../../Interfaces/IUser';
 
 const path = 'Controllers/publics/publics.controller';
 
@@ -212,5 +220,54 @@ export async function getBanks(req: Request, res: Response): Promise<Response> {
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/logout`);
+  }
+}
+
+/*
+  MEMBERS
+ */
+
+export async function getPublicMembers(req: Request, res: Response): Promise<Response> {
+  try {
+    const { userid } = req.params;
+    const { word } = req.query;
+    const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
+    const query: any = { _id: { $ne: userid } };
+    let members: IUserSimpleInfo[] = [];
+
+    if (/^[0-9]{1,13}/.test(`${word}`.trim())) {
+      query.phone = { $regex: new RegExp(`${word}`, 'i')};
+    }
+    else if (checkNameOrLastName(word)) {
+      const pattern = word ? word.toString().trim().replace(' ', '|') : null;
+      if (pattern) {
+        query.$or = [
+          { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+          { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+        ]
+      }
+    }
+
+    if (query.phone || query.$or) {
+      members = await Users.find(
+        query,
+        {
+          names: 1,
+          lastNames: 1,
+          gender: 1,
+          phone: 1
+        })
+        .skip(skip)
+        .limit(limit)
+        .sort(sort)
+        .exec() as IUserSimpleInfo[];
+    }
+
+    return res.json({
+      msg: `Listado de miembros.`,
+      members
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getUsers`);
   }
 }

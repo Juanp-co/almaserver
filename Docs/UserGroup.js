@@ -84,6 +84,8 @@
  *
  * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
+ * @apiSuccess (member Object) {Boolean} consolidated Indica si el miembro fue consolidado.
+ * @apiSuccess (member Object) {String|Null} petition Petición realizada por el miembro al momento de registrarse.
  * @apiSuccess (member Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (member Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (member Object) {String|Null} locality Nombre de la localidad.
@@ -117,6 +119,8 @@
 		"member": {
 			"gender": 0,
 			"civilStatus": 0,
+			"consolidated": false,
+			"petition": null,
 			"department": 19,
 			"city": 18,
 			"locality": "CRUZ ROJA",

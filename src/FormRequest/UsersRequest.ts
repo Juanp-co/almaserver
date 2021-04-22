@@ -14,7 +14,7 @@ import {
 import IUser, {
   IUserLogin,
   IUserPasswords,
-  IUserSimpleRegister,
+  IUserSimpleRegister, IUserSimpleRegisterConsolidate,
   IUserUpdate
 } from '../Interfaces/IUser';
 
@@ -81,12 +81,22 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
   return { data: ret, errors };
 }
 
-export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegister): Promise<{ data: IUserSimpleRegister; errors: any }> {
-  const ret: IUserSimpleRegister = {
+export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterConsolidate): Promise<{ data: IUserSimpleRegisterConsolidate; errors: any }> {
+  const ret: IUserSimpleRegisterConsolidate = {
+    email: null,
     phone: null,
     password: null,
     names: null,
     lastNames: null,
+    gender: null,
+    birthday: null,
+    civilStatus: null,
+    locality: null,
+    direction: null,
+    petition: null,
+    attendGroup: false,
+    groupId: null,
+    familyGroupId: [],
     role: 5,
     referred: null,
     consolidated: false,
@@ -119,24 +129,86 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegister)
     );
   } else ret.lastNames = data.lastNames.toUpperCase();
 
-  // referred
-  ret.referred = checkObjectId(data.referred) ? data.referred : null;
+  // email
+  if (data.email) {
+    if (!checkEmail(data.email)) {
+      errors.push(
+        setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email')
+      );
+    }
+    else ret.email = data.email.toLowerCase();
+  }
+
+  // birthday
+  if (data.birthday) {
+    if (!checkDate(data.birthday)) {
+      errors.push(setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+    } else ret.birthday = data.birthday?.trim().toUpperCase() || null;
+  }
+
+  // locality
+  if (checkTitlesOrDescriptions(`${data.locality}`)) ret.locality = data.locality || null;
+
+  // direction
+  if (checkTitlesOrDescriptions(`${data.direction}`)) ret.direction = data.direction || null;
+
+  // petition
+  if (checkTitlesOrDescriptions(`${data.petition}`)) ret.petition = data.petition || null;
+
+  // civilStatus
+  if (checkIfValueIsNumber(`${data.civilStatus}`)) ret.civilStatus = data.civilStatus;
+
+  // gender
+  if (checkIfValueIsNumber(`${data.gender}`)) ret.gender = data.gender;
+
+  // attendGroup
+  if (data.attendGroup) {
+    ret.attendGroup = true;
+
+    // familyGroupId
+    if (data.groupId) {
+      if (!checkObjectId(`${data.groupId}`)) {
+        errors.push(setError('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
+      }
+      else ret.familyGroupId.push(data.groupId)
+    }
+  }
+
+  // consolidated
+  if (data.consolidated) {
+    ret.consolidated = data.consolidated || false;
+
+    // referred
+    if (data.referred) {
+      if (!checkObjectId(`${data.referred}`)) {
+        errors.push(setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
+      }
+      else ret.referred = data.referred;
+    }
+  }
 
   // role
   ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
 
-  // consolidated
-  ret.consolidated = data.consolidated || false;
-
   return { data: ret, errors };
 }
 
-export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegister): Promise<{ data: IUserSimpleRegister; errors: any }> {
-  const ret: IUserSimpleRegister = {
+export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegisterConsolidate): Promise<{ data: IUserSimpleRegisterConsolidate; errors: any }> {
+  const ret: IUserSimpleRegisterConsolidate = {
+    email: null,
     phone: null,
     password: null,
     names: null,
     lastNames: null,
+    gender: null,
+    birthday: null,
+    civilStatus: null,
+    locality: null,
+    direction: null,
+    petition: null,
+    attendGroup: false,
+    groupId: null,
+    familyGroupId: [],
     role: 5,
     referred: null,
     consolidated: false,
@@ -169,8 +241,61 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     );
   } else ret.lastNames = data.lastNames.toUpperCase();
 
+  // email
+  if (data.email) {
+    if (!checkEmail(data.email)) {
+      errors.push(
+        setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email')
+      );
+    }
+    else ret.email = data.email.toLowerCase();
+  }
+
+  // birthday
+  if (data.birthday) {
+    if (!checkDate(data.birthday)) {
+      errors.push(setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+    } else ret.birthday = data.birthday?.trim().toUpperCase() || null;
+  }
+
+  // locality
+  if (checkTitlesOrDescriptions(`${data.locality}`)) ret.locality = data.locality || null;
+
+  // direction
+  if (checkTitlesOrDescriptions(`${data.direction}`)) ret.direction = data.direction || null;
+
+  // petition
+  if (checkTitlesOrDescriptions(`${data.petition}`)) ret.petition = data.petition || null;
+
+  // gender
+  if (checkIfValueIsNumber(`${data.gender}`)) ret.gender = data.gender;
+
+  // civilStatus
+  if (checkIfValueIsNumber(`${data.civilStatus}`)) ret.civilStatus = data.civilStatus;
+
+  // attendGroup
+  if (data.attendGroup) {
+    ret.attendGroup = true;
+
+    // familyGroupId
+    if (data.groupId) {
+      if (!checkObjectId(`${data.groupId}`)) {
+        errors.push(setError('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
+      }
+      else ret.familyGroupId.push(data.groupId)
+    }
+  }
+
   // consolidated
   ret.consolidated = data.consolidated || false;
+
+  // referred
+  if (data.referred) {
+    if (!checkObjectId(`${data.referred}`)) {
+      errors.push(setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
+    }
+    else ret.referred = data.referred;
+  }
 
   return { data: ret, errors };
 }
