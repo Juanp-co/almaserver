@@ -16,7 +16,7 @@ import FamiliesGroups from '../../Models/FamiliesGroups';
 import FamiliesGroupsReports from '../../Models/FamiliesGroupsReports';
 import Groups from '../../Models/Groups';
 import Users from '../../Models/Users';
-import Consolidates from '../../Models/Consolidates';
+import Consolidates from '../../Models/Visits';
 
 const path = 'src/admin/reports.admin.controller';
 

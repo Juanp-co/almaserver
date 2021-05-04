@@ -9,8 +9,8 @@ const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const ConsolidatesFormRequest_1 = __importDefault(require("../../FormRequest/ConsolidatesFormRequest"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
-const Consolidates_1 = __importDefault(require("../../Models/Consolidates"));
 const Users_1 = __importDefault(require("../../Models/Users"));
+const Visits_1 = __importDefault(require("../../Models/Visits"));
 const path = 'Controllers/admin/users.admin.controller';
 // =====================================================================================================================
 async function getConsolidates(req, res) {
@@ -36,46 +36,62 @@ async function getConsolidates(req, res) {
             }
         }
         const members = await Users_1.default.find({ referred: { $ne: null }, ...query }).exec();
-        const visits = await Consolidates_1.default.find(query).sort(sort).exec();
+        const visits = await Visits_1.default.find(query).sort(sort).exec();
         if (members.length > 0) {
             const listIds = [userid];
-            members.forEach(c => {
-                if (!listIds.includes(c._id.toString()))
-                    listIds.push(c._id.toString());
-                if (c.referred && !listIds.includes(c.referred))
-                    listIds.push(c.referred);
-            });
+            if (members) {
+                members.forEach(c => {
+                    if (!listIds.includes(c._id.toString()))
+                        listIds.push(c._id.toString());
+                    if (c.referred && !listIds.includes(c.referred))
+                        listIds.push(c.referred);
+                });
+            }
+            if (visits) {
+                visits.forEach(v => {
+                    if (v.referred && !listIds.includes(v.referred))
+                        listIds.push(v.referred);
+                    if (v.userid && !listIds.includes(v.userid))
+                        listIds.push(v.userid);
+                });
+            }
             // find all members
             ret.members = await Users_1.default.find({
                 $or: [
                     query2,
                     { _id: { $in: listIds || [] } }
                 ]
-            }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }).exec();
+            }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 })
+                .sort({ names: 1 })
+                .exec();
             const listToCheck = [];
             let listIdsPending = [];
+            for (const v of visits) {
+                // add to list for the next check
+                if (v.userid && !listToCheck.includes(v.userid))
+                    listToCheck.push(v.userid);
+                if (moment_timezone_1.default().diff(moment_timezone_1.default(`${v.date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+                    if (v.userid && !listIdsPending.includes(v.userid))
+                        listIdsPending.push(v.userid);
+                }
+                else
+                    listIdsPending = listIdsPending.filter(lip => lip !== v.userid);
+                const consolidator = ret.members.find((md) => md._id.toString() === v.referred) || null;
+                const member = ret.members.find((md) => md._id.toString() === v.userid) || null;
+                if (member && consolidator) {
+                    ret.consolidates.push({
+                        consolidator,
+                        member,
+                        date: v.date || null,
+                        observation: v.observation || null,
+                        action: v.action || 'Visita',
+                    });
+                }
+            }
             for (const m of members) {
                 // add to list for the next check
                 if (!listToCheck.includes(m._id.toString()))
                     listToCheck.push(m._id.toString());
-                const index = visits.findIndex(v => v.userid === m._id.toString());
-                // check last visit and add or remove id from list
-                if (index > -1) {
-                    if (moment_timezone_1.default().diff(moment_timezone_1.default(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
-                        if (!listIdsPending.includes(m._id.toString()))
-                            listIdsPending.push(m._id.toString());
-                    }
-                    else
-                        listIdsPending = listIdsPending.filter(lip => lip !== m._id.toString());
-                    ret.consolidates.push({
-                        consolidator: ret.members.find((md) => md._id.toString() === m.referred) || null,
-                        member: ret.members.find((md) => md._id.toString() === m._id.toString()) || null,
-                        date: visits[index] && visits[index].date ? visits[index].date : null,
-                        observation: visits[index] && visits[index].observation ? visits[index].observation : null,
-                    });
-                }
-                else if (!listIdsPending.includes(m._id.toString()))
-                    listIdsPending.push(m._id.toString());
             }
             // check whats ids was not recived visits
             const idsMembers = ret.members.length > 0 ? ret.members.map((m) => m._id.toString()) : [];
@@ -99,12 +115,12 @@ async function saveConsolidateVisit(req, res) {
         const validate = ConsolidatesFormRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const consolidate = new Consolidates_1.default({
+        const visit = new Visits_1.default({
             referred: userid,
             userid: validate.data.userId,
             ...validate.data
         });
-        await consolidate.save();
+        await visit.save();
         return res.status(201).json({
             msg: `Se ha registrado la visita al consolidado exitosamente.`
         });
@@ -116,7 +132,9 @@ async function saveConsolidateVisit(req, res) {
 exports.saveConsolidateVisit = saveConsolidateVisit;
 async function getConsolidatesMembers(req, res) {
     try {
-        const members = await Users_1.default.find({ referred: { $ne: null }, consolidated: { $ne: false } }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }).exec();
+        const members = await Users_1.default.find({ referred: { $ne: null }, consolidated: { $ne: false } }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 })
+            .sort({ names: 1 })
+            .exec();
         return res.json({
             msg: `Miembros`,
             members

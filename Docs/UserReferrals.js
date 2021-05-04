@@ -194,6 +194,7 @@
  *
  * @apiSuccess (visits Object[]) {Object|Nukk} consolidator ID del curso.
  * @apiSuccess (visits Object[]) {String} date Fecha de la visita (YYYY-MM-DD).
+ * @apiSuccess (visits Object[]) {String|Null} action Acción realizada (Visita ó llamada).
  * @apiSuccess (visits Object[]) {String} observation Observaciones obtenidas en la visita.
  *
  * @apiSuccess (referrals and consolidator Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
@@ -264,6 +265,7 @@
 					"phone": "3161234567"
 				},
 				"date": "2021-04-12",
+				"actión": "Llamada",
 				"observation": "ACURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. NULLA PORTTITOR ACCUMSAN TINCIDUNT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\n\nCURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\n\nCURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. DONEC SOLLICITUDIN MOLESTIE MALESUADA. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A."
 			},
 		]
@@ -308,12 +310,14 @@
  *
  * @apiParam {String} userId ID del usuario visitado.
  * @apiParam {String} date Fecha de la visita (YYYY-MM-DD).
+ * @apiParam {String|Number|Null} action Acción realizada (0 = Visita, 1 = Llamada).
  * @apiParam {String} observation Observaciones de la visita.
  *
  * @apiExample {JSON} Example JSON Request with Referred
  * {
 	"userId": "5fcf0821fc917d476c1cf3e2",
 	"date": "2021-04-01",
+	"action": 1,
 	"observation": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat."
 }
  *

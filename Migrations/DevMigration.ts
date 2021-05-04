@@ -1,6 +1,8 @@
 import * as fs from 'fs';
 import moment from 'moment-timezone';
 import startConnection from '../src/database';
+import { showConsoleError, showConsoleLog } from '../src/Functions/GlobalFunctions';
+import { ICourseUserContent } from '../src/Interfaces/ICourseUser';
 import Courses from '../src/Models/Courses';
 import CoursesUsers from '../src/Models/CoursesUsers';
 import Events from '../src/Models/Events';
@@ -8,8 +10,6 @@ import Groups from '../src/Models/Groups';
 import Referrals from '../src/Models/Referrals';
 import Users from '../src/Models/Users';
 import Whitelist from '../src/Models/Whitelist';
-import { showConsoleError, showConsoleLog } from '../src/Functions/GlobalFunctions';
-import { ICourseUserContent } from '../src/Interfaces/ICourseUser';
 
 const path = 'Migrations/DevMigration';
 

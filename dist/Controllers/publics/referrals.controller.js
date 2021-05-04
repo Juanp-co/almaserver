@@ -6,16 +6,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.saveReferralVisit = exports.getMemberReferred = exports.saveReferral = exports.getReferrals = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const CoursesActions_1 = require("../../ActionsData/CoursesActions");
+const ReferralsActions_1 = require("../../ActionsData/ReferralsActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
+const ConsolidatesFormRequest_1 = __importDefault(require("../../FormRequest/ConsolidatesFormRequest"));
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
+const UsersRequest_1 = require("../../FormRequest/UsersRequest");
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
-const ReferralsActions_1 = require("../../ActionsData/ReferralsActions");
-const UsersRequest_1 = require("../../FormRequest/UsersRequest");
-const CoursesActions_1 = require("../../ActionsData/CoursesActions");
-const Consolidates_1 = __importDefault(require("../../Models/Consolidates"));
-const ConsolidatesFormRequest_1 = __importDefault(require("../../FormRequest/ConsolidatesFormRequest"));
+const Visits_1 = __importDefault(require("../../Models/Visits"));
 const path = 'src/Controllers/publics/referrals.controller';
 async function getReferrals(req, res) {
     try {
@@ -124,17 +124,21 @@ async function getMemberReferred(req, res) {
         }
         // get visits
         ret.visits = [];
-        const visits = await Consolidates_1.default.find({ userid: _id }).sort({ date: -1, created_at: -1 }).exec();
+        const visits = await Visits_1.default.find({ userid: _id }).sort({ date: -1, created_at: -1 }).exec();
         if (visits.length > 0) {
             const listIds = lodash_1.default.uniq(visits.map(v => v.referred));
             listIds.push(userid);
             const members = await UsersActions_1.getNamesUsersList(listIds) || [];
             for (const v of visits) {
-                ret.visits.push({
-                    consolidator: members.find((md) => md._id.toString() === v.referred) || null,
-                    date: v.date || null,
-                    observation: v.observation || null,
-                });
+                const consolidator = members.find((md) => md._id.toString() === v.referred) || null;
+                if (consolidator) {
+                    ret.visits.push({
+                        consolidator,
+                        date: v.date || null,
+                        observation: v.observation || null,
+                        action: v.action || null,
+                    });
+                }
             }
         }
         return res.json({
@@ -153,7 +157,7 @@ async function saveReferralVisit(req, res) {
         const validate = ConsolidatesFormRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const consolidate = new Consolidates_1.default({
+        const consolidate = new Visits_1.default({
             referred: userid,
             userid: validate.data.userId,
             ...validate.data

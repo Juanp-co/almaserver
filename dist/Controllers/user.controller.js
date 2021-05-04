@@ -15,9 +15,9 @@ const Validations_1 = require("../Functions/Validations");
 const Courses_1 = __importDefault(require("../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const Groups_1 = __importDefault(require("../Models/Groups"));
-const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
-const Consolidates_1 = __importDefault(require("../Models/Consolidates"));
+const Users_1 = __importDefault(require("../Models/Users"));
+const Visits_1 = __importDefault(require("../Models/Visits"));
 const path = 'Controllers/user.controller';
 async function get(req, res) {
     try {
@@ -276,7 +276,6 @@ async function getReports(req, res) {
                 query['courses.created_at'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
                 queryReferrals.updated_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
                 query2.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
-                ;
             }
         }
         const { userid } = req.params;
@@ -287,7 +286,7 @@ async function getReports(req, res) {
         }
         const myCourses = await CoursesUsers_1.default.findOne({ userid, ...query }, { courses: 1 }).exec();
         const myReferrals = await Referrals_1.default.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
-        const visits = await Consolidates_1.default.find({ consolidatorId: userid, ...query2 }, { date: 1 }).exec();
+        const visits = await Visits_1.default.find({ referred: userid, ...query2 }, { date: 1, userid: 1 }).exec();
         if (myCourses) {
             ret.courses.qty = myCourses.courses.length;
             for (const c of myCourses.courses) {
@@ -324,20 +323,20 @@ async function getReports(req, res) {
                             listsMembersDetails = [];
                             limit = 0;
                         }
-                        // VISITS
+                    }
+                    // VISITS
+                    for (const v of visits) {
                         // add to list for the next check
-                        const index = visits.findIndex(v => v.userid === m._id.toString());
+                        const index = members.findIndex(m => m._id.toString() === v.userid);
                         // check last visit and add or remove id from list
                         if (index > -1) {
                             if (moment_timezone_1.default().diff(moment_timezone_1.default(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
-                                if (!listIdsPending.includes(m._id.toString()))
-                                    listIdsPending.push(m._id.toString());
+                                if (!listIdsPending.includes(members[index]._id.toString()))
+                                    listIdsPending.push(members[index]._id.toString());
                             }
                             else
-                                listIdsPending = listIdsPending.filter((lip) => lip !== m._id.toString());
+                                listIdsPending = listIdsPending.filter((lip) => lip !== members[index]._id.toString());
                         }
-                        else if (!listIdsPending.includes(m._id.toString()))
-                            listIdsPending.push(m._id.toString());
                     }
                     if (listsMembersDetails.length > 0) {
                         ret.referrals.data.push(listsMembersDetails);
