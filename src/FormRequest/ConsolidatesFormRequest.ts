@@ -8,10 +8,12 @@ import { IConsolidatesForm } from '../Interfaces/IConsolidates';
 export default function validateSimpleRegister(data: IConsolidatesForm): { data: IConsolidatesForm; errors: any[] } {
   const ret = {
     userId: null,
+    action: null,
     observation: null,
     date: null,
   } as IConsolidatesForm;
   const errors: any = [];
+  const types: any = ['Visita', 'Llamada'];
 
   // userId
   if (!checkObjectId(data.userId)) {
@@ -26,6 +28,13 @@ export default function validateSimpleRegister(data: IConsolidatesForm): { data:
       setError('Disculpe, pero indicar una fecha para la visita.', 'date')
     );
   } else ret.date = moment(data.date, 'YYYY-MM-DD', true).unix();
+
+  // date
+  if (!types[`${data.action || 0}`]) {
+    errors.push(
+      setError('Disculpe, pero debe indicar el tipo de acción realizada.', 'action')
+    );
+  } else ret.action = types[data.action || 0];
 
   // observation
   if (!checkTitlesOrDescriptions(data.observation)) {

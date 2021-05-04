@@ -16,7 +16,7 @@ const FamiliesGroups_1 = __importDefault(require("../../Models/FamiliesGroups"))
 const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGroupsReports"));
 const Groups_1 = __importDefault(require("../../Models/Groups"));
 const Users_1 = __importDefault(require("../../Models/Users"));
-const Consolidates_1 = __importDefault(require("../../Models/Consolidates"));
+const Visits_1 = __importDefault(require("../../Models/Visits"));
 const path = 'src/admin/reports.admin.controller';
 async function getReports(req, res) {
     try {
@@ -114,7 +114,7 @@ async function getReports(req, res) {
         }
         if (!UsersActions_1.checkRoleToActions(userrole))
             return UsersActions_1.responseUsersAdmin(res, 3);
-        const consolidates = await Consolidates_1.default.find(query2).countDocuments().exec();
+        const consolidates = await Visits_1.default.find(query2).countDocuments().exec();
         const courses = await Courses_1.default.find(query, { enable: 1 }).exec();
         const events = await Events_1.default.find(query, { date: 1 }).exec();
         const groups = await Groups_1.default.find(query, { members: 1 }).exec();

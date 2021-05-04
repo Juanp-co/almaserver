@@ -4,8 +4,8 @@ import { Request, Response } from 'express';
 import validateSimpleRegister from '../../FormRequest/ConsolidatesFormRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkDate } from '../../Functions/Validations';
-import Consolidates from '../../Models/Consolidates';
 import Users from '../../Models/Users';
+import Visits from '../../Models/Visits';
 
 const path = 'Controllers/admin/users.admin.controller';
 
@@ -36,14 +36,22 @@ export default async function getConsolidates(req: Request, res: Response): Prom
     }
 
     const members = await Users.find({ referred: { $ne: null }, ...query}).exec();
-    const visits = await Consolidates.find(query).sort(sort).exec();
+    const visits = await Visits.find(query).sort(sort).exec();
 
     if (members.length > 0) {
       const listIds: string[] = [userid];
-      members.forEach(c => {
-        if (!listIds.includes(c._id.toString())) listIds.push(c._id.toString());
-        if (c.referred && !listIds.includes(c.referred)) listIds.push(c.referred);
-      });
+      if (members) {
+        members.forEach(c => {
+          if (!listIds.includes(c._id.toString())) listIds.push(c._id.toString());
+          if (c.referred && !listIds.includes(c.referred)) listIds.push(c.referred);
+        });
+      }
+      if (visits) {
+        visits.forEach(v => {
+          if (v.referred && !listIds.includes(v.referred)) listIds.push(v.referred);
+          if (v.userid && !listIds.includes(v.userid)) listIds.push(v.userid);
+        });
+      }
 
       // find all members
       ret.members = await Users.find(
@@ -54,32 +62,39 @@ export default async function getConsolidates(req: Request, res: Response): Prom
           ]
         },
         { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }
-      ).exec() as any;
+      )
+        .sort({ names: 1 })
+        .exec() as any;
 
       const listToCheck: string[] = [];
       let listIdsPending: string[] = [];
 
+      for (const v of visits) {
+        // add to list for the next check
+        if (v.userid && !listToCheck.includes(v.userid)) listToCheck.push(v.userid);
+
+        if (moment().diff(moment(`${v.date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+          if (v.userid && !listIdsPending.includes(v.userid)) listIdsPending.push(v.userid);
+        }
+        else listIdsPending = listIdsPending.filter( lip => lip !== v.userid);
+
+        const consolidator = ret.members.find((md: any) => md._id.toString() === v.referred) || null;
+        const member = ret.members.find((md: any) => md._id.toString() === v.userid) || null;
+
+        if (member && consolidator) {
+          ret.consolidates.push({
+            consolidator,
+            member,
+            date: v.date || null,
+            observation: v.observation || null,
+            action: v.action || 'Visita',
+          });
+        }
+      }
+
       for (const m of members) {
         // add to list for the next check
         if (!listToCheck.includes(m._id.toString())) listToCheck.push(m._id.toString());
-
-        const index = visits.findIndex(v => v.userid === m._id.toString());
-
-        // check last visit and add or remove id from list
-        if (index > -1) {
-          if (moment().diff(moment(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
-            if (!listIdsPending.includes(m._id.toString())) listIdsPending.push(m._id.toString());
-          }
-          else listIdsPending = listIdsPending.filter( lip => lip !== m._id.toString());
-
-          ret.consolidates.push({
-            consolidator: ret.members.find((md: any) => md._id.toString() === m.referred) || null,
-            member: ret.members.find((md: any) => md._id.toString() === m._id.toString()) || null,
-            date: visits[index] && visits[index].date ? visits[index].date : null,
-            observation: visits[index] && visits[index].observation ? visits[index].observation : null,
-          });
-        }
-        else if (!listIdsPending.includes(m._id.toString())) listIdsPending.push(m._id.toString());
       }
 
       // check whats ids was not recived visits
@@ -106,12 +121,12 @@ export async function saveConsolidateVisit(req: Request, res: Response): Promise
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    const consolidate = new Consolidates({
+    const visit = new Visits({
       referred: userid,
       userid: validate.data.userId,
       ...validate.data
     });
-    await consolidate.save();
+    await visit.save();
 
     return res.status(201).json({
       msg: `Se ha registrado la visita al consolidado exitosamente.`
@@ -127,7 +142,9 @@ export async function getConsolidatesMembers(req: Request, res: Response): Promi
     const members = await Users.find(
       { referred: { $ne: null }, consolidated: { $ne: false } },
       { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }
-      ).exec();
+      )
+      .sort({ names: 1 })
+      .exec();
 
     return res.json({
       msg: `Miembros`,

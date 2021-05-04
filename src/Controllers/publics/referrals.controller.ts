@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { addCoursesToUser } from '../../ActionsData/CoursesActions';
+import { getTotalsReferrals } from '../../ActionsData/ReferralsActions';
 import { getInfoUserReferred, getNamesUsersList } from '../../ActionsData/UsersActions';
+import validateSimpleRegister from '../../FormRequest/ConsolidatesFormRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
+import { validateFormMemberRegisterFromUser } from '../../FormRequest/UsersRequest';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
-import { getTotalsReferrals } from '../../ActionsData/ReferralsActions';
-import { validateFormMemberRegisterFromUser } from '../../FormRequest/UsersRequest';
-import { addCoursesToUser } from '../../ActionsData/CoursesActions';
-import Consolidates from '../../Models/Consolidates';
-import validateSimpleRegister from '../../FormRequest/ConsolidatesFormRequest';
+import Visits from '../../Models/Visits';
 
 const path = 'src/Controllers/publics/referrals.controller';
 
@@ -141,7 +141,7 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
     // get visits
 
     ret.visits = [];
-    const visits = await Consolidates.find({ userid: _id }).sort({ date: -1, created_at: -1 }).exec();
+    const visits = await Visits.find({ userid: _id }).sort({ date: -1, created_at: -1 }).exec();
 
     if (visits.length > 0) {
       const listIds: any[] = _.uniq(visits.map(v => v.referred));
@@ -150,11 +150,15 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
       const members = await getNamesUsersList(listIds) || [];
 
       for (const v of visits) {
-        ret.visits.push({
-          consolidator: members.find((md: any) => md._id.toString() === v.referred) || null,
-          date: v.date || null,
-          observation: v.observation || null,
-        });
+        const consolidator = members.find((md: any) => md._id.toString() === v.referred) || null;
+        if (consolidator) {
+          ret.visits.push({
+            consolidator,
+            date: v.date || null,
+            observation: v.observation || null,
+            action: v.action || null,
+          });
+        }
       }
     }
 
@@ -174,7 +178,7 @@ export async function saveReferralVisit(req: Request, res: Response): Promise<Re
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    const consolidate = new Consolidates({
+    const consolidate = new Visits({
       referred: userid,
       userid: validate.data.userId,
       ...validate.data
