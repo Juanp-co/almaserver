@@ -34,7 +34,10 @@ export default async function getReferrals(req: Request, res: Response): Promise
     ret.user = Object.assign({}, user._doc);
 
     if (ret.user.referred && checkObjectId(ret.user.referred)) {
-      ret.user.referred = await getData(ret.user.referred, { _id: 1, names: 1, lastNames: 1, document: 1, phone: 1, gender: 1 });
+      ret.user.referred = await getData(
+        ret.user.referred,
+        { _id: 1, names: 1, lastNames: 1, document: 1, phone: 1, gender: 1 }
+      );
     }
     else ret.user.referred = null;
 

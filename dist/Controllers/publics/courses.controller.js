@@ -32,11 +32,10 @@ const CoursesRequest_1 = require("../../FormRequest/CoursesRequest");
 const path = 'src/Controllers/publics/courses.controller';
 async function getCourses(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenRoles, tokenId } = req.body;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
         const { title } = req.query;
-        const { userrole } = req.body;
-        const query = { toRoles: userrole, enable: { $eq: true } };
+        const query = { toRoles: { $in: tokenRoles } || [], enable: { $eq: true } };
         const ret = [];
         if (title)
             query.title = { $regex: new RegExp(`${title}`, 'i') };
@@ -48,7 +47,7 @@ async function getCourses(req, res) {
             isPublic: true,
             projection: { _id: 1, title: 1, slug: 1, description: 1, speaker: 1, speakerPosition: 1, level: 1 }
         });
-        const courseUser = await CoursesUsers_1.default.findOne({ userid }, { 'courses.courseId': 1, 'courses.level': 1, 'courses.approved': 1 }).exec();
+        const courseUser = await CoursesUsers_1.default.findOne({ userid: tokenId }, { 'courses.courseId': 1, 'courses.level': 1, 'courses.approved': 1 }).exec();
         if (courses.length > 0) {
             courses.forEach(c => {
                 let enable = false;
@@ -76,12 +75,12 @@ exports.default = getCourses;
 async function showCourse(req, res) {
     var _a, _b;
     try {
-        const { slug, userid } = req.params;
-        const { userrole } = req.body;
+        const { slug } = req.params;
+        const { tokenId, tokenRoles } = req.body;
         if (!Validations_1.checkSlug(slug))
             return CoursesActions_1.returnNotFound(res, 'slug');
         const course = await CoursesActions_1.getCourseDetails({
-            query: { slug, toRoles: userrole },
+            query: { slug, toRoles: { $in: tokenRoles } },
             isPublic: true,
         });
         if (!course)
@@ -89,10 +88,15 @@ async function showCourse(req, res) {
         if (!course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check and get data user course user
-        let dataCourseUser = await CoursesActions_1.getCoursesDataUser({ query: { userid, 'courses.courseId': course._id.toString() } });
+        let dataCourseUser = await CoursesActions_1.getCoursesDataUser({
+            query: {
+                userid: tokenId,
+                'courses.courseId': course._id.toString()
+            }
+        });
         // if data not found, create register and find the courses in the list.
         if (!dataCourseUser) {
-            const data = await CoursesActions_1.addCoursesToUser(userid);
+            const data = await CoursesActions_1.addCoursesToUser(tokenId);
             if (data) {
                 const index = data.courses.findIndex(c => c.courseId === course._id.toString());
                 if (index > -1) {
@@ -129,8 +133,9 @@ async function showCourse(req, res) {
 exports.showCourse = showCourse;
 async function updateHistoricalCourseContent(req, res) {
     try {
-        const { slug, _id, action, userid } = req.params;
-        if (!/[12]{1}/.test(`${action}`))
+        const { slug, _id, action } = req.params;
+        const { tokenId } = req.body;
+        if (!/[^12]/.test(`${action}`))
             return CoursesActions_1.returnNotFound(res, 'errorAction');
         if (!Validations_1.checkSlug(slug))
             return CoursesActions_1.returnNotFound(res, 'slug');
@@ -144,7 +149,7 @@ async function updateHistoricalCourseContent(req, res) {
         if (!course)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ userid, 'courses.courseId': course._id.toString() }, { 'courses': 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid: tokenId, 'courses.courseId': course._id.toString() }, { 'courses': 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
         if (!myCourse && !course.enable)
@@ -183,7 +188,8 @@ async function updateHistoricalCourseContent(req, res) {
 exports.updateHistoricalCourseContent = updateHistoricalCourseContent;
 async function evaluateQuiz(req, res) {
     try {
-        const { slug, _id, userid } = req.params;
+        const { slug, _id } = req.params;
+        const { tokenId } = req.body;
         let points = 0; // points to test
         let pointsIgnored = 0; // points to test
         if (!Validations_1.checkSlug(slug))
@@ -199,7 +205,7 @@ async function evaluateQuiz(req, res) {
         if (!course.enable)
             return CoursesActions_1.returnNotFound(res, '404Course');
         // check if the course belonging to user
-        const myCourse = await CoursesUsers_1.default.findOne({ userid, 'courses.courseId': course._id, 'courses.temary.temaryId': _id }, { 'courses': 1 }).exec();
+        const myCourse = await CoursesUsers_1.default.findOne({ userid: tokenId, 'courses.courseId': course._id, 'courses.temary.temaryId': _id }, { 'courses': 1 }).exec();
         if (!myCourse)
             return CoursesActions_1.returnNotFound(res, '404CourseUser');
         const i = myCourse.courses.findIndex(c => c.courseId === course._id.toString());

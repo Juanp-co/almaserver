@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
+exports.validateRolesToUpdateForm = exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
 const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
@@ -29,7 +29,7 @@ async function validateSimpleRegister(data, admin) {
         password: null,
         names: null,
         lastNames: null,
-        role: 5,
+        roles: [5],
         referred: null,
         consolidated: false,
     };
@@ -69,7 +69,7 @@ async function validateSimpleRegister(data, admin) {
         ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred.toUpperCase());
     }
     if (admin) {
-        ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
+        ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
     }
     return { data: ret, errors };
 }
@@ -91,7 +91,7 @@ async function validateFormMemberRegisterAdmin(data) {
         attendGroup: false,
         groupId: null,
         familyGroupId: [],
-        role: 5,
+        roles: [5],
         referred: null,
         consolidated: false,
     };
@@ -173,7 +173,7 @@ async function validateFormMemberRegisterAdmin(data) {
         }
     }
     // role
-    ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
+    ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
     return { data: ret, errors };
 }
 exports.validateFormMemberRegisterAdmin = validateFormMemberRegisterAdmin;
@@ -194,7 +194,7 @@ async function validateFormMemberRegisterFromUser(data) {
         attendGroup: false,
         groupId: null,
         familyGroupId: [],
-        role: 5,
+        roles: [5],
         referred: null,
         consolidated: false,
     };
@@ -442,3 +442,20 @@ async function validatePasswords(data) {
     return { data: ret, errors };
 }
 exports.validatePasswords = validatePasswords;
+function validateRolesToUpdateForm(request) {
+    const data = {
+        roles: []
+    };
+    const errors = [];
+    const { roles } = request;
+    if (!roles) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero no se recibió la información a actualizar.', 'roles'));
+    }
+    else if (!GlobalFunctions_1.checkIfExistsRoleInList(roles, [0, 1, 2, 3, 4])) {
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero alguno de los roles indicados es incorrecto.', 'roles'));
+    }
+    else
+        data.roles = roles;
+    return { data, errors };
+}
+exports.validateRolesToUpdateForm = validateRolesToUpdateForm;

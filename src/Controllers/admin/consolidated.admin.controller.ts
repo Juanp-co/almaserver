@@ -13,7 +13,7 @@ const path = 'Controllers/admin/users.admin.controller';
 
 export default async function getConsolidates(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.params;
     const { initDate, endDate, input, value } = req.query;
     const query: any = {};
     const query2: any = { referred: { $ne: null }, consolidated: { $ne: false } };
@@ -39,7 +39,7 @@ export default async function getConsolidates(req: Request, res: Response): Prom
     const visits = await Visits.find(query).sort(sort).exec();
 
     if (members.length > 0) {
-      const listIds: string[] = [userid];
+      const listIds: string[] = [tokenId];
       if (members) {
         members.forEach(c => {
           if (!listIds.includes(c._id.toString())) listIds.push(c._id.toString());
@@ -55,12 +55,7 @@ export default async function getConsolidates(req: Request, res: Response): Prom
 
       // find all members
       ret.members = await Users.find(
-        {
-          $or: [
-            query2,
-            { _id: { $in: listIds || [] } }
-          ]
-        },
+        { $or: [ query2, { _id: { $in: listIds || [] } } ] },
         { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }
       )
         .sort({ names: 1 })
@@ -101,7 +96,7 @@ export default async function getConsolidates(req: Request, res: Response): Prom
       const idsMembers = ret.members.length > 0 ? ret.members.map((m: any) => m._id.toString()) : [];
       const diff = _.difference(idsMembers, listToCheck);
       ret.pendingVisits = _.uniq(listIdsPending.concat(diff || []));
-      ret.pendingVisits = ret.pendingVisits.filter((pv: string) => pv !== userid);
+      ret.pendingVisits = ret.pendingVisits.filter((pv: string) => pv !== tokenId);
     }
 
     return res.json({
@@ -116,13 +111,13 @@ export default async function getConsolidates(req: Request, res: Response): Prom
 
 export async function saveConsolidateVisit(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     const validate = validateSimpleRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const visit = new Visits({
-      referred: userid,
+      referred: tokenId,
       userid: validate.data.userId,
       ...validate.data
     });

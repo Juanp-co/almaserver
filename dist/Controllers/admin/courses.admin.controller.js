@@ -79,6 +79,7 @@ async function showCourse(req, res) {
 exports.showCourse = showCourse;
 async function saveCourse(req, res) {
     try {
+        const { tokenId } = req.body;
         const validate = CoursesRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
@@ -93,7 +94,7 @@ async function saveCourse(req, res) {
         validate.data.code = validate.data.slug;
         // create
         const course = new Courses_1.default(validate.data);
-        course.userid = req.params.userid;
+        course.userid = tokenId;
         await course.save();
         return res.status(201).json({
             msg: 'Se ha guardo el nuevo curso exitosamente.'

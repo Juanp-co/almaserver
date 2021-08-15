@@ -143,6 +143,7 @@ export async function showGroup(req: Request, res: Response) : Promise<Response>
 
 export async function saveGroup(req: Request, res: Response) : Promise<Response> {
   try {
+    const { tokenId } = req.body;
     const validate = validateRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
@@ -159,7 +160,7 @@ export async function saveGroup(req: Request, res: Response) : Promise<Response>
     }
 
     const group = new Groups(validate.data);
-    group.userid = req.params.userid;
+    group.userid = tokenId;
     await group.save();
 
     return res.status(201).json({
@@ -289,7 +290,8 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
 
 export async function findNewMembers(req: Request, res: Response) : Promise<Response> {
   try {
-    const { _id, userid } = req.params;
+    const { _id } = req.params;
+    const { tokenId } = req.body;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
 
     if (!checkObjectId(_id)) return returnErrorId(res);
@@ -304,7 +306,7 @@ export async function findNewMembers(req: Request, res: Response) : Promise<Resp
 
     const query: any = checkFindValueSearch(
       {
-        _id: { $nin: [userid, ...group.members] },
+        _id: { $nin: [tokenId, ...group.members] },
         role: { $ne: 0 },
         group: { $in: [null, undefined, ''] },
       },

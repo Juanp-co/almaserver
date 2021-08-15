@@ -21,9 +21,9 @@ const path = 'Controllers/user.controller';
 
 export async function get(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     const user = await Users.findOne(
-      { _id: userid },
+      { _id: tokenId },
       { __v: 0, password: 0, referred: 0 }
     ).exec();
 
@@ -41,10 +41,10 @@ export async function get(req: Request, res: Response): Promise<Response> {
 
 export async function update(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
 
     const user = await Users.findOne(
-      { _id: userid },
+      { _id: tokenId },
       {
         password: 0,
         role: 0,
@@ -56,7 +56,7 @@ export async function update(req: Request, res: Response): Promise<Response> {
     // logout
     if (!user) return forceLogout(res, `${req.query.token}`);
 
-    const validate = await validateUpdate(req.body, userid);
+    const validate = await validateUpdate(req.body, tokenId);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
@@ -92,9 +92,9 @@ export async function update(req: Request, res: Response): Promise<Response> {
 
 export async function changePassword(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
 
-    const user = await Users.findOne({ _id: userid }, { password: 1 }).exec();
+    const user = await Users.findOne({ _id: tokenId }, { password: 1 }).exec();
 
     // logout
     if (!user) return forceLogout(res, `${req.query.token}`);
@@ -126,16 +126,19 @@ export async function changePassword(req: Request, res: Response): Promise<Respo
 
 export async function getCourses(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     const courses: any[] = [];
 
-    if (!checkObjectId(userid)) {
+    if (!checkObjectId(tokenId)) {
       return res.status(401).json({
         msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
       });
     }
 
-    const myCourses = await CoursesUsers.findOne({ userid }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
+    const myCourses = await CoursesUsers.findOne(
+      { userid: tokenId },
+      { 'courses.courseId': 1, 'courses.approved': 1 }
+    ).exec();
 
     if (myCourses) {
       const listIds = myCourses.courses.length > 0 ? myCourses.courses.map(c => c.courseId) : [];
@@ -171,16 +174,16 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
 
 export async function getGroup(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     let group: any = null;
 
-    if (!checkObjectId(userid)) {
+    if (!checkObjectId(tokenId)) {
       return res.status(401).json({
         msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
       });
     }
 
-    const user = await Users.findOne({ _id: userid }, { group: 1 }).exec();
+    const user = await Users.findOne({ _id: tokenId }, { group: 1 }).exec();
 
     if (!user) {
       return res.status(401).json({
@@ -217,9 +220,10 @@ export async function getGroup(req: Request, res: Response): Promise<Response> {
 
 export async function getMemberGroup(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid, memberId } = req.params;
+    const { memberId } = req.params;
+    const { tokenId } = req.body;
 
-    if (!checkObjectId(userid)) {
+    if (!checkObjectId(tokenId)) {
       return res.status(401).json({
         msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
       });
@@ -231,7 +235,7 @@ export async function getMemberGroup(req: Request, res: Response): Promise<Respo
       });
     }
 
-    const user = await Users.findOne({ _id: userid }, { group: 1 }).exec();
+    const user = await Users.findOne({ _id: tokenId }, { group: 1 }).exec();
 
     if (!user) {
       return res.status(401).json({
@@ -282,6 +286,14 @@ export async function getMemberGroup(req: Request, res: Response): Promise<Respo
 
 export async function getReports(req: Request, res: Response): Promise<Response> {
   try {
+    const { tokenId } = req.body;
+
+    if (!checkObjectId(tokenId)) {
+      return res.status(401).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+      });
+    }
+
     const { initDate, endDate } = req.query;
     const query: any = {};
     const query2: any = {};
@@ -321,17 +333,9 @@ export async function getReports(req: Request, res: Response): Promise<Response>
       }
     }
 
-    const { userid } = req.params;
-
-    if (!checkObjectId(userid)) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    const myCourses = await CoursesUsers.findOne({ userid, ...query }, { courses: 1 }).exec();
-    const myReferrals = await Referrals.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
-    const visits = await Visits.find({ referred: userid, ...query2 }, { date: 1, userid: 1 }).exec();
+    const myCourses = await CoursesUsers.findOne({ userid: tokenId, ...query }, { courses: 1 }).exec();
+    const myReferrals = await Referrals.findOne({ _id: tokenId, ...queryReferrals }, { members: 1 }).exec();
+    const visits = await Visits.find({ referred: tokenId, ...query2 }, { date: 1, userid: 1 }).exec();
 
     if (myCourses) {
       ret.courses.qty = myCourses.courses.length;

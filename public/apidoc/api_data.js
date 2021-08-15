@@ -10368,7 +10368,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reporte\",\n\t\"report\": {\n\t\t\"consolidations\": {\n\t\t\t\"title\": \"Consolidaciones\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Miembros registrados\",\n\t\t\t\t\t\"qty\": 6\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Miembros visitados\",\n\t\t\t\t\t\"qty\": 2\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 8\n\t\t},\n\t\t\"courses\": {\n\t\t\t\"title\": \"Cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Publicados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Borradores\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Viendo\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 2\n\t\t},\n\t\t\"events\": {\n\t\t\t\"title\": \"Eventos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Finalizados\",\n\t\t\t\t\t\"qty\": 7\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 7\n\t\t},\n\t\t\"groups\": {\n\t\t\t\"title\": \"Grupos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Sin miembros\",\n\t\t\t\t\t\"qty\": 3\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Con miembros\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"users\": {\n\t\t\t\"title\": \"Miembros\",\n\t\t\t\"qty\": 8,\n\t\t\t\"ages\": {\n\t\t\t\t\"title\": \"Edades\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"0 a 15 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"16 a 20 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"21 a 30 años\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"31 a 40 años\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"41 a 50 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"51 a 60 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mayores de 61 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No indicados\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"families\": {\n\t\t\t\t\"title\": \"Miembros y grupos\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No pertenece\",\n\t\t\t\t\t\t\"qty\": 7\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pertenece\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"gender\": {\n\t\t\t\t\"title\": \"Géneros\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Hombres\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mujeres\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Otro\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"roles\": {\n\t\t\t\t\"title\": \"Roles\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Admins\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pastores\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Supervisores\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Líderes\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Padres espirituales\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Personas\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Reporte\",\n\t\"report\": {\n\t\t\"consolidations\": {\n\t\t\t\"title\": \"Consolidaciones\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Miembros registrados\",\n\t\t\t\t\t\"qty\": 6\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Miembros visitados\",\n\t\t\t\t\t\"qty\": 2\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 8\n\t\t},\n\t\t\"courses\": {\n\t\t\t\"title\": \"Cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Publicados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Borradores\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Viendo\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 2\n\t\t},\n\t\t\"events\": {\n\t\t\t\"title\": \"Eventos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Finalizados\",\n\t\t\t\t\t\"qty\": 7\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 7\n\t\t},\n\t\t\"groups\": {\n\t\t\t\"title\": \"Grupos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Sin miembros\",\n\t\t\t\t\t\"qty\": 3\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Con miembros\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"users\": {\n\t\t\t\"title\": \"Miembros\",\n\t\t\t\"qty\": 8,\n\t\t\t\"ages\": {\n\t\t\t\t\"title\": \"Edades\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"0 a 15 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"16 a 20 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"21 a 30 años\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"31 a 40 años\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"41 a 50 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"51 a 60 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mayores de 61 años\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No indicados\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"families\": {\n\t\t\t\t\"title\": \"Miembros y grupos\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"No pertenece\",\n\t\t\t\t\t\t\"qty\": 7\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pertenece\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"gender\": {\n\t\t\t\t\"title\": \"Géneros\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Hombres\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Mujeres\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Otro\",\n\t\t\t\t\t\t\"qty\": 5\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"roles\": {\n\t\t\t\t\"title\": \"Roles\",\n\t\t\t\t\"data\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Admins\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Pastores\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Supervisores\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Líderes\",\n\t\t\t\t\t\t\"qty\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"Personas\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t}\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -13432,10 +13432,10 @@ define({ "api": [
           },
           {
             "group": "data Object",
-            "type": "Number",
+            "type": "Number[]",
             "optional": false,
-            "field": "role",
-            "description": "<p>Role del miembro.</p>"
+            "field": "roles",
+            "description": "<p>Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).</p>"
           },
           {
             "group": "data Object",
@@ -13526,7 +13526,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Datos de la sesión\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-02-18 19:23:23\",\n\t\t\"updated_at\": \"2021-02-18 19:25:33\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"document\": \"CC12345675\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Datos de la sesión\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-02-18 19:23:23\",\n\t\t\"updated_at\": \"2021-02-18 19:25:33\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"document\": \"CC12345675\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -14145,7 +14145,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/admin/users/:_id",
     "title": "(04) Actualizar datos de un miembro.",
-    "version": "0.0.32",
+    "version": "0.0.33",
     "name": "changeRoleUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -14312,7 +14312,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": null,\n\t\t\"phone\": \"584121490192\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n    \"document\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\"\n}",
+        "content": "{\n    \"email\": null,\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n    \"document\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\"\n}",
         "type": "JSON"
       }
     ],
@@ -14400,10 +14400,10 @@ define({ "api": [
           },
           {
             "group": "data Object",
-            "type": "Number",
+            "type": "Number[]",
             "optional": false,
-            "field": "role",
-            "description": "<p>Role del miembro.</p>"
+            "field": "roles",
+            "description": "<p>Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).</p>"
           },
           {
             "group": "data Object",
@@ -14501,7 +14501,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"email\": null,\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"consolidated\": true,\n\t\t\"group\": null,\n\t\t\"familyGroupId\": [],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"phone\": \"584121490192\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 22:24:50\",\n\t\t\"document\": null\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"email\": null,\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"consolidated\": true,\n\t\t\"group\": null,\n\t\t\"familyGroupId\": [],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 22:24:50\",\n\t\t\"document\": null\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -14694,7 +14694,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/admin/users",
     "title": "(02) Crear nuevo miembro.",
-    "version": "0.0.32",
+    "version": "0.0.33",
     "name": "createUsersAdmin",
     "group": "UsersAdmin",
     "parameter": {
@@ -14800,10 +14800,10 @@ define({ "api": [
           },
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number[]",
             "optional": false,
-            "field": "role",
-            "description": "<p>Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).</p>"
+            "field": "roles",
+            "description": "<p>Roles asignar al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).</p>"
           }
         ]
       }
@@ -14811,7 +14811,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"email\": \"anthony@example.com\",\n  \"birthday\": \"1994-07-07\",\n  \"civilStatus\": 0,\n  \"gender\": 0,\n  \"locality\": 'Barrio nuevo',\n  \"direction\": 'Dirección cualquiera',\n  \"consolidated\": true,\n  \"referred\": \"605e37d154abd33060a689dc\",\n  \"petition\": \"Por la familia, por salud y por mejora económica.\",\n  \"attendGroup\": true,\n  \"groupId\": \"6063385c98fc731c04777829\",\n  \"role\": 5\n}",
+        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"email\": \"anthony@example.com\",\n  \"birthday\": \"1994-07-07\",\n  \"civilStatus\": 0,\n  \"gender\": 0,\n  \"locality\": 'Barrio nuevo',\n  \"direction\": 'Dirección cualquiera',\n  \"consolidated\": true,\n  \"referred\": \"605e37d154abd33060a689dc\",\n  \"petition\": \"Por la familia, por salud y por mejora económica.\",\n  \"attendGroup\": true,\n  \"groupId\": \"6063385c98fc731c04777829\",\n  \"roles\":  [ 4 ]\n}",
         "type": "JSON"
       }
     ],
@@ -15065,7 +15065,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/users/:_id",
     "title": "(03) Obtener detalles de un miembro.",
-    "version": "0.0.3",
+    "version": "0.0.33",
     "name": "getDetailsUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -15227,10 +15227,10 @@ define({ "api": [
           },
           {
             "group": "data Object",
-            "type": "Number",
+            "type": "Number[]",
             "optional": false,
-            "field": "role",
-            "description": "<p>Role del miembro.</p>"
+            "field": "roles",
+            "description": "<p>Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).</p>"
           },
           {
             "group": "data Object",
@@ -15374,7 +15374,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Detalles del miembro.\",\n\t\"user\": {\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"document\": null,\n\t\t\"email\": null,\n\t\t\"phone\": \"584121490192\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"position\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"referred\": {\n\t\t\t\"_id\": \"607658ff598ae749a42a0143\",\n\t\t\t\"names\": \"KRHYSTAL\",\n\t\t\t\"lastNames\": \"TIRADO\",\n\t\t\t\"document\": null,\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"4262755110\",\n\t\t\t\"position\": \"ASDASDASDASDASD\"\n\t\t},\n\t\t\"petition\": null,\n\t\t\"attendGroup\": false,\n\t\t\"consolidated\": true,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"totals\": {\n\t\t\t\"totalsCourses\": 1,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 21:55:09\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Detalles del miembro.\",\n\t\"user\": {\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"document\": null,\n\t\t\"email\": null,\n\t\t\"phone\": \"3151234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"position\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"referred\": {\n\t\t\t\"_id\": \"607658ff598ae749a42a0143\",\n\t\t\t\"names\": \"KRHYSTAL\",\n\t\t\t\"lastNames\": \"TIRADO\",\n\t\t\t\"document\": null,\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"position\": \"ASDASDASDASDASD\"\n\t\t},\n\t\t\"petition\": null,\n\t\t\"attendGroup\": false,\n\t\t\"consolidated\": true,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"totals\": {\n\t\t\t\"totalsCourses\": 1,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 21:55:09\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -15444,7 +15444,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/users/:_id/referrals",
     "title": "(05) Obtener listado de referidos de un miembro.",
-    "version": "0.0.27",
+    "version": "0.0.33",
     "name": "getReferralsUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -15637,7 +15637,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/users",
     "title": "(01) Obtener listado de miembros.",
-    "version": "0.0.16",
+    "version": "0.0.33",
     "name": "getUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -15722,10 +15722,10 @@ define({ "api": [
           },
           {
             "group": "users Object[]",
-            "type": "Number",
+            "type": "Number[]",
             "optional": false,
-            "field": "role",
-            "description": "<p>Role del miembro.</p>"
+            "field": "roles",
+            "description": "<p>Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona)</p>"
           },
           {
             "group": "users Object[]",
@@ -15774,7 +15774,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Usuarios.\",\n\t\"users\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"role\": 5,\n\t\t\t\"created_at\": \"2021-02-09 00:10:26\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC12345675\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 1,\n\t\t\t\"role\": 1,\n\t\t\t\"created_at\": \"2020-12-13 10:03:12\",\n\t\t\t\"_id\": \"5fd62d49304a9a5a686adc1a\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC123456788\",\n\t\t\t\"names\": \"ADMIN DOS\",\n\t\t\t\"lastNames\": \"PRUEBA\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 2,\n\t\t\t\"role\": 5,\n\t\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"phone\": \"573161234567\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"PEDRO JOSE\",\n\t\t\t\"lastNames\": \"PÉREZ\"\n\t\t}\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Usuarios.\",\n\t\"users\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"roles\": [ 4 ],\n\t\t\t\"created_at\": \"2021-02-09 00:10:26\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC12345675\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 1,\n\t\t\t\"roles\": [ 1 ],\n\t\t\t\"created_at\": \"2020-12-13 10:03:12\",\n\t\t\t\"_id\": \"5fd62d49304a9a5a686adc1a\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC123456788\",\n\t\t\t\"names\": \"ADMIN DOS\",\n\t\t\t\"lastNames\": \"PRUEBA\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 2,\n\t\t\t\"roles\": [ 4 ],\n\t\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"phone\": \"573161234567\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"PEDRO JOSE\",\n\t\t\t\"lastNames\": \"PÉREZ\"\n\t\t}\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -15839,7 +15839,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/admin/users/:_id",
     "title": "(07) Cambiar rol de un miembro.",
-    "version": "0.0.29",
+    "version": "0.0.33",
     "name": "updateUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -15869,9 +15869,9 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "Number[]",
             "optional": false,
-            "field": "role",
+            "field": "roles",
             "description": "<p>Rol para el miembro (valores: 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).</p>"
           }
         ]
@@ -15880,7 +15880,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"role\": 3\n}",
+        "content": "{\n    \"roles\": [ 3, 4 ]\n}",
         "type": "JSON"
       }
     ],

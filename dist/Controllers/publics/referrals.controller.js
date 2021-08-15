@@ -19,19 +19,14 @@ const Visits_1 = __importDefault(require("../../Models/Visits"));
 const path = 'src/Controllers/publics/referrals.controller';
 async function getReferrals(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         const ret = {
             referred: null,
             totalsGroups: null,
             totals: null,
             referrals: []
         };
-        if (!Validations_1.checkObjectId(userid)) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        const data = await Referrals_1.default.findOne({ _id: userid }, { members: 1 }).exec();
+        const data = await Referrals_1.default.findOne({ _id: tokenId }, { members: 1 }).exec();
         if (data) {
             ret.referrals = await UsersActions_1.getNamesUsersList(data.members);
             ret.referrals = lodash_1.default.sortBy(ret.referrals, ['names'], ['asc']);
@@ -44,7 +39,7 @@ async function getReferrals(req, res) {
                 };
             }
             // get referred data
-            const u = await Users_1.default.findOne({ _id: userid }, { referred: 1 }).exec();
+            const u = await Users_1.default.findOne({ _id: tokenId }, { referred: 1 }).exec();
             if (u && u.referred) {
                 const list = await UsersActions_1.getNamesUsersList([u.referred]);
                 if (list.length > 0) {
@@ -52,7 +47,7 @@ async function getReferrals(req, res) {
                 }
             }
         }
-        const user = await Users_1.default.findOne({ _id: userid }, { familyGroupId: 1 }).exec();
+        const user = await Users_1.default.findOne({ _id: tokenId }, { familyGroupId: 1 }).exec();
         ret.totalsGroups = user && user.familyGroupId ? (user.familyGroupId.length || 0) : 0;
         return res.json({
             msg: `Mis referidos.`,
@@ -66,13 +61,13 @@ async function getReferrals(req, res) {
 exports.getReferrals = getReferrals;
 async function saveReferral(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         const validate = await UsersRequest_1.validateFormMemberRegisterFromUser(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         // set current id to referred
         if (validate.data.referred)
-            validate.data.referred = userid;
+            validate.data.referred = tokenId;
         const user = new Users_1.default(validate.data);
         const password = 'alma1234'; // default password
         user.password = bcrypt_1.default.hashSync(password, 10);
@@ -82,7 +77,7 @@ async function saveReferral(req, res) {
         // save currents courses
         await CoursesActions_1.addCoursesToUser(user._id.toString());
         // get my referrals
-        const myReferrals = await Referrals_1.default.findOne({ _id: userid }).exec();
+        const myReferrals = await Referrals_1.default.findOne({ _id: tokenId }).exec();
         if (myReferrals) {
             myReferrals.members.push(user._id.toString());
             await myReferrals.save();
@@ -98,19 +93,15 @@ async function saveReferral(req, res) {
 exports.saveReferral = saveReferral;
 async function getMemberReferred(req, res) {
     try {
-        const { userid, _id } = req.params;
-        if (!Validations_1.checkObjectId(userid)) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
+        const { _id } = req.params;
+        const { tokenId } = req.body;
         if (!Validations_1.checkObjectId(_id)) {
             return res.status(422).json({
                 msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
             });
         }
-        const checkMember = await Referrals_1.default.find({ _id: userid, members: _id }).countDocuments().exec();
-        const checkMember2 = await Users_1.default.find({ _id: userid, referred: _id }).countDocuments().exec();
+        const checkMember = await Referrals_1.default.find({ _id: tokenId, members: _id }).countDocuments().exec();
+        const checkMember2 = await Users_1.default.find({ _id: tokenId, referred: _id }).countDocuments().exec();
         if (checkMember === 0 && checkMember2 === 0) {
             return res.status(404).json({
                 msg: 'Disculpe, pero no está autorizado para visualizar la información de este miembro.'
@@ -127,7 +118,7 @@ async function getMemberReferred(req, res) {
         const visits = await Visits_1.default.find({ userid: _id }).sort({ date: -1, created_at: -1 }).exec();
         if (visits.length > 0) {
             const listIds = lodash_1.default.uniq(visits.map(v => v.referred));
-            listIds.push(userid);
+            listIds.push(tokenId);
             const members = await UsersActions_1.getNamesUsersList(listIds) || [];
             for (const v of visits) {
                 const consolidator = members.find((md) => md._id.toString() === v.referred) || null;
@@ -153,12 +144,12 @@ async function getMemberReferred(req, res) {
 exports.getMemberReferred = getMemberReferred;
 async function saveReferralVisit(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         const validate = ConsolidatesFormRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const consolidate = new Visits_1.default({
-            referred: userid,
+            referred: tokenId,
             userid: validate.data.userId,
             ...validate.data
         });

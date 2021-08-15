@@ -1,34 +1,11 @@
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
-import path from 'path';
+import { loadEnvironmentVars } from './Functions/GlobalFunctions';
 
-const pathEnv = path.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
-dotenv.config({ path: pathEnv });
+loadEnvironmentVars();
 
 const app = express();
-
-// cors
-// const allowedOrigins = [
-//   'http://localhost',
-//   'http://localhost:3000',
-//   'http://localhost:4200',
-//   'https://ccadv.co',
-//   'https://app.ccadv.co'
-// ];
-// app.use(cors({
-//   origin(origin, callback){
-//     // allow requests with no origin
-//     // (like mobile apps or curl requests)
-//     if(!origin) return callback(null, true);
-//     if(allowedOrigins.indexOf(origin) === -1) {
-//       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-//       return callback(new Error(msg), false);
-//     }
-//     return callback(null, true);
-//   }
-// }));
 
 app.use(cors());
 

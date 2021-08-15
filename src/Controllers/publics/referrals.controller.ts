@@ -16,7 +16,7 @@ const path = 'src/Controllers/publics/referrals.controller';
 
 export async function getReferrals(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     const ret: any = {
       referred: null,
       totalsGroups: null,
@@ -24,13 +24,7 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
       referrals: []
     };
 
-    if (!checkObjectId(userid)) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    const data = await Referrals.findOne({ _id: userid }, { members: 1 }).exec();
+    const data = await Referrals.findOne({ _id: tokenId }, { members: 1 }).exec();
 
     if (data) {
       ret.referrals = await getNamesUsersList(data.members);
@@ -46,7 +40,7 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
       }
 
       // get referred data
-      const u = await Users.findOne({ _id: userid }, { referred: 1 }).exec();
+      const u = await Users.findOne({ _id: tokenId }, { referred: 1 }).exec();
       if (u && u.referred) {
         const list = await getNamesUsersList([u.referred]);
 
@@ -56,7 +50,7 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
       }
     }
 
-    const user = await Users.findOne({ _id: userid }, { familyGroupId: 1 }).exec();
+    const user = await Users.findOne({ _id: tokenId }, { familyGroupId: 1 }).exec();
     ret.totalsGroups = user && user.familyGroupId ? (user.familyGroupId.length || 0) : 0;
 
     return res.json({
@@ -70,14 +64,14 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
 
 export async function saveReferral(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
 
     const validate = await validateFormMemberRegisterFromUser(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     // set current id to referred
-    if (validate.data.referred) validate.data.referred = userid;
+    if (validate.data.referred) validate.data.referred = tokenId;
 
     const user = new Users(validate.data);
     const password = 'alma1234'; // default password
@@ -91,7 +85,7 @@ export async function saveReferral(req: Request, res: Response): Promise<Respons
     await addCoursesToUser(user._id.toString());
 
     // get my referrals
-    const myReferrals = await Referrals.findOne({ _id: userid }).exec();
+    const myReferrals = await Referrals.findOne({ _id: tokenId }).exec();
     if (myReferrals) {
       myReferrals.members.push(user._id.toString());
       await myReferrals.save();
@@ -107,13 +101,8 @@ export async function saveReferral(req: Request, res: Response): Promise<Respons
 
 export async function getMemberReferred(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid, _id } = req.params;
-
-    if (!checkObjectId(userid)) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
+    const { _id } = req.params;
+    const { tokenId } = req.body;
 
     if (!checkObjectId(_id)) {
       return res.status(422).json({
@@ -121,8 +110,8 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
       });
     }
 
-    const checkMember = await Referrals.find({ _id: userid, members: _id }).countDocuments().exec();
-    const checkMember2 = await Users.find({ _id: userid, referred: _id }).countDocuments().exec();
+    const checkMember = await Referrals.find({ _id: tokenId, members: _id }).countDocuments().exec();
+    const checkMember2 = await Users.find({ _id: tokenId, referred: _id }).countDocuments().exec();
 
     if (checkMember === 0 && checkMember2 === 0) {
       return res.status(404).json({
@@ -145,7 +134,7 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
 
     if (visits.length > 0) {
       const listIds: any[] = _.uniq(visits.map(v => v.referred));
-      listIds.push(userid);
+      listIds.push(tokenId);
 
       const members = await getNamesUsersList(listIds) || [];
 
@@ -173,13 +162,13 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
 
 export async function saveReferralVisit(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     const validate = validateSimpleRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const consolidate = new Visits({
-      referred: userid,
+      referred: tokenId,
       userid: validate.data.userId,
       ...validate.data
     });

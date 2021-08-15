@@ -96,7 +96,7 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
         company: data.company,
         companyType: data.companyType,
         baptized: data.baptized,
-        role: data.role,
+        roles: data.roles,
         referred: data.referred,
         petition: data.petition,
         attendGroup: data.attendGroup,
@@ -257,9 +257,13 @@ export function checkFindValueSearch(query: any, value: any): any {
   return query;
 }
 
-export function checkRoleToActions(role: number|null): boolean {
-  if (!/[01]{1}/.test(`${role}`)) return false;
-  return ['0', '1'].indexOf(`${role}`) > -1;
+// export function checkRoleToActions(role: number|null): boolean {
+//   if (!/[01]{1}/.test(`${role}`)) return false;
+//   return ['0', '1'].indexOf(`${role}`) > -1;
+// }
+
+export function checkRoleToActions(roles: any[] | null | undefined): boolean {
+  return roles?.some(r => [0, 1].includes(r)) || false;
 }
 
 export function responseUsersAdmin(res: Response, option: number) : Response {

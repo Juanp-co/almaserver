@@ -15,7 +15,7 @@ const path = 'Controllers/admin/users.admin.controller';
 // =====================================================================================================================
 async function getConsolidates(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.params;
         const { initDate, endDate, input, value } = req.query;
         const query = {};
         const query2 = { referred: { $ne: null }, consolidated: { $ne: false } };
@@ -38,7 +38,7 @@ async function getConsolidates(req, res) {
         const members = await Users_1.default.find({ referred: { $ne: null }, ...query }).exec();
         const visits = await Visits_1.default.find(query).sort(sort).exec();
         if (members.length > 0) {
-            const listIds = [userid];
+            const listIds = [tokenId];
             if (members) {
                 members.forEach(c => {
                     if (!listIds.includes(c._id.toString()))
@@ -56,12 +56,7 @@ async function getConsolidates(req, res) {
                 });
             }
             // find all members
-            ret.members = await Users_1.default.find({
-                $or: [
-                    query2,
-                    { _id: { $in: listIds || [] } }
-                ]
-            }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 })
+            ret.members = await Users_1.default.find({ $or: [query2, { _id: { $in: listIds || [] } }] }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 })
                 .sort({ names: 1 })
                 .exec();
             const listToCheck = [];
@@ -97,7 +92,7 @@ async function getConsolidates(req, res) {
             const idsMembers = ret.members.length > 0 ? ret.members.map((m) => m._id.toString()) : [];
             const diff = lodash_1.default.difference(idsMembers, listToCheck);
             ret.pendingVisits = lodash_1.default.uniq(listIdsPending.concat(diff || []));
-            ret.pendingVisits = ret.pendingVisits.filter((pv) => pv !== userid);
+            ret.pendingVisits = ret.pendingVisits.filter((pv) => pv !== tokenId);
         }
         return res.json({
             msg: `Consolidaciones.`,
@@ -111,12 +106,12 @@ async function getConsolidates(req, res) {
 exports.default = getConsolidates;
 async function saveConsolidateVisit(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         const validate = ConsolidatesFormRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const visit = new Visits_1.default({
-            referred: userid,
+            referred: tokenId,
             userid: validate.data.userId,
             ...validate.data
         });

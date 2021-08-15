@@ -34,9 +34,9 @@ const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'src/Controllers/publics/family-group.controller';
 async function getFamiliesGroups(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         let ret = [];
-        const user = await Users_1.default.findOne({ _id: userid }, { familyGroupId: 1 }).exec();
+        const user = await Users_1.default.findOne({ _id: tokenId }, { familyGroupId: 1 }).exec();
         if (!user)
             return FamiliesGroupsActions_1.returnFamilyGroup404(res);
         if (user.familyGroupId && user.familyGroupId.length > 0) {
@@ -78,10 +78,11 @@ async function getFamiliesGroupsPublic(req, res) {
 exports.getFamiliesGroupsPublic = getFamiliesGroupsPublic;
 async function showFamilyGroup(req, res) {
     try {
-        const { userid, _id } = req.params;
+        const { _id } = req.params;
+        const { tokenId } = req.body;
         if (!Validations_1.checkObjectId(_id))
             return FamiliesGroupsActions_1.returnErrorId(res);
-        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(userid, _id)))
+        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(tokenId, _id)))
             return FamiliesGroupsActions_1.returnFamilyGroup404(res);
         const group = await FamiliesGroups_1.default.findOne({ _id }).exec();
         if (!group)
@@ -98,17 +99,18 @@ async function showFamilyGroup(req, res) {
 exports.showFamilyGroup = showFamilyGroup;
 async function saveFamilyGroupReport(req, res) {
     try {
-        const { userid, _id } = req.params;
+        const { _id } = req.params;
+        const { tokenId } = req.body;
         if (!Validations_1.checkObjectId(_id))
             return FamiliesGroupsActions_1.returnErrorId(res);
-        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(userid, _id)))
+        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(tokenId, _id)))
             return FamiliesGroupsActions_1.returnFamilyGroup404(res);
         const validate = FamiliesGroupsReportsRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const r = new FamiliesGroupsReports_1.default({
             familyGroupId: _id,
-            userid,
+            userid: tokenId,
             report: { ...validate.data }
         });
         await r.save();
@@ -124,10 +126,11 @@ async function saveFamilyGroupReport(req, res) {
 exports.saveFamilyGroupReport = saveFamilyGroupReport;
 async function reportsFamilyGroup(req, res) {
     try {
-        const { userid, _id } = req.params;
+        const { _id } = req.params;
+        const { tokenId } = req.body;
         if (!Validations_1.checkObjectId(_id))
             return FamiliesGroupsActions_1.returnErrorId(res);
-        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(userid, _id)))
+        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(tokenId, _id)))
             return FamiliesGroupsActions_1.returnFamilyGroup404(res);
         const { initDate, endDate } = req.query;
         const query = {};

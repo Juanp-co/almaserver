@@ -1,10 +1,7 @@
-import dotenv from 'dotenv';
 import { connect } from 'mongoose';
-import path from 'path';
-import { showConsoleError, showConsoleLog } from './Functions/GlobalFunctions';
+import { loadEnvironmentVars, showConsoleError, showConsoleLog } from './Functions/GlobalFunctions';
 
-const pathEnv = path.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
-dotenv.config({ path: pathEnv });
+loadEnvironmentVars();
 
 export default async function startConnection() {
   try {
@@ -43,6 +40,6 @@ export default async function startConnection() {
   }
   catch (e) {
     showConsoleError('./database', e);
-    process.exit();
+    process.exit(500);
   }
 }

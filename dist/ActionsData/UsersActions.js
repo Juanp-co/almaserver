@@ -84,7 +84,7 @@ async function getUserData(_id, projection = null) {
                 company: data.company,
                 companyType: data.companyType,
                 baptized: data.baptized,
-                role: data.role,
+                roles: data.roles,
                 referred: data.referred,
                 petition: data.petition,
                 attendGroup: data.attendGroup,
@@ -228,10 +228,12 @@ function checkFindValueSearch(query, value) {
     return query;
 }
 exports.checkFindValueSearch = checkFindValueSearch;
-function checkRoleToActions(role) {
-    if (!/[01]{1}/.test(`${role}`))
-        return false;
-    return ['0', '1'].indexOf(`${role}`) > -1;
+// export function checkRoleToActions(role: number|null): boolean {
+//   if (!/[01]{1}/.test(`${role}`)) return false;
+//   return ['0', '1'].indexOf(`${role}`) > -1;
+// }
+function checkRoleToActions(roles) {
+    return (roles === null || roles === void 0 ? void 0 : roles.some(r => [0, 1].includes(r))) || false;
 }
 exports.checkRoleToActions = checkRoleToActions;
 function responseUsersAdmin(res, option) {

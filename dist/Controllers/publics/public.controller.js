@@ -83,28 +83,27 @@ async function login(req, res) {
         const validate = UsersRequest_1.validateLogin(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const user = await Users_1.default.findOne({ phone: validate.data.phone }, { password: 1, document: 1, role: 1 }).exec();
+        const user = await Users_1.default.findOne({ phone: validate.data.phone }, { password: 1, document: 1, roles: 1 }).exec();
         if (!user) {
             return res.status(404).json({
                 msg: `Disculpe, pero el número de teléfono o la contraseña son incorrectos.`
             });
-        }
-        if (validate.data.admin) {
-            if (user.role === 5) {
-                return res.status(401).json({
-                    msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
-                });
-            }
         }
         if (!bcrypt_1.default.compareSync(`${validate.data.password}`, `${user.password}`)) {
             return res.status(422).json({
                 msg: `Disculpe, pero el número de teléfono o la contraseña son incorrectos.`
             });
         }
+        if (validate.data.admin) {
+            if (GlobalFunctions_1.checkIfExistsRoleInList(user.roles, [5])) {
+                return res.status(401).json({
+                    msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
+                });
+            }
+        }
         const token = await TokenActions_1.getAccessToken(req, {
             _id: user._id.toString(),
-            phone: user.phone,
-            role: user.role
+            roles: user.roles
         });
         if (!token) {
             return res.status(500).json({
@@ -217,10 +216,10 @@ exports.getBanks = getBanks;
  */
 async function getPublicMembers(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         const { word } = req.query;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const query = { _id: { $ne: userid } };
+        const query = { _id: { $ne: tokenId } };
         let members = [];
         if (/^[0-9]{1,13}/.test(`${word}`.trim())) {
             query.phone = { $regex: new RegExp(`${word}`, 'i') };

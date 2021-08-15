@@ -22,7 +22,7 @@ const path = 'src/admin/reports.admin.controller';
 
 export default async function getReports(req: Request, res: Response) : Promise<Response>{
   try {
-    const { userrole } = req.body;
+    const { tokenRoles } = req.body;
     const { initDate, endDate } = req.query;
     const query: any = {};
     const query2: any = {};
@@ -98,7 +98,6 @@ export default async function getReports(req: Request, res: Response) : Promise<
             { label: 'Pastores', qty: 0 },
             { label: 'Supervisores', qty: 0 },
             { label: 'Líderes', qty: 0 },
-            { label: 'Padres espirituales', qty: 0 },
             { label: 'Personas', qty: 0 },
           ],
         },
@@ -117,7 +116,7 @@ export default async function getReports(req: Request, res: Response) : Promise<
         query2.date.$lt = moment(`${endDate}`).endOf('d').unix();
     }
 
-    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+    if (!checkRoleToActions(tokenRoles)) return responseUsersAdmin(res, 3);
 
     const consolidates = await Consolidates.find(query2).countDocuments().exec();
     const courses = await Courses.find(query, { enable: 1 }).exec();
@@ -125,7 +124,7 @@ export default async function getReports(req: Request, res: Response) : Promise<
     const groups = await Groups.find(query, { members: 1 }).exec();
     const users = await Users.find(
       query,
-      { gender: 1, role: 1, birthday: 1, group: 1, referred: 1, position: 1, consolidated: 1 }
+      { gender: 1, roles: 1, birthday: 1, group: 1, referred: 1, position: 1, consolidated: 1 }
     ).exec();
 
     if (users.length > 0) {
@@ -152,8 +151,11 @@ export default async function getReports(req: Request, res: Response) : Promise<
 
         ret.users.families.data[(u.group ? 1 : 0)].qty += 1;
 
-        if (u.role !== null && u.role !== undefined && !!ret.users.roles.data[u.role])
-          ret.users.roles.data[u.role].qty += 1;
+        if (u.roles) {
+          for (const r of u.roles) {
+            ret.users.roles.data[r].qty += 1;
+          }
+        }
 
         ret.consolidates.data[0].qty += u.referred && u.consolidated ? 1 : 0;
       });
@@ -205,7 +207,7 @@ export default async function getReports(req: Request, res: Response) : Promise<
 
 export async function getFamiliesGroupsReports(req: Request, res: Response) : Promise<Response>{
   try {
-    const { userrole } = req.body;
+    const { tokenRoles } = req.body;
     const { initDate, endDate, sector, subSector, number } = req.query;
     const query1: any = {};
     const query2: any = {};
@@ -221,18 +223,14 @@ export async function getFamiliesGroupsReports(req: Request, res: Response) : Pr
         query2['report.date'].$lt = moment(`${endDate}`).endOf('d').unix();
     }
 
-    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+    if (!checkRoleToActions(tokenRoles)) return responseUsersAdmin(res, 3);
 
     // get all families groups
     const familiesGroups = await FamiliesGroups.find(
       query1,
       { number: 1, sector: 1, subSector: 1, created_at: 1, }
       )
-      .sort({
-        sector: 1,
-        subSector: 1,
-        number: 1
-      })
+      .sort({ sector: 1, subSector: 1, number: 1 })
       .exec();
 
     if (familiesGroups.length > 0) {

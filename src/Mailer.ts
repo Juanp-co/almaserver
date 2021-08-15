@@ -1,9 +1,7 @@
-import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-import path from 'path';
+import { loadEnvironmentVars } from './Functions/GlobalFunctions';
 
-const pathEnv = path.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
-dotenv.config({ path: pathEnv });
+loadEnvironmentVars()
 
 const HOST_MAIL: any = process.env.HOST_MAIL || '';
 const PORT_MAIL: any = process.env.PORT_MAIL || '';

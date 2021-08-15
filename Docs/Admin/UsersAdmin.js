@@ -28,7 +28,7 @@
 
 /**
  * @api {get} /api/admin/users (01) Obtener listado de miembros.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.33
  * @apiName getUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -44,7 +44,7 @@
  * @apiSuccess {Object[]} users Listado de usuarios.
  *
  * @apiSuccess (users Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (users Object[]) {Number} role Role del miembro.
+ * @apiSuccess (users Object[]) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona)
  * @apiSuccess (users Object[]) {String} created_at Fecha de la última actualización del perfil.
  * @apiSuccess (users Object[]) {String} _id ID del miembro.
  * @apiSuccess (users Object[]) {String} phone Número de teléfono.
@@ -59,7 +59,7 @@
 	"users": [
 		{
 			"gender": 0,
-			"role": 5,
+			"roles": [ 4 ],
 			"created_at": "2021-02-09 00:10:26",
 			"_id": "6022194c88342006d4a700f3",
 			"phone": "563161234567",
@@ -69,7 +69,7 @@
 		},
 		{
 			"gender": 1,
-			"role": 1,
+			"roles": [ 1 ],
 			"created_at": "2020-12-13 10:03:12",
 			"_id": "5fd62d49304a9a5a686adc1a",
 			"phone": "563161234567",
@@ -79,7 +79,7 @@
 		},
 		{
 			"gender": 2,
-			"role": 5,
+			"roles": [ 4 ],
 			"created_at": "2020-12-07 23:59:12",
 			"_id": "5fcf0821fc917d476c1cf3e3",
 			"phone": "573161234567",
@@ -106,7 +106,7 @@
 
 /**
  * @api {post} /api/admin/users (02) Crear nuevo miembro.
- * @apiVersion 0.0.32
+ * @apiVersion 0.0.33
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -126,7 +126,7 @@
  * @apiParam {String|Null} petition Petición solicitada por el nuevo miembro.
  * @apiParam {boolean} attendGroup Indica si el miembro asiste a un grupo.
  * @apiParam {String|Null} groupId ID del grupo al que asiste el nuevo miembro.
- * @apiParam {Number} role Rol para el miembro (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
+ * @apiParam {Number[]} roles Roles asignar al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
  *
  * @apiExample {JSON} Example JSON Request
  *{
@@ -144,7 +144,7 @@
   "petition": "Por la familia, por salud y por mejora económica.",
   "attendGroup": true,
   "groupId": "6063385c98fc731c04777829",
-  "role": 5
+  "roles":  [ 4 ]
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -191,7 +191,7 @@
 
 /**
  * @api {get} /api/admin/users/:_id (03) Obtener detalles de un miembro.
- * @apiVersion 0.0.3
+ * @apiVersion 0.0.33
  * @apiName getDetailsUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -218,7 +218,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Number} role Role del miembro.
+ * @apiSuccess (data Object) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
  * @apiSuccess (data Object) {Object|Null} referred Datos del referido (padre espiritual).
  * @apiSuccess (data Object) {String|Null} petition Petición realizada por el mimebto al momento de registrarse.
  * @apiSuccess (data Object) {Boolean} attendGroup Asiste a un grupo familiar.
@@ -249,7 +249,7 @@
 		"_id": "6076598d598ae749a42a0147",
 		"document": null,
 		"email": null,
-		"phone": "584121490192",
+		"phone": "3151234567",
 		"names": "AMBERCITA",
 		"lastNames": "VELASQUEZ",
 		"position": null,
@@ -262,14 +262,14 @@
 		"company": false,
 		"companyType": null,
 		"baptized": false,
-		"role": 5,
+		"roles": [ 4 ],
 		"referred": {
 			"_id": "607658ff598ae749a42a0143",
 			"names": "KRHYSTAL",
 			"lastNames": "TIRADO",
 			"document": null,
 			"gender": null,
-			"phone": "4262755110",
+			"phone": "3161234567",
 			"position": "ASDASDASDASDASD"
 		},
 		"petition": null,
@@ -300,7 +300,7 @@
 
 /**
  * @api {put} /api/admin/users/:_id (04) Actualizar datos de un miembro.
- * @apiVersion 0.0.32
+ * @apiVersion 0.0.33
  * @apiName changeRoleUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -331,7 +331,7 @@
  * @apiExample {JSON} Example JSON Request
  * {
     "email": null,
-		"phone": "584121490192",
+		"phone": "573161234567",
 		"names": "AMBERCITA",
 		"lastNames": "VELASQUEZ",
     "document": null,
@@ -363,7 +363,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Number} role Role del miembro.
+ * @apiSuccess (data Object) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
  * @apiSuccess (data Object) {Number} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number} city ID (array index) de la ciudad.
  * @apiSuccess (data Object) {String} locality Nombre de la localidad.
@@ -394,7 +394,7 @@
 		"company": false,
 		"companyType": null,
 		"baptized": false,
-		"role": 5,
+		"roles": [ 4 ],
 		"consolidated": true,
 		"group": null,
 		"familyGroupId": [],
@@ -403,7 +403,7 @@
 		"locality": "URB. NUEVO MUNDO",
 		"direction": "URB. NUEVO MUNDO #66",
 		"_id": "6076598d598ae749a42a0147",
-		"phone": "584121490192",
+		"phone": "573161234567",
 		"names": "AMBERCITA",
 		"lastNames": "VELASQUEZ",
 		"created_at": "2021-04-13 21:55:09",
@@ -438,14 +438,13 @@
   ]
 }
  *
- *
  * @apiUse GlobalErrorSystem
  *
  */
 
 /**
  * @api {get} /api/admin/users/:_id/referrals (05) Obtener listado de referidos de un miembro.
- * @apiVersion 0.0.27
+ * @apiVersion 0.0.33
  * @apiName getReferralsUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -550,7 +549,7 @@
 
 /**
  * @api {put} /api/admin/users/:_id (07) Cambiar rol de un miembro.
- * @apiVersion 0.0.29
+ * @apiVersion 0.0.33
  * @apiName updateUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -558,11 +557,11 @@
  *
  * @apiParam (Path params) {String} _id ID del miembro.
  *
- * @apiParam {Number} role Rol para el miembro (valores: 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
+ * @apiParam {Number[]} roles Rol para el miembro (valores: 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona).
  *
  * @apiExample {JSON} Example JSON Request
  * {
-    "role": 3
+    "roles": [ 3, 4 ]
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.

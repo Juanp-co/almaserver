@@ -21,8 +21,8 @@ const Visits_1 = __importDefault(require("../Models/Visits"));
 const path = 'Controllers/user.controller';
 async function get(req, res) {
     try {
-        const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, { __v: 0, password: 0, referred: 0 }).exec();
+        const { tokenId } = req.body;
+        const user = await Users_1.default.findOne({ _id: tokenId }, { __v: 0, password: 0, referred: 0 }).exec();
         // logout
         if (!user)
             return TokenActions_1.forceLogout(res, `${req.query.token}`);
@@ -38,8 +38,8 @@ async function get(req, res) {
 exports.get = get;
 async function update(req, res) {
     try {
-        const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, {
+        const { tokenId } = req.body;
+        const user = await Users_1.default.findOne({ _id: tokenId }, {
             password: 0,
             role: 0,
             referred: 0,
@@ -48,7 +48,7 @@ async function update(req, res) {
         // logout
         if (!user)
             return TokenActions_1.forceLogout(res, `${req.query.token}`);
-        const validate = await UsersRequest_1.validateUpdate(req.body, userid);
+        const validate = await UsersRequest_1.validateUpdate(req.body, tokenId);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         user.phone = validate.data.phone || user.phone;
@@ -82,8 +82,8 @@ async function update(req, res) {
 exports.update = update;
 async function changePassword(req, res) {
     try {
-        const { userid } = req.params;
-        const user = await Users_1.default.findOne({ _id: userid }, { password: 1 }).exec();
+        const { tokenId } = req.body;
+        const user = await Users_1.default.findOne({ _id: tokenId }, { password: 1 }).exec();
         // logout
         if (!user)
             return TokenActions_1.forceLogout(res, `${req.query.token}`);
@@ -111,14 +111,14 @@ exports.changePassword = changePassword;
  */
 async function getCourses(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         const courses = [];
-        if (!Validations_1.checkObjectId(userid)) {
+        if (!Validations_1.checkObjectId(tokenId)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
         }
-        const myCourses = await CoursesUsers_1.default.findOne({ userid }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
+        const myCourses = await CoursesUsers_1.default.findOne({ userid: tokenId }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
         if (myCourses) {
             const listIds = myCourses.courses.length > 0 ? myCourses.courses.map(c => c.courseId) : [];
             if (listIds.length > 0) {
@@ -149,14 +149,14 @@ async function getCourses(req, res) {
 exports.getCourses = getCourses;
 async function getGroup(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         let group = null;
-        if (!Validations_1.checkObjectId(userid)) {
+        if (!Validations_1.checkObjectId(tokenId)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
         }
-        const user = await Users_1.default.findOne({ _id: userid }, { group: 1 }).exec();
+        const user = await Users_1.default.findOne({ _id: tokenId }, { group: 1 }).exec();
         if (!user) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
@@ -187,8 +187,9 @@ async function getGroup(req, res) {
 exports.getGroup = getGroup;
 async function getMemberGroup(req, res) {
     try {
-        const { userid, memberId } = req.params;
-        if (!Validations_1.checkObjectId(userid)) {
+        const { memberId } = req.params;
+        const { tokenId } = req.body;
+        if (!Validations_1.checkObjectId(tokenId)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
@@ -198,7 +199,7 @@ async function getMemberGroup(req, res) {
                 msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
             });
         }
-        const user = await Users_1.default.findOne({ _id: userid }, { group: 1 }).exec();
+        const user = await Users_1.default.findOne({ _id: tokenId }, { group: 1 }).exec();
         if (!user) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
@@ -241,6 +242,12 @@ exports.getMemberGroup = getMemberGroup;
  */
 async function getReports(req, res) {
     try {
+        const { tokenId } = req.body;
+        if (!Validations_1.checkObjectId(tokenId)) {
+            return res.status(401).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
+            });
+        }
         const { initDate, endDate } = req.query;
         const query = {};
         const query2 = {};
@@ -278,15 +285,9 @@ async function getReports(req, res) {
                 query2.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
             }
         }
-        const { userid } = req.params;
-        if (!Validations_1.checkObjectId(userid)) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        const myCourses = await CoursesUsers_1.default.findOne({ userid, ...query }, { courses: 1 }).exec();
-        const myReferrals = await Referrals_1.default.findOne({ _id: userid, ...queryReferrals }, { members: 1 }).exec();
-        const visits = await Visits_1.default.find({ referred: userid, ...query2 }, { date: 1, userid: 1 }).exec();
+        const myCourses = await CoursesUsers_1.default.findOne({ userid: tokenId, ...query }, { courses: 1 }).exec();
+        const myReferrals = await Referrals_1.default.findOne({ _id: tokenId, ...queryReferrals }, { members: 1 }).exec();
+        const visits = await Visits_1.default.find({ referred: tokenId, ...query2 }, { date: 1, userid: 1 }).exec();
         if (myCourses) {
             ret.courses.qty = myCourses.courses.length;
             for (const c of myCourses.courses) {

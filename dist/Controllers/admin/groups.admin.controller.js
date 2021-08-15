@@ -145,6 +145,7 @@ async function showGroup(req, res) {
 exports.showGroup = showGroup;
 async function saveGroup(req, res) {
     try {
+        const { tokenId } = req.body;
         const validate = GroupsRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
@@ -160,7 +161,7 @@ async function saveGroup(req, res) {
             validate.data.code = `group-${totalGroups}`;
         }
         const group = new Groups_1.default(validate.data);
-        group.userid = req.params.userid;
+        group.userid = tokenId;
         await group.save();
         return res.status(201).json({
             msg: 'Se ha creado el grupo exitosamente.',
@@ -270,7 +271,8 @@ async function addOrRemoveMembersGroup(req, res) {
 exports.addOrRemoveMembersGroup = addOrRemoveMembersGroup;
 async function findNewMembers(req, res) {
     try {
-        const { _id, userid } = req.params;
+        const { _id } = req.params;
+        const { tokenId } = req.body;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
         if (!Validations_1.checkObjectId(_id))
             return returnErrorId(res);
@@ -282,7 +284,7 @@ async function findNewMembers(req, res) {
         if (!group)
             return return404(res);
         const query = UsersActions_1.checkFindValueSearch({
-            _id: { $nin: [userid, ...group.members] },
+            _id: { $nin: [tokenId, ...group.members] },
             role: { $ne: 0 },
             group: { $in: [null, undefined, ''] },
         }, req.query.word);
