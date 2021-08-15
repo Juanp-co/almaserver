@@ -29,12 +29,6 @@ async function fixUsersRoles() {
       showConsoleLog(1, `Iniciando ajustes para múltiples roles...`);
 
       for (let i = 0; i < length; i++) {
-
-        // console.log(`user[${i}]`, users[i]);
-        // users[i].roles = await [users[i].role !== 5 ? users[i].role : 4];
-        // console.log(`user[${i}] edited`, users[i]);
-        // showConsoleLog(1, '==========================================================');
-
         await Users.updateOne(
           { _id: users[i]._id },
           {

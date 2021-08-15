@@ -21,7 +21,6 @@ export async function checkIfExistPhone(phone: string|null|undefined, _id?: stri
   if (phone) {
     query.phone = phone;
     if (_id) query._id = { $ne: _id };
-
     return (await Users.find(query)
       .countDocuments()
       .exec()) > 0
