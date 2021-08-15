@@ -48,7 +48,7 @@ export function checkEmail(value: any): boolean {
 }
 
 export function checkObjectId(value: any): boolean {
-  return Types.ObjectId.isValid(value);
+  return /^[0-9a-fA-F]{24}$/.test(`${value}`);
 }
 
 export function checkTitlesOrDescriptions(value: any): boolean {
@@ -64,8 +64,9 @@ export function checkCodeValue(value: any): boolean {
 
 export function checkDate(value: any): boolean {
   // validate date (YYYY-MM-DD)
+  if (!value) return false;
   const isValid = moment(`${value}`, 'YYYY-MM-DD', true).isValid();
-  return value && isValid;
+  return isValid;
 }
 
 export function checkDateAndHour(value: any): boolean {

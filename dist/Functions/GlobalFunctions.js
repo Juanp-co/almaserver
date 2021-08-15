@@ -22,7 +22,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createSlug = exports.deleteImages = exports.checkAndUploadPicture = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getSimpleDate = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+exports.checkIfExistsRoleInList = exports.createSlug = exports.deleteImages = exports.checkAndUploadPicture = exports.getLimitSkipSortSearch = exports.calculateAge = exports.generatePassword = exports.cleanWhiteSpaces = exports.getSimpleDate = exports.getDate = exports.setDate = exports.toUpperValue = exports.upperCaseFirstLettersWords = exports.loadEnvironmentVars = exports.returnErrorParams = exports.returnError = exports.setError = exports.showConsoleLog = exports.showConsoleError = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const slug_1 = __importDefault(require("slug"));
 const fs = __importStar(require("fs"));
@@ -30,8 +32,8 @@ const fs_1 = require("fs");
 /*
   Console logs
  */
-function showConsoleError(path, error) {
-    console.error(`${moment_timezone_1.default().toISOString()} - Error: ${path}`);
+function showConsoleError(pathFile, error) {
+    console.error(`${moment_timezone_1.default().toISOString()} - Error: ${pathFile}`);
     console.error(error);
 }
 exports.showConsoleError = showConsoleError;
@@ -49,8 +51,8 @@ function setError(msg, input) {
     return { input, msg };
 }
 exports.setError = setError;
-function returnError(res, error, path) {
-    showConsoleError(path, error);
+function returnError(res, error, pathFile) {
+    showConsoleError(pathFile, error);
     return res.status(500).json({
         msg: 'Ha ocurrido un error inesperado.',
         errors: [{ msg: error.toString() }]
@@ -64,6 +66,36 @@ function returnErrorParams(res, errors) {
     });
 }
 exports.returnErrorParams = returnErrorParams;
+/*
+  Load enviroments
+ */
+function checkIfExistFile(value) {
+    try {
+        return fs.existsSync(value);
+    }
+    catch (err) {
+        showConsoleError('src/server.js', err);
+        return false;
+    }
+}
+function loadEnvironmentVars() {
+    const pathEnvFile = process.env.NODE_ENV
+        ? `.${process.env.NODE_ENV || 'development'}`
+        : '';
+    const pathEnv = path_1.default.resolve(__dirname, `../../.env${pathEnvFile}`);
+    if (checkIfExistFile(pathEnv)) {
+        dotenv_1.default.config({ path: pathEnv });
+    }
+    else if (checkIfExistFile(path_1.default.resolve(__dirname, `../../.env`))) {
+        dotenv_1.default.config({ path: path_1.default.resolve(__dirname, `../../.env`) });
+    }
+    else {
+        showConsoleError('src/server.js', 'No existe archivo de variable de entorno en el sistema. Asegúrese de contar con uno. ' +
+            'Para más información, leer el archivo README.md del proyecto.');
+        process.exit(0);
+    }
+}
+exports.loadEnvironmentVars = loadEnvironmentVars;
 // =================================================================================================
 function upperCaseFirstLettersWords(words) {
     let ret = '';
@@ -178,16 +210,16 @@ async function checkAndUploadPicture(picture, pathFolder = '') {
     // to convert base64 format into random filename
     const base64Data = picture.replace(/^data:([A-Za-z-+/]+);base64,/, '');
     // set path
-    const path = `${pathRoute}/${moment_timezone_1.default().unix()}.${extFile}`;
+    const pathFile = `${pathRoute}/${moment_timezone_1.default().unix()}.${extFile}`;
     // write
-    await fs.writeFileSync(`./${path}`, base64Data, { encoding: 'base64' });
-    return path;
+    await fs.writeFileSync(`./${pathFile}`, base64Data, { encoding: 'base64' });
+    return pathFile;
 }
 exports.checkAndUploadPicture = checkAndUploadPicture;
-function deleteImages(path) {
+function deleteImages(pathFile) {
     try {
-        if (path)
-            fs_1.unlinkSync(path);
+        if (pathFile)
+            fs_1.unlinkSync(pathFile);
     }
     catch (e) {
         showConsoleError('src/Functions/GlobalFunctions/deleteImage', e);
@@ -198,3 +230,7 @@ function createSlug(value) {
     return value ? slug_1.default(value) : null;
 }
 exports.createSlug = createSlug;
+function checkIfExistsRoleInList(roles, toCompare) {
+    return (roles === null || roles === void 0 ? void 0 : roles.some(r => toCompare === null || toCompare === void 0 ? void 0 : toCompare.includes(r))) || false;
+}
+exports.checkIfExistsRoleInList = checkIfExistsRoleInList;

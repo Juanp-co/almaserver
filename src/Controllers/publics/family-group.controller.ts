@@ -18,10 +18,10 @@ const path = 'src/Controllers/publics/family-group.controller';
 
 export default async function getFamiliesGroups(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     let ret: IFamiliesGroupsList[] = [];
 
-    const user = await Users.findOne({ _id: userid }, { familyGroupId: 1 }).exec();
+    const user = await Users.findOne({ _id: tokenId }, { familyGroupId: 1 }).exec();
 
     if (!user) return returnFamilyGroup404(res);
 
@@ -69,10 +69,11 @@ export async function getFamiliesGroupsPublic(req: Request, res: Response): Prom
 
 export async function showFamilyGroup(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid, _id } = req.params;
+    const { _id } = req.params;
+    const { tokenId } = req.body;
     if (!checkObjectId(_id)) return returnErrorId(res);
 
-    if (!(await checkIfUsersBelowAtFamilyGroup(userid, _id))) return returnFamilyGroup404(res);
+    if (!(await checkIfUsersBelowAtFamilyGroup(tokenId, _id))) return returnFamilyGroup404(res);
 
     const group = await FamiliesGroups.findOne({ _id }).exec();
     if (!group) return return404(res);
@@ -88,17 +89,18 @@ export async function showFamilyGroup(req: Request, res: Response): Promise<Resp
 
 export async function saveFamilyGroupReport(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid, _id } = req.params;
+    const { _id } = req.params;
+    const { tokenId } = req.body;
     if (!checkObjectId(_id)) return returnErrorId(res);
 
-    if (!(await checkIfUsersBelowAtFamilyGroup(userid, _id))) return returnFamilyGroup404(res);
+    if (!(await checkIfUsersBelowAtFamilyGroup(tokenId, _id))) return returnFamilyGroup404(res);
 
     const validate = validateFormData(req.body);
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const r = new FamiliesGroupsReports({
       familyGroupId: _id,
-      userid,
+      userid: tokenId,
       report: {...validate.data}
     });
 
@@ -115,10 +117,11 @@ export async function saveFamilyGroupReport(req: Request, res: Response): Promis
 
 export async function reportsFamilyGroup(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid, _id } = req.params;
+    const { _id } = req.params;
+    const { tokenId } = req.body;
     if (!checkObjectId(_id)) return returnErrorId(res);
 
-    if (!(await checkIfUsersBelowAtFamilyGroup(userid, _id))) return returnFamilyGroup404(res);
+    if (!(await checkIfUsersBelowAtFamilyGroup(tokenId, _id))) return returnFamilyGroup404(res);
 
     const { initDate, endDate } = req.query;
     const query: any = {};

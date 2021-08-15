@@ -191,10 +191,6 @@
 						"qty": 2
 					},
 					{
-						"label": "Padres espirituales",
-						"qty": 1
-					},
-					{
 						"label": "Personas",
 						"qty": 1
 					}

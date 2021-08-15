@@ -18,7 +18,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Number} role Role del miembro.
+ * @apiSuccess (data Object) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
  * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (data Object) {String} locality Nombrede la localidad.
@@ -46,7 +46,7 @@
 		"company": false,
 		"companyType": null,
 		"baptized": false,
-		"role": 5,
+		"roles": [ 4 ],
 		"department": null,
 		"city": null,
 		"locality": null,
@@ -324,8 +324,6 @@
  *
  * @apiSuccess (data Object[]) {String} data Etiqueta.
  * @apiSuccess (data Object[]) {Number} data Total de datos.
- *
- *
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success

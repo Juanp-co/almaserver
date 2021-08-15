@@ -1,16 +1,17 @@
+import dotenv from 'dotenv';
+import path from 'path';
 import moment from 'moment-timezone';
 import slug from 'slug';
 import { Response } from 'express';
 import * as fs from 'fs';
 import { unlinkSync } from "fs";
 import { IInfoErrors } from '../Interfaces/IErrorResponse';
-import { checkDate } from './Validations';
 
 /*
   Console logs
  */
-export function showConsoleError(path: string, error: any) {
-  console.error(`${moment().toISOString()} - Error: ${path}`);
+export function showConsoleError(pathFile: string, error: any) {
+  console.error(`${moment().toISOString()} - Error: ${pathFile}`);
   console.error(error);
 }
 
@@ -26,8 +27,8 @@ export function setError(msg: string, input?: string): IInfoErrors {
   return { input, msg };
 }
 
-export function returnError(res: Response, error: any, path: string) {
-  showConsoleError(path, error);
+export function returnError(res: Response, error: any, pathFile: string) {
+  showConsoleError(pathFile, error);
   return res.status(500).json({
     msg: 'Ha ocurrido un error inesperado.',
     errors: [{ msg: error.toString() }]
@@ -39,6 +40,40 @@ export function returnErrorParams(res: Response, errors: any[]) : Response {
     msg: '¡Error en los parámetros!',
     errors
   });
+}
+
+/*
+  Load enviroments
+ */
+
+function checkIfExistFile(value: string) {
+  try {
+    return fs.existsSync(value);
+  } catch (err) {
+    showConsoleError('src/server.js', err);
+    return false;
+  }
+}
+
+export function loadEnvironmentVars() {
+  const pathEnvFile = process.env.NODE_ENV
+    ? `.${process.env.NODE_ENV || 'development'}`
+    : '';
+  const pathEnv = path.resolve(__dirname, `../../.env${pathEnvFile}`);
+
+  if (checkIfExistFile(pathEnv)) {
+    dotenv.config({ path: pathEnv });
+  } else if (checkIfExistFile(path.resolve(__dirname, `../../.env`))) {
+    dotenv.config({ path: path.resolve(__dirname, `../../.env`) });
+  } else {
+    showConsoleError(
+      'src/server.js',
+      'No existe archivo de variable de entorno en el sistema. Asegúrese de contar con uno. ' +
+      'Para más información, leer el archivo README.md del proyecto.'
+    );
+
+    process.exit(0);
+  }
 }
 
 // =================================================================================================
@@ -156,16 +191,16 @@ export async function checkAndUploadPicture(picture: string | null, pathFolder =
   // to convert base64 format into random filename
   const base64Data = picture.replace(/^data:([A-Za-z-+/]+);base64,/, '');
   // set path
-  const path = `${pathRoute}/${moment().unix()}.${extFile}`;
+  const pathFile = `${pathRoute}/${moment().unix()}.${extFile}`;
   // write
-  await fs.writeFileSync(`./${path}`, base64Data,  { encoding: 'base64' });
+  await fs.writeFileSync(`./${pathFile}`, base64Data,  { encoding: 'base64' });
 
-  return path;
+  return pathFile;
 }
 
-export function deleteImages(path: any) {
+export function deleteImages(pathFile: any) {
   try {
-    if (path) unlinkSync(path);
+    if (pathFile) unlinkSync(pathFile);
   }
   catch (e: any) {
     showConsoleError('src/Functions/GlobalFunctions/deleteImage', e);
@@ -175,6 +210,10 @@ export function deleteImages(path: any) {
 
 export function createSlug(value: string | null) : string | null {
   return value ? slug(value) : null;
+}
+
+export function checkIfExistsRoleInList(roles: number[] | null | undefined, toCompare: number[]) : boolean {
+  return roles?.some(r => toCompare?.includes(r)) || false;
 }
 
 

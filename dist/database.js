@@ -1,14 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = require("mongoose");
-const path_1 = __importDefault(require("path"));
 const GlobalFunctions_1 = require("./Functions/GlobalFunctions");
-const pathEnv = path_1.default.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
-dotenv_1.default.config({ path: pathEnv });
+GlobalFunctions_1.loadEnvironmentVars();
 async function startConnection() {
     try {
         const dbPort = process.env.DDB_PORT || '';
@@ -40,7 +34,7 @@ async function startConnection() {
     }
     catch (e) {
         GlobalFunctions_1.showConsoleError('./database', e);
-        process.exit();
+        process.exit(500);
     }
 }
 exports.default = startConnection;

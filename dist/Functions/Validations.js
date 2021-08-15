@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDateAndHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
 const moment_1 = __importDefault(require("moment"));
-const mongoose_1 = require("mongoose");
 function checkNameOrLastName(value) {
     return (value &&
         /^([A-Z\u00C0-\u024F\u1E00-\u1EFF]?)+([[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]+[,.]?[ ]?|[A-Za-z\u00C0-\u024F\u1E00-\u1EFF]+['-]]?)+$/.test(value));
@@ -45,7 +44,7 @@ function checkEmail(value) {
 }
 exports.checkEmail = checkEmail;
 function checkObjectId(value) {
-    return mongoose_1.Types.ObjectId.isValid(value);
+    return /^[0-9a-fA-F]{24}$/.test(`${value}`);
 }
 exports.checkObjectId = checkObjectId;
 function checkTitlesOrDescriptions(value) {
@@ -59,8 +58,10 @@ function checkCodeValue(value) {
 exports.checkCodeValue = checkCodeValue;
 function checkDate(value) {
     // validate date (YYYY-MM-DD)
+    if (!value)
+        return false;
     const isValid = moment_1.default(`${value}`, 'YYYY-MM-DD', true).isValid();
-    return value && isValid;
+    return isValid;
 }
 exports.checkDate = checkDate;
 function checkDateAndHour(value) {

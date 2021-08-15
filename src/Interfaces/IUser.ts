@@ -23,7 +23,7 @@ export default interface IUser extends Document {
   company: boolean | null;
   companyType?: number | string | null;
   baptized?: boolean | null;
-  role?: number | null;
+  roles?: number[] | null | undefined;
   referred?: any;
   consolidated?: boolean;
   group?: any;
@@ -55,7 +55,7 @@ export interface IUserData {
   company: IUser['company'];
   companyType?: IUser['companyType'];
   baptized?: IUser['baptized'];
-  role?: IUser['role'];
+  roles?: IUser['roles'];
   referred?: any;
   consolidated?: boolean;
   petition?: IUser['petition'];
@@ -74,9 +74,13 @@ export interface IUserSimpleRegister {
   password: IUser['password'];
   names: IUser['names'];
   lastNames: IUser['lastNames'];
-  role: number | null;
+  roles: number[] | null;
   referred: string | null;
   consolidated: boolean,
+}
+
+export interface IUserModelUpdateRoles {
+  roles: number[];
 }
 
 export interface IUserSimpleRegisterConsolidate {
@@ -94,7 +98,7 @@ export interface IUserSimpleRegisterConsolidate {
   petition: IUser['petition'];
   groupId: string|null;
   familyGroupId: IUser['familyGroupId'];
-  role: number | null;
+  roles: number[] | null;
   referred: string | null;
   consolidated: boolean,
 }
@@ -172,5 +176,5 @@ export interface IUserToToken {
   _id?: string | any;
   userid?: string | any;
   phone?: IUser['phone'];
-  role?: IUser['role'];
+  roles?: IUser['roles'];
 }

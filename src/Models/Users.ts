@@ -21,7 +21,8 @@ const UserSchema = new Schema(
     company: { type: Boolean, default: false },
     companyType: { type: Number, default: null },
     baptized: { type: Boolean, default: false },
-    // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = Padre espiritual | 5 = persona
+    // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona
+    roles: { type: [Number], default: [] },
     role: { type: Number, default: 5 },
     referred: { type: String, default: null },
     consolidated: { type: Boolean, default: false },

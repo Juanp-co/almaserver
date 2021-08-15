@@ -12,7 +12,7 @@ async function checkTokenDB(token) {
 }
 exports.checkTokenDB = checkTokenDB;
 async function getAccessToken(req, data) {
-    const token = jsonwebtoken_1.default.sign({ _id: data._id, phone: data.phone, role: data.role }, req.app.get('secretKey'), { expiresIn: '1y' });
+    const token = jsonwebtoken_1.default.sign({ _id: data._id, phone: data.phone, roles: data.roles }, req.app.get('secretKey'), { expiresIn: '1y' });
     if (!token)
         return null;
     const model = {

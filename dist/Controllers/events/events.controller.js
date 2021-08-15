@@ -33,14 +33,14 @@ const Events_1 = __importDefault(require("../../Models/Events"));
 const path = 'src/controllers/events/events.controller';
 async function getEvents(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.params;
         const { initDate, endDate } = req.query;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        let query = {};
+        const query = {};
         if (!req.body.superadmin)
-            query = Object.assign(query, { userid });
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query = Object.assign(query, { date: { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() } });
+            query.userid = tokenId;
+        if (Validations_1.checkDate(initDate)) {
+            query.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
         }
         return res.json({
             msg: `Eventos.`,
@@ -54,12 +54,12 @@ async function getEvents(req, res) {
 exports.default = getEvents;
 async function showEvent(req, res) {
     try {
-        const { _id, userid } = req.params;
-        let query = { _id };
-        if (!req.body.superadmin)
-            query = Object.assign(query, { userid });
+        const { _id, tokenId } = req.params;
         if (!Validations_1.checkObjectId(_id))
             return EventsActions_1.return404Or422(res);
+        const query = { _id };
+        if (!req.body.superadmin)
+            query.userid = tokenId;
         const event = await EventsActions_1.getDetailsEvent({ query });
         if (!event)
             return EventsActions_1.return404Or422(res, true);
@@ -75,11 +75,12 @@ async function showEvent(req, res) {
 exports.showEvent = showEvent;
 async function saveEvent(req, res) {
     try {
+        const { tokenId } = req.body;
         const validate = EventsRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const event = new Events_1.default(validate.data);
-        event.userid = req.params.userid;
+        event.userid = tokenId;
         await event.save();
         const user = await UsersActions_1.getNamesUsersList([req.params.userid]);
         return res.status(201).json({
@@ -103,15 +104,15 @@ async function saveEvent(req, res) {
 exports.saveEvent = saveEvent;
 async function updateEvent(req, res) {
     try {
-        const { _id, userid } = req.params;
-        let query = { _id };
-        if (!req.body.superadmin)
-            query = Object.assign(query, { userid });
+        const { _id, tokenId } = req.params;
         if (!Validations_1.checkObjectId(_id))
             return EventsActions_1.return404Or422(res);
         const validate = EventsRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+        const query = { _id };
+        if (!req.body.superadmin)
+            query.userid = tokenId;
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (!event)
             return EventsActions_1.return404Or422(res, true);
@@ -142,12 +143,12 @@ async function updateEvent(req, res) {
 exports.updateEvent = updateEvent;
 async function deleteEvent(req, res) {
     try {
-        const { _id, userid } = req.params;
-        let query = { _id };
-        if (!req.body.superadmin)
-            query = Object.assign(query, { userid });
+        const { _id, tokenId } = req.params;
         if (!Validations_1.checkObjectId(_id))
             return EventsActions_1.return404Or422(res);
+        const query = { _id };
+        if (!req.body.superadmin)
+            query.userid = tokenId;
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (!event)
             return EventsActions_1.return404Or422(res, true);

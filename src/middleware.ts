@@ -1,7 +1,21 @@
-import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 import { checkTokenDB } from './Functions/TokenActions';
 import { IUserToToken } from './Interfaces/IUser';
+import { checkIfExistsRoleInList } from './Functions/GlobalFunctions';
+
+function responseErrorSession(res: Response): Response{
+  return res.status(401).json({
+    msg: 'Disculpe, pero su sesión ha expirado. Debe iniciar sesión nuevamente.',
+    redirect: true
+  });
+}
+
+function responseErrorCatchSessionToken(res: Response): Response {
+  return res.status(500).json({
+    msg: 'Disculpe, pero ha ocurrido un error interno al momento de verificar las sesión.'
+  });
+}
 
 export async function validateUser(req: Request, res: Response, next: any): Promise<any> {
   try {
@@ -10,24 +24,15 @@ export async function validateUser(req: Request, res: Response, next: any): Prom
 
     const session = await checkTokenDB(token);
 
-    if (!session) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero su sesión ha expirado. Debe iniciar sesión nuevamente.',
-        redirect: true
-      });
-    }
+    if (!session) return responseErrorSession(res);
 
-    req.params.userid = `${check._id}`;
-    req.body.userid = `${check._id}`;
-    req.body.userrole = check.role;
-    req.query.role = `${check.role}`;
+    req.body.tokenId = `${check._id}`;
+    req.body.tokenRoles = check.roles;
     req.query.token = token;
 
     return next();
   } catch (e: any) {
-    return res.status(401).json({
-      msg: 'Disculpe, pero no se logró encontrar una sesión activa.'
-    });
+    return responseErrorCatchSessionToken(res);
   }
 }
 
@@ -39,18 +44,14 @@ export async function validatePublic(req: Request, res: Response, next: any): Pr
     const session = await checkTokenDB(token);
 
     if (session) {
-      req.params.userid = `${check._id}`;
-      req.body.userid = `${check._id}`;
-      req.body.userrole = check.role;
-      req.query.role = `${check.role}`;
+      req.body.tokenId = check._id;
+      req.body.tokenRoles = check.roles;
       req.query.token = token;
     }
 
     return next();
   } catch (e: any) {
-    return res.status(401).json({
-      msg: 'Disculpe, pero no se logró encontrar una sesión activa.'
-    });
+    return responseErrorCatchSessionToken(res);
   }
 }
 
@@ -61,30 +62,22 @@ export async function validateAdmin(req: Request, res: Response, next: any): Pro
 
     const session = await checkTokenDB(token);
 
-    if (!session) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero su sesión ha expirado. Debe iniciar sesión nuevamente.',
-        redirect: true
-      });
-    }
+    if (!session) return responseErrorSession(res);
 
-    if (check.role === 5) {
+    if (checkIfExistsRoleInList(check.roles, [5])) {
       return res.status(401).json({
         msg: 'Disculpe, pero no cuenta con privilegios para realizar esta acción.',
         redirect: true
       });
     }
 
-    req.body.superadmin = check.role === 0;
-    req.body.userid = check._id;
-    req.body.userrole = check.role;
-    req.params.userid = check._id;
+    req.body.superadmin = checkIfExistsRoleInList(check.roles, [0]);
+    req.body.tokenId = check._id;
+    req.body.tokenRoles = check.roles;
     req.query.token = token;
 
     return next();
   } catch (e: any) {
-    return res.status(401).json({
-      msg: 'Disculpe, pero no se logró encontrar una sesión activa.'
-    });
+    return responseErrorCatchSessionToken(res);
   }
 }

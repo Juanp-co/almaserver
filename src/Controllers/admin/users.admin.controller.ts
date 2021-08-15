@@ -6,14 +6,18 @@ import {
   getUserData,
   responseUsersAdmin
 } from '../../ActionsData/UsersActions';
-import { validateFormMemberRegisterAdmin, validateUpdate } from '../../FormRequest/UsersRequest';
+import {
+  validateFormMemberRegisterAdmin,
+  validateRolesToUpdateForm,
+  validateUpdate
+} from '../../FormRequest/UsersRequest';
 import {
   getLimitSkipSortSearch,
   returnError,
   returnErrorParams
 } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
-import { checkObjectId, checkRole } from '../../Functions/Validations';
+import { checkObjectId } from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Groups from '../../Models/Groups';
@@ -27,19 +31,15 @@ const path = 'Controllers/admin/users.admin.controller';
 
 export default async function getUsers(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const query: any = checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
-
-    // if (req.query.admins === 'true') {
-    //   query.role = { $in: [ 0, 1, 2, 3 ] }
-    // }
+    const query: any = checkFindValueSearch({ _id: { $ne: tokenId } }, req.query.word);
 
     if (req.query.ignoreIds) {
       const ids = req.query.ignoreIds.toString().split(',');
 
       if (ids.length > 0) {
-        const list = [userid];
+        const list = [tokenId];
         ids.forEach(i => { if (checkObjectId(i)) list.push(i); });
         query._id = { $nin: list };
       }
@@ -53,7 +53,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
         gender: 1,
         phone: 1,
         document: 1,
-        role: 1,
+        roles: 1,
         created_at: 1,
       })
       .skip(skip)
@@ -72,8 +72,8 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
 
 export async function getUsersCounters(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
-    const query = checkFindValueSearch({ _id: { $ne: userid } } , req.query.word);
+    const { tokenId } = req.body;
+    const query = checkFindValueSearch({ _id: { $ne: tokenId } } , req.query.word);
 
     const totals = await Users.find(query).countDocuments().exec();
 
@@ -88,9 +88,9 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
 
 export async function saveUser(req: Request, res: Response): Promise<Response> {
   try {
-    const { userrole } = req.body;
-
-    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+    const { tokenRoles } = req.body;
+    if (!checkRoleToActions(tokenRoles))
+      return responseUsersAdmin(res, 3);
 
     const validate = await validateFormMemberRegisterAdmin(req.body);
 
@@ -120,7 +120,6 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
       msg: `Se ha registrado el nuevo miembro exitosamente.`,
       password
     });
-
   } catch (error: any) {
     return returnError(res, error, `${path}/saveUser`);
   }
@@ -147,10 +146,10 @@ export async function showUser(req: Request, res: Response): Promise<Response> {
 
 export async function updateUser(req: Request, res: Response): Promise<Response> {
   try {
-    const { userrole } = req.body;
+    const { tokenRoles } = req.body;
     const { _id } = req.params;
 
-    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+    if (!checkRoleToActions(tokenRoles)) return responseUsersAdmin(res, 3);
 
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
@@ -199,17 +198,16 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 export async function changeRoleUser(req: Request, res: Response): Promise<Response> {
   try {
     const { _id } = req.params;
-    const { role } = req.body;
-
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
-    if (!checkRole(role)) return responseUsersAdmin(res, 2);
+    const validate = validateRolesToUpdateForm(req.body);
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    const user = await Users.findOne({_id}, { role: 1 }).exec();
+    const user = await Users.findOne({_id}, { roles: 1 }).exec();
 
     if (!user) return responseUsersAdmin(res, 1);
 
-    user.role = role;
+    user.roles = validate.data.roles;
     await user.save();
 
     // disconnect user
@@ -225,10 +223,10 @@ export async function changeRoleUser(req: Request, res: Response): Promise<Respo
 
 export async function deleteUser(req: Request, res: Response): Promise<Response> {
   try {
-    const { userrole } = req.body;
+    const { tokenRoles } = req.body;
     const { _id } = req.params;
 
-    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+    if (!checkRoleToActions(tokenRoles)) return responseUsersAdmin(res, 3);
 
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
@@ -273,10 +271,10 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
 
 export async function getCoursesUser(req: Request, res: Response): Promise<Response> {
   try {
-    const { userrole } = req.body;
+    const { tokenRoles } = req.body;
     const { _id } = req.params;
 
-    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+    if (!checkRoleToActions(tokenRoles)) return responseUsersAdmin(res, 3);
 
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
@@ -322,10 +320,10 @@ export async function getCoursesUser(req: Request, res: Response): Promise<Respo
 
 export async function getReferralsUser(req: Request, res: Response): Promise<Response> {
   try {
-    const { userrole } = req.body;
+    const { tokenRoles } = req.body;
     const { _id } = req.params;
 
-    if (!checkRoleToActions(userrole)) return responseUsersAdmin(res, 3);
+    if (!checkRoleToActions(tokenRoles)) return responseUsersAdmin(res, 3);
 
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 

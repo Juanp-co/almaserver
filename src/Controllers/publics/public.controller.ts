@@ -1,16 +1,20 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { addCoursesToUser } from '../../ActionsData/CoursesActions';
-import { checkFindValueSearch, getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
+import { getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
-import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import {
+  checkIfExistsRoleInList,
+  getLimitSkipSortSearch,
+  returnError,
+  returnErrorParams
+} from '../../Functions/GlobalFunctions';
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import {
   checkDate,
   checkDocument,
   checkEmail,
   checkNameOrLastName,
-  checkObjectId,
   checkPassword
 } from '../../Functions/Validations';
 import AccountsBanks from '../../Models/AccountsBanks';
@@ -76,7 +80,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
 
     const user = await Users.findOne(
       { phone: validate.data.phone },
-      { password: 1, document: 1, role: 1 }
+      { password: 1, document: 1, roles: 1 }
     ).exec();
 
     if (!user) {
@@ -85,24 +89,23 @@ export async function login(req: Request, res: Response): Promise<Response> {
       });
     }
 
-    if (validate.data.admin) {
-      if (user.role === 5) {
-        return res.status(401).json({
-          msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
-        });
-      }
-    }
-
     if (!bcrypt.compareSync(`${validate.data.password}`, `${user.password}`)) {
       return res.status(422).json({
         msg: `Disculpe, pero el número de teléfono o la contraseña son incorrectos.`
       });
     }
 
+    if (validate.data.admin) {
+      if (checkIfExistsRoleInList(user.roles, [5])) {
+        return res.status(401).json({
+          msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
+        });
+      }
+    }
+
     const token = await getAccessToken(req, {
       _id: user._id.toString(),
-      phone: user.phone,
-      role: user.role
+      roles: user.roles
     });
 
     if (!token) {
@@ -229,10 +232,10 @@ export async function getBanks(req: Request, res: Response): Promise<Response> {
 
 export async function getPublicMembers(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.body;
     const { word } = req.query;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const query: any = { _id: { $ne: userid } };
+    const query: any = { _id: { $ne: tokenId } };
     let members: IUserSimpleInfo[] = [];
 
     if (/^[0-9]{1,13}/.test(`${word}`.trim())) {

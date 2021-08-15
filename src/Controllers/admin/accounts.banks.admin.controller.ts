@@ -75,7 +75,6 @@ export async function saveBank(req: Request, res: Response): Promise<Response> {
 
     // save picture
     validate.data.picture = await checkAndUploadPicture(validate.data.picture, 'banks');
-
     const bank = new AccountsBanks(validate.data);
     await bank.save();
 

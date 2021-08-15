@@ -11,18 +11,15 @@ const path = 'src/controllers/events/events.controller';
 
 export default async function getEvents(req: Request, res: Response): Promise<Response> {
   try {
-    const { userid } = req.params;
+    const { tokenId } = req.params;
     const { initDate, endDate } = req.query;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    let query = {};
+    const query: any = {};
 
-    if (!req.body.superadmin) query = Object.assign(query, { userid } );
+    if (!req.body.superadmin) query.userid = tokenId;
 
-    if (initDate && checkDate(initDate)) {
-      query = Object.assign(
-        query,
-        { date: { $gte: moment(`${initDate}`).startOf('d').unix() } }
-        );
+    if (checkDate(initDate)) {
+      query.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
     }
 
     return res.json({
@@ -36,12 +33,12 @@ export default async function getEvents(req: Request, res: Response): Promise<Re
 
 export async function showEvent(req: Request, res: Response): Promise<Response> {
   try {
-    const { _id, userid } = req.params;
-    let query = { _id };
-
-    if (!req.body.superadmin) query = Object.assign(query, { userid } );
+    const { _id, tokenId } = req.params;
 
     if (!checkObjectId(_id)) return return404Or422(res);
+
+    const query: any = { _id };
+    if (!req.body.superadmin) query.userid = tokenId;
 
     const event = await getDetailsEvent({query});
 
@@ -58,12 +55,13 @@ export async function showEvent(req: Request, res: Response): Promise<Response> 
 
 export async function saveEvent(req: Request, res: Response): Promise<Response> {
   try {
+    const { tokenId } = req.body;
     const validate = validateRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const event = new Events(validate.data);
-    event.userid = req.params.userid;
+    event.userid = tokenId;
     await event.save();
 
     const user = await getNamesUsersList([req.params.userid]);
@@ -88,16 +86,15 @@ export async function saveEvent(req: Request, res: Response): Promise<Response> 
 
 export async function updateEvent(req: Request, res: Response): Promise<Response> {
   try {
-    const { _id, userid } = req.params;
-    let query = { _id };
-
-    if (!req.body.superadmin) query = Object.assign(query, { userid } );
+    const { _id, tokenId } = req.params;
 
     if (!checkObjectId(_id)) return return404Or422(res);
 
     const validate = validateRegister(req.body);
-
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const query: any = { _id };
+    if (!req.body.superadmin) query.userid = tokenId;
 
     const event = await Events.findOne(query, { __v: 0 }).exec();
 
@@ -131,12 +128,11 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
 
 export async function deleteEvent(req: Request, res: Response): Promise<Response> {
   try {
-    const { _id, userid } = req.params;
-    let query = { _id };
-
-    if (!req.body.superadmin) query = Object.assign(query, { userid } );
-
+    const { _id, tokenId } = req.params;
     if (!checkObjectId(_id)) return return404Or422(res);
+
+    const query: any = { _id };
+    if (!req.body.superadmin) query.userid = tokenId;
 
     const event = await Events.findOne(query, { __v: 0 }).exec();
 

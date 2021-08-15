@@ -19,16 +19,13 @@ const path = 'Controllers/admin/users.admin.controller';
 // =====================================================================================================================
 async function getUsers(req, res) {
     try {
-        const { userid } = req.params;
+        const { tokenId } = req.body;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
-        // if (req.query.admins === 'true') {
-        //   query.role = { $in: [ 0, 1, 2, 3 ] }
-        // }
+        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: tokenId } }, req.query.word);
         if (req.query.ignoreIds) {
             const ids = req.query.ignoreIds.toString().split(',');
             if (ids.length > 0) {
-                const list = [userid];
+                const list = [tokenId];
                 ids.forEach(i => { if (Validations_1.checkObjectId(i))
                     list.push(i); });
                 query._id = { $nin: list };
@@ -40,7 +37,7 @@ async function getUsers(req, res) {
             gender: 1,
             phone: 1,
             document: 1,
-            role: 1,
+            roles: 1,
             created_at: 1,
         })
             .skip(skip)
@@ -59,8 +56,8 @@ async function getUsers(req, res) {
 exports.default = getUsers;
 async function getUsersCounters(req, res) {
     try {
-        const { userid } = req.params;
-        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: userid } }, req.query.word);
+        const { tokenId } = req.body;
+        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: tokenId } }, req.query.word);
         const totals = await Users_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: `Total miembros.`,
@@ -74,8 +71,8 @@ async function getUsersCounters(req, res) {
 exports.getUsersCounters = getUsersCounters;
 async function saveUser(req, res) {
     try {
-        const { userrole } = req.body;
-        if (!UsersActions_1.checkRoleToActions(userrole))
+        const { tokenRoles } = req.body;
+        if (!UsersActions_1.checkRoleToActions(tokenRoles))
             return UsersActions_1.responseUsersAdmin(res, 3);
         const validate = await UsersRequest_1.validateFormMemberRegisterAdmin(req.body);
         if (validate.errors.length > 0)
@@ -126,9 +123,9 @@ async function showUser(req, res) {
 exports.showUser = showUser;
 async function updateUser(req, res) {
     try {
-        const { userrole } = req.body;
+        const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(userrole))
+        if (!UsersActions_1.checkRoleToActions(tokenRoles))
             return UsersActions_1.responseUsersAdmin(res, 3);
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);
@@ -171,15 +168,15 @@ exports.updateUser = updateUser;
 async function changeRoleUser(req, res) {
     try {
         const { _id } = req.params;
-        const { role } = req.body;
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);
-        if (!Validations_1.checkRole(role))
-            return UsersActions_1.responseUsersAdmin(res, 2);
-        const user = await Users_1.default.findOne({ _id }, { role: 1 }).exec();
+        const validate = UsersRequest_1.validateRolesToUpdateForm(req.body);
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+        const user = await Users_1.default.findOne({ _id }, { roles: 1 }).exec();
         if (!user)
             return UsersActions_1.responseUsersAdmin(res, 1);
-        user.role = role;
+        user.roles = validate.data.roles;
         await user.save();
         // disconnect user
         await TokenActions_1.disableTokenDBForUserId([_id]);
@@ -194,9 +191,9 @@ async function changeRoleUser(req, res) {
 exports.changeRoleUser = changeRoleUser;
 async function deleteUser(req, res) {
     try {
-        const { userrole } = req.body;
+        const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(userrole))
+        if (!UsersActions_1.checkRoleToActions(tokenRoles))
             return UsersActions_1.responseUsersAdmin(res, 3);
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);
@@ -235,9 +232,9 @@ async function deleteUser(req, res) {
 exports.deleteUser = deleteUser;
 async function getCoursesUser(req, res) {
     try {
-        const { userrole } = req.body;
+        const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(userrole))
+        if (!UsersActions_1.checkRoleToActions(tokenRoles))
             return UsersActions_1.responseUsersAdmin(res, 3);
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);
@@ -280,9 +277,9 @@ async function getCoursesUser(req, res) {
 exports.getCoursesUser = getCoursesUser;
 async function getReferralsUser(req, res) {
     try {
-        const { userrole } = req.body;
+        const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(userrole))
+        if (!UsersActions_1.checkRoleToActions(tokenRoles))
             return UsersActions_1.responseUsersAdmin(res, 3);
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);

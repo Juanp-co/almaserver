@@ -2,7 +2,7 @@ import checkIfExistDocument, {
   checkIfExistPhone,
   getIdUserFromDocument
 } from '../ActionsData/UsersActions';
-import { setError } from '../Functions/GlobalFunctions';
+import { checkIfExistsRoleInList, setError } from '../Functions/GlobalFunctions';
 import {
   checkDate,
   checkDocument, checkEmail,
@@ -12,19 +12,19 @@ import {
   checkPhone, checkTitlesOrDescriptions
 } from '../Functions/Validations';
 import IUser, {
-  IUserLogin,
+  IUserLogin, IUserModelUpdateRoles,
   IUserPasswords,
   IUserSimpleRegister, IUserSimpleRegisterConsolidate,
   IUserUpdate
 } from '../Interfaces/IUser';
 
-export default async function validateSimpleRegister(data: IUserSimpleRegister, admin?: boolean | null): Promise<{ data: IUserSimpleRegister; errors: any }> {
+export default async function validateSimpleRegister(data: IUserSimpleRegister, admin?: boolean | null): Promise<{ data: IUserSimpleRegister; errors: any[] }> {
   const ret: IUserSimpleRegister = {
     phone: null,
     password: null,
     names: null,
     lastNames: null,
-    role: 5,
+    roles: [5],
     referred: null,
     consolidated: false,
   };
@@ -75,13 +75,13 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
   }
 
   if (admin) {
-    ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
+    ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
   }
 
   return { data: ret, errors };
 }
 
-export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterConsolidate): Promise<{ data: IUserSimpleRegisterConsolidate; errors: any }> {
+export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterConsolidate): Promise<{ data: IUserSimpleRegisterConsolidate; errors: any[] }> {
   const ret: IUserSimpleRegisterConsolidate = {
     email: null,
     phone: null,
@@ -97,7 +97,7 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
     attendGroup: false,
     groupId: null,
     familyGroupId: [],
-    role: 5,
+    roles: [5],
     referred: null,
     consolidated: false,
   };
@@ -188,12 +188,12 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
   }
 
   // role
-  ret.role = data.role !== null && [0, 1, 2, 3, 4, 5].indexOf(data.role) > -1 ? data.role : 5;
+  ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
 
   return { data: ret, errors };
 }
 
-export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegisterConsolidate): Promise<{ data: IUserSimpleRegisterConsolidate; errors: any }> {
+export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegisterConsolidate): Promise<{ data: IUserSimpleRegisterConsolidate; errors: any[] }> {
   const ret: IUserSimpleRegisterConsolidate = {
     email: null,
     phone: null,
@@ -209,7 +209,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     attendGroup: false,
     groupId: null,
     familyGroupId: [],
-    role: 5,
+    roles: [5],
     referred: null,
     consolidated: false,
   };
@@ -300,7 +300,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
   return { data: ret, errors };
 }
 
-export async function validateUpdate(data: IUserUpdate, _id: string, admin = false): Promise<{ data: IUser; errors: any }> {
+export async function validateUpdate(data: IUserUpdate, _id: string, admin = false): Promise<{ data: IUser; errors: any[] }> {
   const ret = {
     phone: null,
     email: null,
@@ -435,7 +435,7 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
   return { data: ret, errors };
 }
 
-export function validateLogin(data: IUserLogin): { data: IUserLogin; errors: any } {
+export function validateLogin(data: IUserLogin): { data: IUserLogin; errors: any[] } {
   const ret = {
     phone: null,
     password: null,
@@ -460,7 +460,7 @@ export function validateLogin(data: IUserLogin): { data: IUserLogin; errors: any
   return { data: ret, errors };
 }
 
-export async function validatePasswords(data: IUserPasswords): Promise<{ data: IUserPasswords; errors: any }> {
+export async function validatePasswords(data: IUserPasswords): Promise<{ data: IUserPasswords; errors: any[] }> {
   const ret = {
     password: null,
     newPassword: null
@@ -484,4 +484,34 @@ export async function validatePasswords(data: IUserPasswords): Promise<{ data: I
   } else ret.newPassword = data.newPassword.trim();
 
   return { data: ret, errors };
+}
+
+export function validateRolesToUpdateForm(request: IUserModelUpdateRoles) : { data: IUserModelUpdateRoles; errors: any[] } {
+  const data: IUserModelUpdateRoles = {
+    roles: []
+  };
+  const errors: any = [];
+
+  const { roles } = request;
+
+  if (!roles) {
+    errors.push(
+      setError(
+        'Disculpe, pero no se recibió la información a actualizar.',
+        'roles'
+      )
+    );
+  }
+  else if (!checkIfExistsRoleInList(roles, [0, 1, 2, 3, 4])) {
+    errors.push(
+      setError(
+        'Disculpe, pero alguno de los roles indicados es incorrecto.',
+        'roles'
+      )
+    );
+  }
+  else data.roles = roles;
+
+  return  { data, errors }
+
 }

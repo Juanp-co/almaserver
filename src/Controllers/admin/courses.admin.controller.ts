@@ -70,6 +70,7 @@ export async function showCourse(req: Request, res: Response) : Promise<Response
 
 export async function saveCourse(req: Request, res: Response) : Promise<Response>{
   try {
+    const { tokenId } = req.body;
     const validate = validateSimpleRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
@@ -85,7 +86,7 @@ export async function saveCourse(req: Request, res: Response) : Promise<Response
 
     // create
     const course = new Courses(validate.data);
-    course.userid = req.params.userid;
+    course.userid = tokenId;
     await course.save();
 
     return res.status(201).json({
