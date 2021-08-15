@@ -154,6 +154,7 @@ async function updateUser(req, res) {
         user.city = validate.data.city !== null ? validate.data.city : user.city;
         user.locality = validate.data.locality || user.locality;
         user.direction = validate.data.direction || user.direction;
+        user.meetingNew = validate.data.meetingNew;
         await user.save();
         return res.json({
             msg: `Se han actualizado los datos del miembro exitosamente.`,

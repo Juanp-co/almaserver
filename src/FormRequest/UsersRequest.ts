@@ -24,7 +24,7 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     password: null,
     names: null,
     lastNames: null,
-    roles: [5],
+    roles: [4],
     referred: null,
     consolidated: false,
   };
@@ -75,7 +75,7 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
   }
 
   if (admin) {
-    ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
+    ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
   }
 
   return { data: ret, errors };
@@ -97,7 +97,7 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
     attendGroup: false,
     groupId: null,
     familyGroupId: [],
-    roles: [5],
+    roles: [4],
     referred: null,
     consolidated: false,
   };
@@ -188,7 +188,7 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
   }
 
   // role
-  ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
+  ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
 
   return { data: ret, errors };
 }
@@ -209,7 +209,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     attendGroup: false,
     groupId: null,
     familyGroupId: [],
-    roles: [5],
+    roles: [4],
     referred: null,
     consolidated: false,
   };
@@ -317,6 +317,7 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
     company: false,
     companyType: null,
     baptized: false,
+    meetingNew: false,
     department: null,
     city: null,
     locality: null,
@@ -423,6 +424,9 @@ export async function validateUpdate(data: IUserUpdate, _id: string, admin = fal
 
   // baptized
   if (data.baptized) ret.baptized = data.baptized;
+
+  // meetingNew
+  if (data.meetingNew) ret.meetingNew = data.meetingNew;
 
   // company
   if (data.company) {

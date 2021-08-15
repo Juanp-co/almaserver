@@ -13332,7 +13332,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/user",
     "title": "(00) Obtener datos de la sesión.",
-    "version": "0.0.16",
+    "version": "0.0.34",
     "name": "getDataSessionUser",
     "group": "User",
     "header": {
@@ -13432,6 +13432,13 @@ define({ "api": [
           },
           {
             "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "meetingNew",
+            "description": "<p>Indica si el miembro asistió al curso de nuevo ingreso.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Number[]",
             "optional": false,
             "field": "roles",
@@ -13526,7 +13533,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Datos de la sesión\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-02-18 19:23:23\",\n\t\t\"updated_at\": \"2021-02-18 19:25:33\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"document\": \"CC12345675\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Datos de la sesión\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"meetingNew\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-02-18 19:23:23\",\n\t\t\"updated_at\": \"2021-02-18 19:25:33\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"document\": \"CC12345675\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -13766,7 +13773,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/user",
     "title": "(01) Actualizar datos del perfil.",
-    "version": "0.0.32",
+    "version": "0.0.34",
     "name": "registerUser",
     "group": "User",
     "header": {
@@ -13878,6 +13885,13 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "meetingNew",
+            "description": "<p>Indica si el miembro asistió al curso de nuevo ingreso.</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Number|Null",
             "optional": false,
             "field": "department",
@@ -13910,7 +13924,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": \"user3@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"Velasquez rodriguez\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
+        "content": "{\n    \"email\": \"user3@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"Velasquez rodriguez\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"meetingNew\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
         "type": "JSON"
       }
     ],
@@ -13998,6 +14012,13 @@ define({ "api": [
           },
           {
             "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "meetingNew",
+            "description": "<p>Indica si el miembro asistió al curso de nuevo ingreso.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Number",
             "optional": false,
             "field": "department",
@@ -14080,7 +14101,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"names\": \"ANTHONY ALEJANDRO\",\n\t\t\"lastNames\": \"VELASQUEZ RODRIGUEZ\",\n\t\t\"phone\": \"573161234567\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"meetingNew\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"names\": \"ANTHONY ALEJANDRO\",\n\t\t\"lastNames\": \"VELASQUEZ RODRIGUEZ\",\n\t\t\"phone\": \"573161234567\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -14145,7 +14166,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/admin/users/:_id",
     "title": "(04) Actualizar datos de un miembro.",
-    "version": "0.0.33",
+    "version": "0.0.34",
     "name": "changeRoleUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -14273,6 +14294,13 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "meetingNew",
+            "description": "<p>Indica si el miembro asistió al curso de nuevo ingreso.</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Number|Null",
             "optional": false,
             "field": "department",
@@ -14312,7 +14340,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": null,\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n    \"document\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\"\n}",
+        "content": "{\n    \"email\": null,\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n    \"document\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"meetingNew\": false,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\"\n}",
         "type": "JSON"
       }
     ],
@@ -14397,6 +14425,13 @@ define({ "api": [
             "optional": false,
             "field": "baptized",
             "description": "<p>Indica si está bautizado.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "meetingNew",
+            "description": "<p>Indica si el miembro asistió al curso de nuevo ingreso.</p>"
           },
           {
             "group": "data Object",
@@ -14501,7 +14536,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"email\": null,\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"consolidated\": true,\n\t\t\"group\": null,\n\t\t\"familyGroupId\": [],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 22:24:50\",\n\t\t\"document\": null\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"email\": null,\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"meetingNew\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"consolidated\": true,\n\t\t\"group\": null,\n\t\t\"familyGroupId\": [],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 22:24:50\",\n\t\t\"document\": null\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -14811,7 +14846,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"email\": \"anthony@example.com\",\n  \"birthday\": \"1994-07-07\",\n  \"civilStatus\": 0,\n  \"gender\": 0,\n  \"locality\": 'Barrio nuevo',\n  \"direction\": 'Dirección cualquiera',\n  \"consolidated\": true,\n  \"referred\": \"605e37d154abd33060a689dc\",\n  \"petition\": \"Por la familia, por salud y por mejora económica.\",\n  \"attendGroup\": true,\n  \"groupId\": \"6063385c98fc731c04777829\",\n  \"roles\":  [ 4 ]\n}",
+        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"email\": \"anthony@example.com\",\n  \"birthday\": \"1994-07-07\",\n  \"civilStatus\": 0,\n  \"gender\": 0,\n  \"locality\": 'Barrio nuevo',\n  \"direction\": 'Dirección cualquiera',\n  \"consolidated\": true,\n  \"referred\": \"605e37d154abd33060a689dc\",\n  \"petition\": \"Por la familia, por salud y por mejora económica.\",\n  \"attendGroup\": true,\n  \"groupId\": \"6063385c98fc731c04777829\",\n  \"roles\": [ 4 ]\n}",
         "type": "JSON"
       }
     ],
@@ -15065,7 +15100,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/users/:_id",
     "title": "(03) Obtener detalles de un miembro.",
-    "version": "0.0.33",
+    "version": "0.0.34",
     "name": "getDetailsUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -15262,6 +15297,13 @@ define({ "api": [
           },
           {
             "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "meetingNew",
+            "description": "<p>Indica si el miembro asistió al curso de nuevo ingreso.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Number|Null",
             "optional": false,
             "field": "department",
@@ -15374,7 +15416,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Detalles del miembro.\",\n\t\"user\": {\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"document\": null,\n\t\t\"email\": null,\n\t\t\"phone\": \"3151234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"position\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"referred\": {\n\t\t\t\"_id\": \"607658ff598ae749a42a0143\",\n\t\t\t\"names\": \"KRHYSTAL\",\n\t\t\t\"lastNames\": \"TIRADO\",\n\t\t\t\"document\": null,\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"position\": \"ASDASDASDASDASD\"\n\t\t},\n\t\t\"petition\": null,\n\t\t\"attendGroup\": false,\n\t\t\"consolidated\": true,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"totals\": {\n\t\t\t\"totalsCourses\": 1,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 21:55:09\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Detalles del miembro.\",\n\t\"user\": {\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"document\": null,\n\t\t\"email\": null,\n\t\t\"phone\": \"3151234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"position\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"meetingNew\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"referred\": {\n\t\t\t\"_id\": \"607658ff598ae749a42a0143\",\n\t\t\t\"names\": \"KRHYSTAL\",\n\t\t\t\"lastNames\": \"TIRADO\",\n\t\t\t\"document\": null,\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"position\": \"ASDASDASDASDASD\"\n\t\t},\n\t\t\"petition\": null,\n\t\t\"attendGroup\": false,\n\t\t\"consolidated\": true,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"totals\": {\n\t\t\t\"totalsCourses\": 1,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 21:55:09\"\n\t}\n}",
           "type": "JSON"
         }
       ]

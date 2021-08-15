@@ -29,7 +29,7 @@ async function validateSimpleRegister(data, admin) {
         password: null,
         names: null,
         lastNames: null,
-        roles: [5],
+        roles: [4],
         referred: null,
         consolidated: false,
     };
@@ -69,7 +69,7 @@ async function validateSimpleRegister(data, admin) {
         ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred.toUpperCase());
     }
     if (admin) {
-        ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
+        ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
     }
     return { data: ret, errors };
 }
@@ -91,7 +91,7 @@ async function validateFormMemberRegisterAdmin(data) {
         attendGroup: false,
         groupId: null,
         familyGroupId: [],
-        roles: [5],
+        roles: [4],
         referred: null,
         consolidated: false,
     };
@@ -173,7 +173,7 @@ async function validateFormMemberRegisterAdmin(data) {
         }
     }
     // role
-    ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4, 5]) ? data.roles : [5];
+    ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
     return { data: ret, errors };
 }
 exports.validateFormMemberRegisterAdmin = validateFormMemberRegisterAdmin;
@@ -194,7 +194,7 @@ async function validateFormMemberRegisterFromUser(data) {
         attendGroup: false,
         groupId: null,
         familyGroupId: [],
-        roles: [5],
+        roles: [4],
         referred: null,
         consolidated: false,
     };
@@ -294,6 +294,7 @@ async function validateUpdate(data, _id, admin = false) {
         company: false,
         companyType: null,
         baptized: false,
+        meetingNew: false,
         department: null,
         city: null,
         locality: null,
@@ -386,6 +387,9 @@ async function validateUpdate(data, _id, admin = false) {
     // baptized
     if (data.baptized)
         ret.baptized = data.baptized;
+    // meetingNew
+    if (data.meetingNew)
+        ret.meetingNew = data.meetingNew;
     // company
     if (data.company) {
         ret.company = true;

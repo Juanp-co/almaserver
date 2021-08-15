@@ -144,7 +144,7 @@
   "petition": "Por la familia, por salud y por mejora económica.",
   "attendGroup": true,
   "groupId": "6063385c98fc731c04777829",
-  "roles":  [ 4 ]
+  "roles": [ 4 ]
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -191,7 +191,7 @@
 
 /**
  * @api {get} /api/admin/users/:_id (03) Obtener detalles de un miembro.
- * @apiVersion 0.0.33
+ * @apiVersion 0.0.34
  * @apiName getDetailsUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -223,6 +223,7 @@
  * @apiSuccess (data Object) {String|Null} petition Petición realizada por el mimebto al momento de registrarse.
  * @apiSuccess (data Object) {Boolean} attendGroup Asiste a un grupo familiar.
  * @apiSuccess (data Object) {Boolean} consolidated Indica si el miembro fue consolidado.
+ * @apiSuccess (data Object) {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
  * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (data Object) {String} locality Nombrede la localidad.
@@ -262,6 +263,7 @@
 		"company": false,
 		"companyType": null,
 		"baptized": false,
+		"meetingNew": false,
 		"roles": [ 4 ],
 		"referred": {
 			"_id": "607658ff598ae749a42a0143",
@@ -300,7 +302,7 @@
 
 /**
  * @api {put} /api/admin/users/:_id (04) Actualizar datos de un miembro.
- * @apiVersion 0.0.33
+ * @apiVersion 0.0.34
  * @apiName changeRoleUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -322,6 +324,7 @@
  * @apiParam {Boolean} company Indica si posee una empresa.
  * @apiParam {Number|Null} companyType ID (index array) del tipo de empresa en caso de que posea.
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
+ * @apiParam {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
  * @apiParam {Number|Null} department ID (index array) del departamento.
  * @apiParam {Number|Null} city ID (index array) de la ciudad.
  * @apiParam {String|Null} locality Nombredel sector o localidad.
@@ -344,6 +347,7 @@
     "company": false,
     "companyType": null,
     "baptized": false,
+    "meetingNew": false,
     "department": null,
     "city": null,
     "locality": "URB. NUEVO MUNDO",
@@ -363,6 +367,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
+ * @apiSuccess (data Object) {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
  * @apiSuccess (data Object) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
  * @apiSuccess (data Object) {Number} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number} city ID (array index) de la ciudad.
@@ -394,6 +399,7 @@
 		"company": false,
 		"companyType": null,
 		"baptized": false,
+		"meetingNew": false,
 		"roles": [ 4 ],
 		"consolidated": true,
 		"group": null,

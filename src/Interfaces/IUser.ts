@@ -29,6 +29,7 @@ export default interface IUser extends Document {
   group?: any;
   petition?: string|null;
   attendGroup?: boolean;
+  meetingNew?: boolean;
   familyGroupId: string[];
   department: number | null;
   city: number | null;
@@ -55,6 +56,7 @@ export interface IUserData {
   company: IUser['company'];
   companyType?: IUser['companyType'];
   baptized?: IUser['baptized'];
+  meetingNew?: IUser['meetingNew'];
   roles?: IUser['roles'];
   referred?: any;
   consolidated?: boolean;
@@ -119,6 +121,7 @@ export interface IUserUpdate {
   company: IUser['company'];
   companyType: IUser['companyType'];
   baptized: IUser['baptized'];
+  meetingNew: IUser['meetingNew'];
   department: IUser['department'];
   city: IUser['city'];
   locality: IUser['locality'];

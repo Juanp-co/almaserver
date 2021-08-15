@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/user (00) Obtener datos de la sesión.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.34
  * @apiName getDataSessionUser
  * @apiGroup User
  *
@@ -18,6 +18,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
+ * @apiSuccess (data Object) {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
  * @apiSuccess (data Object) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
  * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
@@ -46,6 +47,7 @@
 		"company": false,
 		"companyType": null,
 		"baptized": false,
+		"meetingNew": false,
 		"roles": [ 4 ],
 		"department": null,
 		"city": null,
@@ -70,7 +72,7 @@
 
 /**
  * @api {put} /api/user (01) Actualizar datos del perfil.
- * @apiVersion 0.0.32
+ * @apiVersion 0.0.34
  * @apiName registerUser
  * @apiGroup User
  *
@@ -89,6 +91,7 @@
  * @apiParam {Boolean} company Indica si posee una empresa.
  * @apiParam {Number|Null} companyType ID (index array) del tipo de empresa en caso de que posea.
  * @apiParam {Boolean} baptized Indica si se ha bautizado.
+ * @apiParam {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
  * @apiParam {Number|Null} department ID (index array)del departamento.
  * @apiParam {Number|Null} city ID (index array)de la ciudad.
  * @apiParam {String|Null} locality Nombredel barrio o vereda.
@@ -109,6 +112,7 @@
     "company": false,
     "companyType": null,
     "baptized": true,
+    "meetingNew": true,
     "department": 19,
     "city": 18,
     "locality": "URB. NUEVO MUNDO",
@@ -127,6 +131,7 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
+ * @apiSuccess (data Object) {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
  * @apiSuccess (data Object) {Number} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number} city ID (array index) de la ciudad.
  * @apiSuccess (data Object) {String} locality Nombrede la localidad.
@@ -154,6 +159,7 @@
 		"company": false,
 		"companyType": null,
 		"baptized": true,
+		"meetingNew": true,
 		"department": 19,
 		"city": 18,
 		"locality": "URB. NUEVO MUNDO",
