@@ -19,6 +19,7 @@ const EventSchema = new mongoose_1.Schema({
     date: { type: Number, require: true, get: getDateEvent },
     initHour: { type: String, require: true },
     endHour: { type: String, require: true },
+    picture: { type: String, default: null },
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });

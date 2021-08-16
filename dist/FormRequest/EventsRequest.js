@@ -14,6 +14,7 @@ function validateRegister(data) {
         initHour: null,
         endHour: null,
         toRoles: [],
+        picture: null,
     };
     const errors = [];
     // title
@@ -58,6 +59,9 @@ function validateRegister(data) {
     else {
         ret.toRoles = data.toRoles;
     }
+    // picture
+    if (data.picture)
+        ret.picture = data.picture;
     return { data: ret, errors };
 }
 exports.default = validateRegister;

@@ -1,9 +1,7 @@
 [
   {
     "_id" : "60330f5102626e2040bd2393",
-    "members" : [
-      "5fcf0821fc917d476c1cf3e3"
-    ],
+    "members" : [ "5fcf0821fc917d476c1cf3e3" ],
     "name" : "FAMILIA PEREZ",
     "code" : "GROUP-0",
     "created_at" : 1613958993,

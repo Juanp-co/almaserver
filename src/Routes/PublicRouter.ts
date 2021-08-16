@@ -4,7 +4,13 @@ import getCourses, {
   evaluateQuiz,
   showCourse, updateHistoricalCourseContent
 } from '../Controllers/publics/courses.controller';
-import { getPublicEvents, showPublicEvent } from '../Controllers/events/events.controller';
+import {
+  deleteEvent,
+  getPublicEvents,
+  saveEvent,
+  showPublicEvent,
+  updateEvent
+} from '../Controllers/events/events.controller';
 import {
   getBanks, getPublicMembers,
   helloWorld,
@@ -44,8 +50,14 @@ router.get(`/families-groups`, validateUser, getFamiliesGroupsPublic);
   Events
 */
 
-router.get(`/events`, getPublicEvents);
-router.get(`/events/:_id`, showPublicEvent);
+router.route(`/events`)
+  .get(getPublicEvents)
+  .post(validateUser, saveEvent);
+
+router.route(`/events/:_id`)
+  .get(showPublicEvent)
+  .put(validateUser, updateEvent)
+  .delete(validateUser, deleteEvent);
 
 /*
   Login, logout

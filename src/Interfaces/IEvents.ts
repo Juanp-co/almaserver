@@ -9,6 +9,7 @@ export default interface IEvents extends Document {
   initHour: string | number | null;
   endHour: string | number | null;
   toRoles: number[];
+  picture: string|null;
   created_at: number;
   updated_at: number;
 }
@@ -20,16 +21,18 @@ export interface IEventsRegisterOrUpdate {
   initHour: IEvents['initHour'];
   endHour: IEvents['endHour'];
   toRoles: IEvents['toRoles'];
+  picture: IEvents['picture'];
 }
 
 export interface IEventsList {
   _id: any;
   title: IEvents['title'];
-  description?: IEvents['description'];
+  // description?: IEvents['description'];
   date: IEvents['date'];
   initHour: IEvents['initHour'];
   endHour: IEvents['endHour'];
   toRoles: IEvents['toRoles'];
+  picture: IEvents['picture'];
   userid?: string | null;
   user?: null | IUserSimpleInfo;
 }

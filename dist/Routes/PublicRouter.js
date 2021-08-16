@@ -46,8 +46,13 @@ router.get(`/families-groups`, middleware_1.validateUser, family_group_controlle
 /*
   Events
 */
-router.get(`/events`, events_controller_1.getPublicEvents);
-router.get(`/events/:_id`, events_controller_1.showPublicEvent);
+router.route(`/events`)
+    .get(events_controller_1.getPublicEvents)
+    .post(middleware_1.validateUser, events_controller_1.saveEvent);
+router.route(`/events/:_id`)
+    .get(events_controller_1.showPublicEvent)
+    .put(middleware_1.validateUser, events_controller_1.updateEvent)
+    .delete(middleware_1.validateUser, events_controller_1.deleteEvent);
 /*
   Login, logout
 */

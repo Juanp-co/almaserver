@@ -30,10 +30,11 @@ const EventsRequest_1 = __importDefault(require("../../FormRequest/EventsRequest
 const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
 const Events_1 = __importDefault(require("../../Models/Events"));
+const AWSService_1 = __importStar(require("../../Services/AWSService"));
 const path = 'src/controllers/events/events.controller';
 async function getEvents(req, res) {
     try {
-        const { tokenId } = req.params;
+        const { tokenId } = req.body;
         const { initDate, endDate } = req.query;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
         const query = {};
@@ -56,13 +57,13 @@ async function showEvent(req, res) {
     try {
         const { _id, tokenId } = req.params;
         if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res);
+            return EventsActions_1.return404Or422(res, 0);
         const query = { _id };
         if (!req.body.superadmin)
             query.userid = tokenId;
         const event = await EventsActions_1.getDetailsEvent({ query });
         if (!event)
-            return EventsActions_1.return404Or422(res, true);
+            return EventsActions_1.return404Or422(res, 1);
         return res.json({
             msg: `Evento.`,
             event
@@ -81,8 +82,21 @@ async function saveEvent(req, res) {
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const event = new Events_1.default(validate.data);
         event.userid = tokenId;
+        const user = await UsersActions_1.getNamesUsersList([tokenId]);
+        if (validate.data.picture) {
+            const s3 = process.env.AWS_S3_BUCKET || null;
+            if (!s3)
+                return EventsActions_1.return404Or422(res, 2);
+            if (Validations_1.isBase64(validate.data.picture)) {
+                const newUrl = `alma/events/event-${event._id.toString()}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
+                await AWSService_1.default(newUrl, validate.data.picture);
+                event.picture = `${s3}/${newUrl}.jpg`;
+            }
+            else if (Validations_1.checkUrl(validate.data.picture)) {
+                event.picture = validate.data.picture;
+            }
+        }
         await event.save();
-        const user = await UsersActions_1.getNamesUsersList([req.params.userid]);
         return res.status(201).json({
             msg: `Se ha creado el evento exitosamente.`,
             event: {
@@ -93,6 +107,7 @@ async function saveEvent(req, res) {
                 initHour: event.initHour,
                 endHour: event.endHour,
                 toRoles: event.toRoles,
+                picture: event.picture,
                 user: user[0] || null
             }
         });
@@ -104,9 +119,10 @@ async function saveEvent(req, res) {
 exports.saveEvent = saveEvent;
 async function updateEvent(req, res) {
     try {
-        const { _id, tokenId } = req.params;
+        const { _id } = req.params;
+        const { tokenId } = req.body;
         if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res);
+            return EventsActions_1.return404Or422(res, 0);
         const validate = EventsRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
@@ -115,13 +131,30 @@ async function updateEvent(req, res) {
             query.userid = tokenId;
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (!event)
-            return EventsActions_1.return404Or422(res, true);
+            return EventsActions_1.return404Or422(res, 1);
         event.title = validate.data.title;
         event.description = validate.data.description;
         event.date = validate.data.date;
         event.initHour = validate.data.initHour;
         event.endHour = validate.data.endHour;
         event.toRoles = validate.data.toRoles;
+        if (event.picture !== validate.data.picture) {
+            const s3 = process.env.AWS_S3_BUCKET || null;
+            if (!s3)
+                return EventsActions_1.return404Or422(res, 2);
+            if (event.picture !== null && event.picture.indexOf(`${s3}`))
+                await AWSService_1.deleteFile(event.picture);
+            if (Validations_1.isBase64(validate.data.picture)) {
+                const newUrl = `alma/events/event-${_id}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
+                await AWSService_1.default(newUrl, validate.data.picture);
+                event.picture = `${s3}/${newUrl}.jpg`;
+            }
+            else if (Validations_1.checkUrl(validate.data.picture)) {
+                event.picture = validate.data.picture;
+            }
+            else
+                event.picture = null;
+        }
         await event.save();
         return res.json({
             msg: `Se ha actualizado el evento exitosamente.`,
@@ -132,7 +165,8 @@ async function updateEvent(req, res) {
                 date: event.date,
                 initHour: event.initHour,
                 endHour: event.endHour,
-                toRoles: event.toRoles
+                toRoles: event.toRoles,
+                picture: event.picture
             }
         });
     }
@@ -143,15 +177,21 @@ async function updateEvent(req, res) {
 exports.updateEvent = updateEvent;
 async function deleteEvent(req, res) {
     try {
-        const { _id, tokenId } = req.params;
+        const { _id } = req.params;
+        const { tokenId } = req.body;
         if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res);
+            return EventsActions_1.return404Or422(res, 0);
         const query = { _id };
         if (!req.body.superadmin)
             query.userid = tokenId;
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (!event)
-            return EventsActions_1.return404Or422(res, true);
+            return EventsActions_1.return404Or422(res, 1);
+        const s3 = process.env.AWS_S3_BUCKET || null;
+        if (!s3)
+            return EventsActions_1.return404Or422(res, 2);
+        if (event.picture !== null && event.picture.indexOf(`${s3}`))
+            await AWSService_1.deleteFile(event.picture);
         await event.delete();
         return res.json({
             msg: `Se ha eliminado el evento exitosamente.`,
@@ -188,10 +228,10 @@ async function showPublicEvent(req, res) {
         const { _id } = req.params;
         const query = { _id };
         if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res);
+            return EventsActions_1.return404Or422(res, 0);
         const event = await EventsActions_1.getDetailsEvent({ query });
         if (!event)
-            return EventsActions_1.return404Or422(res, true);
+            return EventsActions_1.return404Or422(res, 1);
         return res.json({
             msg: `Evento.`,
             event

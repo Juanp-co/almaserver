@@ -39,7 +39,7 @@ App.use(`/api/user`, UserRouter);
 
 // server
 async function main() {
-  startConnection();
+  await startConnection();
   await App.listen(App.get('port'));
   console.log(`===============================================`);
   console.log(`Server on port: ${App.get('port')}`);
