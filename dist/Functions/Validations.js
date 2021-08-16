@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDateAndHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
+exports.isBase64 = exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDateAndHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
 const moment_1 = __importDefault(require("moment"));
 function checkNameOrLastName(value) {
     return (value &&
@@ -103,3 +103,11 @@ function checkHtmlContent(value) {
     return value && /<(\"[^\"]*\"|'[^']*'|[^'\">])*>$/gim.test(`${value}`);
 }
 exports.checkHtmlContent = checkHtmlContent;
+function isBase64(text, doc = false) {
+    if (!text)
+        return false;
+    if (doc)
+        return text.substr(0, 25).indexOf('data:application/pdf') > -1;
+    return text.substr(0, 15).indexOf('data:image/') > -1;
+}
+exports.isBase64 = isBase64;

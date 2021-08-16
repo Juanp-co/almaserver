@@ -8,8 +8,7 @@ const getDateEvent = (timestamp: number | null | undefined): string | any => {
   return timestamp;
 };
 
-const EventSchema = new Schema(
-  {
+const EventSchema = new Schema({
     userid: { type: String, require: true },
     title: { type: String, require: true },
     toRoles: { type: [Number], require: true },
@@ -17,6 +16,7 @@ const EventSchema = new Schema(
     date: { type: Number, require: true, get: getDateEvent },
     initHour: { type: String, require: true },
     endHour: { type: String, require: true },
+    picture: { type: String, default: null },
     created_at: { type: Number, default: setDate, get: getDate  },
     updated_at: { type: Number, default: setDate, get: getDate }
   },

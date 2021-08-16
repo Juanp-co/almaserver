@@ -1,10 +1,10 @@
 /**
- * @api {get} /api/admin/events (00) Obtener listado de eventos registrados.
+ * @api {get} /api/events (00) Obtener listado de eventos públicos.
  * @apiVersion 0.0.35
- * @apiName getEventsAdmin
- * @apiGroup EventsAdmin
+ * @apiName getEvents
+ * @apiGroup Events
  *
- * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor)
+ * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiParam (Query Params) {String} input Campo a ordenar (valor = date [requerido]).
  * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional).
@@ -32,7 +32,7 @@
   "events": [
     {
       "_id": "611a39d47636c51470deed92",
-      "title": "PRUEBA DESDE ADMIN",
+      "title": "EVENTO",
       "date": "2021-09-15",
       "initHour": "08:00",
       "endHour": "11:30",
@@ -67,18 +67,16 @@
  *
  * @apiUse GlobalParamsErrors
  *
- * @apiUse GlobalUnauthorized
- *
  * @apiUse GlobalErrorSystem
  */
 
 /**
- * @api {post} /api/admin/events (01) Crear nuevo evento.
+ * @api {post} /api/events (01) Crear nuevo evento.
  * @apiVersion 0.0.35
- * @apiName createEventsAdmin
- * @apiGroup EventsAdmin
+ * @apiName createEvents
+ * @apiGroup Events
  *
- * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor).
+ * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiUse ParamsToRegisterOrUpdateEvent
  *
@@ -92,29 +90,29 @@
  * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (event Object) {Number[]} toRoles Roles a los que va dirigido.
- * @apiSuccess (event Object) {String|Null} picture Imagen relacionada al evento.
+ * @apiSuccess (event Object) {String|Null} picture URL de la imagen del evento.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 201 Created
  * {
 	"msg": "Se ha creado el evento exitosamente.",
 	"event": {
-		"_id": "603007b13b9d883c78abb864",
-		"title": "REUNIÓN DE UNIFICACIÓN FAMILIAR",
-		"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.",
-		"date": "2021-03-01",
-		"initHour": "00:00",
-		"endHour": "23:59",
-		"toRoles": [
-			5
-		],
+    "_id": "611a39d47636c51470deed92",
+    "title": "EVENTO 01",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....",
+    "date": "2021-09-15",
+    "initHour": "08:00",
+    "endHour": "11:30",
+    "toRoles": [
+      2,
+      3,
+      4
+    ],
     "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg"
-	}
+  }
 }
  *
  * @apiUse GlobalParamsErrors
- *
- * @apiUse GlobalUnauthorized
  *
  * @apiUse ErrorValidationsCreateOrUpdateEvent
  *
@@ -123,12 +121,12 @@
  */
 
 /**
- * @api {get} /api/admin/events/:_id (02) Obtener detalles de un evento.
+ * @api {get} /api/events/:_id (02) Obtener detalles de un evento.
  * @apiVersion 0.0.35
- * @apiName detailsEventsAdmin
- * @apiGroup EventsAdmin
+ * @apiName detailsEvents
+ * @apiGroup Events
  *
- * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor).
+ * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiParam (Path params) {String} _id ID del evento a obtener.
  *
@@ -142,33 +140,32 @@
  * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (event Object) {Number[]} toRoles Roles a los que va dirigido.
- * @apiSuccess (event Object) {String|Null} picture Imagen relacionada al evento.
+ * @apiSuccess (event Object) {String|Null} picture URL de la imagen del evento.
  * @apiSuccess (event Object) {Object} user Información del miembro que agregó el evento.
  *
  * @apiUse UsersObjectSimpleDataResponse
+ *
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
   "msg": "Evento.",
   "event": {
-    "_id": "5fe00cf5e2c9942e5c866453",
-    "title": "EVENTO 1",
-    "description": "Para todos los roles",
-    "date": "2021-03-03",
-    "initHour": "00:00",
-    "endHour": "23:00",
+    "_id": "611a39d47636c51470deed92",
+    "title": "EVENTO 01",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....",
+    "date": "2021-09-15",
+    "initHour": "08:00",
+    "endHour": "11:30",
     "toRoles": [
-      0,
-      1,
       2,
       3,
       4
     ],
-    "picture": null,
+    "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg",
     "user": {
       "_id": "5fcf0821fc917d476c1cf3e2",
-      "names": "ANTHONY",
+      "names": "ANTHONY EDITADO",
       "lastNames": "ADMINISTRADOR",
       "document": null,
       "gender": null,
@@ -189,28 +186,29 @@
  */
 
 /**
- * @api {put} /api/admin/events/:_id (03) Actualizar un evento.
+ * @api {put} /api/events/:_id (03) Actualizar un evento.
  * @apiVersion 0.0.35
- * @apiName updateEventsAdmin
- * @apiGroup EventsAdmin
+ * @apiName updateEvents
+ * @apiGroup Events
+ * @apiDescription Solo el miembro que registró el evento podrá editarlo (salvo el administrador).
+ * Si cualquier otro usuario intenta editar el evento, la respuestá será un 404.
  *
- * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor).
+ * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiParam (Path params) {String} _id ID del evento a actualizar.
  *
  * @apiUse ParamsToRegisterOrUpdateEvent
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object} event Detalles del evento.
+ * @apiSuccess {Object} events Detalles del evento.
  *
- * @apiSuccess (event Object) {String} _id ID del evento.
- * @apiSuccess (event Object) {String} title Título para el evento.
- * @apiSuccess (event Object) {String} description Descripción del evento.
- * @apiSuccess (event Object) {String} date Fecha del evento.
- * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
- * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
- * @apiSuccess (event Object) {Number[]} toRoles Roles a los que va dirigido.
- * @apiSuccess (event Object) {String|Null} picture Imagen relacionada al evento.
+ * @apiSuccess (events Object) {String} _id ID del evento.
+ * @apiSuccess (events Object) {String} title Título para el evento.
+ * @apiSuccess (events Object) {String} description Descripción del evento.
+ * @apiSuccess (events Object) {String} date Fecha del evento.
+ * @apiSuccess (events Object) {String} initDate Hora de inicio del evento.
+ * @apiSuccess (events Object) {String} endDate Hora de finalización del evento.
+ * @apiSuccess (events Object) {Number[]} toRoles Roles a los que va dirigido.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -218,8 +216,8 @@
   "msg": "Se ha actualizado el evento exitosamente.",
   "event": {
     "_id": "611924490ec7059a63f7a805",
-    "title": "PRUEBA 1 PARA REGISTRO DESDE APP",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.",
+    "title": "EVENTO 01",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....",
     "date": "2021-08-31",
     "initHour": "09:00",
     "endHour": "12:59",
@@ -232,8 +230,6 @@
  *
  * @apiUse GlobalParamsErrors
  *
- * @apiUse GlobalUnauthorized
- *
  * @apiUse EventsErrorIdOrNotFound
  *
  * @apiUse ErrorValidationsCreateOrUpdateEvent
@@ -243,12 +239,14 @@
  */
 
 /**
- * @api {delete} /api/admin/events/:_id (04) Eliminar un evento.
+ * @api {delete} /api/events/:_id (04) Eliminar un evento.
  * @apiVersion 0.0.35
- * @apiName deleteEventsAdmin
- * @apiGroup EventsAdmin
+ * @apiName deleteEvents
+ * @apiGroup Events
+ * @apiDescription Solo el miembro que registró el evento podrá eliminarlo (salvo el administrador).
+ * Si cualquier otro usuario intenta eliminar el evento, la respuestá será un 404.
  *
- * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor).
+ * @apiHeader {String} x-access-token Token de la sesión.
  *
  * @apiParam (Path params) {String} _id ID del evento a actualizar.
  *
@@ -261,8 +259,6 @@
 }
  *
  * @apiUse GlobalParamsErrors
- *
- * @apiUse GlobalUnauthorized
  *
  * @apiUse EventsErrorIdOrNotFound
  *

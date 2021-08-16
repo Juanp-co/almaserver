@@ -11,7 +11,7 @@ const Validations_1 = require("../Functions/Validations");
 const Events_1 = __importDefault(require("../Models/Events"));
 async function getEventsList({ query, skip, sort, limit, endDate }) {
     const ret = [];
-    const events = await Events_1.default.find(query, { __v: 0 })
+    const events = await Events_1.default.find(query, { __v: 0, description: 0 })
         .skip(skip)
         .limit(limit)
         .sort(sort)
@@ -33,19 +33,17 @@ async function getEventsList({ query, skip, sort, limit, endDate }) {
         const users = await UsersActions_1.getNamesUsersList(listIds);
         if (users.length > 0) {
             list.forEach(e => {
-                const index = lodash_1.default.findIndex(users, (v) => v._id.toString() === e.userid);
-                if (index > -1) {
-                    ret.push({
-                        _id: e._id,
-                        title: e.title,
-                        description: e.description || null,
-                        date: e.date,
-                        initHour: e.initHour,
-                        endHour: e.endHour,
-                        toRoles: e.toRoles,
-                        user: users[index],
-                    });
-                }
+                const user = users.find((v) => v._id.toString() === e.userid);
+                ret.push({
+                    _id: e._id,
+                    title: e.title,
+                    date: e.date,
+                    initHour: e.initHour,
+                    endHour: e.endHour,
+                    toRoles: e.toRoles,
+                    picture: e.picture,
+                    user: user || null,
+                });
             });
         }
         return ret;
@@ -65,6 +63,7 @@ async function getDetailsEvent({ query }) {
             initHour: event.initHour,
             endHour: event.endHour,
             toRoles: event.toRoles,
+            picture: event.picture,
         };
         const users = await UsersActions_1.getNamesUsersList([event.userid]);
         if (users.length > 0)
@@ -74,14 +73,15 @@ async function getDetailsEvent({ query }) {
     return null;
 }
 exports.getDetailsEvent = getDetailsEvent;
-function return404Or422(res, notFound = false) {
-    if (notFound) {
-        return res.status(404).json({
-            msg: `Disculpe, pero el evento seleccionado no existe o no se encuentra disponible.`
-        });
-    }
-    return res.status(422).json({
-        msg: 'Disculpe, pero el evento seleccionado incorrecto.'
+function return404Or422(res, index = -1) {
+    const msgs = [
+        'el evento seleccionado es incorrecto',
+        'el evento seleccionado no existe o no se encuentra disponible.',
+        'ha ocurrido un error inesperado al momento de subir la imagen para el evento.',
+    ];
+    const status = index === 1 ? 404 : 422;
+    return res.status(status).json({
+        msg: `Disculpe, pero ${msgs[index] || 'no de logró deteminar el error.'}`
     });
 }
 exports.return404Or422 = return404Or422;

@@ -1,6 +1,6 @@
 {
   "name": "almaserver",
-  "version": "0.0.34",
+  "version": "0.0.35",
   "description": "API to ALMA App.",
   "main": "./dist/index.js",
   "scripts": {
@@ -26,6 +26,7 @@
   "author": "velantcode",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.968.0",
     "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -39,8 +40,7 @@
     "nodemailer": "^6.4.17",
     "rimraf": "^3.0.2",
     "slug": "^4.0.2",
-    "uuid": "^8.3.2",
-    "win-node-env": "^0.4.0"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.13",

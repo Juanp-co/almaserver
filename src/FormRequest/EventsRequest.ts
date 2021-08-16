@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 import { setError } from '../Functions/GlobalFunctions';
-import { checkDate, checkHour, checkTitlesOrDescriptions } from '../Functions/Validations';
+import { checkDate, checkHour, checkTitlesOrDescriptions, isBase64 } from '../Functions/Validations';
 import { IEventsRegisterOrUpdate } from '../Interfaces/IEvents';
 
 export default function validateRegister(
@@ -14,6 +14,7 @@ export default function validateRegister(
     initHour: null,
     endHour: null,
     toRoles: [],
+    picture: null,
   } as IEventsRegisterOrUpdate;
   const errors: any = [];
 
@@ -70,6 +71,9 @@ export default function validateRegister(
   } else {
     ret.toRoles = data.toRoles;
   }
+
+  // picture
+  if (data.picture) ret.picture = data.picture;
 
   return { data: ret, errors };
 }

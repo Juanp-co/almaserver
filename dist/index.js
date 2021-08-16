@@ -38,7 +38,7 @@ app_1.default.use(`/api/admin`, AdminRouter_1.default);
 app_1.default.use(`/api/user`, UserRouter_1.default);
 // server
 async function main() {
-    database_1.default();
+    await database_1.default();
     await app_1.default.listen(app_1.default.get('port'));
     console.log(`===============================================`);
     console.log(`Server on port: ${app_1.default.get('port')}`);

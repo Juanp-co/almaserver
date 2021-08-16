@@ -176,6 +176,85 @@
 }
  */
 
+/**
+ * @apiDefine ParamsToRegisterOrUpdateEvent
+ *
+ * @apiParam {String} title Título.
+ * @apiParam {String} description Descripción del evento.
+ * @apiParam {String|Null} picture Base64 o URL de la imagen relacionada al evento (opcional).
+ * @apiParam {String} date Fecha (Formato YYYY-MM-DD).
+ * @apiParam {String} initHour Hora de inicio (Formato: HH:mm. Ejm: 08:30 | 23:59).
+ * @apiParam {String} endHour Hora de finalización (Formato: HH:mm. Ejm: 08:30 | 23:59).
+ * @apiParam {Number[]} toRoles Roles a los que va dirigido el evento.
+ *
+ * @apiExample {JSON} Example JSON Request
+ * {
+  "title": "EVENTO 01",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....",
+  "picture": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...",
+  "date": "2021-09-15",
+  "initHour": "08:00",
+  "endHour": "11:30",
+  "toRoles": [
+    2,
+    3,
+    4
+  ]
+}
+ * @apiExample {JSON} Example JSON Request with url picture
+ * {
+  "title": "EVENTO 01",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....",
+  "picture": "https://delii.s3.amazonaws.com/alma/events/event-611924490ec7059a63f7a805-1629037641.jpg",
+  "date": "2021-09-15",
+  "initHour": "08:00",
+  "endHour": "11:30",
+  "toRoles": [
+    2,
+    3,
+    4
+  ]
+}
+ *
+ */
+
+/**
+ * @apiDefine ErrorValidationsCreateOrUpdateEvent
+ *
+ * @apiErrorExample {JSON} Validation fields
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "¡Error en los parámetros!",
+  "errors": [
+    {
+      "input": "title",
+      "msg": "Disculpe, pero indicar un título para el evento."
+    },
+    {
+      "input": "description",
+      "msg": "Disculpe, pero indicar una descripción para el evento."
+    },
+    {
+      "input": "date",
+      "msg": "Disculpe, pero debe indicar la fecha para el evento."
+    },
+    {
+      "input": "initHour",
+      "msg": "Disculpe, pero indicar la hora de inicio para el evento."
+    },
+    {
+      "input": "endHour",
+      "msg": "Disculpe, pero indicar la hora de finalización del evento."
+    },
+    {
+      "input": "toRoles",
+      "msg": "Disculpe, pero debe seleccionar a quienes va dirigido el evento."
+    }
+  ]
+}
+ *
+ */
+
 // groups
 
 /**
@@ -273,4 +352,16 @@
  * {
   "msg": "Disculpe, pero la nueva contraseña debe contener letras (a-Z, A-Z), números (0-9) y al menos 6 caracteres."
 }
+ */
+
+/**
+ * @apiDefine UsersObjectSimpleDataResponse
+ *
+ * @apiSuccess (user Object) {String} _id ID del miembro.
+ * @apiSuccess (user Object) {String} names Nombre(s).
+ * @apiSuccess (user Object) {String} lastNames Apellido(s).
+ * @apiSuccess (user Object) {String|Null} document Número de documento.
+ * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (user Object) {String} pphone Teléfono del miembro.
+ * @apiSuccess (user Object) {String|Null} position Cargo o posición del miembro.
  */

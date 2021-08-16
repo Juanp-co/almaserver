@@ -5,11 +5,12 @@ import { getNamesUsersList } from './UsersActions';
 import { checkDate } from '../Functions/Validations';
 import { IEventsList } from '../Interfaces/IEvents';
 import Events from '../Models/Events';
+import { IUserSimpleInfo } from '../Interfaces/IUser';
 
 export default async function getEventsList({ query, skip, sort, limit, endDate } : any) : Promise<IEventsList[]> {
   const ret: IEventsList[] = [];
 
-  const events = await Events.find(query, { __v: 0 })
+  const events = await Events.find(query, { __v: 0, description: 0 })
     .skip(skip)
     .limit(limit)
     .sort(sort)
@@ -33,19 +34,17 @@ export default async function getEventsList({ query, skip, sort, limit, endDate 
 
     if (users.length > 0) {
       list.forEach(e => {
-        const index: number = _.findIndex(users, (v: any) => v._id.toString() === e.userid);
-        if (index > -1) {
-          ret.push({
-            _id: e._id,
-            title: e.title,
-            description: e.description || null,
-            date: e.date,
-            initHour: e.initHour,
-            endHour: e.endHour,
-            toRoles: e.toRoles,
-            user: users[index],
-          });
-        }
+        const user: IUserSimpleInfo = users.find((v: any) => v._id.toString() === e.userid);
+        ret.push({
+          _id: e._id,
+          title: e.title,
+          date: e.date,
+          initHour: e.initHour,
+          endHour: e.endHour,
+          toRoles: e.toRoles,
+          picture: e.picture,
+          user: user || null,
+        });
       })
     }
 
@@ -69,6 +68,7 @@ export async function getDetailsEvent({ query } : any) : Promise<IEventsList | n
       initHour: event.initHour,
       endHour: event.endHour,
       toRoles: event.toRoles,
+      picture: event.picture,
     };
 
     const users = await getNamesUsersList([event.userid]);
@@ -81,14 +81,16 @@ export async function getDetailsEvent({ query } : any) : Promise<IEventsList | n
   return null;
 }
 
-export function return404Or422(res: Response, notFound = false) {
-  if (notFound) {
-    return res.status(404).json({
-      msg: `Disculpe, pero el evento seleccionado no existe o no se encuentra disponible.`
-    });
-  }
+export function return404Or422(res: Response, index = -1) {
+  const msgs = [
+    'el evento seleccionado es incorrecto',
+    'el evento seleccionado no existe o no se encuentra disponible.',
+    'ha ocurrido un error inesperado al momento de subir la imagen para el evento.',
+  ];
 
-  return res.status(422).json({
-    msg: 'Disculpe, pero el evento seleccionado incorrecto.'
+  const status = index === 1 ? 404 : 422;
+
+  return res.status(status).json({
+    msg: `Disculpe, pero ${msgs[index] || 'no de logró deteminar el error.'}`
   });
 }

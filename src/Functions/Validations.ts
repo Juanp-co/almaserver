@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { Types } from 'mongoose';
 
 export function checkNameOrLastName(value: any): boolean {
   return (
@@ -104,4 +103,10 @@ export function checkUUID(value: any): boolean {
 
 export function checkHtmlContent(value: any): boolean {
   return value && /<(\"[^\"]*\"|'[^']*'|[^'\">])*>$/gim.test(`${value}`);
+}
+
+export function isBase64(text: string|null|undefined, doc = false): boolean {
+  if (!text) return false;
+  if (doc) return text.substr(0, 25).indexOf('data:application/pdf') > -1;
+  return text.substr(0, 15).indexOf('data:image/') > -1;
 }
