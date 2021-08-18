@@ -248,11 +248,13 @@ async function addOrRemoveMembersGroup(req, res) {
             }
             else {
                 membersToRemoveOfGroup = lodash_1.default.difference(group.members, validate.data.members);
-                group.members = lodash_1.default.filter(group.members, m => validate.data.members.indexOf(m) > -1);
+                group.members = group.members.filter(m => !validate.data.members.includes(m));
             }
             await group.save();
-            // update group value in users
-            await UsersActions_1.updateGroupIdInUsers(membersToRemoveOfGroup);
+            if (membersToRemoveOfGroup.length > 0) {
+                // update group value in users
+                await UsersActions_1.updateGroupIdInUsers(membersToRemoveOfGroup);
+            }
         }
         if (notInserts.length > 0) {
             return res.status(201).json({
@@ -288,7 +290,17 @@ async function findNewMembers(req, res) {
             role: { $ne: 0 },
             group: { $in: [null, undefined, ''] },
         }, req.query.word);
-        const users = await Users_1.default.find(query, { names: 1, lastNames: 1, document: 1, gender: 1 }).exec();
+        const users = await Users_1.default.find(query, {
+            names: 1,
+            lastNames: 1,
+            gender: 1,
+            phone: 1,
+            document: 1,
+            picture: 1,
+        })
+            .skip(skip)
+            .limit(limit)
+            .sort(sort).exec();
         return res.status(201).json({
             msg: 'Usuarios disponibles para grupos',
             users

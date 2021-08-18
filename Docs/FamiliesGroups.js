@@ -79,7 +79,7 @@
  * @apiSuccess (leader, host, assistant and master Object) {String} lastNames Apellidos.
  * @apiSuccess (leader, host, assistant and master Object) {String} document Número de documento.
  * @apiSuccess (leader, host, assistant and master Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String|Null} phone Teléfono.
+ * @apiSuccess (leader, host, assistant and master Object) {String} phone Teléfono.
  * @apiSuccess (leader, host, assistant and master Object) {String|Null} position Cargo que realiza el usuario.
  *
  * @apiSuccessExample {JSON} Success
@@ -99,7 +99,7 @@
 				"lastNames": "PRUEBA",
 				"document": "CC1234123411",
 				"gender": null,
-				"phone": 584121490191,
+				"phone": 573151234561,
 				"position": null
 			},
 			"host": {
@@ -108,7 +108,7 @@
 				"lastNames": "USUARIO",
 				"document": "CC123123123",
 				"gender": null,
-				"phone": "584121490199",
+				"phone": "573151234567",
 				"position": "ANFITRIÓN Y LÍDER"
 			},
 			"assistant": {

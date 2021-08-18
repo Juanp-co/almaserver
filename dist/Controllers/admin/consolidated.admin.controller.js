@@ -56,7 +56,7 @@ async function getConsolidates(req, res) {
                 });
             }
             // find all members
-            ret.members = await Users_1.default.find({ $or: [query2, { _id: { $in: listIds || [] } }] }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 })
+            ret.members = await Users_1.default.find({ $or: [query2, { _id: { $in: listIds || [] } }] }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, picture: 1, position: 1 })
                 .sort({ names: 1 })
                 .exec();
             const listToCheck = [];
@@ -127,7 +127,7 @@ async function saveConsolidateVisit(req, res) {
 exports.saveConsolidateVisit = saveConsolidateVisit;
 async function getConsolidatesMembers(req, res) {
     try {
-        const members = await Users_1.default.find({ referred: { $ne: null }, consolidated: { $ne: false } }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 })
+        const members = await Users_1.default.find({ referred: { $ne: null }, consolidated: { $ne: false } }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1 })
             .sort({ names: 1 })
             .exec();
         return res.json({

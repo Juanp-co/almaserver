@@ -55,6 +55,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
         document: 1,
         roles: 1,
         created_at: 1,
+        picture: 1,
       })
       .skip(skip)
       .limit(limit)

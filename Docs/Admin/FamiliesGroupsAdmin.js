@@ -1,3 +1,20 @@
+/* static defines */
+
+/**
+ * @apiDefine SimpleModelLHAMFamiliesGroups
+ *
+ * @apiSuccess (leader, host, assistant and master Object) {String} _id ID del miembro.
+ * @apiSuccess (leader, host, assistant and master Object) {String} names Nombre(s).
+ * @apiSuccess (leader, host, assistant and master Object) {String} lastNames Apellido(s).
+ * @apiSuccess (leader, host, assistant and master Object) {String|Null} document Número de documento.
+ * @apiSuccess (leader, host, assistant and master Object) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (leader, host, assistant and master Object) {String} phone Teléfono del miembro.
+ * @apiSuccess (leader, host, assistant and master Object) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (leader, host, assistant and master Object) {String|Null} position Cargo o posición del miembro.
+ */
+
+/* docs */
+
 /**
  * @api {get} /api/admin/families-groups (00) Obtener listado de grupos familiares.
  * @apiVersion 0.0.28
@@ -120,7 +137,7 @@
 
 /**
  * @api {get} /api/admin/families-groups/:_id (02) Obtener detalles de un grupo familiar.
- * @apiVersion 0.0.28
+ * @apiVersion 0.0.36
  * @apiName getDetailsGroupFamiliesGroupsAdmin
  * @apiGroup FamiliesGroupsAdmin
  *
@@ -145,53 +162,45 @@
  * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
  * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
  *
- * @apiSuccess (leader, host, assistant and master Object) {String} _id ID del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String} names Nombres.
- * @apiSuccess (leader, host, assistant and master Object) {String} lastNames Apellidos.
- * @apiSuccess (leader, host, assistant and master Object) {String} document Número de documento.
- * @apiSuccess (leader, host, assistant and master Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String|Null} phone Teléfono.
+ * @apiUse SimpleModelLHAMFamiliesGroups
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Grupo Familiar",
-	"group": {
-		"_id": "6063385c98fc731c04777829",
-		"number": 2,
-		"direction": "DIRECCIÓN CUALQUIERA ASDASD ASDASD",
-		"sector": 4,
-		"subSector": 2,
-		"members": {
-			"leader": {
-				"_id": "604068b49b20e72f341972ed",
-				"names": "LIDER",
-				"lastNames": "PRUEBA",
-				"document": "CC1234123411",
-				"gender": null,
-				"phone": null
-			},
-			"host": {
-				"_id": "604068461caad10e2c965406",
-				"names": "PRUEBA",
-				"lastNames": "USUARIO",
-				"document": "CC123123123",
-				"gender": null,
-				"phone": "584121490199"
-			},
-			"assistant": {
-				"_id": "5fcf0821fc917d476c1cf3e3",
-				"names": "PEDRO JOSÉ",
-				"lastNames": "PÉREZ RODRIGUEZ",
-				"document": "CC12345678",
-				"gender": 0,
-				"phone": "3161234567"
-			},
-			"master": null
-		},
-		"created_at": "2021-03-30 09:40:28",
-		"updated_at": "2021-04-03 11:51:52"
-	}
+  "msg": "Grupo Familiar",
+  "group": {
+    "_id": "6063385c98fc731c04777829",
+    "number": 2,
+    "direction": "DIRECCIÓN CUALQUIERA ASDASD ASDASD",
+    "sector": 4,
+    "subSector": 2,
+    "members": {
+      "leader": null,
+      "host": {
+        "_id": "604068461caad10e2c965406",
+        "names": "PRUEBA",
+        "lastNames": "USUARIO",
+        "document": "CC123123123",
+        "gender": null,
+        "phone": "573151234567",
+        "picture": null,
+        "position": null
+      },
+      "assistant": {
+        "_id": "5fcf0821fc917d476c1cf3e3",
+        "names": "PEDRO JOSÉ",
+        "lastNames": "PÉREZ RODRIGUEZ",
+        "document": "CC12345678",
+        "gender": null,
+        "phone": "3161234567",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+        "position": null
+      },
+      "master": null
+    },
+    "created_at": "2021-03-30 09:40:28",
+    "updated_at": "2021-04-03 11:51:52"
+  }
 }
  *
  * @apiUse GlobalParamsErrors
@@ -211,7 +220,7 @@
 
 /**
  * @api {put} /api/admin/families-groups/:_id (03) Actualizar datos de un grupo familiar.
- * @apiVersion 0.0.28
+ * @apiVersion 0.0.36
  * @apiName updateGroupFamiliesGroupsAdmin
  * @apiGroup FamiliesGroupsAdmin
  *
@@ -249,53 +258,45 @@
  * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
  * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
  *
- * @apiSuccess (leader, host, assistant and master Object) {String} _id ID del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String} names Nombres.
- * @apiSuccess (leader, host, assistant and master Object) {String} lastNames Apellidos.
- * @apiSuccess (leader, host, assistant and master Object) {String} document Número de documento.
- * @apiSuccess (leader, host, assistant and master Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String|Null} phone Teléfono.
+ * @apiUse SimpleModelLHAMFamiliesGroups
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Grupo Familiar",
-	"group": {
-		"_id": "6063385c98fc731c04777829",
-		"number": 2,
-		"direction": "DIRECCIÓN CUALQUIERA EDITADA",
-		"sector": 4,
-		"subSector": 2,
-		"members": {
-			"leader": {
-				"_id": "604068b49b20e72f341972ed",
-				"names": "LIDER",
-				"lastNames": "PRUEBA",
-				"document": "CC1234123411",
-				"gender": null,
-				"phone": null
-			},
-			"host": {
-				"_id": "604068461caad10e2c965406",
-				"names": "PRUEBA",
-				"lastNames": "USUARIO",
-				"document": "CC123123123",
-				"gender": null,
-				"phone": "584121490199"
-			},
-			"assistant": {
-				"_id": "5fcf0821fc917d476c1cf3e3",
-				"names": "PEDRO JOSÉ",
-				"lastNames": "PÉREZ RODRIGUEZ",
-				"document": "CC12345678",
-				"gender": 0,
-				"phone": "3161234567"
-			},
-			"master": null
-		},
-		"created_at": "2021-03-30 09:40:28",
-		"updated_at": "2021-04-04 06:54:31"
-	}
+  "msg": "Grupo Familiar",
+  "group": {
+    "_id": "6063385c98fc731c04777829",
+    "number": 1,
+    "direction": "DIRECCIÓN CUALQUIERA EDITADA",
+    "sector": 1,
+    "subSector": 1,
+    "members": {
+      "leader": null,
+      "host": {
+        "_id": "604068461caad10e2c965406",
+        "names": "PRUEBA",
+        "lastNames": "USUARIO",
+        "document": "CC123123123",
+        "gender": null,
+        "phone": "573151234567",
+        "picture": null,
+        "position": null
+      },
+      "assistant": {
+        "_id": "5fcf0821fc917d476c1cf3e3",
+        "names": "PEDRO JOSÉ",
+        "lastNames": "PÉREZ RODRIGUEZ",
+        "document": "CC12345678",
+        "gender": null,
+        "phone": "3161234567",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+        "position": null
+      },
+      "master": null
+    },
+    "created_at": "2021-03-30 09:40:28",
+    "updated_at": "2021-04-08 07:38:05"
+  }
 }
  *
  * @apiUse GlobalParamsErrors
@@ -339,7 +340,7 @@
 
 /**
  * @api {put} /api/admin/families-groups/:_id/members (04) Actualizar miembros de un grupo familiar.
- * @apiVersion 0.0.28
+ * @apiVersion 0.0.36
  * @apiName updateMembersGroupFamiliesGroupsAdmin
  * @apiGroup FamiliesGroupsAdmin
  *
@@ -357,7 +358,7 @@
  * @apiExample {JSON} Example JSON Request
  * {
 	"members": {
-		"leaderId": "604068b49b20e72f341972ed",
+		"leaderId": null,
 		"hostId": "604068461caad10e2c965406",
 		"assistantId": "5fcf0821fc917d476c1cf3e3",
 		"masterId": null
@@ -372,44 +373,36 @@
  * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
  * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
  *
- * @apiSuccess (leader, host, assistant and master Object) {String} _id ID del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String} names Nombres.
- * @apiSuccess (leader, host, assistant and master Object) {String} lastNames Apellidos.
- * @apiSuccess (leader, host, assistant and master Object) {String} document Número de documento.
- * @apiSuccess (leader, host, assistant and master Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String|Null} phone Teléfono.
+ * @apiUse SimpleModelLHAMFamiliesGroups
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Grupo Familiar",
-	"members": {
-		"leader": {
-			"_id": "604068b49b20e72f341972ed",
-			"names": "LIDER",
-			"lastNames": "PRUEBA",
-			"document": "CC1234123411",
-			"gender": null,
-			"phone": null
-		},
-		"host": {
-			"_id": "604068461caad10e2c965406",
-			"names": "PRUEBA",
-			"lastNames": "USUARIO",
-			"document": "CC123123123",
-			"gender": null,
-			"phone": "584121490199"
-		},
-		"assistant": {
-			"_id": "5fcf0821fc917d476c1cf3e3",
-			"names": "PEDRO JOSÉ",
-			"lastNames": "PÉREZ RODRIGUEZ",
-			"document": "CC12345678",
-			"gender": 0,
-			"phone": "3161234567"
-		},
-		"master": null
-	}
+  "msg": "Grupo Familiar",
+  "members": {
+    "leader": null,
+    "host": {
+      "_id": "604068461caad10e2c965406",
+      "names": "PRUEBA",
+      "lastNames": "USUARIO",
+      "document": "CC123123123",
+      "gender": null,
+      "phone": "573151234567",
+      "picture": null,
+      "position": null
+    },
+    "assistant": {
+      "_id": "5fcf0821fc917d476c1cf3e3",
+      "names": "PEDRO JOSÉ",
+      "lastNames": "PÉREZ RODRIGUEZ",
+      "document": "CC12345678",
+      "gender": null,
+      "phone": "3161234567",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+      "position": null
+    },
+    "master": null
+  }
 }
  *
  * @apiUse GlobalParamsErrors

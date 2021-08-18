@@ -3,7 +3,7 @@ import { validateUser } from '../middleware';
 import {
   changePassword,
   get, getCourses, getGroup, getMemberGroup, getReports,
-  update
+  update, updatePicture
 } from '../Controllers/user.controller';
 import {
   getMemberReferred,
@@ -42,6 +42,8 @@ router.route(`/families-groups/:_id/reports`)
  */
 router.get('/group', validateUser, getGroup);
 router.get('/group/:memberId', validateUser, getMemberGroup);
+
+router.put('/picture', validateUser, updatePicture);
 
 /*
   Referrals

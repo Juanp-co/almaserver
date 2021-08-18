@@ -1,9 +1,28 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReports = exports.getMemberGroup = exports.getGroup = exports.getCourses = exports.changePassword = exports.update = exports.get = void 0;
+exports.getReports = exports.getMemberGroup = exports.getGroup = exports.getCourses = exports.changePassword = exports.updatePicture = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
@@ -18,6 +37,8 @@ const Groups_1 = __importDefault(require("../Models/Groups"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
 const Users_1 = __importDefault(require("../Models/Users"));
 const Visits_1 = __importDefault(require("../Models/Visits"));
+const AWSService_1 = __importStar(require("../Services/AWSService"));
+const EventsActions_1 = require("../ActionsData/EventsActions");
 const path = 'Controllers/user.controller';
 async function get(req, res) {
     try {
@@ -81,6 +102,47 @@ async function update(req, res) {
     }
 }
 exports.update = update;
+async function updatePicture(req, res) {
+    var _a;
+    try {
+        const { tokenId } = req.body;
+        const user = await Users_1.default.findOne({ _id: tokenId }, {
+            picture: 1
+        }).exec();
+        // logout
+        if (!user)
+            return TokenActions_1.forceLogout(res, `${req.query.token}`);
+        const validate = await UsersRequest_1.validateUpdatePictureProfile(req.body);
+        if (validate.errors.length > 0)
+            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+        if (user.picture !== validate.data.picture) {
+            const s3 = process.env.AWS_S3_BUCKET || null;
+            if (!s3)
+                return EventsActions_1.return404Or422(res, 2);
+            if ((_a = user.picture) === null || _a === void 0 ? void 0 : _a.indexOf(`${s3}`))
+                await AWSService_1.deleteFile(user.picture);
+            if (Validations_1.isBase64(validate.data.picture)) {
+                const newUrl = `alma/users/${tokenId}/picture-${tokenId}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
+                await AWSService_1.default(newUrl, validate.data.picture);
+                user.picture = `${s3}/${newUrl}.jpg`;
+            }
+            else if (Validations_1.checkUrl(validate.data.picture)) {
+                user.picture = validate.data.picture;
+            }
+            else
+                user.picture = null;
+        }
+        await user.save();
+        return res.json({
+            msg: 'Se ha actualizado su foto de perfil exitosamente.',
+            data: user
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/updatePicture`);
+    }
+}
+exports.updatePicture = updatePicture;
 async function changePassword(req, res) {
     try {
         const { tokenId } = req.body;

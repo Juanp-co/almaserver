@@ -28,7 +28,7 @@
 
 /**
  * @api {get} /api/admin/users (01) Obtener listado de miembros.
- * @apiVersion 0.0.33
+ * @apiVersion 0.0.36
  * @apiName getUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -43,50 +43,39 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} users Listado de usuarios.
  *
- * @apiSuccess (users Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (users Object[]) {String} _id ID del miembro.
+ * @apiSuccess (users Object[]) {String} names Nombre(s).
+ * @apiSuccess (users Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (users Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (users Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (users Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (users Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (users Object[]) {String|Null} position Cargo o posición del miembro.
  * @apiSuccess (users Object[]) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona)
  * @apiSuccess (users Object[]) {String} created_at Fecha de la última actualización del perfil.
- * @apiSuccess (users Object[]) {String} _id ID del miembro.
- * @apiSuccess (users Object[]) {String} phone Número de teléfono.
- * @apiSuccess (users Object[]) {String} document Número de documento.
- * @apiSuccess (users Object[]) {String} names Nombres.
- * @apiSuccess (users Object[]) {String} lastNames Apellidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
 	"msg": "Usuarios.",
 	"users": [
-		{
-			"gender": 0,
-			"roles": [ 4 ],
-			"created_at": "2021-02-09 00:10:26",
-			"_id": "6022194c88342006d4a700f3",
-			"phone": "563161234567",
-			"document": "CC12345675",
-			"names": "ANTHONY",
-			"lastNames": "VELÁSQUEZ"
-		},
-		{
-			"gender": 1,
-			"roles": [ 1 ],
-			"created_at": "2020-12-13 10:03:12",
-			"_id": "5fd62d49304a9a5a686adc1a",
-			"phone": "563161234567",
-			"document": "CC123456788",
-			"names": "ADMIN DOS",
-			"lastNames": "PRUEBA"
-		},
-		{
-			"gender": 2,
-			"roles": [ 4 ],
-			"created_at": "2020-12-07 23:59:12",
-			"_id": "5fcf0821fc917d476c1cf3e3",
-			"phone": "573161234567",
-			"document": "CC12345678",
-			"names": "PEDRO JOSE",
-			"lastNames": "PÉREZ"
-		}
+    {
+      "gender": null,
+      "roles": [
+        3,
+        4
+      ],
+      "picture": "https://delii.s3.amazonaws.com/alma/users/611902c09e346616b6eaadb5/picture-611902c09e346616b6eaadb5-1629251391.jpg",
+      "_id": "611902c09e346616b6eaadb5",
+      "phone": "31567554414",
+      "names": "EIMY",
+      "lastNames": "VALENTINA",
+      "created_at": "2021-08-15 07:04:16",
+      "document": null
+    },
+    .
+    .
+    .
 	]
 }
  * @apiSuccessExample {JSON} Success without data
@@ -191,7 +180,7 @@
 
 /**
  * @api {get} /api/admin/users/:_id (03) Obtener detalles de un miembro.
- * @apiVersion 0.0.34
+ * @apiVersion 0.0.36
  * @apiName getDetailsUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -228,16 +217,12 @@
  * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (data Object) {String} locality Nombrede la localidad.
  * @apiSuccess (data Object) {String} direction Dirección.
+ * @apiSuccess (data Object) {String} picture Dirección.
  * @apiSuccess (data Object) {Object} totals Totales de cursos e hijos espirituales.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
  *
- * @apiSuccess (members Object) {String} _id ID del miembro.
- * @apiSuccess (members Object) {String} names Nombres.
- * @apiSuccess (members Object) {String} lastNames Apellidos.
- * @apiSuccess (members Object) {String} document Número de documento.
- * @apiSuccess (members Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (members Object) {String|Null} phone Teléfono.
+ * @apiUse MemberObjectSimpleDataResponse
  *
  * @apiSuccess (totals Object) {Number} totalsCourses Cursos totales.
  * @apiSuccess (totals Object) {Number} totalsReferrals Total de referidos (Hijos espirituales).
@@ -245,49 +230,52 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Detalles del miembro.",
-	"user": {
-		"_id": "6076598d598ae749a42a0147",
-		"document": null,
-		"email": null,
-		"phone": "3151234567",
-		"names": "AMBERCITA",
-		"lastNames": "VELASQUEZ",
-		"position": null,
-		"gender": null,
-		"birthday": null,
-		"civilStatus": null,
-		"educationLevel": null,
-		"profession": null,
-		"bloodType": null,
-		"company": false,
-		"companyType": null,
-		"baptized": false,
-		"meetingNew": false,
-		"roles": [ 4 ],
-		"referred": {
-			"_id": "607658ff598ae749a42a0143",
-			"names": "KRHYSTAL",
-			"lastNames": "TIRADO",
-			"document": null,
-			"gender": null,
-			"phone": "3161234567",
-			"position": "ASDASDASDASDASD"
-		},
-		"petition": null,
-		"attendGroup": false,
-		"consolidated": true,
-		"department": null,
-		"city": null,
-		"locality": null,
-		"direction": null,
-		"totals": {
-			"totalsCourses": 1,
-			"totalsReferrals": 0
-		},
-		"created_at": "2021-04-13 21:55:09",
-		"updated_at": "2021-04-13 21:55:09"
-	}
+  "msg": "Detalles del miembro.",
+  "user": {
+    "_id": "609d21bd32ce5839900cb1ff",
+    "document": null,
+    "email": "amber@gmail.com",
+    "phone": "3161231241",
+    "names": "AMBER LISSETH",
+    "lastNames": "VELASQUEZ",
+    "position": null,
+    "gender": 1,
+    "birthday": "2020-05-25",
+    "civilStatus": 0,
+    "educationLevel": null,
+    "profession": null,
+    "bloodType": null,
+    "company": false,
+    "companyType": null,
+    "baptized": false,
+    "roles": [
+      4
+    ],
+    "referred": {
+      "_id": "6081367a18fdbc37e89aff7d",
+      "names": "ANTHONY",
+      "lastNames": "VELASQUEZ",
+      "document": null,
+      "gender": null,
+      "phone": "584121480199",
+      "picture": null,
+      "position": null
+    },
+    "petition": "ASASD ASD ASDASDA SD",
+    "attendGroup": true,
+    "consolidated": true,
+    "department": null,
+    "city": null,
+    "locality": "ASDASDASDASDASD",
+    "direction": "ASDASDASDASDASDASD",
+    "picture": null,
+    "totals": {
+      "totalsCourses": 1,
+      "totalsReferrals": 0
+    },
+    "created_at": "2021-05-13 07:55:25",
+    "updated_at": "2021-05-13 07:55:25"
+  }
 }
  *
  * @apiUse GlobalParamsErrors
@@ -450,7 +438,7 @@
 
 /**
  * @api {get} /api/admin/users/:_id/referrals (05) Obtener listado de referidos de un miembro.
- * @apiVersion 0.0.33
+ * @apiVersion 0.0.36
  * @apiName getReferralsUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -465,33 +453,35 @@
  * @apiSuccess {Object[]} referrals Listado de referidos del miembro.
  *
  * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
- * @apiSuccess (referrals Object[]) {String} names Nombres.
- * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
- * @apiSuccess (referrals Object[]) {String} document Número de documento.
- * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
+ * @apiSuccess (referrals Object[]) {String} names Nombre(s).
+ * @apiSuccess (referrals Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (referrals Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (referrals Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (referrals Object[]) {String|Null} picture URL de la foto de perfil.
  * @apiSuccess (referrals Object[]) {String|Null} position Cargo o posición del miembro.
  * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Listado de referidos del miembro.",
-	"referrals": [
-		{
-			"_id": "604068461caad10e2c965406",
-			"names": "PRUEBA",
-			"lastNames": "USUARIO",
-			"document": "CC123123123",
-			"gender": null,
-			"phone": "584121490199",
-			"position": null,
-			"totalsReferrals": 0
-		},
-		.
-		.
-		.
-	]
+  "msg": "Listado de referidos del miembro.",
+  "referrals": [
+    {
+      "_id": "609d21bd32ce5839900cb1ff",
+      "names": "AMBER LISSETH",
+      "lastNames": "VELASQUEZ",
+      "document": null,
+      "gender": 1,
+      "phone": "3161231241",
+      "picture": null,
+      "position": null,
+      "totalsReferrals": 0
+    },
+    .
+    .
+    .
+  ]
 }
  *
  * @apiUse GlobalParamsErrors

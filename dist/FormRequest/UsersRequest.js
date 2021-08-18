@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateRolesToUpdateForm = exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
+exports.validateUpdatePictureProfile = exports.validateRolesToUpdateForm = exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
 const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
@@ -463,3 +463,19 @@ function validateRolesToUpdateForm(request) {
     return { data, errors };
 }
 exports.validateRolesToUpdateForm = validateRolesToUpdateForm;
+function validateUpdatePictureProfile(data) {
+    const ret = {
+        picture: null,
+    };
+    const errors = [];
+    if (data.picture) {
+        // document
+        if (!Validations_1.isBase64(data.picture) && !Validations_1.checkUrl(data.picture)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero la imagen imagen para su perfil es incorrecta.', 'picture'));
+        }
+        else
+            ret.picture = `${data.picture}`;
+    }
+    return { data: ret, errors };
+}
+exports.validateUpdatePictureProfile = validateUpdatePictureProfile;

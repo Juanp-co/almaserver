@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/admin/events (00) Obtener listado de eventos registrados.
- * @apiVersion 0.0.35
+ * @apiVersion 0.0.36
  * @apiName getEventsAdmin
  * @apiGroup EventsAdmin
  *
@@ -44,11 +44,12 @@
       "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg",
       "user": {
         "_id": "5fcf0821fc917d476c1cf3e2",
-        "names": "ANTHONY EDITADO",
+        "names": "ANTHONY",
         "lastNames": "ADMINISTRADOR",
         "document": null,
         "gender": null,
         "phone": "31612345678",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
         "position": null
       }
     },
@@ -124,7 +125,7 @@
 
 /**
  * @api {get} /api/admin/events/:_id (02) Obtener detalles de un evento.
- * @apiVersion 0.0.35
+ * @apiVersion 0.0.36
  * @apiName detailsEventsAdmin
  * @apiGroup EventsAdmin
  *
@@ -173,6 +174,7 @@
       "document": null,
       "gender": null,
       "phone": "31612345678",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
       "position": null
     }
   }

@@ -78,7 +78,7 @@
 
 /**
  * @api {get} /api/user/referrals (01) Obtener listado de hijos espirituales.
- * @apiVersion 0.0.27
+ * @apiVersion 0.0.36
  * @apiName getUserReferrals
  * @apiGroup UserReferrals
  *
@@ -94,43 +94,59 @@
  * @apiSuccess (referred Object) {String} lastNames Apellidos.
  * @apiSuccess (referred Object) {String} document Número de documento.
  * @apiSuccess (referred Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (referred Object) {String|Null} phone Teléfono.
+ * @apiSuccess (referred Object) {String} phone Teléfono.
+ *
+ * @apiSuccess (referred Object[]) {String} _id ID del miembro.
+ * @apiSuccess (referred Object[]) {String} names Nombre(s).
+ * @apiSuccess (referred Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (referred Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (referred Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (referred Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (referred Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (referred Object[]) {String|Null} position Cargo o posición del miembro.
  *
  * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
- * @apiSuccess (referrals Object[]) {String} names Nombres.
- * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
- * @apiSuccess (referrals Object[]) {String} document Número de documento.
- * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
- * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
+ * @apiSuccess (referrals Object[]) {String} names Nombre(s).
+ * @apiSuccess (referrals Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (referrals Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (referrals Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (referrals Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (referrals Object[]) {String|Null} position Cargo o posición del miembro.
+ * @apiSuccess (referrals Object[]) {Numbers} totalsReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Mis referidos.",
-	"referred": {
-		"_id": "5fcf0821fc917d476c1cf3e2",
-		"names": "ANTHONY",
-		"lastNames": "ADMINISTRADOR",
-		"document": "CC123456789",
-		"gender": 1,
-		"phone": "573161234567"
-	},
-	"totals": 5,
-	"referrals": [
-		{
-			"_id": "604068461caad10e2c965406",
-			"names": "PRUEBA",
-			"lastNames": "USUARIO",
-			"document": "CC123123123",
-			"gender": null,
-			"phone": null,
-			"totalsReferrals": 0
-		},
-		.
-		.
-		.
-	]
+  "msg": "Mis referidos.",
+  "referred": {
+    "_id": "5fcf0821fc917d476c1cf3e2",
+    "names": "ANTHONY EDITADO",
+    "lastNames": "ADMINISTRADOR",
+    "document": null,
+    "gender": null,
+    "phone": "31612345678",
+    "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
+    "position": null
+  },
+  "totalsGroups": 1,
+  "totals": 21,
+  "referrals": [
+    {
+      "_id": "6081200245db7c27e4c91908",
+      "names": "ALEJANDRO",
+      "lastNames": "RODRIGUEZ",
+      "document": null,
+      "gender": 2,
+      "phone": "4121490195",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
+      "position": null,
+      "totalsReferrals": 0
+    },
+    .
+    .
+    .
+  ]
 }
  *
  * @apiSuccessExample {JSON} Success without data
@@ -152,7 +168,7 @@
 
 /**
  * @api {get} /api/user/referrals/:memberId (02) Obtener datos de un hijo espiritual.
- * @apiVersion 0.0.28
+ * @apiVersion 0.0.36
  * @apiName getDataMemberUserReferrals
  * @apiGroup UserReferrals
  *
@@ -170,7 +186,10 @@
  * @apiSuccess (data Object) {Object[]} referrals Listado de hijos espirituales.
  * @apiSuccess (data Object) {Object[]} visits Listado de visitas.
  *
+ * @apiSuccess (member Object) {String|Null} email Correo electrónico.
+ * @apiSuccess (member Object) {String|Null} position Cargo o posición.
  * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (member Object) {String|Null} birthday Fecha de nacimiento.
  * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
  * @apiSuccess (member Object) {Boolean} consolidated Indica si el miembro fue consolidado.
  * @apiSuccess (member Object) {String|Null} petition Petición realizada por el miembro al momento de registrarse.
@@ -178,12 +197,11 @@
  * @apiSuccess (member Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (member Object) {String|Null} locality Nombre de la localidad.
  * @apiSuccess (member Object) {String|Null} direction Dirección.
+ * @apiSuccess (member Object) {String|Null} picture URL de la foto de perfil.
  * @apiSuccess (member Object) {String} _id ID del miembro.
- * @apiSuccess (member Object) {String|Null} phone Número de teléfono.
+ * @apiSuccess (member Object) {String} phone Número de teléfono.
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
- * @apiSuccess (member Object) {String|Null} email Correo electrónico.
- * @apiSuccess (member Object) {String|Null} position Cargo o posición.
  *
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
@@ -192,84 +210,77 @@
  * @apiSuccess (courses Object[]) {Number} level Nivel del curso.
  * @apiSuccess (courses Object[]) {String|Null} approved Indica si ha aprobado el curso o no.
  *
- * @apiSuccess (visits Object[]) {Object|Nukk} consolidator ID del curso.
+ * @apiSuccess (visits Object[]) {Object|Null} consolidator ID del curso.
  * @apiSuccess (visits Object[]) {String} date Fecha de la visita (YYYY-MM-DD).
  * @apiSuccess (visits Object[]) {String|Null} action Acción realizada (Visita ó llamada).
  * @apiSuccess (visits Object[]) {String} observation Observaciones obtenidas en la visita.
  *
- * @apiSuccess (referrals and consolidator Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
  * @apiSuccess (referrals and consolidator Object[]) {String} _id ID del miembro.
- * @apiSuccess (referrals and consolidator Object[]) {String} document Número de documento.
- * @apiSuccess (referrals and consolidator Object[]) {String} names Nombres.
- * @apiSuccess (referrals and consolidator Object[]) {String} lastNames Apellidos.
- * @apiSuccess (referrals and consolidator Object[]) {String|Null} phone Teléfono.
- * @apiSuccess (referrals and consolidator Object[]) {Number} totalReferrals Total de referidos.
+ * @apiSuccess (referrals and consolidator Object[]) {String} names Nombre(s).
+ * @apiSuccess (referrals and consolidator Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (referrals and consolidator Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (referrals and consolidator Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (referrals and consolidator Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (referrals and consolidator Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (referrals and consolidator Object[]) {String|Null} position Cargo o posición del miembro.
+ * @apiSuccess (referrals and consolidator Object[]) {Numbers} totalsReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Miembro.",
-	"data": {
-		"member": {
-			"gender": 0,
-			"civilStatus": 0,
-			"consolidated": false,
-			"petition": null,
-			"department": 19,
-			"city": 18,
-			"locality": "CRUZ ROJA",
-			"direction": "C/CRUZ ROJA #62",
-			"_id": "6022194c88342006d4a700f3",
-			"phone": "563161234567",
-			"names": "ANTHONY",
-			"lastNames": "VELÁSQUEZ",
-			"email": "anthony@example.com",
-			"position": null
-		},
-		"totalCourses": 5,
-		"totalReferrals": 12,
-		"courses": [
-			{
-				"_id": "603afb2309bf7a3428ac58f1",
-				"slug": "nivel-uno",
-				"title": "NIVEL UNO",
-				"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.",
-				"level": 1,
-				"approved": false
-			},
-			.
-			.
-			.
-		],
-		"referrals": [
-			{
-				"gender": null,
-				"_id": "6045ebc578cb41018883d3ea",
-				"phone": null,
-				"document": "CC11223344",
-				"names": "JOSÉ",
-				"lastNames": "ESPINOZA"
-			},
-			.
-			.
-			.
-		],
-		"visits": [
-			{
-				"consolidator": {
-					"_id": "5fcf0821fc917d476c1cf3e3",
-					"names": "PEDRO JOSÉ",
-					"lastNames": "PÉREZ RODRIGUEZ",
-					"document": "CC12345678",
-					"gender": 0,
-					"phone": "3161234567"
-				},
-				"date": "2021-04-12",
-				"actión": "Llamada",
-				"observation": "ACURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. NULLA PORTTITOR ACCUMSAN TINCIDUNT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\n\nCURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\n\nCURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. DONEC SOLLICITUDIN MOLESTIE MALESUADA. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A."
-			},
-		]
-	}
+  "msg": "Miembro.",
+  "data": {
+    "member": {
+      "email": "4121490198@example.com",
+      "position": null,
+      "gender": null,
+      "birthday": null,
+      "civilStatus": null,
+      "consolidated": false,
+      "petition": null,
+      "department": null,
+      "city": null,
+      "locality": null,
+      "direction": null,
+      "picture": null,
+      "_id": "605e37d154abd33060a689dc",
+      "phone": "573151234568",
+      "names": "ANTHONY",
+      "lastNames": "VELÁSQUEZ"
+    },
+    "totalCourses": 9,
+    "totalReferrals": 6,
+    "courses": [
+      {
+        "_id": "603afb2309bf7a3428ac58f1",
+        "slug": "nivel-uno-2",
+        "title": "NIVEL UNO",
+        "description": "Donec sollicitudin molestie malesuada. ...",
+        "level": 1,
+        "approved": false
+      },
+      .
+      .
+      .
+    ],
+    "referrals": [
+      {
+        "_id": "607fb9d275581c087c36922c",
+        "names": "EIMY VALENTINA",
+        "lastNames": "VELASQUEZ TIRADO",
+        "document": null,
+        "gender": null,
+        "phone": "3167654321",
+        "picture": null,
+        "position": null,
+        "totalsReferrals": 0
+      },
+      .
+      .
+      .
+    ],
+    "visits": []
+  }
 }
  *
  * @apiUse GlobalParamsErrors

@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/events (00) Obtener listado de eventos públicos.
- * @apiVersion 0.0.35
+ * @apiVersion 0.0.36
  * @apiName getEvents
  * @apiGroup Events
  *
@@ -44,11 +44,12 @@
       "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg",
       "user": {
         "_id": "5fcf0821fc917d476c1cf3e2",
-        "names": "ANTHONY EDITADO",
+        "names": "ANTHONY",
         "lastNames": "ADMINISTRADOR",
         "document": null,
         "gender": null,
         "phone": "31612345678",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
         "position": null
       }
     },
@@ -92,14 +93,16 @@
  * @apiSuccess (event Object) {Number[]} toRoles Roles a los que va dirigido.
  * @apiSuccess (event Object) {String|Null} picture URL de la imagen del evento.
  *
+ * @apiUse UsersObjectSimpleDataResponse
+ *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 201 Created
  * {
-	"msg": "Se ha creado el evento exitosamente.",
-	"event": {
+  "msg": "Evento.",
+  "event": {
     "_id": "611a39d47636c51470deed92",
-    "title": "EVENTO 01",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....",
+    "title": "PRUEBA DESDE ADMIN",
+    "description": "<P>PRAESENT SAPIEN MASSA, CONVALLIS A PELLENTESQUE NEC, ...</P>",
     "date": "2021-09-15",
     "initHour": "08:00",
     "endHour": "11:30",
@@ -108,7 +111,17 @@
       3,
       4
     ],
-    "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg"
+    "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg",
+    "user": {
+      "_id": "5fcf0821fc917d476c1cf3e2",
+      "names": "ANTHONY",
+      "lastNames": "ADMINISTRADOR",
+      "document": null,
+      "gender": null,
+      "phone": "31612345678",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
+      "position": null
+    }
   }
 }
  *
@@ -122,7 +135,7 @@
 
 /**
  * @api {get} /api/events/:_id (02) Obtener detalles de un evento.
- * @apiVersion 0.0.35
+ * @apiVersion 0.0.36
  * @apiName detailsEvents
  * @apiGroup Events
  *
@@ -165,11 +178,12 @@
     "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg",
     "user": {
       "_id": "5fcf0821fc917d476c1cf3e2",
-      "names": "ANTHONY EDITADO",
+      "names": "ANTHONY",
       "lastNames": "ADMINISTRADOR",
       "document": null,
       "gender": null,
       "phone": "31612345678",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
       "position": null
     }
   }

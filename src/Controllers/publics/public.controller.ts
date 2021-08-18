@@ -258,7 +258,8 @@ export async function getPublicMembers(req: Request, res: Response): Promise<Res
           names: 1,
           lastNames: 1,
           gender: 1,
-          phone: 1
+          phone: 1,
+          picture: 1
         })
         .skip(skip)
         .limit(limit)

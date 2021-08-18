@@ -7,15 +7,18 @@ import { returnError, returnErrorParams } from '../Functions/GlobalFunctions';
 import { forceLogout } from '../Functions/TokenActions';
 import {
   validatePasswords,
-  validateUpdate
+  validateUpdate, validateUpdatePictureProfile
 } from '../FormRequest/UsersRequest';
-import { checkDate, checkObjectId } from '../Functions/Validations';
+import { checkDate, checkObjectId, checkUrl, isBase64 } from '../Functions/Validations';
 import Courses from '../Models/Courses';
 import CoursesUsers from '../Models/CoursesUsers';
 import Groups from '../Models/Groups';
 import Referrals from '../Models/Referrals';
 import Users from '../Models/Users';
 import Visits from '../Models/Visits';
+import uploadFile, { deleteFile } from '../Services/AWSService';
+import { return404Or422 } from '../ActionsData/EventsActions';
+
 
 const path = 'Controllers/user.controller';
 
@@ -88,6 +91,52 @@ export async function update(req: Request, res: Response): Promise<Response> {
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/update`);
+  }
+}
+
+export async function updatePicture(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenId } = req.body;
+
+    const user = await Users.findOne(
+      { _id: tokenId },
+      {
+        picture: 1
+      }
+    ).exec();
+
+    // logout
+    if (!user) return forceLogout(res, `${req.query.token}`);
+
+    const validate = await validateUpdatePictureProfile(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    if (user.picture !== validate.data.picture) {
+      const s3 = process.env.AWS_S3_BUCKET || null;
+      if (!s3) return return404Or422(res, 2);
+      if (user.picture?.indexOf(`${s3}`))
+        await deleteFile(user.picture);
+
+      if (isBase64(validate.data.picture)) {
+        const newUrl = `alma/users/${tokenId}/picture-${tokenId}-${moment().tz('America/Bogota').unix()}`;
+        await uploadFile(newUrl, validate.data.picture);
+        user.picture = `${s3}/${newUrl}.jpg`;
+      }
+      else if (checkUrl(validate.data.picture)) {
+        user.picture = validate.data.picture;
+      }
+      else user.picture = null;
+    }
+
+    await user.save();
+
+    return res.json({
+      msg: 'Se ha actualizado su foto de perfil exitosamente.',
+      data: user
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/updatePicture`);
   }
 }
 

@@ -99,7 +99,7 @@
  * @apiSuccess (user Object) {String} lastNames Apellidos.
  * @apiSuccess (user Object) {String} document Número de documento.
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (user Object) {String|Null} phone Teléfono.
+ * @apiSuccess (user Object) {String} phone Teléfono.
  *
  * @apiSuccessExample {JSON} Success with all data
  * HTTP/1.1 200 Success

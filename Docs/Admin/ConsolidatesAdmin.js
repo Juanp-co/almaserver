@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/admin/consolidates (00) Obtener reporte de consolidación.
- * @apiVersion 0.0.30
+ * @apiVersion 0.0.36
  * @apiName getConsolidatesAdmin
  * @apiGroup ConsolidatesAdmin
  *
@@ -26,12 +26,14 @@
  * @apiSuccess (consolidates Object[]) {String|Null} action Acción realizada (Visita ó llamada).
  * @apiSuccess (consolidates Object[]) {String} observation Observación agregada en la visita.
  *
- * @apiSuccess (consolidator, members and member Object) {String} _id ID del miembro.
- * @apiSuccess (consolidator, members and member Object) {String} names Nombres.
- * @apiSuccess (consolidator, members and member Object) {String} lastNames Apellidos.
- * @apiSuccess (consolidator, members and member Object) {String} document Número de documento.
- * @apiSuccess (consolidator, members and member Object) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (consolidator, members and member Object) {String|Null} phone Teléfono.
+ * @apiSuccess (consolidator, members Object[] and member Object) {String} _id ID del miembro.
+ * @apiSuccess (consolidator, members Object[] and member Object) {String} names Nombre(s).
+ * @apiSuccess (consolidator, members Object[] and member Object) {String} lastNames Apellido(s).
+ * @apiSuccess (consolidator, members Object[] and member Object) {String|Null} document Número de documento.
+ * @apiSuccess (consolidator, members Object[] and member Object) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (consolidator, members Object[] and member Object) {String} phone Teléfono del miembro.
+ * @apiSuccess (consolidator, members Object[] and member Object) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (consolidator, members Object[] and member Object) {String|Null} position Cargo o posición del miembro.
  *
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
@@ -42,7 +44,9 @@
 			{
 				"_id": "606bdbf35fd5900c1092d191",
 				"consolidator": {
+          "position": null,
 					"gender": 0,
+          "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
 					"_id": "5fcf0821fc917d476c1cf3e2",
 					"phone": "31612345678",
 					"document": "CC123456789",
@@ -50,7 +54,9 @@
 					"lastNames": "ADMINISTRADOR"
 				},
 				"member": {
+          "position": null,
 					"gender": null,
+          "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
 					"_id": "606b6b833784652d9c46eb04",
 					"phone": "3161231231",
 					"document": "CC11123123",
@@ -67,7 +73,9 @@
 		],
 		"members": [
 			{
+        "position": null,
 				"gender": 0,
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
 				"_id": "5fcf0821fc917d476c1cf3e2",
 				"phone": "31612345678",
 				"document": "CC123456789",
@@ -150,7 +158,7 @@
 
 /**
  * @api {get} /api/admin/consolidates/members (02) Obtener listado de miembros consolidados.
- * @apiVersion 0.0.30
+ * @apiVersion 0.0.36
  * @apiName getMembersConsolidatesAdmin
  * @apiGroup ConsolidatesAdmin
  *
@@ -159,12 +167,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} members Listado de miembros.
  *
- * @apiSuccess (members Object[]) {String} _id ID del miembro.
- * @apiSuccess (members Object[]) {String} names Nombres.
- * @apiSuccess (members Object[]) {String} lastNames Apellidos.
- * @apiSuccess (members Object[]) {String} document Número de documento.
- * @apiSuccess (members Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (members Object[]) {String|Null} phone Teléfono.
+ * @apiUse MemberObjectSimpleListDataResponse
  *
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
@@ -172,6 +175,8 @@
 	"msg": "Miembros",
 	"members": [
 		{
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+      "position": null,
 			"gender": null,
 			"_id": "606b5e0d2aa2d1032873d03a",
 			"phone": "563169999999",

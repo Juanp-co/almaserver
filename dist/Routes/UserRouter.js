@@ -43,6 +43,7 @@ router.route(`/families-groups/:_id/reports`)
  */
 router.get('/group', middleware_1.validateUser, user_controller_1.getGroup);
 router.get('/group/:memberId', middleware_1.validateUser, user_controller_1.getMemberGroup);
+router.put('/picture', middleware_1.validateUser, user_controller_1.updatePicture);
 /*
   Referrals
  */

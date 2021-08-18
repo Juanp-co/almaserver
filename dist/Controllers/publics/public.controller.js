@@ -238,7 +238,8 @@ async function getPublicMembers(req, res) {
                 names: 1,
                 lastNames: 1,
                 gender: 1,
-                phone: 1
+                phone: 1,
+                picture: 1
             })
                 .skip(skip)
                 .limit(limit)
