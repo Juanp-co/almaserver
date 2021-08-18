@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/user/group (00) Obtener datos del grupo familiar.
- * @apiVersion 0.0.27
+ * @apiVersion 0.0.36
  * @apiName getFamilyUserGroup
  * @apiGroup UserGroup
  *
@@ -16,12 +16,7 @@
  * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (members Object[]) {String} _id ID del miembro.
- * @apiSuccess (members Object[]) {String} names Nombres.
- * @apiSuccess (members Object[]) {String} lastNames Apellidos.
- * @apiSuccess (members Object[]) {String} document Número de documento.
- * @apiSuccess (members Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (members Object[]) {String|Null} phone Teléfono.
+ * @apiUse MemberObjectSimpleListDataResponse
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -32,14 +27,16 @@
 		"name": "FAMILIA VELASQUEZ RODRIGUEZ",
 		"code": "AAA-001",
 		"members": [
-			{
-				"_id": "5fcf0821fc917d476c1cf3e3",
-				"names": "PEDRO JOSÉ",
-				"lastNames": "PÉREZ RODRIGUEZ",
-				"document": "CC12345678",
-				"gender": 0,
-				"phone": "573161234567"
-			},
+      {
+        "_id": "5fcf0821fc917d476c1cf3e3",
+        "names": "PEDRO JOSÉ",
+        "lastNames": "PÉREZ RODRIGUEZ",
+        "document": "CC12345678",
+        "gender": null,
+        "phone": "3161234567",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+        "position": null
+      },
 			.
 			.
 			.
@@ -65,7 +62,7 @@
 
 /**
  * @api {get} /api/user/group/:memberId (01) Obtener datos de un miembro del grupo familiar.
- * @apiVersion 0.0.28
+ * @apiVersion 0.0.36
  * @apiName getDataMemberUserGroup
  * @apiGroup UserGroup
  *
@@ -82,7 +79,10 @@
  * @apiSuccess (data Object) {Object[]} courses Listado de cursos.
  * @apiSuccess (data Object) {Object[]} referrals Listado de hijos espirituales.
  *
+ * @apiSuccess (member Object) {String|Null} email Correo electrónico.
+ * @apiSuccess (member Object) {String|Null} position Cargo o posición.
  * @apiSuccess (member Object) {Number|Null} gender ID (array index) del sexo del miembro.
+ * @apiSuccess (member Object) {String|Null} birthday Fecha de nacimiento.
  * @apiSuccess (member Object) {Number|Null} civilStatus ID (array index) del estado civil del miembro.
  * @apiSuccess (member Object) {Boolean} consolidated Indica si el miembro fue consolidado.
  * @apiSuccess (member Object) {String|Null} petition Petición realizada por el miembro al momento de registrarse.
@@ -90,11 +90,11 @@
  * @apiSuccess (member Object) {Number|Null} city ID (array index) de la ciudad.
  * @apiSuccess (member Object) {String|Null} locality Nombre de la localidad.
  * @apiSuccess (member Object) {String|Null} direction Dirección.
+ * @apiSuccess (member Object) {String|Null} picture URL de la foto de perfil.
  * @apiSuccess (member Object) {String} _id ID del miembro.
- * @apiSuccess (member Object) {String|Null} phone Número de teléfono.
+ * @apiSuccess (member Object) {String} phone Número de teléfono.
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
- * @apiSuccess (member Object) {String|Null} email Correo electrónico.
  *
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
@@ -104,12 +104,14 @@
  * @apiSuccess (courses Object[]) {String|Null} approved Indica si ha aprobado el curso o no.
  *
  * @apiSuccess (referrals Object[]) {String} _id ID del miembro.
- * @apiSuccess (referrals Object[]) {String} names Nombres.
- * @apiSuccess (referrals Object[]) {String} lastNames Apellidos.
- * @apiSuccess (referrals Object[]) {String} document Número de documento.
- * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (referrals Object[]) {String|Null} phone Teléfono.
- * @apiSuccess (referrals Object[]) {Number} totalReferrals Total de referidos.
+ * @apiSuccess (referrals Object[]) {String} names Nombre(s).
+ * @apiSuccess (referrals Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (referrals Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (referrals Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (referrals Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (referrals Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (referrals Object[]) {String|Null} position Cargo o posición del miembro.
+ * @apiSuccess (referrals Object[]) {Numbers} totalsReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -117,19 +119,22 @@
 	"msg": "Miembro.",
 	"data": {
 		"member": {
-			"gender": 0,
-			"civilStatus": 0,
-			"consolidated": false,
-			"petition": null,
-			"department": 19,
-			"city": 18,
-			"locality": "CRUZ ROJA",
-			"direction": "C/CRUZ ROJA #62",
-			"_id": "6022194c88342006d4a700f3",
-			"phone": "563161234567",
-			"names": "ANTHONY",
-			"lastNames": "VELÁSQUEZ",
-			"email": "anthony@example.com"
+      "email": "pedro@example.com",
+      "position": null,
+      "gender": 0,
+      "birthday": "1994-07-07",
+      "civilStatus": 0,
+      "consolidated": false,
+      "petition": null,
+      "department": 0,
+      "city": 0,
+      "locality": "LOCALIDAD INICIAL",
+      "direction": "CUALQUIER DIRECCIÓN",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+      "_id": "5fcf0821fc917d476c1cf3e3",
+      "phone": "3161234567",
+      "names": "PEDRO JOSÉ",
+      "lastNames": "PÉREZ RODRIGUEZ"
 		},
 		"totalReferrals": 1,
 		"totalCourses": 5,
@@ -147,15 +152,17 @@
 			.
 		],
 		"referrals": [
-			{
-				"_id": "604068461caad10e2c965406",
-				"names": "PRUEBA",
-				"lastNames": "USUARIO",
-				"document": "CC123123123",
-				"gender": null,
-				"phone": null,
-				"totalsReferrals": 0
-			},
+      {
+        "_id": "604068461caad10e2c965406",
+        "names": "PRUEBA",
+        "lastNames": "USUARIO",
+        "document": "CC123123123",
+        "gender": null,
+        "phone": "573151234567",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+        "position": null,
+        "totalsReferrals": 0
+      },
 			.
 			.
 			.

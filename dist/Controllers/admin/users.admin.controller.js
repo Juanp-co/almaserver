@@ -39,6 +39,7 @@ async function getUsers(req, res) {
             document: 1,
             roles: 1,
             created_at: 1,
+            picture: 1,
         })
             .skip(skip)
             .limit(limit)

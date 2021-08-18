@@ -128,6 +128,7 @@
 		"updated_at": "2021-03-26 13:03:05",
 		"_id": "605e21d8a4fe940ef4d7d28b",
 		"email": "3161234567@example.com",
+    "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
 		"phone": "3161234567",
 		"document": "CC1490199",
 		"names": "ANTHONY",
@@ -201,7 +202,7 @@
 
 /**
  * @api {get} /api/events (03) Obtener eventos públicos.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.36
  * @apiName getPublicEventsPublic
  * @apiGroup Public
  *
@@ -223,35 +224,35 @@
  * @apiSuccess (events Object[]) {Array|Number} toRoles Roles a los que va dirigido.
  * @apiSuccess (events Object[]) {Object} user Información del miembro que agregó el evento.
  *
- * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (user Object) {String} _id ID del miembro.
- * @apiSuccess (user Object) {String} document Número de documento.
- * @apiSuccess (user Object) {String} names Nombre(s).
- * @apiSuccess (user Object) {String} lastNames Apellido(s).
+ * @apiUse UsersObjectSimpleDataResponse
  *
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
  * {
 	"msg": "Eventos.",
 	"events": [
-		{
-			"_id": "602bccfb1b70b930e43a3eb2",
-			"title": "EVENTO NUEVO",
-			"description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.",
-			"date": "2021-03-01",
-			"initHour": "00:00",
-			"endHour": "23:59",
-			"toRoles": [
-				5
-			],
-			"user": {
-				"gender": 0,
-				"_id": "5fcf0821fc917d476c1cf3e2",
-				"document": "CC123456789",
-				"names": "ANTHONY",
-				"lastNames": "VELÁSQUEZ"
-			}
-		},
+    {
+    "_id": "611a39d47636c51470deed92",
+    "title": "PRUEBA DESDE ADMIN",
+    "date": "2021-09-15",
+    "initHour": "08:00",
+    "endHour": "11:30",
+    "toRoles": [
+      3,
+      4
+    ],
+    "picture": "https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg",
+    "user": {
+      "_id": "5fcf0821fc917d476c1cf3e2",
+      "names": "ANTHONY EDITADO",
+      "lastNames": "ADMINISTRADOR",
+      "document": null,
+      "gender": null,
+      "phone": "31612345678",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
+      "position": null
+    }
+    },
 		.
 		.
 		.
@@ -274,7 +275,7 @@
 
 /**
  * @api {get} /api/events/:_id (04) Obtener detalles de un evento público.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.36
  * @apiName detailsPublicEventsPublic
  * @apiGroup Public
  *
@@ -294,11 +295,7 @@
  * @apiSuccess (event Object) {Array|Number} toRoles Roles a los que va dirigido.
  * @apiSuccess (event Object) {Object} user Información del miembro que agregó el evento.
  *
- * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (user Object) {String} _id ID del miembro.
- * @apiSuccess (user Object) {String} document Número de documento.
- * @apiSuccess (user Object) {String} names Nombre(s).
- * @apiSuccess (user Object) {String} lastNames Apellido(s).
+ * @apiUse UsersObjectSimpleDataResponse
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -314,13 +311,16 @@
 		"toRoles": [
 			5
 		],
-		"user": {
-			"gender": 0,
-			"_id": "5fcf0821fc917d476c1cf3e2",
-			"document": "CC123456789",
-			"names": "ANTHONY",
-			"lastNames": "VELÁSQUEZ"
-		}
+    "user": {
+      "_id": "5fcf0821fc917d476c1cf3e2",
+      "names": "ANTHONY EDITADO",
+      "lastNames": "ADMINISTRADOR",
+      "document": null,
+      "gender": null,
+      "phone": "31612345678",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
+      "position": null
+    }
 	}
 }
  *
@@ -526,7 +526,7 @@
 
 /**
  * @api {get} /api/members (09) Obtener listado de miembros.
- * @apiVersion 0.0.25
+ * @apiVersion 0.0.36
  * @apiName getMembersPublic
  * @apiGroup Public
  *
@@ -542,6 +542,7 @@
  * @apiSuccess {Object[]} members Listado de miembros.
  *
  * @apiSuccess (members Object[]) {Number|Null} gender Género (sexo) del miembro.
+ * @apiSuccess (members Object[]) {Number|Null} picture URL de la imagen de perfil.
  * @apiSuccess (members Object[]) {String} _id ID del miembro.
  * @apiSuccess (members Object[]) {String} phone Número de teléfono.
  * @apiSuccess (members Object[]) {String} names Nombre(s).
@@ -554,6 +555,7 @@
 	"members": [
 		{
 			"gender": null,
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
 		  "_id": "5fcf0821fc917d476c1cf3e3",
 			"phone": "3161234567",
 			"names": "PEDRO",
@@ -615,7 +617,10 @@
 			"subSector": 1,
 			"number": 1,
 			"direction": "DIRECCIÓN CUALQUIERA EDITADA"
-		}
+		},
+		.
+		.
+		.
 	]
 }
  *

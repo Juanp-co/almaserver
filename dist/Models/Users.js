@@ -53,6 +53,7 @@ const UserSchema = new mongoose_1.Schema({
     city: { type: Number, default: null },
     locality: { type: String, default: null, set: GlobalFunctions_1.toUpperValue },
     direction: { type: String, default: null, set: GlobalFunctions_1.toUpperValue },
+    picture: { type: String, default: null },
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });

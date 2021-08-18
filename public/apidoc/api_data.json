@@ -761,7 +761,7 @@
     "type": "get",
     "url": "/api/admin/consolidates",
     "title": "(00) Obtener reporte de consolidación.",
-    "version": "0.0.30",
+    "version": "0.0.36",
     "name": "getConsolidatesAdmin",
     "group": "ConsolidatesAdmin",
     "header": {
@@ -896,55 +896,69 @@
             "description": "<p>Observación agregada en la visita.</p>"
           }
         ],
-        "consolidator, members and member Object": [
+        "consolidator, members Object[] and member Object": [
           {
-            "group": "consolidator, members and member Object",
+            "group": "consolidator, members Object[] and member Object",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "consolidator, members and member Object",
+            "group": "consolidator, members Object[] and member Object",
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "consolidator, members and member Object",
+            "group": "consolidator, members Object[] and member Object",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "consolidator, members and member Object",
-            "type": "String",
+            "group": "consolidator, members Object[] and member Object",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "consolidator, members and member Object",
+            "group": "consolidator, members Object[] and member Object",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "consolidator, members and member Object",
-            "type": "String|Null",
+            "group": "consolidator, members Object[] and member Object",
+            "type": "String",
             "optional": false,
             "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "consolidator, members Object[] and member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "consolidator, members Object[] and member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Consolidaciones.\",\n\t\"data\": {\n\t\t\"consolidates\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"606bdbf35fd5900c1092d191\",\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t\t},\n\t\t\t\t\"member\": {\n\t\t\t\t\t\"gender\": null,\n\t\t\t\t\t\"_id\": \"606b6b833784652d9c46eb04\",\n\t\t\t\t\t\"phone\": \"3161231231\",\n\t\t\t\t\t\"document\": \"CC11123123\",\n\t\t\t\t\t\"names\": \"MILEIDY\",\n\t\t\t\t\t\"lastNames\": \"CABELLO\"\n\t\t\t\t},\n\t\t\t\t\"actión\": \"Visita\",\n\t\t\t\t\"date\": \"2021-04-05\",\n\t\t\t\t\"observation\": \"LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. SED PORTTITOR LECTUS NIBH. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. SED PORTTITOR LECTUS NIBH. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. NULLA QUIS LOREM UT LIBERO MALESUADA FEUGIAT.\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"pendingVisits\": [\n\t\t\t\"606b6b833784652d9c46eb04\",\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Consolidaciones.\",\n\t\"data\": {\n\t\t\"consolidates\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"606bdbf35fd5900c1092d191\",\n\t\t\t\t\"consolidator\": {\n          \"position\": null,\n\t\t\t\t\t\"gender\": 0,\n          \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t\t},\n\t\t\t\t\"member\": {\n          \"position\": null,\n\t\t\t\t\t\"gender\": null,\n          \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n\t\t\t\t\t\"_id\": \"606b6b833784652d9c46eb04\",\n\t\t\t\t\t\"phone\": \"3161231231\",\n\t\t\t\t\t\"document\": \"CC11123123\",\n\t\t\t\t\t\"names\": \"MILEIDY\",\n\t\t\t\t\t\"lastNames\": \"CABELLO\"\n\t\t\t\t},\n\t\t\t\t\"actión\": \"Visita\",\n\t\t\t\t\"date\": \"2021-04-05\",\n\t\t\t\t\"observation\": \"LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. NULLA PORTTITOR ACCUMSAN TINCIDUNT. SED PORTTITOR LECTUS NIBH. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. SED PORTTITOR LECTUS NIBH. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A. NULLA QUIS LOREM UT LIBERO MALESUADA FEUGIAT.\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"members\": [\n\t\t\t{\n        \"position\": null,\n\t\t\t\t\"gender\": 0,\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\"phone\": \"31612345678\",\n\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"ADMINISTRADOR\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"pendingVisits\": [\n\t\t\t\"606b6b833784652d9c46eb04\",\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -1004,7 +1018,7 @@
     "type": "get",
     "url": "/api/admin/consolidates/members",
     "title": "(02) Obtener listado de miembros consolidados.",
-    "version": "0.0.30",
+    "version": "0.0.36",
     "name": "getMembersConsolidatesAdmin",
     "group": "ConsolidatesAdmin",
     "header": {
@@ -1051,18 +1065,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "members Object[]",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -1072,21 +1086,35 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "members Object[]",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembros\",\n\t\"members\": [\n\t\t{\n\t\t\t\"gender\": null,\n\t\t\t\"_id\": \"606b5e0d2aa2d1032873d03a\",\n\t\t\t\"phone\": \"563169999999\",\n\t\t\t\"document\": \"CC9999999999\",\n\t\t\t\"names\": \"NUMERO NUEVE\",\n\t\t\t\"lastNames\": \"NUEVE\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembros\",\n\t\"members\": [\n\t\t{\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n      \"position\": null,\n\t\t\t\"gender\": null,\n\t\t\t\"_id\": \"606b5e0d2aa2d1032873d03a\",\n\t\t\t\"phone\": \"563169999999\",\n\t\t\t\"document\": \"CC9999999999\",\n\t\t\t\"names\": \"NUMERO NUEVE\",\n\t\t\t\"lastNames\": \"NUEVE\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -2302,7 +2330,7 @@
           },
           {
             "group": "user Object",
-            "type": "String|Null",
+            "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono.</p>"
@@ -4485,7 +4513,7 @@
   },
   {
     "type": "delete",
-    "url": "/api/admin/events/:_id",
+    "url": "/api/events/:_id",
     "title": "(04) Eliminar un evento.",
     "version": "0.0.35",
     "name": "deleteEventsAdmin",
@@ -4498,7 +4526,7 @@
             "type": "String",
             "optional": false,
             "field": "x-access-token",
-            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+            "description": "<p>Token de la sesión.</p>"
           }
         ]
       }
@@ -4536,8 +4564,8 @@
         }
       ]
     },
-    "filename": "Docs/Admin/EventsAdmin.js",
-    "groupTitle": "EventsAdmin",
+    "filename": "Docs/Events.js",
+    "groupTitle": "Events",
     "error": {
       "fields": {
         "Error 4xx": [
@@ -4575,11 +4603,6 @@
       },
       "examples": [
         {
-          "title": "Error token",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
-          "type": "JSON"
-        },
-        {
           "title": "Not found",
           "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el evento seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
@@ -4599,9 +4622,9 @@
   },
   {
     "type": "get",
-    "url": "/api/admin/events/:_id",
+    "url": "/api/events/:_id",
     "title": "(02) Obtener detalles de un evento.",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "name": "detailsEventsAdmin",
     "group": "EventsAdmin",
     "header": {
@@ -4612,7 +4635,7 @@
             "type": "String",
             "optional": false,
             "field": "x-access-token",
-            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+            "description": "<p>Token de la sesión.</p>"
           }
         ]
       }
@@ -4753,8 +4776,15 @@
             "group": "user Object",
             "type": "String",
             "optional": false,
-            "field": "pphone",
+            "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
           },
           {
             "group": "user Object",
@@ -4768,7 +4798,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"5fe00cf5e2c9942e5c866453\",\n    \"title\": \"EVENTO 1\",\n    \"description\": \"Para todos los roles\",\n    \"date\": \"2021-03-03\",\n    \"initHour\": \"00:00\",\n    \"endHour\": \"23:00\",\n    \"toRoles\": [\n      0,\n      1,\n      2,\n      3,\n      4\n    ],\n    \"picture\": null,\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"position\": null\n    }\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"5fe00cf5e2c9942e5c866453\",\n    \"title\": \"EVENTO 1\",\n    \"description\": \"Para todos los roles\",\n    \"date\": \"2021-03-03\",\n    \"initHour\": \"00:00\",\n    \"endHour\": \"23:00\",\n    \"toRoles\": [\n      0,\n      1,\n      2,\n      3,\n      4\n    ],\n    \"picture\": null,\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -4838,7 +4868,7 @@
     "type": "get",
     "url": "/api/admin/events",
     "title": "(00) Obtener listado de eventos registrados.",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "name": "getEventsAdmin",
     "group": "EventsAdmin",
     "header": {
@@ -5004,8 +5034,15 @@
             "group": "user Object",
             "type": "String",
             "optional": false,
-            "field": "pphone",
+            "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
           },
           {
             "group": "user Object",
@@ -5019,7 +5056,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"PRUEBA DESDE ADMIN\",\n      \"date\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY EDITADO\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"PRUEBA DESDE ADMIN\",\n      \"date\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -5422,12 +5459,70 @@
             "field": "picture",
             "description": "<p>URL de la imagen del evento.</p>"
           }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha creado el evento exitosamente.\",\n\t\"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"EVENTO 01\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n    \"date\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\"\n  }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"PRUEBA DESDE ADMIN\",\n    \"description\": \"<P>PRAESENT SAPIEN MASSA, CONVALLIS A PELLENTESQUE NEC, ...</P>\",\n    \"date\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -5664,7 +5759,7 @@
     "type": "get",
     "url": "/api/events/:_id",
     "title": "(02) Obtener detalles de un evento.",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "name": "detailsEvents",
     "group": "Events",
     "header": {
@@ -5793,7 +5888,7 @@
           },
           {
             "group": "user Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
@@ -5816,8 +5911,15 @@
             "group": "user Object",
             "type": "String",
             "optional": false,
-            "field": "pphone",
+            "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
           },
           {
             "group": "user Object",
@@ -5831,7 +5933,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"EVENTO 01\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n    \"date\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"position\": null\n    }\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"EVENTO 01\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n    \"date\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -5901,7 +6003,7 @@
     "type": "get",
     "url": "/api/events",
     "title": "(00) Obtener listado de eventos públicos.",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "name": "getEvents",
     "group": "Events",
     "header": {
@@ -6067,8 +6169,15 @@
             "group": "user Object",
             "type": "String",
             "optional": false,
-            "field": "pphone",
+            "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
           },
           {
             "group": "user Object",
@@ -6082,7 +6191,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"EVENTO\",\n      \"date\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY EDITADO\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"EVENTO\",\n      \"date\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -6639,7 +6748,7 @@
     "type": "get",
     "url": "/api/admin/families-groups/:_id",
     "title": "(02) Obtener detalles de un grupo familiar.",
-    "version": "0.0.28",
+    "version": "0.0.36",
     "name": "getDetailsGroupFamiliesGroupsAdmin",
     "group": "FamiliesGroupsAdmin",
     "header": {
@@ -6787,18 +6896,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -6808,21 +6917,35 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"584121490199\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-03 11:51:52\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"group\": {\n    \"_id\": \"6063385c98fc731c04777829\",\n    \"number\": 2,\n    \"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n    \"sector\": 4,\n    \"subSector\": 2,\n    \"members\": {\n      \"leader\": null,\n      \"host\": {\n        \"_id\": \"604068461caad10e2c965406\",\n        \"names\": \"PRUEBA\",\n        \"lastNames\": \"USUARIO\",\n        \"document\": \"CC123123123\",\n        \"gender\": null,\n        \"phone\": \"573151234567\",\n        \"picture\": null,\n        \"position\": null\n      },\n      \"assistant\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n      \"master\": null\n    },\n    \"created_at\": \"2021-03-30 09:40:28\",\n    \"updated_at\": \"2021-04-03 11:51:52\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -7071,7 +7194,7 @@
     "type": "put",
     "url": "/api/admin/families-groups/:_id",
     "title": "(03) Actualizar datos de un grupo familiar.",
-    "version": "0.0.28",
+    "version": "0.0.36",
     "name": "updateGroupFamiliesGroupsAdmin",
     "group": "FamiliesGroupsAdmin",
     "header": {
@@ -7256,18 +7379,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -7277,21 +7400,35 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"584121490199\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-04 06:54:31\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"group\": {\n    \"_id\": \"6063385c98fc731c04777829\",\n    \"number\": 1,\n    \"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\",\n    \"sector\": 1,\n    \"subSector\": 1,\n    \"members\": {\n      \"leader\": null,\n      \"host\": {\n        \"_id\": \"604068461caad10e2c965406\",\n        \"names\": \"PRUEBA\",\n        \"lastNames\": \"USUARIO\",\n        \"document\": \"CC123123123\",\n        \"gender\": null,\n        \"phone\": \"573151234567\",\n        \"picture\": null,\n        \"position\": null\n      },\n      \"assistant\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n      \"master\": null\n    },\n    \"created_at\": \"2021-03-30 09:40:28\",\n    \"updated_at\": \"2021-04-08 07:38:05\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -7371,7 +7508,7 @@
     "type": "put",
     "url": "/api/admin/families-groups/:_id/members",
     "title": "(04) Actualizar miembros de un grupo familiar.",
-    "version": "0.0.28",
+    "version": "0.0.36",
     "name": "updateMembersGroupFamiliesGroupsAdmin",
     "group": "FamiliesGroupsAdmin",
     "header": {
@@ -7442,7 +7579,7 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n\t\"members\": {\n\t\t\"leaderId\": \"604068b49b20e72f341972ed\",\n\t\t\"hostId\": \"604068461caad10e2c965406\",\n\t\t\"assistantId\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"masterId\": null\n\t}\n}",
+        "content": "{\n\t\"members\": {\n\t\t\"leaderId\": null,\n\t\t\"hostId\": \"604068461caad10e2c965406\",\n\t\t\"assistantId\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"masterId\": null\n\t}\n}",
         "type": "JSON"
       }
     ],
@@ -7507,18 +7644,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -7528,21 +7665,35 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "leader, host, assistant and master Object",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"members\": {\n\t\t\"leader\": {\n\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\"names\": \"LIDER\",\n\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": null\n\t\t},\n\t\t\"host\": {\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"584121490199\"\n\t\t},\n\t\t\"assistant\": {\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"gender\": 0,\n\t\t\t\"phone\": \"3161234567\"\n\t\t},\n\t\t\"master\": null\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"members\": {\n    \"leader\": null,\n    \"host\": {\n      \"_id\": \"604068461caad10e2c965406\",\n      \"names\": \"PRUEBA\",\n      \"lastNames\": \"USUARIO\",\n      \"document\": \"CC123123123\",\n      \"gender\": null,\n      \"phone\": \"573151234567\",\n      \"picture\": null,\n      \"position\": null\n    },\n    \"assistant\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n      \"names\": \"PEDRO JOSÉ\",\n      \"lastNames\": \"PÉREZ RODRIGUEZ\",\n      \"document\": \"CC12345678\",\n      \"gender\": null,\n      \"phone\": \"3161234567\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n      \"position\": null\n    },\n    \"master\": null\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -7617,7 +7768,7 @@
     "type": "put",
     "url": "/api/admin/groups/:_id/members/add",
     "title": "(06) Agregar miembros al grupo.",
-    "version": "0.0.8",
+    "version": "0.0.36",
     "name": "addMembersGroupsAdmin",
     "group": "GroupsAdmin",
     "header": {
@@ -7692,13 +7843,6 @@
             "group": "notInserts Object[]",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "notInserts Object[]",
-            "type": "String",
-            "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
@@ -7708,6 +7852,41 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "notInserts Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "notInserts Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "notInserts Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "notInserts Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "notInserts Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
@@ -7719,7 +7898,7 @@
         },
         {
           "title": "Success, but some members wasn't added",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el listado de miembros exitosamente. Algunos miembros no lograron ser agregados porque ya pertenecen a otro grupo.\",\n    \"notInserts\": [\n        {\n            \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n            \"document\": \"CC12345678\",\n            \"names\": \"USUARIO TRES\",\n            \"lastNames\": \"PRUEBA TRES\"\n        }\n    ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado el listado de miembros exitosamente. Algunos miembros no lograron ser agregados porque ya pertenecen a otro grupo.\",\n  \"notInserts\": [\n    {\n      \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n      \"names\": \"PEDRO JOSÉ\",\n      \"lastNames\": \"PÉREZ RODRIGUEZ\",\n      \"document\": \"CC12345678\",\n      \"gender\": null,\n      \"phone\": \"3161234567\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n      \"position\": null\n    },\n    .\n    .\n    .\n  ]\n}",
           "type": "JSON"
         }
       ]
@@ -8119,7 +8298,7 @@
     "type": "get",
     "url": "/api/admin/groups/:_id",
     "title": "(03) Obtener detalles de un grupo.",
-    "version": "0.0.27",
+    "version": "0.0.36",
     "name": "detailsGroupsAdmin",
     "group": "GroupsAdmin",
     "header": {
@@ -8217,6 +8396,64 @@
             "description": "<p>Fecha de la última actualización del grupo.</p>"
           }
         ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ],
         "members Object[]": [
           {
             "group": "members Object[]",
@@ -8230,18 +8467,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "members Object[]",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -8251,21 +8488,35 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "members Object[]",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo\",\n\t\"group\": {\n\t\t\"_id\": \"60330f5102626e2040bd2393\",\n\t\t\"user\": {\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"ADMINISTRADOR\",\n\t\t\t\"document\": \"CC123456789\",\n\t\t\t\"gender\": 1,\n\t\t\t\"phone\": \"573161234567\"\n\t\t},\n\t\t\"name\": \"FAMILIA PEREZ\",\n\t\t\"code\": \"GROUP-0\",\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"573161234567\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-21 20:56:33\",\n\t\t\"updated_at\": \"2021-03-01 22:46:53\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo\",\n  \"group\": {\n    \"_id\": \"60330f5102626e2040bd2393\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    },\n    \"name\": \"FAMILIA PEREZ\",\n    \"code\": \"GROUP-0\",\n    \"members\": [\n      {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n      .\n      .\n      .\n    ],\n    \"created_at\": \"2021-02-21 20:56:33\",\n    \"updated_at\": \"2021-03-01 22:46:53\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -8982,7 +9233,7 @@
     "type": "get",
     "url": "/api/events/:_id",
     "title": "(04) Obtener detalles de un evento público.",
-    "version": "0.0.16",
+    "version": "0.0.36",
     "name": "detailsPublicEventsPublic",
     "group": "Public",
     "header": {
@@ -9090,24 +9341,10 @@
         "user Object": [
           {
             "group": "user Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo (género).</p>"
-          },
-          {
-            "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
-          },
-          {
-            "group": "user Object",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
           },
           {
             "group": "user Object",
@@ -9122,13 +9359,48 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Evento.\",\n\t\"event\": {\n\t\t\"_id\": \"602bccfb1b70b930e43a3eb2\",\n\t\t\"title\": \"EVENTO NUEVO\",\n\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\"date\": \"2021-03-01\",\n\t\t\"initHour\": \"00:00\",\n\t\t\"endHour\": \"23:59\",\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n\t\t\"user\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\"document\": \"CC123456789\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t}\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Evento.\",\n\t\"event\": {\n\t\t\"_id\": \"602bccfb1b70b930e43a3eb2\",\n\t\t\"title\": \"EVENTO NUEVO\",\n\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\"date\": \"2021-03-01\",\n\t\t\"initHour\": \"00:00\",\n\t\t\"endHour\": \"23:59\",\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -9328,7 +9600,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n\t\t{\n\t\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\t\"sector\": 1,\n\t\t\t\"subSector\": 1,\n\t\t\t\"number\": 1,\n\t\t\t\"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\"\n\t\t}\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n\t\t{\n\t\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\t\"sector\": 1,\n\t\t\t\"subSector\": 1,\n\t\t\t\"number\": 1,\n\t\t\t\"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -9393,7 +9665,7 @@
     "type": "get",
     "url": "/api/members",
     "title": "(09) Obtener listado de miembros.",
-    "version": "0.0.25",
+    "version": "0.0.36",
     "name": "getMembersPublic",
     "group": "Public",
     "header": {
@@ -9478,6 +9750,13 @@
           },
           {
             "group": "members Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen de perfil.</p>"
+          },
+          {
+            "group": "members Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -9509,7 +9788,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de miembros.\",\n\t\"members\": [\n\t\t{\n\t\t\t\"gender\": null,\n\t\t  \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"names\": \"PEDRO\",\n\t\t\t\"lastNames\": \"PEREZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de miembros.\",\n\t\"members\": [\n\t\t{\n\t\t\t\"gender\": null,\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n\t\t  \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"names\": \"PEDRO\",\n\t\t\t\"lastNames\": \"PEREZ\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -9707,7 +9986,7 @@
     "type": "get",
     "url": "/api/events",
     "title": "(03) Obtener eventos públicos.",
-    "version": "0.0.16",
+    "version": "0.0.36",
     "name": "getPublicEventsPublic",
     "group": "Public",
     "header": {
@@ -9829,24 +10108,10 @@
         "user Object": [
           {
             "group": "user Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo (género).</p>"
-          },
-          {
-            "group": "user Object",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
-          },
-          {
-            "group": "user Object",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
           },
           {
             "group": "user Object",
@@ -9861,13 +10126,48 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Eventos.\",\n\t\"events\": [\n\t\t{\n\t\t\t\"_id\": \"602bccfb1b70b930e43a3eb2\",\n\t\t\t\"title\": \"EVENTO NUEVO\",\n\t\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\"date\": \"2021-03-01\",\n\t\t\t\"initHour\": \"00:00\",\n\t\t\t\"endHour\": \"23:59\",\n\t\t\t\"toRoles\": [\n\t\t\t\t5\n\t\t\t],\n\t\t\t\"user\": {\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\t\t\"document\": \"CC123456789\",\n\t\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t\t}\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Eventos.\",\n\t\"events\": [\n    {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"PRUEBA DESDE ADMIN\",\n    \"date\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n    },\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -10159,7 +10459,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"¡Inicio de sesión con éxito!\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"group\": null,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-03-26 13:01:21\",\n\t\t\"updated_at\": \"2021-03-26 13:03:05\",\n\t\t\"_id\": \"605e21d8a4fe940ef4d7d28b\",\n\t\t\"email\": \"3161234567@example.com\",\n\t\t\"phone\": \"3161234567\",\n\t\t\"document\": \"CC1490199\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t},\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDVlMjFkOGE0ZmU5NDBlZjRkN2QyOGIiLCJyb2xlIjo1LCJpYXQiOjE2MTY3ODYzMDMsImV4cCI6MTY0ODM0MzkwM30.aWCtwE5ZOY6JtHcaMqRcf0WfmhE5mgVjhwLQuBIK9Uc\"\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"¡Inicio de sesión con éxito!\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"group\": null,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-03-26 13:01:21\",\n\t\t\"updated_at\": \"2021-03-26 13:03:05\",\n\t\t\"_id\": \"605e21d8a4fe940ef4d7d28b\",\n\t\t\"email\": \"3161234567@example.com\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n\t\t\"phone\": \"3161234567\",\n\t\t\"document\": \"CC1490199\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t},\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDVlMjFkOGE0ZmU5NDBlZjRkN2QyOGIiLCJyb2xlIjo1LCJpYXQiOjE2MTY3ODYzMDMsImV4cCI6MTY0ODM0MzkwM30.aWCtwE5ZOY6JtHcaMqRcf0WfmhE5mgVjhwLQuBIK9Uc\"\n}",
           "type": "JSON"
         }
       ]
@@ -12101,7 +12401,7 @@
           },
           {
             "group": "leader, host, assistant and master Object",
-            "type": "String|Null",
+            "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono.</p>"
@@ -12118,7 +12418,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": 584121490191,\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"584121490199\",\n\t\t\t\t\"position\": \"ANFITRIÓN Y LÍDER\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\",\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-03 11:51:52\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": 573151234561,\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"573151234567\",\n\t\t\t\t\"position\": \"ANFITRIÓN Y LÍDER\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\",\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-03 11:51:52\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -12610,7 +12910,7 @@
     "type": "get",
     "url": "/api/user/group/:memberId",
     "title": "(01) Obtener datos de un miembro del grupo familiar.",
-    "version": "0.0.28",
+    "version": "0.0.36",
     "name": "getDataMemberUserGroup",
     "group": "UserGroup",
     "header": {
@@ -12697,10 +12997,31 @@
         "member Object": [
           {
             "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición.</p>"
+          },
+          {
+            "group": "member Object",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
           },
           {
             "group": "member Object",
@@ -12753,6 +13074,13 @@
           },
           {
             "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "member Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -12760,7 +13088,7 @@
           },
           {
             "group": "member Object",
-            "type": "String|Null",
+            "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Número de teléfono.</p>"
@@ -12778,13 +13106,6 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
-          },
-          {
-            "group": "member Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
           }
         ],
         "courses Object[]": [
@@ -12844,18 +13165,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "referrals Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "referrals Object[]",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -12865,20 +13186,34 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "referrals Object[]",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
           },
           {
             "group": "referrals Object[]",
-            "type": "Number",
+            "type": "String|Null",
             "optional": false,
-            "field": "totalReferrals",
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Numbers",
+            "optional": false,
+            "field": "totalsReferrals",
             "description": "<p>Total de referidos.</p>"
           }
         ]
@@ -12886,7 +13221,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"consolidated\": false,\n\t\t\t\"petition\": null,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 5,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f7\",\n\t\t\t\t\"slug\": \"nivel-uno\",\n\t\t\t\t\"title\": \"NIVEL UNO\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"level\": 1\n\t\t\t\t\"approved\": true\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"totalsReferrals\": 0\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n      \"email\": \"pedro@example.com\",\n      \"position\": null,\n      \"gender\": 0,\n      \"birthday\": \"1994-07-07\",\n      \"civilStatus\": 0,\n      \"consolidated\": false,\n      \"petition\": null,\n      \"department\": 0,\n      \"city\": 0,\n      \"locality\": \"LOCALIDAD INICIAL\",\n      \"direction\": \"CUALQUIER DIRECCIÓN\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n      \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n      \"phone\": \"3161234567\",\n      \"names\": \"PEDRO JOSÉ\",\n      \"lastNames\": \"PÉREZ RODRIGUEZ\"\n\t\t},\n\t\t\"totalReferrals\": 1,\n\t\t\"totalCourses\": 5,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f7\",\n\t\t\t\t\"slug\": \"nivel-uno\",\n\t\t\t\t\"title\": \"NIVEL UNO\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"level\": 1\n\t\t\t\t\"approved\": true\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n      {\n        \"_id\": \"604068461caad10e2c965406\",\n        \"names\": \"PRUEBA\",\n        \"lastNames\": \"USUARIO\",\n        \"document\": \"CC123123123\",\n        \"gender\": null,\n        \"phone\": \"573151234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null,\n        \"totalsReferrals\": 0\n      },\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t]\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -12981,7 +13316,7 @@
     "type": "get",
     "url": "/api/user/group",
     "title": "(00) Obtener datos del grupo familiar.",
-    "version": "0.0.27",
+    "version": "0.0.36",
     "name": "getFamilyUserGroup",
     "group": "UserGroup",
     "header": {
@@ -13072,18 +13407,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "members Object[]",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -13093,21 +13428,35 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "members Object[]",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"members\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"573161234567\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"members\": [\n      {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
           "type": "JSON"
         },
         {
@@ -13172,7 +13521,7 @@
     "type": "get",
     "url": "/api/user/referrals/:memberId",
     "title": "(02) Obtener datos de un hijo espiritual.",
-    "version": "0.0.28",
+    "version": "0.0.36",
     "name": "getDataMemberUserReferrals",
     "group": "UserReferrals",
     "header": {
@@ -13266,10 +13615,31 @@
         "member Object": [
           {
             "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición.</p>"
+          },
+          {
+            "group": "member Object",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo del miembro.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
           },
           {
             "group": "member Object",
@@ -13322,6 +13692,13 @@
           },
           {
             "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "member Object",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -13329,7 +13706,7 @@
           },
           {
             "group": "member Object",
-            "type": "String|Null",
+            "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Número de teléfono.</p>"
@@ -13347,20 +13724,6 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
-          },
-          {
-            "group": "member Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
-          },
-          {
-            "group": "member Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "position",
-            "description": "<p>Cargo o posición.</p>"
           }
         ],
         "courses Object[]": [
@@ -13410,7 +13773,7 @@
         "visits Object[]": [
           {
             "group": "visits Object[]",
-            "type": "Object|Nukk",
+            "type": "Object|Null",
             "optional": false,
             "field": "consolidator",
             "description": "<p>ID del curso.</p>"
@@ -13440,13 +13803,6 @@
         "referrals and consolidator Object[]": [
           {
             "group": "referrals and consolidator Object[]",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
-          },
-          {
-            "group": "referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
@@ -13456,35 +13812,56 @@
             "group": "referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "referrals and consolidator Object[]",
-            "type": "String",
-            "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "referrals and consolidator Object[]",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
           },
           {
             "group": "referrals and consolidator Object[]",
-            "type": "Number",
+            "type": "Number|Null",
             "optional": false,
-            "field": "totalReferrals",
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "referrals and consolidator Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "referrals and consolidator Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "referrals and consolidator Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          },
+          {
+            "group": "referrals and consolidator Object[]",
+            "type": "Numbers",
+            "optional": false,
+            "field": "totalsReferrals",
             "description": "<p>Total de referidos.</p>"
           }
         ]
@@ -13492,7 +13869,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Miembro.\",\n\t\"data\": {\n\t\t\"member\": {\n\t\t\t\"gender\": 0,\n\t\t\t\"civilStatus\": 0,\n\t\t\t\"consolidated\": false,\n\t\t\t\"petition\": null,\n\t\t\t\"department\": 19,\n\t\t\t\"city\": 18,\n\t\t\t\"locality\": \"CRUZ ROJA\",\n\t\t\t\"direction\": \"C/CRUZ ROJA #62\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\",\n\t\t\t\"email\": \"anthony@example.com\",\n\t\t\t\"position\": null\n\t\t},\n\t\t\"totalCourses\": 5,\n\t\t\"totalReferrals\": 12,\n\t\t\"courses\": [\n\t\t\t{\n\t\t\t\t\"_id\": \"603afb2309bf7a3428ac58f1\",\n\t\t\t\t\"slug\": \"nivel-uno\",\n\t\t\t\t\"title\": \"NIVEL UNO\",\n\t\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\t\"level\": 1,\n\t\t\t\t\"approved\": false\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"referrals\": [\n\t\t\t{\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"_id\": \"6045ebc578cb41018883d3ea\",\n\t\t\t\t\"phone\": null,\n\t\t\t\t\"document\": \"CC11223344\",\n\t\t\t\t\"names\": \"JOSÉ\",\n\t\t\t\t\"lastNames\": \"ESPINOZA\"\n\t\t\t},\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"visits\": [\n\t\t\t{\n\t\t\t\t\"consolidator\": {\n\t\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\t\"gender\": 0,\n\t\t\t\t\t\"phone\": \"3161234567\"\n\t\t\t\t},\n\t\t\t\t\"date\": \"2021-04-12\",\n\t\t\t\t\"actión\": \"Llamada\",\n\t\t\t\t\"observation\": \"ACURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VESTIBULUM ANTE IPSUM PRIMIS IN FAUCIBUS ORCI LUCTUS ET ULTRICES POSUERE CUBILIA CURAE; DONEC VELIT NEQUE, AUCTOR SIT AMET ALIQUAM VEL, ULLAMCORPER SIT AMET LIGULA. NULLA PORTTITOR ACCUMSAN TINCIDUNT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR ALIQUET QUAM ID DUI POSUERE BLANDIT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. VIVAMUS SUSCIPIT TORTOR EGET FELIS PORTTITOR VOLUTPAT. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\\n\\nCURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. DONEC SOLLICITUDIN MOLESTIE MALESUADA. CURABITUR NON NULLA SIT AMET NISL TEMPUS CONVALLIS QUIS AC LECTUS. MAURIS BLANDIT ALIQUET ELIT, EGET TINCIDUNT NIBH PULVINAR A.\"\n\t\t\t},\n\t\t]\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Miembro.\",\n  \"data\": {\n    \"member\": {\n      \"email\": \"4121490198@example.com\",\n      \"position\": null,\n      \"gender\": null,\n      \"birthday\": null,\n      \"civilStatus\": null,\n      \"consolidated\": false,\n      \"petition\": null,\n      \"department\": null,\n      \"city\": null,\n      \"locality\": null,\n      \"direction\": null,\n      \"picture\": null,\n      \"_id\": \"605e37d154abd33060a689dc\",\n      \"phone\": \"573151234568\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELÁSQUEZ\"\n    },\n    \"totalCourses\": 9,\n    \"totalReferrals\": 6,\n    \"courses\": [\n      {\n        \"_id\": \"603afb2309bf7a3428ac58f1\",\n        \"slug\": \"nivel-uno-2\",\n        \"title\": \"NIVEL UNO\",\n        \"description\": \"Donec sollicitudin molestie malesuada. ...\",\n        \"level\": 1,\n        \"approved\": false\n      },\n      .\n      .\n      .\n    ],\n    \"referrals\": [\n      {\n        \"_id\": \"607fb9d275581c087c36922c\",\n        \"names\": \"EIMY VALENTINA\",\n        \"lastNames\": \"VELASQUEZ TIRADO\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"3167654321\",\n        \"picture\": null,\n        \"position\": null,\n        \"totalsReferrals\": 0\n      },\n      .\n      .\n      .\n    ],\n    \"visits\": []\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -13577,7 +13954,7 @@
     "type": "get",
     "url": "/api/user/referrals",
     "title": "(01) Obtener listado de hijos espirituales.",
-    "version": "0.0.27",
+    "version": "0.0.36",
     "name": "getUserReferrals",
     "group": "UserReferrals",
     "header": {
@@ -13663,10 +14040,68 @@
           },
           {
             "group": "referred Object",
-            "type": "String|Null",
+            "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono.</p>"
+          }
+        ],
+        "referred Object[]": [
+          {
+            "group": "referred Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "referred Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "referred Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "referred Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "referred Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "referred Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "referred Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "referred Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ],
         "referrals Object[]": [
@@ -13682,18 +14117,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "referrals Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "referrals Object[]",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -13703,20 +14138,34 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "referrals Object[]",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
           },
           {
             "group": "referrals Object[]",
-            "type": "Number",
+            "type": "String|Null",
             "optional": false,
-            "field": "totalReferrals",
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "Numbers",
+            "optional": false,
+            "field": "totalsReferrals",
             "description": "<p>Total de referidos.</p>"
           }
         ]
@@ -13724,7 +14173,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis referidos.\",\n\t\"referred\": {\n\t\t\"_id\": \"5fcf0821fc917d476c1cf3e2\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"ADMINISTRADOR\",\n\t\t\"document\": \"CC123456789\",\n\t\t\"gender\": 1,\n\t\t\"phone\": \"573161234567\"\n\t},\n\t\"totals\": 5,\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": null,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Mis referidos.\",\n  \"referred\": {\n    \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n    \"names\": \"ANTHONY EDITADO\",\n    \"lastNames\": \"ADMINISTRADOR\",\n    \"document\": null,\n    \"gender\": null,\n    \"phone\": \"31612345678\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n    \"position\": null\n  },\n  \"totalsGroups\": 1,\n  \"totals\": 21,\n  \"referrals\": [\n    {\n      \"_id\": \"6081200245db7c27e4c91908\",\n      \"names\": \"ALEJANDRO\",\n      \"lastNames\": \"RODRIGUEZ\",\n      \"document\": null,\n      \"gender\": 2,\n      \"phone\": \"4121490195\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null,\n      \"totalsReferrals\": 0\n    },\n    .\n    .\n    .\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -14132,7 +14581,7 @@
   {
     "type": "put",
     "url": "/api/user/change-password",
-    "title": "(02) Cambiar contraseña.",
+    "title": "(03) Cambiar contraseña.",
     "version": "0.0.2",
     "name": "changePasswordUser",
     "group": "User",
@@ -14260,7 +14709,7 @@
   {
     "type": "get",
     "url": "/api/user/courses",
-    "title": "(03) Obtener cursos de un miembro.",
+    "title": "(04) Obtener cursos de un miembro.",
     "version": "0.0.28",
     "name": "getCoursesListUser",
     "group": "User",
@@ -14445,6 +14894,20 @@
         "data Object": [
           {
             "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
@@ -14508,6 +14971,41 @@
           },
           {
             "group": "data Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "consolidated",
+            "description": "<p>Indica si el miembro fue consolidado.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "group",
+            "description": "<p>ID del grupo al que pertenece.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "petition",
+            "description": "<p>Petición solicitada al ser consolidado.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "attendGroup",
+            "description": "<p>Indica si asiste a un grupo familiar.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Boolean",
             "optional": false,
             "field": "meetingNew",
@@ -14517,8 +15015,8 @@
             "group": "data Object",
             "type": "Number[]",
             "optional": false,
-            "field": "roles",
-            "description": "<p>Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).</p>"
+            "field": "familyGroupId",
+            "description": "<p>IDs de los grupos familiares de los que forma parte.</p>"
           },
           {
             "group": "data Object",
@@ -14536,17 +15034,31 @@
           },
           {
             "group": "data Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "locality",
             "description": "<p>Nombrede la localidad.</p>"
           },
           {
             "group": "data Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "direction",
             "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen de perfil.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "consolidatorId",
+            "description": "<p>Id del miembro que lo consolidó.</p>"
           },
           {
             "group": "data Object",
@@ -14573,19 +15085,12 @@
             "group": "data Object",
             "type": "String",
             "optional": false,
-            "field": "email",
-            "description": "<p>Correo electrónico.</p>"
-          },
-          {
-            "group": "data Object",
-            "type": "String",
-            "optional": false,
             "field": "phone",
             "description": "<p>Número de teléfono.</p>"
           },
           {
             "group": "data Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -14609,7 +15114,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Datos de la sesión\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"meetingNew\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-02-18 19:23:23\",\n\t\t\"updated_at\": \"2021-02-18 19:25:33\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"document\": \"CC12345675\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Datos de la sesión\",\n  \"data\": {\n    \"email\": \"pedro@example.com\",\n    \"position\": null,\n    \"gender\": 0,\n    \"birthday\": \"1994-07-07\",\n    \"civilStatus\": 0,\n    \"educationLevel\": 4,\n    \"profession\": 90,\n    \"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"roles\": [\n      4\n    ],\n    \"consolidated\": false,\n    \"group\": \"60330f5102626e2040bd2393\",\n    \"petition\": null,\n    \"attendGroup\": false,\n    \"meetingNew\": false,\n    \"familyGroupId\": [\n      \"6063385c98fc731c04777829\"\n    ],\n    \"department\": 0,\n    \"city\": 0,\n    \"locality\": \"LOCALIDAD INICIAL\",\n    \"direction\": \"CUALQUIER DIRECCIÓN\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n    \"consolidatorId\": \"605fa31b5260482550a9a3bf\",\n    \"created_at\": \"2020-12-07 23:59:12\",\n    \"updated_at\": \"2021-08-18 06:45:28\",\n    \"phone\": \"3161234567\",\n    \"document\": \"CC12345678\",\n    \"names\": \"PEDRO JOSÉ\",\n    \"lastNames\": \"PÉREZ RODRIGUEZ\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -14668,7 +15173,7 @@
   {
     "type": "get",
     "url": "/api/user/reports",
-    "title": "(04) Obtener reportes de la cuenta.",
+    "title": "(05) Obtener reportes de la cuenta.",
     "version": "0.0.19",
     "name": "getReportsUser",
     "group": "User",
@@ -14790,6 +15295,152 @@
         {
           "title": "Success without referrals data",
           "content": "HTTP/1.1 200 Success\n{{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 0\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [],\n\t\t\t\"qty\": 0\n\t\t}\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/User.js",
+    "groupTitle": "User",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/user",
+    "title": "(02) Actualizar foto perfil.",
+    "version": "0.0.36",
+    "name": "registerUser",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 o URL de la foto de perfil (para eliminarla solo enviar el parámetro en null).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request Base64",
+        "content": "{\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request URL",
+        "content": "{\n  \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request Null",
+        "content": "{\n  \"picture\": null,\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos actualizados.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen de perfil.</p>"
+          }
+        ],
+        "securityQuestion Object": [
+          {
+            "group": "securityQuestion Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "questionId",
+            "description": "<p>ID de la pregunta de seguridad.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado su foto de perfil exitosamente.\",\n\t\"data\": {\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -16176,7 +16827,7 @@
     "type": "get",
     "url": "/api/admin/users/:_id",
     "title": "(03) Obtener detalles de un miembro.",
-    "version": "0.0.34",
+    "version": "0.0.36",
     "name": "getDetailsUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -16408,6 +17059,13 @@
           },
           {
             "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Object",
             "optional": false,
             "field": "totals",
@@ -16428,50 +17086,6 @@
             "description": "<p>Fecha de la última actualización del perfil.</p>"
           }
         ],
-        "members Object": [
-          {
-            "group": "members Object",
-            "type": "String",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>ID del miembro.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "String",
-            "optional": false,
-            "field": "names",
-            "description": "<p>Nombres.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "String",
-            "optional": false,
-            "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
-          }
-        ],
         "totals Object": [
           {
             "group": "totals Object",
@@ -16487,12 +17101,70 @@
             "field": "totalsReferrals",
             "description": "<p>Total de referidos (Hijos espirituales).</p>"
           }
+        ],
+        "members Object": [
+          {
+            "group": "members Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Detalles del miembro.\",\n\t\"user\": {\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"document\": null,\n\t\t\"email\": null,\n\t\t\"phone\": \"3151234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"position\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"meetingNew\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"referred\": {\n\t\t\t\"_id\": \"607658ff598ae749a42a0143\",\n\t\t\t\"names\": \"KRHYSTAL\",\n\t\t\t\"lastNames\": \"TIRADO\",\n\t\t\t\"document\": null,\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"3161234567\",\n\t\t\t\"position\": \"ASDASDASDASDASD\"\n\t\t},\n\t\t\"petition\": null,\n\t\t\"attendGroup\": false,\n\t\t\"consolidated\": true,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"totals\": {\n\t\t\t\"totalsCourses\": 1,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 21:55:09\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Detalles del miembro.\",\n  \"user\": {\n    \"_id\": \"609d21bd32ce5839900cb1ff\",\n    \"document\": null,\n    \"email\": \"amber@gmail.com\",\n    \"phone\": \"3161231241\",\n    \"names\": \"AMBER LISSETH\",\n    \"lastNames\": \"VELASQUEZ\",\n    \"position\": null,\n    \"gender\": 1,\n    \"birthday\": \"2020-05-25\",\n    \"civilStatus\": 0,\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"roles\": [\n      4\n    ],\n    \"referred\": {\n      \"_id\": \"6081367a18fdbc37e89aff7d\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELASQUEZ\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"584121480199\",\n      \"picture\": null,\n      \"position\": null\n    },\n    \"petition\": \"ASASD ASD ASDASDA SD\",\n    \"attendGroup\": true,\n    \"consolidated\": true,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"ASDASDASDASDASD\",\n    \"direction\": \"ASDASDASDASDASDASD\",\n    \"picture\": null,\n    \"totals\": {\n      \"totalsCourses\": 1,\n      \"totalsReferrals\": 0\n    },\n    \"created_at\": \"2021-05-13 07:55:25\",\n    \"updated_at\": \"2021-05-13 07:55:25\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -16562,7 +17234,7 @@
     "type": "get",
     "url": "/api/admin/users/:_id/referrals",
     "title": "(05) Obtener listado de referidos de un miembro.",
-    "version": "0.0.33",
+    "version": "0.0.36",
     "name": "getReferralsUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -16636,18 +17308,18 @@
             "type": "String",
             "optional": false,
             "field": "names",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Nombre(s).</p>"
           },
           {
             "group": "referrals Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Apellido(s).</p>"
           },
           {
             "group": "referrals Object[]",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
@@ -16657,14 +17329,21 @@
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "referrals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
           },
           {
             "group": "referrals Object[]",
             "type": "String|Null",
             "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono.</p>"
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
           },
           {
             "group": "referrals Object[]",
@@ -16685,7 +17364,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Listado de referidos del miembro.\",\n\t\"referrals\": [\n\t\t{\n\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\"document\": \"CC123123123\",\n\t\t\t\"gender\": null,\n\t\t\t\"phone\": \"584121490199\",\n\t\t\t\"position\": null,\n\t\t\t\"totalsReferrals\": 0\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Listado de referidos del miembro.\",\n  \"referrals\": [\n    {\n      \"_id\": \"609d21bd32ce5839900cb1ff\",\n      \"names\": \"AMBER LISSETH\",\n      \"lastNames\": \"VELASQUEZ\",\n      \"document\": null,\n      \"gender\": 1,\n      \"phone\": \"3161231241\",\n      \"picture\": null,\n      \"position\": null,\n      \"totalsReferrals\": 0\n    },\n    .\n    .\n    .\n  ]\n}",
           "type": "JSON"
         }
       ]
@@ -16755,7 +17434,7 @@
     "type": "get",
     "url": "/api/admin/users",
     "title": "(01) Obtener listado de miembros.",
-    "version": "0.0.33",
+    "version": "0.0.36",
     "name": "getUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -16833,10 +17512,59 @@
         "users Object[]": [
           {
             "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "users Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
-            "description": "<p>ID (array index) del sexo del miembro.</p>"
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           },
           {
             "group": "users Object[]",
@@ -16851,48 +17579,13 @@
             "optional": false,
             "field": "created_at",
             "description": "<p>Fecha de la última actualización del perfil.</p>"
-          },
-          {
-            "group": "users Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "_id",
-            "description": "<p>ID del miembro.</p>"
-          },
-          {
-            "group": "users Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>Número de teléfono.</p>"
-          },
-          {
-            "group": "users Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "users Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "names",
-            "description": "<p>Nombres.</p>"
-          },
-          {
-            "group": "users Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "lastNames",
-            "description": "<p>Apellidos.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Usuarios.\",\n\t\"users\": [\n\t\t{\n\t\t\t\"gender\": 0,\n\t\t\t\"roles\": [ 4 ],\n\t\t\t\"created_at\": \"2021-02-09 00:10:26\",\n\t\t\t\"_id\": \"6022194c88342006d4a700f3\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC12345675\",\n\t\t\t\"names\": \"ANTHONY\",\n\t\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 1,\n\t\t\t\"roles\": [ 1 ],\n\t\t\t\"created_at\": \"2020-12-13 10:03:12\",\n\t\t\t\"_id\": \"5fd62d49304a9a5a686adc1a\",\n\t\t\t\"phone\": \"563161234567\",\n\t\t\t\"document\": \"CC123456788\",\n\t\t\t\"names\": \"ADMIN DOS\",\n\t\t\t\"lastNames\": \"PRUEBA\"\n\t\t},\n\t\t{\n\t\t\t\"gender\": 2,\n\t\t\t\"roles\": [ 4 ],\n\t\t\t\"created_at\": \"2020-12-07 23:59:12\",\n\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\"phone\": \"573161234567\",\n\t\t\t\"document\": \"CC12345678\",\n\t\t\t\"names\": \"PEDRO JOSE\",\n\t\t\t\"lastNames\": \"PÉREZ\"\n\t\t}\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Usuarios.\",\n\t\"users\": [\n    {\n      \"gender\": null,\n      \"roles\": [\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/611902c09e346616b6eaadb5/picture-611902c09e346616b6eaadb5-1629251391.jpg\",\n      \"_id\": \"611902c09e346616b6eaadb5\",\n      \"phone\": \"31567554414\",\n      \"names\": \"EIMY\",\n      \"lastNames\": \"VALENTINA\",\n      \"created_at\": \"2021-08-15 07:04:16\",\n      \"document\": null\n    },\n    .\n    .\n    .\n\t]\n}",
           "type": "JSON"
         },
         {

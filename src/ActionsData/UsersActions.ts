@@ -41,7 +41,10 @@ export async function getNamesUsersList(listIds: string|any[], projection: any|n
   if (listIds.length > 0) {
     const users = await Users.find(
       { _id: { $in: listIds } },
-      projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }
+      (
+        projection ||
+        { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1 }
+      )
     ).exec();
 
     for (const value of users) {
@@ -52,6 +55,7 @@ export async function getNamesUsersList(listIds: string|any[], projection: any|n
         document: value.document || null,
         gender: value.gender || null,
         phone: value.phone,
+        picture: value.picture || null,
         position: value.position || null,
       });
     }
@@ -60,6 +64,8 @@ export async function getNamesUsersList(listIds: string|any[], projection: any|n
 }
 
 export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null) {
+  console.log('listIds', listIds);
+  console.log('_id', _id);
   if (listIds.length > 0) {
     await Users.updateMany(
       { _id: { $in: listIds } },
@@ -104,6 +110,7 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
         city: data.city,
         locality: data.locality,
         direction: data.direction,
+        picture: data.picture,
         totals: {
           totalsCourses: 0,
           totalsReferrals: 0,
@@ -165,6 +172,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         consolidated: 1,
         direction: 1,
         birthday: 1,
+        picture: 1,
       }
     ).exec() as IUserReferralSimpleData;
 
@@ -255,11 +263,6 @@ export function checkFindValueSearch(query: any, value: any): any {
 
   return query;
 }
-
-// export function checkRoleToActions(role: number|null): boolean {
-//   if (!/[01]{1}/.test(`${role}`)) return false;
-//   return ['0', '1'].indexOf(`${role}`) > -1;
-// }
 
 export function checkRoleToActions(roles: any[] | null | undefined): boolean {
   return roles?.some(r => [0, 1].includes(r)) || false;

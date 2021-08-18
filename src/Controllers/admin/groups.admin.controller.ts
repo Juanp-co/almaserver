@@ -265,12 +265,14 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
       }
       else {
         membersToRemoveOfGroup = _.difference(group.members, validate.data.members);
-        group.members = _.filter(group.members, m => validate.data.members.indexOf(m) > -1);
+        group.members = group.members.filter(m => !validate.data.members.includes(m));
       }
       await group.save();
 
-      // update group value in users
-      await updateGroupIdInUsers(membersToRemoveOfGroup);
+      if (membersToRemoveOfGroup.length > 0) {
+        // update group value in users
+        await updateGroupIdInUsers(membersToRemoveOfGroup);
+      }
     }
 
     if (notInserts.length > 0) {
@@ -313,7 +315,20 @@ export async function findNewMembers(req: Request, res: Response) : Promise<Resp
       req.query.word
     );
 
-    const users = await Users.find(query, { names: 1, lastNames: 1, document: 1, gender: 1 }).exec();
+    const users = await Users.find(
+      query,
+      {
+        names: 1,
+        lastNames: 1,
+        gender: 1,
+        phone: 1,
+        document: 1,
+        picture: 1,
+      }
+    )
+      .skip(skip)
+      .limit(limit)
+      .sort(sort).exec();
 
     return res.status(201).json({
       msg: 'Usuarios disponibles para grupos',

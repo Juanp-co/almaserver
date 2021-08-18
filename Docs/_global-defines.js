@@ -362,6 +362,33 @@
  * @apiSuccess (user Object) {String} lastNames Apellido(s).
  * @apiSuccess (user Object) {String|Null} document Número de documento.
  * @apiSuccess (user Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (user Object) {String} pphone Teléfono del miembro.
+ * @apiSuccess (user Object) {String} phone Teléfono del miembro.
+ * @apiSuccess (user Object) {String|Null} picture URL de la foto de perfil.
  * @apiSuccess (user Object) {String|Null} position Cargo o posición del miembro.
+ */
+
+/**
+ * @apiDefine MemberObjectSimpleListDataResponse
+ *
+ * @apiSuccess (members Object[]) {String} _id ID del miembro.
+ * @apiSuccess (members Object[]) {String} names Nombre(s).
+ * @apiSuccess (members Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (members Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (members Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (members Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (members Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (members Object[]) {String|Null} position Cargo o posición del miembro.
+ */
+
+/**
+ * @apiDefine MemberObjectSimpleDataResponse
+ *
+ * @apiSuccess (members Object) {String} _id ID del miembro.
+ * @apiSuccess (members Object) {String} names Nombre(s).
+ * @apiSuccess (members Object) {String} lastNames Apellido(s).
+ * @apiSuccess (members Object) {String|Null} document Número de documento.
+ * @apiSuccess (members Object) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (members Object) {String} phone Teléfono del miembro.
+ * @apiSuccess (members Object) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (members Object) {String|Null} position Cargo o posición del miembro.
  */

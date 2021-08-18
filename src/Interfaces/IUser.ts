@@ -35,6 +35,7 @@ export default interface IUser extends Document {
   city: number | null;
   locality: string | null;
   direction: string | null;
+  picture: string | null;
   created_at?: number | null;
   updated_at?: number | null;
 }
@@ -66,6 +67,7 @@ export interface IUserData {
   city: IUser['city'];
   locality: IUser['locality'];
   direction: IUser['direction'];
+  picture: IUser['picture'];
   totals: IUserTotalsCoursesAndReferrals;
   created_at?: IUser['created_at'];
   updated_at?: IUser['updated_at'];
@@ -79,10 +81,6 @@ export interface IUserSimpleRegister {
   roles: number[] | null;
   referred: string | null;
   consolidated: boolean,
-}
-
-export interface IUserModelUpdateRoles {
-  roles: number[];
 }
 
 export interface IUserSimpleRegisterConsolidate {
@@ -105,7 +103,7 @@ export interface IUserSimpleRegisterConsolidate {
   consolidated: boolean,
 }
 
-export interface IUserUpdate {
+export interface IUserModelUpdate {
   email: IUser['email'];
   phone: IUser['phone'];
   document: IUser['document'];
@@ -128,6 +126,14 @@ export interface IUserUpdate {
   direction: IUser['direction'];
 }
 
+export interface IUserModelUpdateRoles {
+  roles: number[];
+}
+
+export interface IUserModelUpdatePicture {
+  picture: string|null;
+}
+
 export interface IUserLogin {
   phone: IUser['phone'];
   password: IUser['password'];
@@ -141,6 +147,7 @@ export interface IUserSimpleInfo {
   lastNames: IUser['lastNames'];
   document: IUser['document'];
   phone: IUser['phone'];
+  picture?: IUser['picture'];
   referred?: IUserSimpleInfo | null;
   position?: IUser['position'] | null;
   totalsReferrals?: number;
@@ -157,6 +164,7 @@ export interface IUserReferralSimpleData {
   civilStatus: IUser['civilStatus'];
   department: IUser['department'];
   city: IUser['city'];
+  picture: IUser['picture'];
   locality: IUser['locality'];
   direction: IUser['direction'];
 }

@@ -181,7 +181,7 @@
 
 /**
  * @api {get} /api/admin/groups/:_id (03) Obtener detalles de un grupo.
- * @apiVersion 0.0.27
+ * @apiVersion 0.0.36
  * @apiName detailsGroupsAdmin
  * @apiGroup GroupsAdmin
  *
@@ -200,45 +200,46 @@
  * @apiSuccess (group Object) {String} created_at Fecha de registro del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (members Object[]) {String} _id ID del miembro.
- * @apiSuccess (members Object[]) {String} names Nombres.
- * @apiSuccess (members Object[]) {String} lastNames Apellidos.
- * @apiSuccess (members Object[]) {String} document Número de documento.
- * @apiSuccess (members Object[]) {Number|Null} gender ID (array index) del sexo del miembro.
- * @apiSuccess (members Object[]) {String|Null} phone Teléfono.
+ * @apiUse UsersObjectSimpleDataResponse
+ *
+ * @apiUse MemberObjectSimpleListDataResponse
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Grupo",
-	"group": {
-		"_id": "60330f5102626e2040bd2393",
-		"user": {
-			"_id": "5fcf0821fc917d476c1cf3e2",
-			"names": "ANTHONY",
-			"lastNames": "ADMINISTRADOR",
-			"document": "CC123456789",
-			"gender": 1,
-			"phone": "573161234567"
-		},
-		"name": "FAMILIA PEREZ",
-		"code": "GROUP-0",
-		"members": [
-			{
-				"_id": "5fcf0821fc917d476c1cf3e3",
-				"names": "PEDRO JOSÉ",
-				"lastNames": "PÉREZ RODRIGUEZ",
-				"document": "CC12345678",
-				"gender": 0,
-				"phone": "573161234567"
-			},
-			.
-			.
-			.
-		],
-		"created_at": "2021-02-21 20:56:33",
-		"updated_at": "2021-03-01 22:46:53"
-	}
+  "msg": "Grupo",
+  "group": {
+    "_id": "60330f5102626e2040bd2393",
+    "user": {
+      "_id": "5fcf0821fc917d476c1cf3e2",
+      "names": "ANTHONY",
+      "lastNames": "ADMINISTRADOR",
+      "document": null,
+      "gender": null,
+      "phone": "31612345678",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
+      "position": null
+    },
+    "name": "FAMILIA PEREZ",
+    "code": "GROUP-0",
+    "members": [
+      {
+        "_id": "5fcf0821fc917d476c1cf3e3",
+        "names": "PEDRO JOSÉ",
+        "lastNames": "PÉREZ RODRIGUEZ",
+        "document": "CC12345678",
+        "gender": null,
+        "phone": "3161234567",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+        "position": null
+      },
+      .
+      .
+      .
+    ],
+    "created_at": "2021-02-21 20:56:33",
+    "updated_at": "2021-03-01 22:46:53"
+  }
 }
  *
  * @apiUse GlobalParamsErrors
@@ -350,7 +351,7 @@
 
 /**
  * @api {put} /api/admin/groups/:_id/members/add (06) Agregar miembros al grupo.
- * @apiVersion 0.0.8
+ * @apiVersion 0.0.36
  * @apiName addMembersGroupsAdmin
  * @apiGroup GroupsAdmin
  *
@@ -371,9 +372,13 @@
  * @apiSuccess {Object[]} notInserts[notInserts] Listado de miembros no agregados (en caso de aplicar).
  *
  * @apiSuccess (notInserts Object[]) {String} _id ID del miembro.
- * @apiSuccess (notInserts Object[]) {String} document Número de documento.
  * @apiSuccess (notInserts Object[]) {String} names Nombre(s).
  * @apiSuccess (notInserts Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (notInserts Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (notInserts Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (notInserts Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (notInserts Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (notInserts Object[]) {String|Null} position Cargo o posición del miembro.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -383,15 +388,22 @@
  * @apiSuccessExample {JSON} Success, but some members wasn't added
  * HTTP/1.1 200 Success
  * {
-    "msg": "Se ha actualizado el listado de miembros exitosamente. Algunos miembros no lograron ser agregados porque ya pertenecen a otro grupo.",
-    "notInserts": [
-        {
-            "_id": "5fcf0821fc917d476c1cf3e3",
-            "document": "CC12345678",
-            "names": "USUARIO TRES",
-            "lastNames": "PRUEBA TRES"
-        }
-    ]
+  "msg": "Se ha actualizado el listado de miembros exitosamente. Algunos miembros no lograron ser agregados porque ya pertenecen a otro grupo.",
+  "notInserts": [
+    {
+      "_id": "5fcf0821fc917d476c1cf3e3",
+      "names": "PEDRO JOSÉ",
+      "lastNames": "PÉREZ RODRIGUEZ",
+      "document": "CC12345678",
+      "gender": null,
+      "phone": "3161234567",
+      "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+      "position": null
+    },
+    .
+    .
+    .
+  ]
 }
  *
  * @apiUse GlobalParamsErrors

@@ -9,6 +9,8 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} data Datos de la sesión.
  *
+ * @apiSuccess (data Object) {String|Null} email Correo electrónico.
+ * @apiSuccess (data Object) {String|Null} position Cargo o posición.
  * @apiSuccess (data Object) {Number|Null} gender ID (array index) del sexo (género).
  * @apiSuccess (data Object) {String|Null} birthday Fecha de nacimiento.
  * @apiSuccess (data Object) {Number|Null} civilStatus ID (array index) del estado civil.
@@ -18,49 +20,68 @@
  * @apiSuccess (data Object) {Boolean} company Indica si tiene empresa.
  * @apiSuccess (data Object) {Number|Null} companyType ID (array index) del tipo de empresa (en caso de poseer).
  * @apiSuccess (data Object) {Boolean} baptized Indica si está bautizado.
- * @apiSuccess (data Object) {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
  * @apiSuccess (data Object) {Number[]} roles Roles asignados al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
+ * @apiSuccess (data Object) {Boolean} consolidated Indica si el miembro fue consolidado.
+ * @apiSuccess (data Object) {String|Null} group ID del grupo al que pertenece.
+ * @apiSuccess (data Object) {String|Null} petition Petición solicitada al ser consolidado.
+ * @apiSuccess (data Object) {Boolean} attendGroup Indica si asiste a un grupo familiar.
+ * @apiSuccess (data Object) {Boolean} meetingNew Indica si el miembro asistió al curso de nuevo ingreso.
+ * @apiSuccess (data Object) {Number[]} familyGroupId IDs de los grupos familiares de los que forma parte.
  * @apiSuccess (data Object) {Number|Null} department ID (array index) del departamento.
  * @apiSuccess (data Object) {Number|Null} city ID (array index) de la ciudad.
- * @apiSuccess (data Object) {String} locality Nombrede la localidad.
- * @apiSuccess (data Object) {String} direction Dirección.
+ * @apiSuccess (data Object) {String|Null} locality Nombrede la localidad.
+ * @apiSuccess (data Object) {String|Null} direction Dirección.
+ * @apiSuccess (data Object) {String|Null} picture URL de la imagen de perfil.
+ * @apiSuccess (data Object) {String|Null} consolidatorId Id del miembro que lo consolidó.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
  * @apiSuccess (data Object) {String} _id ID del miembro.
- * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
- * @apiSuccess (data Object) {String} document Número de documento.
+ * @apiSuccess (data Object) {String|Null} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Datos de la sesión",
-	"data": {
-		"gender": null,
-		"birthday": null,
-		"civilStatus": null,
-		"educationLevel": null,
-		"profession": null,
-		"bloodType": null,
-		"company": false,
-		"companyType": null,
-		"baptized": false,
-		"meetingNew": false,
-		"roles": [ 4 ],
-		"department": null,
-		"city": null,
-		"locality": null,
-		"direction": null,
-		"created_at": "2021-02-18 19:23:23",
-		"updated_at": "2021-02-18 19:25:33",
-		"_id": "602f057d8d3e7d073cef3e87",
-		"email": "user3@example.com",
-		"document": "CC12345675",
-		"names": "ANTHONY",
-		"lastNames": "VELÁSQUEZ"
-	}
+  "msg": "Datos de la sesión",
+  "data": {
+    "email": "pedro@example.com",
+    "position": null,
+    "gender": 0,
+    "birthday": "1994-07-07",
+    "civilStatus": 0,
+    "educationLevel": 4,
+    "profession": 90,
+    "bloodType": 7,
+    "company": false,
+    "companyType": null,
+    "baptized": true,
+    "roles": [
+      4
+    ],
+    "consolidated": false,
+    "group": "60330f5102626e2040bd2393",
+    "petition": null,
+    "attendGroup": false,
+    "meetingNew": false,
+    "familyGroupId": [
+      "6063385c98fc731c04777829"
+    ],
+    "department": 0,
+    "city": 0,
+    "locality": "LOCALIDAD INICIAL",
+    "direction": "CUALQUIER DIRECCIÓN",
+    "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+    "_id": "5fcf0821fc917d476c1cf3e3",
+    "consolidatorId": "605fa31b5260482550a9a3bf",
+    "created_at": "2020-12-07 23:59:12",
+    "updated_at": "2021-08-18 06:45:28",
+    "phone": "3161234567",
+    "document": "CC12345678",
+    "names": "PEDRO JOSÉ",
+    "lastNames": "PÉREZ RODRIGUEZ"
+  }
 }
  *
  * @apiUse GlobalParamsErrors
@@ -200,7 +221,56 @@
  */
 
 /**
- * @api {put} /api/user/change-password (02) Cambiar contraseña.
+ * @api {put} /api/user (02) Actualizar foto perfil.
+ * @apiVersion 0.0.36
+ * @apiName registerUser
+ * @apiGroup User
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam {String|Null} picture Base64 o URL de la foto de perfil (para eliminarla solo enviar el parámetro en null).
+ *
+ * @apiExample {JSON} Example JSON Request Base64
+ * {
+  "picture": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...",
+}
+ *
+ * @apiExample {JSON} Example JSON Request URL
+ * {
+  "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
+}
+ *
+ * @apiExample {JSON} Example JSON Request Null
+ * {
+  "picture": null,
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} data Datos actualizados.
+ *
+ * @apiSuccess (data Object) {String|Null} picture URL de la imagen de perfil.
+ *
+ * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Se ha actualizado su foto de perfil exitosamente.",
+	"data": {
+    "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg"
+	}
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ *
+ */
+
+/**
+ * @api {put} /api/user/change-password (03) Cambiar contraseña.
  * @apiVersion 0.0.2
  * @apiName changePasswordUser
  * @apiGroup User
@@ -255,7 +325,7 @@
  */
 
 /**
- * @api {get} /api/user/courses (03) Obtener cursos de un miembro.
+ * @api {get} /api/user/courses (04) Obtener cursos de un miembro.
  * @apiVersion 0.0.28
  * @apiName getCoursesListUser
  * @apiGroup User
@@ -306,7 +376,7 @@
  */
 
 /**
- * @api {get} /api/user/reports (04) Obtener reportes de la cuenta.
+ * @api {get} /api/user/reports (05) Obtener reportes de la cuenta.
  * @apiVersion 0.0.19
  * @apiName getReportsUser
  * @apiGroup User

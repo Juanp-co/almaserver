@@ -9,13 +9,13 @@ import {
   checkIfValueIsNumber,
   checkNameOrLastName, checkObjectId,
   checkPassword,
-  checkPhone, checkTitlesOrDescriptions
+  checkPhone, checkTitlesOrDescriptions, checkUrl, isBase64
 } from '../Functions/Validations';
 import IUser, {
-  IUserLogin, IUserModelUpdateRoles,
+  IUserLogin, IUserModelUpdatePicture, IUserModelUpdateRoles,
   IUserPasswords,
   IUserSimpleRegister, IUserSimpleRegisterConsolidate,
-  IUserUpdate
+  IUserModelUpdate
 } from '../Interfaces/IUser';
 
 export default async function validateSimpleRegister(data: IUserSimpleRegister, admin?: boolean | null): Promise<{ data: IUserSimpleRegister; errors: any[] }> {
@@ -300,7 +300,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
   return { data: ret, errors };
 }
 
-export async function validateUpdate(data: IUserUpdate, _id: string, admin = false): Promise<{ data: IUser; errors: any[] }> {
+export async function validateUpdate(data: IUserModelUpdate, _id: string, admin = false): Promise<{ data: IUser; errors: any[] }> {
   const ret = {
     phone: null,
     email: null,
@@ -518,4 +518,23 @@ export function validateRolesToUpdateForm(request: IUserModelUpdateRoles) : { da
 
   return  { data, errors }
 
+}
+
+export function validateUpdatePictureProfile(data: IUserModelUpdatePicture): { data: IUserModelUpdatePicture; errors: any[] } {
+  const ret = {
+    picture: null,
+  } as IUserModelUpdatePicture;
+  const errors: any = [];
+
+  if (data.picture) {
+    // document
+    if (!isBase64(data.picture) && !checkUrl(data.picture)) {
+      errors.push(
+        setError('Disculpe, pero la imagen imagen para su perfil es incorrecta.', 'picture')
+      );
+    }
+    else ret.picture = `${data.picture}`;
+  }
+
+  return { data: ret, errors };
 }

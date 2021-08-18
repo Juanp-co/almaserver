@@ -6,6 +6,7 @@ import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions'
 import { checkDate } from '../../Functions/Validations';
 import Users from '../../Models/Users';
 import Visits from '../../Models/Visits';
+import { IUserSimpleInfo } from '../../Interfaces/IUser';
 
 const path = 'Controllers/admin/users.admin.controller';
 
@@ -56,10 +57,10 @@ export default async function getConsolidates(req: Request, res: Response): Prom
       // find all members
       ret.members = await Users.find(
         { $or: [ query2, { _id: { $in: listIds || [] } } ] },
-        { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1 }
+        { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, picture: 1, position: 1 }
       )
         .sort({ names: 1 })
-        .exec() as any;
+        .exec() as IUserSimpleInfo[];
 
       const listToCheck: string[] = [];
       let listIdsPending: string[] = [];
@@ -136,7 +137,7 @@ export async function getConsolidatesMembers(req: Request, res: Response): Promi
   try {
     const members = await Users.find(
       { referred: { $ne: null }, consolidated: { $ne: false } },
-      { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }
+      { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1 }
       )
       .sort({ names: 1 })
       .exec();

@@ -40,7 +40,8 @@ exports.getData = getData;
 async function getNamesUsersList(listIds, projection = null) {
     const ret = [];
     if (listIds.length > 0) {
-        const users = await Users_1.default.find({ _id: { $in: listIds } }, projection || { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1 }).exec();
+        const users = await Users_1.default.find({ _id: { $in: listIds } }, (projection ||
+            { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1 })).exec();
         for (const value of users) {
             ret.push({
                 _id: value._id,
@@ -49,6 +50,7 @@ async function getNamesUsersList(listIds, projection = null) {
                 document: value.document || null,
                 gender: value.gender || null,
                 phone: value.phone,
+                picture: value.picture || null,
                 position: value.position || null,
             });
         }
@@ -57,6 +59,8 @@ async function getNamesUsersList(listIds, projection = null) {
 }
 exports.getNamesUsersList = getNamesUsersList;
 async function updateGroupIdInUsers(listIds, _id = null) {
+    console.log('listIds', listIds);
+    console.log('_id', _id);
     if (listIds.length > 0) {
         await Users_1.default.updateMany({ _id: { $in: listIds } }, { $set: { group: _id } }).exec();
     }
@@ -93,6 +97,7 @@ async function getUserData(_id, projection = null) {
                 city: data.city,
                 locality: data.locality,
                 direction: data.direction,
+                picture: data.picture,
                 totals: {
                     totalsCourses: 0,
                     totalsReferrals: 0,
@@ -150,6 +155,7 @@ async function getInfoUserReferred(_id) {
             consolidated: 1,
             direction: 1,
             birthday: 1,
+            picture: 1,
         }).exec();
         if (!ret.member)
             return ret;
@@ -228,10 +234,6 @@ function checkFindValueSearch(query, value) {
     return query;
 }
 exports.checkFindValueSearch = checkFindValueSearch;
-// export function checkRoleToActions(role: number|null): boolean {
-//   if (!/[01]{1}/.test(`${role}`)) return false;
-//   return ['0', '1'].indexOf(`${role}`) > -1;
-// }
 function checkRoleToActions(roles) {
     return (roles === null || roles === void 0 ? void 0 : roles.some(r => [0, 1].includes(r))) || false;
 }
