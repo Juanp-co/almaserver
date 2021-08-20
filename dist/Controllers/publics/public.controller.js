@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPublicMembers = exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+exports.getPublicParams = exports.getPublicMembers = exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
@@ -33,6 +33,7 @@ const Validations_1 = require("../../Functions/Validations");
 const AccountsBanks_1 = __importDefault(require("../../Models/AccountsBanks"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
+const Settings_1 = __importDefault(require("../../Models/Settings"));
 const path = 'Controllers/publics/publics.controller';
 function helloWorld(req, res) {
     return res.json({
@@ -256,3 +257,33 @@ async function getPublicMembers(req, res) {
     }
 }
 exports.getPublicMembers = getPublicMembers;
+/*
+  Params
+ */
+async function getPublicParams(req, res) {
+    try {
+        let settings = await Settings_1.default.findOne().exec();
+        if (!settings) {
+            settings = new Settings_1.default({});
+            await settings.save();
+        }
+        const banner = settings.banners.find((l) => l.active) || null;
+        const logo = settings.logos.find((l) => l.active) || null;
+        return res.json({
+            msg: `Parámetros`,
+            data: {
+                facebook: settings.facebook || null,
+                instagram: settings.instagram || null,
+                twitter: settings.twitter || null,
+                web: settings.web || null,
+                youtube: settings.youtube || null,
+                banner: (banner === null || banner === void 0 ? void 0 : banner.picture) || null,
+                logo: (logo === null || logo === void 0 ? void 0 : logo.picture) || null,
+            }
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getPublicParams`);
+    }
+}
+exports.getPublicParams = getPublicParams;

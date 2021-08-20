@@ -21,6 +21,7 @@ import AccountsBanks from '../../Models/AccountsBanks';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 import { IUserSimpleInfo } from '../../Interfaces/IUser';
+import Settings from '../../Models/Settings';
 
 const path = 'Controllers/publics/publics.controller';
 
@@ -273,5 +274,38 @@ export async function getPublicMembers(req: Request, res: Response): Promise<Res
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getUsers`);
+  }
+}
+
+/*
+  Params
+ */
+
+export async function getPublicParams(req: Request, res: Response): Promise<Response> {
+  try {
+    let settings = await Settings.findOne().exec();
+
+    if (!settings) {
+      settings = new Settings({});
+      await settings.save();
+    }
+
+    const banner = settings.banners.find((l: any) => l.active) || null;
+    const logo = settings.logos.find((l: any) => l.active) || null;
+
+    return res.json({
+      msg: `Parámetros`,
+      data: {
+        facebook: settings.facebook || null,
+        instagram: settings.instagram || null,
+        twitter: settings.twitter || null,
+        web: settings.web || null,
+        youtube: settings.youtube || null,
+        banner: banner?.picture || null,
+        logo: logo?.picture || null,
+      }
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getPublicParams`);
   }
 }

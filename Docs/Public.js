@@ -637,3 +637,55 @@
  *
  * @apiUse GlobalErrorSystem
  */
+
+/**
+ * @api {get} /api/params-app (11) Obterner parámetros para la app.
+ * @apiVersion 0.0.37
+ * @apiName getParamsAppPublic
+ * @apiGroup Public
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} data Datos de retorno.
+ *
+ * @apiSuccess (data Object) {String|Null} facebook URL de Facebook.
+ * @apiSuccess (data Object) {String|Null} instagram URL de Instagram.
+ * @apiSuccess (data Object) {String|Null} twitter URL de Twitter.
+ * @apiSuccess (data Object) {String|Null} web URL de Website.
+ * @apiSuccess (data Object) {String|Null} youtube URL de YouTube.
+ * @apiSuccess (data Object) {String|Null} banner URL del banner.
+ * @apiSuccess (data Object) {String|Null} logo URL del logo.
+ *
+ * @apiSuccessExample {JSON} Success with params
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Parámetros",
+  "data": {
+    "facebook": "https://facebook.com/aacd",
+    "instagram": "https://instagram.com/aacd",
+    "twitter": "https://twitter.com/aacd",
+    "web": "https://www.aacd.com",
+    "youtube": "https://facebook.com/channel/aacd",
+    "banner": "https://delii.s3.amazonaws.com/alma/settings/banners/picture-1629314103.jpg",
+    "logo": "https://delii.s3.amazonaws.com/alma/settings/logo/picture-1629314103.jpg"
+  }
+}
+ *
+ * @apiSuccessExample {JSON} Success without params
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Parámetros",
+  "data": {
+    "facebook": null,
+    "instagram": null,
+    "twitter": null,
+    "web": null,
+    "youtube": null,
+    "banner": null,
+    "logo": null
+  }
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalErrorSystem
+ */

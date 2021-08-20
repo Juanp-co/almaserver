@@ -64,8 +64,6 @@ export async function getNamesUsersList(listIds: string|any[], projection: any|n
 }
 
 export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null) {
-  console.log('listIds', listIds);
-  console.log('_id', _id);
   if (listIds.length > 0) {
     await Users.updateMany(
       { _id: { $in: listIds } },

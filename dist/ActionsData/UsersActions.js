@@ -59,8 +59,6 @@ async function getNamesUsersList(listIds, projection = null) {
 }
 exports.getNamesUsersList = getNamesUsersList;
 async function updateGroupIdInUsers(listIds, _id = null) {
-    console.log('listIds', listIds);
-    console.log('_id', _id);
     if (listIds.length > 0) {
         await Users_1.default.updateMany({ _id: { $in: listIds } }, { $set: { group: _id } }).exec();
     }

@@ -62,6 +62,7 @@ router.delete(`/logout`, middleware_1.validateUser, public_controller_1.logout);
   Families Groups
 */
 router.get(`/members`, middleware_1.validateUser, public_controller_1.getPublicMembers);
+router.get(`/params-app`, public_controller_1.getPublicParams);
 /*
   Recovery Password
  */
