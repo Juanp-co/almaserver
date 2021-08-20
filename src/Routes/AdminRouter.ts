@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Request, Response, Router } from 'express';
 import { validateAdmin } from '../middleware';
 import getCourses, {
   addThemeCourse,
@@ -40,6 +40,12 @@ import getConsolidates, {
   getConsolidatesMembers,
   saveConsolidateVisit
 } from '../Controllers/admin/consolidated.admin.controller';
+import getSettings, {
+  addLogoOrBannerSetting,
+  changeStatusLogoOrBannerSetting,
+  removeLogoOrBannerSettings,
+  updateSettingsUrls
+} from '../Controllers/admin/settings.admin.controller';
 
 const router = Router();
 
@@ -65,7 +71,7 @@ router.post('/consolidates/report', validateAdmin, saveConsolidateVisit);
 router.get('/consolidates/members', validateAdmin, getConsolidatesMembers);
 
 /*
-  Events
+  Courses
 */
 router.route('/courses')
   .get(validateAdmin, getCourses)
@@ -131,6 +137,43 @@ router.put('/groups/:_id/members/:action', validateAdmin, addOrRemoveMembersGrou
 */
 router.get('/reports', validateAdmin, getReports);
 router.get('/reports/families-groups', validateAdmin, getFamiliesGroupsReports);
+
+/* Settings */
+router.route('/settings')
+  .get(validateAdmin, getSettings)
+  .put(validateAdmin, updateSettingsUrls);
+
+router.post(
+  '/settings/banners',
+  validateAdmin,
+  (req: Request, res: Response) => addLogoOrBannerSetting(req, res, 'banners')
+);
+router.delete(
+  '/settings/banners/:_id',
+  validateAdmin,
+  (req: Request, res: Response) => removeLogoOrBannerSettings(req, res, 'banners')
+);
+router.put(
+  '/settings/banners/:_id/:action',
+  validateAdmin,
+  (req: Request, res: Response) => changeStatusLogoOrBannerSetting(req, res, 'banners')
+);
+
+router.post(
+  '/settings/logos',
+  validateAdmin,
+  (req: Request, res: Response) => addLogoOrBannerSetting(req, res, 'logos')
+);
+router.delete(
+  '/settings/logos/:_id',
+  validateAdmin,
+  (req: Request, res: Response) => removeLogoOrBannerSettings(req, res, 'logos')
+);
+router.put(
+  '/settings/logos/:_id/:action',
+  validateAdmin,
+  (req: Request, res: Response) => changeStatusLogoOrBannerSetting(req, res, 'logos')
+);
 
 /*
   Users

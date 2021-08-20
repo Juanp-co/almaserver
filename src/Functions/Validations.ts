@@ -21,11 +21,6 @@ export function checkDocument(value: any): boolean {
   return value && /^([CC|CE|PE|TI|PAS]){2,3}[0-9]{5,20}$/.test(value);
 }
 
-export function checkYoutubeUrl(value: any): boolean {
-  return value
-    && /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/.test(value);
-}
-
 export function checkInputTypeValueToTest(value: any): boolean {
   return value && ['text', 'textarea', 'checkbox', 'radio', 'select'].indexOf(`${value}`) > -1;
 }
@@ -89,10 +84,6 @@ export function checkBase64(text: string|null|undefined, doc = false) {
   return text.substr(0, 21).indexOf('data:image/') > -1;
 }
 
-export function checkUrl(value: string | null) {
-  return value && /^(?:(?:(?:http?|https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(`${value}`);
-}
-
 export function checkSlug(value: string | null) {
   return value && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(`${value}`);
 }
@@ -109,4 +100,34 @@ export function isBase64(text: string|null|undefined, doc = false): boolean {
   if (!text) return false;
   if (doc) return text.substr(0, 25).indexOf('data:application/pdf') > -1;
   return text.substr(0, 15).indexOf('data:image/') > -1;
+}
+
+export function checkUrl(value: string|null|undefined) : boolean {
+  return /^(?:(?:(?:http?|https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(
+    `${value}`
+  );
+}
+
+export function checkFacebookUrl(value: string|null|undefined) {
+  return /(?:https?:\/\/)?(?:www|m\.)?(facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/ig.test(
+    `${value}`
+  );
+}
+
+export function checkInstagramUrl(value: string|null|undefined) {
+  return /(?:(?:http|https):\/\/)?(?:www\.)?(?:instagram\.com|instagr\.am)\/([A-Za-z0-9-_\.\/]+)/i.test(
+    `${value}`
+  );
+}
+
+export function checkTwitterUrl(value: string|null|undefined) {
+  return /^(?:https?:\/\/)?(?:www\.)?twitter\.com\/(#!\/)?[a-zA-Z0-9_]+$/i.test(
+    `${value}`
+  );
+}
+
+export function checkYoutubeUrl(value: string|null|undefined) {
+  return /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i.test(
+    `${value}`
+  );
 }

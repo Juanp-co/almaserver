@@ -12,7 +12,7 @@ import {
   updateEvent
 } from '../Controllers/events/events.controller';
 import {
-  getBanks, getPublicMembers,
+  getBanks, getPublicMembers, getPublicParams,
   helloWorld,
   login,
   logout, recoveryPassword,
@@ -71,6 +71,10 @@ router.delete(`/logout`, validateUser, logout);
 */
 router.get(`/members`, validateUser, getPublicMembers);
 
+
+router.get(`/params-app`, getPublicParams);
+
+
 /*
   Recovery Password
  */
@@ -81,5 +85,4 @@ router.put(`/recovery-password/:action`, recoveryPassword);
   Register
  */
 router.post(`/register`, register);
-
 export default router;

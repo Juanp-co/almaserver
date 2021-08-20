@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isBase64 = exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkUrl = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDateAndHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkYoutubeUrl = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
+exports.checkYoutubeUrl = exports.checkTwitterUrl = exports.checkInstagramUrl = exports.checkFacebookUrl = exports.checkUrl = exports.isBase64 = exports.checkHtmlContent = exports.checkUUID = exports.checkSlug = exports.checkBase64 = exports.checkDateMonthAndYear = exports.checkHour = exports.checkDateAndHour = exports.checkDate = exports.checkCodeValue = exports.checkTitlesOrDescriptions = exports.checkObjectId = exports.checkEmail = exports.checkPassword = exports.checkPhone = exports.checkInputTypeValueToTest = exports.checkDocument = exports.checkIfValueIsNumber = exports.checkRole = exports.checkNameOrLastName = void 0;
 const moment_1 = __importDefault(require("moment"));
 function checkNameOrLastName(value) {
     return (value &&
@@ -22,11 +22,6 @@ function checkDocument(value) {
     return value && /^([CC|CE|PE|TI|PAS]){2,3}[0-9]{5,20}$/.test(value);
 }
 exports.checkDocument = checkDocument;
-function checkYoutubeUrl(value) {
-    return value
-        && /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/.test(value);
-}
-exports.checkYoutubeUrl = checkYoutubeUrl;
 function checkInputTypeValueToTest(value) {
     return value && ['text', 'textarea', 'checkbox', 'radio', 'select'].indexOf(`${value}`) > -1;
 }
@@ -87,10 +82,6 @@ function checkBase64(text, doc = false) {
     return text.substr(0, 21).indexOf('data:image/') > -1;
 }
 exports.checkBase64 = checkBase64;
-function checkUrl(value) {
-    return value && /^(?:(?:(?:http?|https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(`${value}`);
-}
-exports.checkUrl = checkUrl;
 function checkSlug(value) {
     return value && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(`${value}`);
 }
@@ -111,3 +102,23 @@ function isBase64(text, doc = false) {
     return text.substr(0, 15).indexOf('data:image/') > -1;
 }
 exports.isBase64 = isBase64;
+function checkUrl(value) {
+    return /^(?:(?:(?:http?|https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(`${value}`);
+}
+exports.checkUrl = checkUrl;
+function checkFacebookUrl(value) {
+    return /(?:https?:\/\/)?(?:www|m\.)?(facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/ig.test(`${value}`);
+}
+exports.checkFacebookUrl = checkFacebookUrl;
+function checkInstagramUrl(value) {
+    return /(?:(?:http|https):\/\/)?(?:www\.)?(?:instagram\.com|instagr\.am)\/([A-Za-z0-9-_\.\/]+)/i.test(`${value}`);
+}
+exports.checkInstagramUrl = checkInstagramUrl;
+function checkTwitterUrl(value) {
+    return /^(?:https?:\/\/)?(?:www\.)?twitter\.com\/(#!\/)?[a-zA-Z0-9_]+$/i.test(`${value}`);
+}
+exports.checkTwitterUrl = checkTwitterUrl;
+function checkYoutubeUrl(value) {
+    return /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/i.test(`${value}`);
+}
+exports.checkYoutubeUrl = checkYoutubeUrl;

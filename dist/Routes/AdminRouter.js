@@ -29,6 +29,7 @@ const reports_admin_controller_1 = __importStar(require("../Controllers/admin/re
 const accounts_banks_admin_controller_1 = __importStar(require("../Controllers/admin/accounts.banks.admin.controller"));
 const families_groups_admin_controller_1 = __importStar(require("../Controllers/admin/families-groups.admin.controller"));
 const consolidated_admin_controller_1 = __importStar(require("../Controllers/admin/consolidated.admin.controller"));
+const settings_admin_controller_1 = __importStar(require("../Controllers/admin/settings.admin.controller"));
 const router = express_1.Router();
 // ===================================================================================
 /*
@@ -48,7 +49,7 @@ router.get('/consolidates', middleware_1.validateAdmin, consolidated_admin_contr
 router.post('/consolidates/report', middleware_1.validateAdmin, consolidated_admin_controller_1.saveConsolidateVisit);
 router.get('/consolidates/members', middleware_1.validateAdmin, consolidated_admin_controller_1.getConsolidatesMembers);
 /*
-  Events
+  Courses
 */
 router.route('/courses')
     .get(middleware_1.validateAdmin, courses_admin_controller_1.default)
@@ -102,6 +103,16 @@ router.put('/groups/:_id/members/:action', middleware_1.validateAdmin, groups_ad
 */
 router.get('/reports', middleware_1.validateAdmin, reports_admin_controller_1.default);
 router.get('/reports/families-groups', middleware_1.validateAdmin, reports_admin_controller_1.getFamiliesGroupsReports);
+/* Settings */
+router.route('/settings')
+    .get(middleware_1.validateAdmin, settings_admin_controller_1.default)
+    .put(middleware_1.validateAdmin, settings_admin_controller_1.updateSettingsUrls);
+router.post('/settings/banners', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.addLogoOrBannerSetting(req, res, 'banners'));
+router.delete('/settings/banners/:_id', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.removeLogoOrBannerSettings(req, res, 'banners'));
+router.put('/settings/banners/:_id/:action', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.changeStatusLogoOrBannerSetting(req, res, 'banners'));
+router.post('/settings/logos', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.addLogoOrBannerSetting(req, res, 'logos'));
+router.delete('/settings/logos/:_id', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.removeLogoOrBannerSettings(req, res, 'logos'));
+router.put('/settings/logos/:_id/:action', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.changeStatusLogoOrBannerSetting(req, res, 'logos'));
 /*
   Users
 */

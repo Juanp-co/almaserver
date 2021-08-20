@@ -4513,7 +4513,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/api/events/:_id",
+    "url": "/api/admin/events/:_id",
     "title": "(04) Eliminar un evento.",
     "version": "0.0.35",
     "name": "deleteEventsAdmin",
@@ -4526,7 +4526,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "x-access-token",
-            "description": "<p>Token de la sesión.</p>"
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
           }
         ]
       }
@@ -4564,8 +4564,8 @@ define({ "api": [
         }
       ]
     },
-    "filename": "Docs/Events.js",
-    "groupTitle": "Events",
+    "filename": "Docs/Admin/EventsAdmin.js",
+    "groupTitle": "EventsAdmin",
     "error": {
       "fields": {
         "Error 4xx": [
@@ -4603,6 +4603,11 @@ define({ "api": [
       },
       "examples": [
         {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
           "title": "Not found",
           "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el evento seleccionado no existe o no se encuentra disponible.\"\n}",
           "type": "JSON"
@@ -4622,7 +4627,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/api/events/:_id",
+    "url": "/api/admin/events/:_id",
     "title": "(02) Obtener detalles de un evento.",
     "version": "0.0.36",
     "name": "detailsEventsAdmin",
@@ -4635,7 +4640,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "x-access-token",
-            "description": "<p>Token de la sesión.</p>"
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
           }
         ]
       }
@@ -4649,6 +4654,57 @@ define({ "api": [
             "optional": false,
             "field": "_id",
             "description": "<p>ID del evento a obtener.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción del evento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 o URL de la imagen relacionada al evento (opcional).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha (Formato YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "initHour",
+            "description": "<p>Hora de inicio (Formato: HH:mm. Ejm: 08:30 | 23:59).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "endHour",
+            "description": "<p>Hora de finalización (Formato: HH:mm. Ejm: 08:30 | 23:59).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number[]",
+            "optional": false,
+            "field": "toRoles",
+            "description": "<p>Roles a los que va dirigido el evento.</p>"
           }
         ]
       }
@@ -4805,6 +4861,18 @@ define({ "api": [
     },
     "filename": "Docs/Admin/EventsAdmin.js",
     "groupTitle": "EventsAdmin",
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request with url picture",
+        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611924490ec7059a63f7a805-1629037641.jpg\",\n  \"date\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
+        "type": "JSON"
+      }
+    ],
     "error": {
       "fields": {
         "Error 4xx": [
@@ -5888,7 +5956,7 @@ define({ "api": [
           },
           {
             "group": "user Object",
-            "type": "String|Null",
+            "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
@@ -9851,6 +9919,142 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/params-app",
+    "title": "(11) Obterner parámetros para la app.",
+    "version": "0.0.37",
+    "name": "getParamsAppPublic",
+    "group": "Public",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "facebook",
+            "description": "<p>URL de Facebook.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "instagram",
+            "description": "<p>URL de Instagram.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "twitter",
+            "description": "<p>URL de Twitter.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "web",
+            "description": "<p>URL de Website.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "youtube",
+            "description": "<p>URL de YouTube.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "banner",
+            "description": "<p>URL del banner.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "logo",
+            "description": "<p>URL del logo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with params",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Parámetros\",\n  \"data\": {\n    \"facebook\": \"https://facebook.com/aacd\",\n    \"instagram\": \"https://instagram.com/aacd\",\n    \"twitter\": \"https://twitter.com/aacd\",\n    \"web\": \"https://www.aacd.com\",\n    \"youtube\": \"https://facebook.com/channel/aacd\",\n    \"banner\": \"https://delii.s3.amazonaws.com/alma/settings/banners/picture-1629314103.jpg\",\n    \"logo\": \"https://delii.s3.amazonaws.com/alma/settings/logo/picture-1629314103.jpg\"\n  }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without params",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Parámetros\",\n  \"data\": {\n    \"facebook\": null,\n    \"instagram\": null,\n    \"twitter\": null,\n    \"web\": null,\n    \"youtube\": null,\n    \"banner\": null,\n    \"logo\": null\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/banks",
     "title": "(08) Obtener listado de bancos.",
     "version": "0.0.25",
@@ -11799,6 +12003,1333 @@ define({ "api": [
         }
       ]
     }
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/settings/banners",
+    "title": "(02) Agregar un banner.",
+    "version": "0.0.37",
+    "name": "addBannerSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 de la imagen.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "active",
+            "description": "<p>Indica si se mostrará el banner una vez guardado.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"active\": false\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Respuesta de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "active",
+            "description": "<p>Indica si la imagen se encuentra activa.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la imagen.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación de la imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha agregado el banner exitosamente.\",\n  \"data\": {\n    \"active\": false,\n    \"_id\": \"611d4b40494b0623b8e2f921\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/settings/logos/picture-1629309756.jpg\",\n    \"created_at\": \"2021-08-18 13:06:08\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found settings",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero ha ocurrido un error al obtener la configuración.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, la imagen suministrada es incorrecta.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/settings/logos",
+    "title": "(05) Agregar un logo.",
+    "version": "0.0.37",
+    "name": "addLogoSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 de la imagen.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "active",
+            "description": "<p>Indica si se mostrará el logo una vez guardado.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"active\": false\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Respuesta de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "active",
+            "description": "<p>Indica si la imagen se encuentra activa.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la imagen.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación de la imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha agregado el logo exitosamente.\",\n  \"data\": {\n    \"active\": false,\n    \"_id\": \"611d4b40494b0623b8e2f921\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/settings/logos/picture-1629309756.jpg\",\n    \"created_at\": \"2021-08-18 13:06:08\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found settings",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero ha ocurrido un error al obtener la configuración.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, la imagen suministrada es incorrecta.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/settings/banners/:_id/:action",
+    "title": "(03) Activar / Desactivar un banner.",
+    "version": "0.0.37",
+    "name": "changeStatusBannerSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banner.</p>"
+          },
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "action",
+            "description": "<p>Acción a realizar (valores: active = activar | disable = desactivar).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Boolean",
+            "optional": false,
+            "field": "active",
+            "description": "<p>Indica si la imagen se encuentra activa.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la imagen.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación de la imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado el banner exitosamente.\",\n  \"data\": {\n    \"active\": false,\n    \"_id\": \"611d4b40494b0623b8e2f921\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/settings/logos/picture-1629309756.jpg\",\n    \"created_at\": \"2021-08-18 13:06:08\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no se logró determinar la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found settings",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero ha ocurrido un error al obtener la configuración.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found banner",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero la portada seleccionada no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid banner ID",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la portada seleccionada es incorrecta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/settings/logos/:_id/:action",
+    "title": "(06) Activar / Desactivar un logo.",
+    "version": "0.0.37",
+    "name": "changeStatusLogoSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del logo.</p>"
+          },
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "action",
+            "description": "<p>Acción a realizar (valores: active = activar | disable = desactivar).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Respuesta de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID configuración.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "logos",
+            "description": "<p>Listado de logos.</p>"
+          }
+        ],
+        "logos Object[]": [
+          {
+            "group": "logos Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "active",
+            "description": "<p>Indica si la imagen se encuentra activa.</p>"
+          },
+          {
+            "group": "logos Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la imagen.</p>"
+          },
+          {
+            "group": "logos Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen.</p>"
+          },
+          {
+            "group": "logos Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación de la imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado el logo exitosamente.\",\n  \"data\": {\n    \"active\": false,\n    \"_id\": \"611d4b40494b0623b8e2f921\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/settings/logos/picture-1629309756.jpg\",\n    \"created_at\": \"2021-08-18 13:06:08\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no se logró determinar la acción a realizar.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found settings",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero ha ocurrido un error al obtener la configuración.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found logo",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el logo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid logo ID",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el logo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin"
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/settings/banners/:_id",
+    "title": "(04) Eliminar un banner.",
+    "version": "0.0.37",
+    "name": "deleteBannerSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del banner.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Respuesta de retorno.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha eliminado el banner exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found settings",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero ha ocurrido un error al obtener la configuración.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found banner",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero la portada seleccionada no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid banner ID",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la portada seleccionada es incorrecta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/settings/logos/:_id",
+    "title": "(07) Eliminar un logo.",
+    "version": "0.0.37",
+    "name": "deleteLogoSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del logo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Respuesta de retorno.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha eliminado el logo exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found settings",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero ha ocurrido un error al obtener la configuración.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found logo",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el logo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid logo ID",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el logo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/settings",
+    "title": "(00) Obtener ajustes del sistema.",
+    "version": "0.0.37",
+    "name": "getSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Respuesta de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "facebook",
+            "description": "<p>URL de Facebook.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "instagram",
+            "description": "<p>URL de Instagram.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "twitter",
+            "description": "<p>URL de Twitter.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "web",
+            "description": "<p>URL de Website.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "youtube",
+            "description": "<p>URL de YouTube.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID configuración.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "logos",
+            "description": "<p>Listado de logos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "banners",
+            "description": "<p>Listado de portadas.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Última actualización de la configuración.</p>"
+          }
+        ],
+        "logos and banners Object[]": [
+          {
+            "group": "logos and banners Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "active",
+            "description": "<p>Indica si la imagen se encuentra activa.</p>"
+          },
+          {
+            "group": "logos and banners Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la imagen.</p>"
+          },
+          {
+            "group": "logos and banners Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen.</p>"
+          },
+          {
+            "group": "logos and banners Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación de la imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Ajustes.\",\n  \"data\": {\n    \"facebook\": null,\n    \"instagram\": null,\n    \"web\": null,\n    \"youtube\": null,\n    \"_id\": \"611d13dc6f09d40f2c371def\",\n    \"logos\": [\n      {\n        \"active\": false,\n        \"_id\": \"611d4b40494b0623b8e2f921\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/settings/logos/picture-1629309756.jpg\",\n        \"created_at\": \"2021-08-18 13:06:08\"\n      },\n      .\n      .\n      .\n    ],\n    \"banners\": [\n      {\n        \"active\": false,\n        \"_id\": \"611d5b60338fdf491936acbb\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/settings/banners/picture-1629313884.jpg\",\n        \"created_at\": \"2021-08-18 14:11:28\"\n      },\n      .\n      .\n      .\n    ],\n    \"updated_at\": \"2021-08-18 09:06:20\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/settings",
+    "title": "(01) Actualizar urls de redes sociales o website.",
+    "version": "0.0.37",
+    "name": "updateSettingsAdmin",
+    "group": "SettingsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión del administrador.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "facebook",
+            "description": "<p>URL de Facebook.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "instagram",
+            "description": "<p>URL de Instagram.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "twitter",
+            "description": "<p>URL de Website.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "web",
+            "description": "<p>URL de Website.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "youtube",
+            "description": "<p>URL de YouTube.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"facebook\": \"https://facebook.com/link\",\n  \"instagram\": \"https://instagram.com/link\",\n  \"twitter\": \"https://twitter.com/link\",\n  \"web\": \"https://website.com/\",\n  \"youtube\": \"https://youtube.com/channel/abcchanel\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Respuesta de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "facebook",
+            "description": "<p>URL de Facebook.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "instagram",
+            "description": "<p>URL de Instagram.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "twitter",
+            "description": "<p>URL de Twitter.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "web",
+            "description": "<p>URL de Website.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "youtube",
+            "description": "<p>URL de YouTube.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID configuración.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado la configuración exitosamente.\",\n  \"data\": {\n    \"facebook\": \"https://facebook.com/link\",\n    \"instagram\": \"https://instagram.com/link\",\n    \"twitter\": \"https://twitter.com/link\",\n    \"web\": \"https://website.com/\",\n    \"youtube\": \"https://youtube.com/channel/abcchanel\"\n    \"_id\": \"611d13dc6f09d40f2c371def\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"facebook\",\n      \"msg\": \"Disculpe, pero la URL de Facebook indicada es incorrecta.\"\n    },\n    {\n      \"input\": \"instagram\",\n      \"msg\": \"Disculpe, pero la URL de Instagram indicada es incorrecta.\"\n    },\n    {\n      \"input\": \"twitter\",\n      \"msg\": \"Disculpe, pero la URL de Twitter indicada es incorrecta.\"\n    },\n    {\n      \"input\": \"web\",\n      \"msg\": \"Disculpe, pero la URL del Sitio Web indicad es incorrecto.\"\n    },\n    {\n      \"input\": \"youtube\",\n      \"msg\": \"Disculpe, pero la URL de YouTube indicada es incorrecta.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found settings",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero ha ocurrido un error al obtener la configuración.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/SettingsAdmin.js",
+    "groupTitle": "SettingsAdmin"
   },
   {
     "type": "get",

@@ -133,6 +133,8 @@
  *
  * @apiParam (Path params) {String} _id ID del evento a obtener.
  *
+ * @apiUse ParamsToRegisterOrUpdateEvent
+ *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} event Detalles del evento.
  *
