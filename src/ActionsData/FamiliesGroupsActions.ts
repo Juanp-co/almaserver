@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Response } from 'express';
 import { getNamesUsersList } from './UsersActions';
 import {
@@ -40,6 +39,7 @@ export default async function getModelFamiliesGroupsDetails(data: IFamiliesGroup
   ret.direction = data.direction;
   ret.sector = data.sector;
   ret.subSector = data.subSector;
+  ret.location = data.location;
   ret.members = {
     leader: members ? (members.find(m => m._id.toString() === data.members.leaderId) || null) : null,
     host: members ? (members.find(m => m._id.toString() === data.members.hostId) || null) : null,

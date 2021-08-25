@@ -13,6 +13,92 @@
  * @apiSuccess (leader, host, assistant and master Object) {String|Null} position Cargo o posición del miembro.
  */
 
+/**
+ * @apiDefine ParamsCreateOrEditFamilyGroup
+ *
+ * @apiParam {Number} sector Número del sector.
+ * @apiParam {Number} subSector Número del sub-sector.
+ * @apiParam {Number} number Número del grupo.
+ * @apiParam {String} direction Dirección del grupo.
+ * @apiParam {Object} location Datos de geolocalización (opcional).
+ *
+ * @apiParam (location Object) {String} location Datos de geolocalización.
+ * @apiParam (location Object) {Number[]} coordinates Coordenadas de la ubicación ([longitud , latitud] = [-73.630175 , 4.134516]).
+ *
+ * @apiExample {JSON} Example JSON Request
+ * {
+	"sector": 99,
+	"subSector": 99,
+	"number": 99,
+	"direction": "Dirección cualquiera",
+	"location": {
+	  "type": "Point",
+	  "coordinates": [ -73.630175, 4.134516 ]
+	}
+}
+ *
+ */
+
+/**
+ * @apiDefine SuccessGeneralResponseFamilyGroup
+ *
+ * @apiSuccess (group Object) {String} _id ID del grupo.
+ * @apiSuccess (group Object) {Number} number Número del grupo.
+ * @apiSuccess (group Object) {String} direction Dirección del grupo.
+ * @apiSuccess (group Object) {Number} sector Número del sector.
+ * @apiSuccess (group Object) {Number} subSector Número del sub-sector.
+ * @apiSuccess (group Object) {Object} members Miembros del grupo.
+ * @apiSuccess (group Object) {Object} location Datos de la localización.
+ * @apiSuccess (group Object) {String} created_at Fecha de creación del grupo.
+ * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
+ *
+ * @apiSuccess (members Object) {Object|Null} leader Datos del líder del grupo.
+ * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión del grupo.
+ * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
+ * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
+ * @apiSuccess (group Object) {Object} location Datos de la localización.
+ *
+ * @apiSuccess (location Object) {String} type Tipo de coordenada.
+ * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación del grupo.
+ *
+ */
+
+/**
+ * @apiDefine ValidationFormDataFamilyGroup
+ *
+ * @apiErrorExample {JSON} Validation fields
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "¡Error en los parametros!",
+  "errors": [
+    {
+      "input": "sector",
+      "msg": "Disculpe, pero debe indicar el sector."
+    },
+    {
+      "input": "subSector",
+      "msg": "Disculpe, pero debe indica el sub-sector."
+    },
+    {
+      "input": "number",
+      "msg": "Disculpe, pero debe indicar el número del grupo."
+    },
+    {
+      "input": "direction",
+      "msg": "Disculpe, pero debe indicar una dirección."
+    },
+    {
+      "input": "location",
+      "msg": "Disculpe, pero la ubicación seleccionada en el mapa es incorrecta."
+    },
+    {
+      "input": "location",
+      "msg": "Disculpe, pero las coordenadas de la ubicación seleccionada en el mapa son incorrectas."
+    }
+  ]
+}
+ */
+
 /* docs */
 
 /**
@@ -31,11 +117,11 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} groups Listado de grupos familiares.
  *
- * @apiSuccess (groups Object) {Number} _id ID del miembro.
- * @apiSuccess (groups Object) {Number} sector Nombres.
- * @apiSuccess (groups Object) {Number} subSector Apellidos.
- * @apiSuccess (groups Object) {Number} number Número de documento.
- * @apiSuccess (groups Object) {String} created_at Fecha de creación del grupo.
+ * @apiSuccess (groups Object[]) {Number} _id ID del miembro.
+ * @apiSuccess (groups Object[]) {Number} sector Nombres.
+ * @apiSuccess (groups Object[]) {Number} subSector Apellidos.
+ * @apiSuccess (groups Object[]) {Number} number Número de documento.
+ * @apiSuccess (groups Object[]) {String} created_at Fecha de creación del grupo.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -77,54 +163,48 @@
  *
  * @apiHeader {String} x-access-token Token de la sesión del admin.
  *
- * @apiParam {Number} sector Número del sector.
- * @apiParam {Number} subSector Número del sub-sector.
- * @apiParam {Number} number Número del grupo.
- * @apiParam {String} direction Dirección del grupo.
- *
- * @apiExample {JSON} Example JSON Request
- * {
-	"sector": 1,
-	"subSector": 2,
-	"number": 3,
-	"direction": "Dirección cualquiera"
-}
+ * @apiUse ParamsCreateOrEditFamilyGroup
  *
  * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object} group Datos del grupo.
+ *
+ * @apiUse SuccessGeneralResponseFamilyGroup
+ *
+ * @apiUse SimpleModelLHAMFamiliesGroups
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-	"msg": "Se ha creado el nuevo grupo exitosamente."
+  "msg": "Se ha creado el nuevo grupo exitosamente.",
+  "group": {
+    "members": {
+      "leaderId": null,
+      "hostId": null,
+      "assistantId": null,
+      "masterId": null
+    },
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -73.630175,
+        4.134516
+      ]
+    },
+    "_id": "6126901bc09d294bd193e34b",
+    "number": 99,
+    "direction": "DIRECCIÓN CUALQUIERA",
+    "sector": 99,
+    "subSector": 99,
+    "created_at": "2021-08-25 13:46:51",
+    "updated_at": "2021-08-25 13:46:51"
+  }
 }
  *
  * @apiUse GlobalParamsErrors
  *
  * @apiUse GlobalUnauthorized
  *
- * @apiErrorExample {JSON} Validation fields
- * HTTP/1.1 422 Unprocessable Entity
- * {
-  "msg": "¡Error en los parametros!",
-  "errors": [
-    {
-      "input": "sector",
-      "msg": "Disculpe, pero debe indicar el sector."
-    },
-    {
-      "input": "subSector",
-      "msg": "Disculpe, pero debe indica el sub-sector."
-    },
-    {
-      "input": "number",
-      "msg": "Disculpe, pero debe indicar el número del grupo."
-    },
-    {
-      "input": "direction",
-      "msg": "Disculpe, pero debe indicar una dirección."
-    }
-  ]
-}
+ * @apiUse ValidationFormDataFamilyGroup
  *
  * @apiErrorExample {JSON} Number group exists.
  * HTTP/1.1 422 Unprocessable Entity
@@ -148,19 +228,7 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} group Datos del grupo.
  *
- * @apiSuccess (group Object) {String} _id ID del grupo.
- * @apiSuccess (group Object) {Number} number Número del grupo.
- * @apiSuccess (group Object) {String} direction Dirección del grupo.
- * @apiSuccess (group Object) {Number} sector Número del sector.
- * @apiSuccess (group Object) {Number} subSector Número del sub-sector.
- * @apiSuccess (group Object) {Object} members Miembros del grupo.
- * @apiSuccess (group Object) {String} created_at Fecha de creación del grupo.
- * @apiSuccess (group Object) {String} updated_at Fecha de creación del grupo.
- *
- * @apiSuccess (members Object) {Object|Null} leader Datos del líder del grupo.
- * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión del grupo.
- * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
- * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
+ * @apiUse SuccessGeneralResponseFamilyGroup
  *
  * @apiUse SimpleModelLHAMFamiliesGroups
  *
@@ -228,18 +296,7 @@
  *
  * @apiParam (Path params) {String} _id ID del grupo.
  *
- * @apiParam {Number} sector Número del sector.
- * @apiParam {Number} subSector Número del sub-sector.
- * @apiParam {Number} number Número del grupo.
- * @apiParam {String} direction Dirección del grupo.
- *
- * @apiExample {JSON} Example JSON Request
- * {
-	"sector": 4,
-	"subSector": 2,
-	"number": 2,
-	"direction": "Dirección cualquiera editada"
-}
+ * @apiUse ParamsCreateOrEditFamilyGroup
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} group Datos del grupo.
@@ -249,53 +306,30 @@
  * @apiSuccess (group Object) {String} direction Dirección del grupo.
  * @apiSuccess (group Object) {Number} sector Número del sector.
  * @apiSuccess (group Object) {Number} subSector Número del sub-sector.
- * @apiSuccess (group Object) {Object} members Miembros del grupo.
- * @apiSuccess (group Object) {String} created_at Fecha de creación del grupo.
- * @apiSuccess (group Object) {String} updated_at Fecha de creación del grupo.
+ * @apiSuccess (group Object) {Object} location Datos de la localización.
+ * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (members Object) {Object|Null} leader Datos del líder del grupo.
- * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión del grupo.
- * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
- * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
- *
- * @apiUse SimpleModelLHAMFamiliesGroups
+ * @apiSuccess (location Object) {String} type Tipo de coordenada.
+ * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación del grupo.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-  "msg": "Grupo Familiar",
+  "msg": "Se ha actualizado el grupo familiar exitosamente.",
   "group": {
-    "_id": "6063385c98fc731c04777829",
-    "number": 1,
-    "direction": "DIRECCIÓN CUALQUIERA EDITADA",
-    "sector": 1,
-    "subSector": 1,
-    "members": {
-      "leader": null,
-      "host": {
-        "_id": "604068461caad10e2c965406",
-        "names": "PRUEBA",
-        "lastNames": "USUARIO",
-        "document": "CC123123123",
-        "gender": null,
-        "phone": "573151234567",
-        "picture": null,
-        "position": null
-      },
-      "assistant": {
-        "_id": "5fcf0821fc917d476c1cf3e3",
-        "names": "PEDRO JOSÉ",
-        "lastNames": "PÉREZ RODRIGUEZ",
-        "document": "CC12345678",
-        "gender": null,
-        "phone": "3161234567",
-        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
-        "position": null
-      },
-      "master": null
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -73.630175,
+        4.134516
+      ]
     },
-    "created_at": "2021-03-30 09:40:28",
-    "updated_at": "2021-04-08 07:38:05"
+    "_id": "6126901bc09d294bd193e34b",
+    "number": 98,
+    "direction": "DIRECCIÓN CUALQUIERA",
+    "sector": 99,
+    "subSector": 99,
+    "updated_at": "2021-08-25 13:50:19"
   }
 }
  *
@@ -305,29 +339,7 @@
  *
  * @apiUse FamiliesGroupsErrorIdOrNotFound
  *
- * @apiErrorExample {JSON} Validation fields
- * HTTP/1.1 422 Unprocessable Entity
- * {
-  "msg": "¡Error en los parametros!",
-  "errors": [
-    {
-      "input": "sector",
-      "msg": "Disculpe, pero debe indicar el sector."
-    },
-    {
-      "input": "subSector",
-      "msg": "Disculpe, pero debe indica el sub-sector."
-    },
-    {
-      "input": "number",
-      "msg": "Disculpe, pero debe indicar el número del grupo."
-    },
-    {
-      "input": "direction",
-      "msg": "Disculpe, pero debe indicar una dirección."
-    }
-  ]
-}
+ * @apiUse ValidationFormDataFamilyGroup
  *
  * @apiErrorExample {JSON} Number group exists.
  * HTTP/1.1 422 Unprocessable Entity

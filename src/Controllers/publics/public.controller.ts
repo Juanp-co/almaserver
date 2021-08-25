@@ -280,7 +280,6 @@ export async function getPublicMembers(req: Request, res: Response): Promise<Res
 /*
   Params
  */
-
 export async function getPublicParams(req: Request, res: Response): Promise<Response> {
   try {
     let settings = await Settings.findOne().exec();
@@ -304,6 +303,60 @@ export async function getPublicParams(req: Request, res: Response): Promise<Resp
         banner: banner?.picture || null,
         logo: logo?.picture || null,
       }
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getPublicParams`);
+  }
+}
+
+/*
+  Params
+ */
+export async function getOrganization(req: Request, res: Response): Promise<Response> {
+  try {
+    const lvls: any = {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+    };
+    const ret: any = {
+      lvls: {},
+      users: []
+    };
+
+    const users = await Users.find(
+      {},
+      { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1, roles: 1 }
+    ).exec();
+
+    if (users.length > 0) {
+      users.forEach(u => {
+        const model = {
+          _id: u._id || null,
+          fullname: `${u.names || ''} ${u.lastNames || ''} `,
+          gender: u.gender || null,
+          picture: u.picture || null,
+        };
+
+        ret.users.push(model);
+
+        u.roles?.forEach(r => {
+          if (r !== 0) lvls[r].push(u._id);
+        });
+      })
+    }
+
+    ret.lvls = {
+      pastors: lvls[1],
+      supervisors: lvls[2],
+      leaders: lvls[3],
+      peoples: lvls[4],
+    };
+
+    return res.json({
+      msg: `Parámetros`,
+      data: ret
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getPublicParams`);

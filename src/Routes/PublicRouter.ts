@@ -12,7 +12,7 @@ import {
   updateEvent
 } from '../Controllers/events/events.controller';
 import {
-  getBanks, getPublicMembers, getPublicParams,
+  getBanks, getOrganization, getPublicMembers, getPublicParams,
   helloWorld,
   login,
   logout, recoveryPassword,
@@ -71,6 +71,8 @@ router.delete(`/logout`, validateUser, logout);
 */
 router.get(`/members`, validateUser, getPublicMembers);
 
+
+router.get(`/organization`, getOrganization);
 
 router.get(`/params-app`, getPublicParams);
 

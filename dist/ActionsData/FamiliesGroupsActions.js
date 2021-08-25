@@ -37,6 +37,7 @@ async function getModelFamiliesGroupsDetails(data) {
     ret.direction = data.direction;
     ret.sector = data.sector;
     ret.subSector = data.subSector;
+    ret.location = data.location;
     ret.members = {
         leader: members ? (members.find(m => m._id.toString() === data.members.leaderId) || null) : null,
         host: members ? (members.find(m => m._id.toString() === data.members.hostId) || null) : null,

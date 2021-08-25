@@ -2,20 +2,32 @@ import { setError } from '../Functions/GlobalFunctions';
 import { checkObjectId, checkTitlesOrDescriptions } from '../Functions/Validations';
 import {
   IFamiliesGroupsForm,
-  IFamiliesGroupsUpdateForm,
   IFamiliesGroupsUpdateMembersForm
 } from '../Interfaces/IFamiliesGroups';
 
 const membersList: string[] = ['leaderId', 'hostId', 'assistantId', 'masterId'];
 const membersMsgList: string[] = ['líder', 'anfitrión', 'asistente', 'maestro'];
+const staticCoords = [ -73.630175, 4.134516 ];
+const checkCoordsNumbersType = (coords: any = []) => {
+  let counter = 0;
+  coords?.forEach((c: any) => {
+    if (typeof c !== 'number') counter += 1;
+  });
 
-export default function validateFormData(data: IFamiliesGroupsForm) : { data: IFamiliesGroupsUpdateForm; errors: any } {
-  const ret: IFamiliesGroupsUpdateForm = {
+  return counter === 0
+};
+
+export default function validateDataForm(data: IFamiliesGroupsForm) : { data: IFamiliesGroupsForm; errors: any } {
+  const ret = {
     number: null,
     direction: null,
     sector: null,
     subSector: null,
-  } as IFamiliesGroupsUpdateForm;
+    location: {
+      type: 'Point',
+      coordinates: staticCoords
+    }
+  } as IFamiliesGroupsForm;
 
   const errors: any = [];
 
@@ -51,50 +63,23 @@ export default function validateFormData(data: IFamiliesGroupsForm) : { data: IF
   }
   else ret.direction = data.direction?.toString().trim() || null;
 
-  return { data: ret, errors };
-}
-
-export function validateUpdateForm(data: IFamiliesGroupsUpdateForm) : { data: IFamiliesGroupsUpdateForm; errors: any } {
-  const ret: IFamiliesGroupsUpdateForm = {
-    number: null,
-    direction: null,
-    sector: null,
-    subSector: null,
-  } as IFamiliesGroupsUpdateForm;
-
-  const errors: any = [];
-
-  // number
-  if (!/[0-9]{1,4}/.test(`${data.number}`)) {
-    errors.push(
-      setError('Disculpe, pero debe indicar el número del grupo.', 'number')
-    );
+  // location
+  if (data.location) {
+     if (data.location.coordinates?.length !== 2) {
+       errors.push(
+         setError('Disculpe, pero la ubicación seleccionada en el mapa es incorrecta.', 'location')
+       );
+     }
+     else if (!checkCoordsNumbersType(data.location.coordinates)) {
+       errors.push(
+         setError('Disculpe, pero las coordenadas de la ubicación seleccionada en el mapa son incorrectas.', 'location')
+       );
+     }
+     else {
+       ret.location.type = data.location.type || 'Point';
+       ret.location.coordinates = data.location.coordinates || staticCoords;
+     }
   }
-  else ret.number = data.number;
-
-  // direction
-  if (!checkTitlesOrDescriptions(data.direction)) {
-    errors.push(
-      setError('Disculpe, pero debe indicar una dirección.', 'direction')
-    );
-  }
-  else ret.direction = data.direction?.toString().trim() || null;
-
-  // sector
-  if (!/[0-9]{1,4}/.test(`${data.sector}`)) {
-    errors.push(
-      setError('Disculpe, pero debe indicar seleccionar un sector.', 'sector')
-    );
-  }
-  else ret.sector = data.sector;
-
-  // subSector
-  if (!/[0-9]{1,4}/.test(`${data.subSector}`)) {
-    errors.push(
-      setError('Disculpe, pero debe indicar seleccionar un sub-sector.', 'subSector')
-    );
-  }
-  else ret.subSector = data.subSector;
 
   return { data: ret, errors };
 }

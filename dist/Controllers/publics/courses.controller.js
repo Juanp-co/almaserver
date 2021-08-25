@@ -135,7 +135,7 @@ async function updateHistoricalCourseContent(req, res) {
     try {
         const { slug, _id, action } = req.params;
         const { tokenId } = req.body;
-        if (!/[^12]/.test(`${action}`))
+        if (!/[12]{1}/.test(`${action}`))
             return CoursesActions_1.returnNotFound(res, 'errorAction');
         if (!Validations_1.checkSlug(slug))
             return CoursesActions_1.returnNotFound(res, 'slug');

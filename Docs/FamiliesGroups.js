@@ -9,24 +9,35 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} groups Listado de grupos familiares asociados al usuario.
  *
- * @apiSuccess (groups Object) {Number} _id ID del miembro.
- * @apiSuccess (groups Object) {Number} sector Nombres.
- * @apiSuccess (groups Object) {Number} subSector Apellidos.
- * @apiSuccess (groups Object) {Number} number Número de documento.
- * @apiSuccess (groups Object) {String} created_at Fecha de creación del grupo.
+ * @apiSuccess (groups Object[]) {Number} _id ID del miembro.
+ * @apiSuccess (groups Object[]) {Number} sector Nombres.
+ * @apiSuccess (groups Object[]) {Number} subSector Apellidos.
+ * @apiSuccess (groups Object[]) {Number} number Número de documento.
+ * @apiSuccess (groups Object[]) {Object} location Datos de la localización.
+ * @apiSuccess (groups Object[]) {String} created_at Fecha de creación del grupo.
+ *
+ * @apiSuccess (location Object) {String} type Tipo de coordenada.
+ * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación del grupo.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
 	"msg": "Grupos familiares",
 	"groups": [
-		{
-			"_id": "6063385c98fc731c04777829",
-			"sector": 4,
-			"subSector": 2,
-			"number": 2,
-			"created_at": "2021-03-30 09:40:28"
-		},
+    {
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          -64.18147,
+          10.451304
+        ]
+      },
+      "_id": "6063385c98fc731c04777829",
+      "sector": 1,
+      "subSector": 1,
+      "number": 1,
+      "direction": "DIRECCIÓN CUALQUIERA EDITADA"
+    },
 		.
 		.
 		.
@@ -65,9 +76,13 @@
  * @apiSuccess (group Object) {String} direction Dirección del grupo.
  * @apiSuccess (group Object) {Number} sector Número del sector.
  * @apiSuccess (group Object) {Number} subSector Número del sub-sector.
+ * @apiSuccess (group Object) {Object} location Datos de la localización.
  * @apiSuccess (group Object) {Object} members Miembros del grupo.
  * @apiSuccess (group Object) {String} created_at Fecha de creación del grupo.
- * @apiSuccess (group Object) {String} updated_at Fecha de creación del grupo.
+ * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
+ *
+ * @apiSuccess (location Object) {String} type Tipo de coordenada.
+ * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación del grupo.
  *
  * @apiSuccess (members Object) {Object|Null} leader Datos del líder del grupo.
  * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión del grupo.
@@ -92,6 +107,13 @@
 		"direction": "DIRECCIÓN CUALQUIERA ASDASD ASDASD",
 		"sector": 4,
 		"subSector": 2,
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -64.18147,
+        10.451304
+      ]
+    },
 		"members": {
 			"leader": {
 				"_id": "604068b49b20e72f341972ed",

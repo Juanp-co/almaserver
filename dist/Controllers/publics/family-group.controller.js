@@ -40,7 +40,9 @@ async function getFamiliesGroups(req, res) {
         if (!user)
             return FamiliesGroupsActions_1.returnFamilyGroup404(res);
         if (user.familyGroupId && user.familyGroupId.length > 0) {
-            ret = await FamiliesGroups_1.default.find({ _id: { $in: user.familyGroupId } }, { number: 1, sector: 1, subSector: 1, direction: 1, created_at: 1, }).exec();
+            ret = await FamiliesGroups_1.default.find({ _id: { $in: user.familyGroupId } }, { number: 1, sector: 1, subSector: 1, direction: 1, location: 1, created_at: 1, })
+                .sort({ sector: 1, subSector: 1, number: 1 })
+                .exec();
         }
         return res.json({
             msg: 'Grupos familiares',
@@ -56,16 +58,15 @@ async function getFamiliesGroupsPublic(req, res) {
     try {
         const { sector, subSector, number } = req.query;
         const query = {};
-        let ret = [];
         if (/[0-9]{1,3}/.test(`${sector}`))
             query.sector = Number.parseInt(`${sector}`, 10);
         if (/[0-9]{1,3}/.test(`${subSector}`))
             query.subSector = Number.parseInt(`${subSector}`, 10);
         if (/[0-9]{1,3}/.test(`${number}`))
             query.number = Number.parseInt(`${number}`, 10);
-        if (Object.keys(query).length > 0) {
-            ret = await FamiliesGroups_1.default.find(query, { number: 1, sector: 1, subSector: 1, direction: 1 }).exec();
-        }
+        const ret = await FamiliesGroups_1.default.find(query, { number: 1, sector: 1, subSector: 1, direction: 1, location: 1 })
+            .sort({ sector: 1, subSector: 1, number: 1 })
+            .exec();
         return res.json({
             msg: 'Grupos familiares',
             groups: ret
