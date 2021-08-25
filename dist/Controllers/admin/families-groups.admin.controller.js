@@ -100,7 +100,8 @@ async function saveFamilyGroup(req, res) {
         const group = new FamiliesGroups_1.default(validate.data);
         await group.save();
         return res.json({
-            msg: 'Se ha creado el nuevo grupo exitosamente.'
+            msg: 'Se ha creado el nuevo grupo exitosamente.',
+            group
         });
     }
     catch (error) {
@@ -113,10 +114,10 @@ async function updateFamilyGroup(req, res) {
         const { _id } = req.params;
         if (!Validations_1.checkObjectId(_id))
             return FamiliesGroupsActions_1.returnErrorId(res);
-        const validate = FamiliesGroupsRequest_1.validateUpdateForm(req.body);
+        const validate = FamiliesGroupsRequest_1.default(req.body);
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
-        const group = await FamiliesGroups_1.default.findOne({ _id }).exec();
+        const group = await FamiliesGroups_1.default.findOne({ _id }, { __v: 0, members: 0, created_at: 0 }).exec();
         if (!group)
             return FamiliesGroupsActions_1.return404(res);
         if (validate.data.number !== group.number) {
@@ -134,12 +135,13 @@ async function updateFamilyGroup(req, res) {
         }
         group.number = validate.data.number || group.number;
         group.direction = validate.data.direction;
+        group.location.coordinates = validate.data.location.coordinates;
         group.sector = validate.data.sector;
         group.subSector = validate.data.subSector;
         await group.save();
         return res.json({
-            msg: 'Grupo Familiar',
-            group: await FamiliesGroupsActions_1.default(group)
+            msg: 'Se ha actualizado el grupo familiar exitosamente.',
+            group
         });
     }
     catch (error) {

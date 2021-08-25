@@ -8,10 +8,7 @@ import getModelFamiliesGroupsDetails, {
   returnErrorId
 } from '../../ActionsData/FamiliesGroupsActions';
 import { setFamilyGroupIdValueUsers } from '../../ActionsData/UsersActions';
-import validateFormData, {
-  validateUpdateForm,
-  validateUpdateMembersForm
-} from '../../FormRequest/FamiliesGroupsRequest';
+import validateDataForm, { validateUpdateMembersForm } from '../../FormRequest/FamiliesGroupsRequest';
 import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
 import FamiliesGroups from '../../Models/FamiliesGroups';
@@ -24,7 +21,10 @@ export default async function getFamiliesGroups(req: Request, res: Response) : P
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
     const query = getQueryParamsList(req.query);
 
-    const groups = await FamiliesGroups.find(query, { number: 1, sector: 1, subSector: 1, created_at: 1, })
+    const groups = await FamiliesGroups.find(
+      query,
+      { number: 1, sector: 1, subSector: 1, created_at: 1, }
+      )
       .skip(skip)
       .limit(limit)
       .sort(sort)
@@ -73,7 +73,7 @@ export async function showFamilyGroup(req: Request, res: Response) : Promise<Res
 
 export async function saveFamilyGroup(req: Request, res: Response) : Promise<Response> {
   try {
-    const validate = validateFormData(req.body);
+    const validate = validateDataForm(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
@@ -92,7 +92,8 @@ export async function saveFamilyGroup(req: Request, res: Response) : Promise<Res
     await group.save();
 
     return res.json({
-      msg: 'Se ha creado el nuevo grupo exitosamente.'
+      msg: 'Se ha creado el nuevo grupo exitosamente.',
+      group
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/saveFamilyGroup`);
@@ -104,10 +105,10 @@ export async function updateFamilyGroup(req: Request, res: Response) : Promise<R
     const { _id } = req.params;
     if (!checkObjectId(_id)) return returnErrorId(res);
 
-    const validate = validateUpdateForm(req.body);
+    const validate = validateDataForm(req.body);
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    const group = await FamiliesGroups.findOne({ _id }).exec();
+    const group = await FamiliesGroups.findOne({ _id }, { __v: 0, members: 0, created_at: 0 }).exec();
 
     if (!group) return return404(res);
 
@@ -127,14 +128,15 @@ export async function updateFamilyGroup(req: Request, res: Response) : Promise<R
 
     group.number = validate.data.number || group.number;
     group.direction = validate.data.direction;
+    group.location.coordinates = validate.data.location.coordinates;
     group.sector = validate.data.sector;
     group.subSector = validate.data.subSector;
 
     await group.save();
 
     return res.json({
-      msg: 'Grupo Familiar',
-      group: await getModelFamiliesGroupsDetails(group)
+      msg: 'Se ha actualizado el grupo familiar exitosamente.',
+      group
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/updateFamilyGroup`);

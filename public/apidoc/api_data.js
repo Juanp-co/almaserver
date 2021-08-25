@@ -6571,47 +6571,6 @@ define({ "api": [
         ]
       }
     },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "sector",
-            "description": "<p>Número del sector.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "subSector",
-            "description": "<p>Número del sub-sector.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Number",
-            "optional": false,
-            "field": "number",
-            "description": "<p>Número del grupo.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "direction",
-            "description": "<p>Dirección del grupo.</p>"
-          }
-        ]
-      }
-    },
-    "examples": [
-      {
-        "title": "Example JSON Request",
-        "content": "{\n\t\"sector\": 1,\n\t\"subSector\": 2,\n\t\"number\": 3,\n\t\"direction\": \"Dirección cualquiera\"\n}",
-        "type": "JSON"
-      }
-    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -6621,24 +6580,195 @@ define({ "api": [
             "optional": false,
             "field": "msg",
             "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Datos del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Object",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Miembros del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de la localización.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del grupo.</p>"
+          }
+        ],
+        "members Object": [
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "leader",
+            "description": "<p>Datos del líder del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "host",
+            "description": "<p>Datos del anfitrión del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "assistant",
+            "description": "<p>Datos del asistente del grupo.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "master",
+            "description": "<p>Datos del maestro del grupo.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación del grupo.</p>"
+          }
+        ],
+        "leader, host, assistant and master Object": [
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "leader, host, assistant and master Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha creado el nuevo grupo exitosamente.\"\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha creado el nuevo grupo exitosamente.\",\n  \"group\": {\n    \"members\": {\n      \"leaderId\": null,\n      \"hostId\": null,\n      \"assistantId\": null,\n      \"masterId\": null\n    },\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -73.630175,\n        4.134516\n      ]\n    },\n    \"_id\": \"6126901bc09d294bd193e34b\",\n    \"number\": 99,\n    \"direction\": \"DIRECCIÓN CUALQUIERA\",\n    \"sector\": 99,\n    \"subSector\": 99,\n    \"created_at\": \"2021-08-25 13:46:51\",\n    \"updated_at\": \"2021-08-25 13:46:51\"\n  }\n}",
           "type": "JSON"
         }
       ]
     },
     "error": {
       "examples": [
-        {
-          "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"sector\",\n      \"msg\": \"Disculpe, pero debe indicar el sector.\"\n    },\n    {\n      \"input\": \"subSector\",\n      \"msg\": \"Disculpe, pero debe indica el sub-sector.\"\n    },\n    {\n      \"input\": \"number\",\n      \"msg\": \"Disculpe, pero debe indicar el número del grupo.\"\n    },\n    {\n      \"input\": \"direction\",\n      \"msg\": \"Disculpe, pero debe indicar una dirección.\"\n    }\n  ]\n}",
-          "type": "JSON"
-        },
         {
           "title": "Number group exists.",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el número del grupo ya se encuentra registrado para este sector y sub-sector.\",\n}",
@@ -6647,6 +6777,11 @@ define({ "api": [
         {
           "title": "Error token",
           "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"sector\",\n      \"msg\": \"Disculpe, pero debe indicar el sector.\"\n    },\n    {\n      \"input\": \"subSector\",\n      \"msg\": \"Disculpe, pero debe indica el sub-sector.\"\n    },\n    {\n      \"input\": \"number\",\n      \"msg\": \"Disculpe, pero debe indicar el número del grupo.\"\n    },\n    {\n      \"input\": \"direction\",\n      \"msg\": \"Disculpe, pero debe indicar una dirección.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero la ubicación seleccionada en el mapa es incorrecta.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero las coordenadas de la ubicación seleccionada en el mapa son incorrectas.\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -6691,7 +6826,71 @@ define({ "api": [
       }
     },
     "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
-    "groupTitle": "FamiliesGroupsAdmin"
+    "groupTitle": "FamiliesGroupsAdmin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Número del sector.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Número del sub-sector.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "direction",
+            "description": "<p>Dirección del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de geolocalización (opcional).</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de geolocalización.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación ([longitud , latitud] = [-73.630175 , 4.134516]).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"sector\": 99,\n\t\"subSector\": 99,\n\t\"number\": 99,\n\t\"direction\": \"Dirección cualquiera\",\n\t\"location\": {\n\t  \"type\": \"Point\",\n\t  \"coordinates\": [ -73.630175, 4.134516 ]\n\t}\n}",
+        "type": "JSON"
+      }
+    ]
   },
   {
     "type": "delete",
@@ -6908,6 +7107,13 @@ define({ "api": [
           },
           {
             "group": "group Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de la localización.</p>"
+          },
+          {
+            "group": "group Object",
             "type": "String",
             "optional": false,
             "field": "created_at",
@@ -6918,7 +7124,7 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "updated_at",
-            "description": "<p>Fecha de creación del grupo.</p>"
+            "description": "<p>Fecha de la última actualización del grupo.</p>"
           }
         ],
         "members Object": [
@@ -6949,6 +7155,22 @@ define({ "api": [
             "optional": false,
             "field": "master",
             "description": "<p>Datos del maestro del grupo.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación del grupo.</p>"
           }
         ],
         "leader, host, assistant and master Object": [
@@ -7156,37 +7378,37 @@ define({ "api": [
             "description": "<p>Listado de grupos familiares.</p>"
           }
         ],
-        "groups Object": [
+        "groups Object[]": [
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "sector",
             "description": "<p>Nombres.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "subSector",
             "description": "<p>Apellidos.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "number",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "String",
             "optional": false,
             "field": "created_at",
@@ -7317,17 +7539,33 @@ define({ "api": [
             "optional": false,
             "field": "direction",
             "description": "<p>Dirección del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de geolocalización (opcional).</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de geolocalización.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación ([longitud , latitud] = [-73.630175 , 4.134516]).</p>"
           }
         ]
       }
     },
-    "examples": [
-      {
-        "title": "Example JSON Request",
-        "content": "{\n\t\"sector\": 4,\n\t\"subSector\": 2,\n\t\"number\": 2,\n\t\"direction\": \"Dirección cualquiera editada\"\n}",
-        "type": "JSON"
-      }
-    ],
     "success": {
       "fields": {
         "Success 200": [
@@ -7386,128 +7624,44 @@ define({ "api": [
             "group": "group Object",
             "type": "Object",
             "optional": false,
-            "field": "members",
-            "description": "<p>Miembros del grupo.</p>"
-          },
-          {
-            "group": "group Object",
-            "type": "String",
-            "optional": false,
-            "field": "created_at",
-            "description": "<p>Fecha de creación del grupo.</p>"
+            "field": "location",
+            "description": "<p>Datos de la localización.</p>"
           },
           {
             "group": "group Object",
             "type": "String",
             "optional": false,
             "field": "updated_at",
-            "description": "<p>Fecha de creación del grupo.</p>"
+            "description": "<p>Fecha de la última actualización del grupo.</p>"
           }
         ],
-        "members Object": [
+        "location Object": [
           {
-            "group": "members Object",
-            "type": "Object|Null",
-            "optional": false,
-            "field": "leader",
-            "description": "<p>Datos del líder del grupo.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "Object|Null",
-            "optional": false,
-            "field": "host",
-            "description": "<p>Datos del anfitrión del grupo.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "Object|Null",
-            "optional": false,
-            "field": "assistant",
-            "description": "<p>Datos del asistente del grupo.</p>"
-          },
-          {
-            "group": "members Object",
-            "type": "Object|Null",
-            "optional": false,
-            "field": "master",
-            "description": "<p>Datos del maestro del grupo.</p>"
-          }
-        ],
-        "leader, host, assistant and master Object": [
-          {
-            "group": "leader, host, assistant and master Object",
+            "group": "location Object",
             "type": "String",
             "optional": false,
-            "field": "_id",
-            "description": "<p>ID del miembro.</p>"
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
-            "type": "String",
+            "group": "location Object",
+            "type": "Number[]",
             "optional": false,
-            "field": "names",
-            "description": "<p>Nombre(s).</p>"
-          },
-          {
-            "group": "leader, host, assistant and master Object",
-            "type": "String",
-            "optional": false,
-            "field": "lastNames",
-            "description": "<p>Apellido(s).</p>"
-          },
-          {
-            "group": "leader, host, assistant and master Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento.</p>"
-          },
-          {
-            "group": "leader, host, assistant and master Object",
-            "type": "Number|Null",
-            "optional": false,
-            "field": "gender",
-            "description": "<p>ID (array index) del sexo (género).</p>"
-          },
-          {
-            "group": "leader, host, assistant and master Object",
-            "type": "String",
-            "optional": false,
-            "field": "phone",
-            "description": "<p>Teléfono del miembro.</p>"
-          },
-          {
-            "group": "leader, host, assistant and master Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "picture",
-            "description": "<p>URL de la foto de perfil.</p>"
-          },
-          {
-            "group": "leader, host, assistant and master Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "position",
-            "description": "<p>Cargo o posición del miembro.</p>"
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación del grupo.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"group\": {\n    \"_id\": \"6063385c98fc731c04777829\",\n    \"number\": 1,\n    \"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\",\n    \"sector\": 1,\n    \"subSector\": 1,\n    \"members\": {\n      \"leader\": null,\n      \"host\": {\n        \"_id\": \"604068461caad10e2c965406\",\n        \"names\": \"PRUEBA\",\n        \"lastNames\": \"USUARIO\",\n        \"document\": \"CC123123123\",\n        \"gender\": null,\n        \"phone\": \"573151234567\",\n        \"picture\": null,\n        \"position\": null\n      },\n      \"assistant\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n      \"master\": null\n    },\n    \"created_at\": \"2021-03-30 09:40:28\",\n    \"updated_at\": \"2021-04-08 07:38:05\"\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado el grupo familiar exitosamente.\",\n  \"group\": {\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -73.630175,\n        4.134516\n      ]\n    },\n    \"_id\": \"6126901bc09d294bd193e34b\",\n    \"number\": 98,\n    \"direction\": \"DIRECCIÓN CUALQUIERA\",\n    \"sector\": 99,\n    \"subSector\": 99,\n    \"updated_at\": \"2021-08-25 13:50:19\"\n  }\n}",
           "type": "JSON"
         }
       ]
     },
     "error": {
       "examples": [
-        {
-          "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"sector\",\n      \"msg\": \"Disculpe, pero debe indicar el sector.\"\n    },\n    {\n      \"input\": \"subSector\",\n      \"msg\": \"Disculpe, pero debe indica el sub-sector.\"\n    },\n    {\n      \"input\": \"number\",\n      \"msg\": \"Disculpe, pero debe indicar el número del grupo.\"\n    },\n    {\n      \"input\": \"direction\",\n      \"msg\": \"Disculpe, pero debe indicar una dirección.\"\n    }\n  ]\n}",
-          "type": "JSON"
-        },
         {
           "title": "Number group exists.",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el número del grupo ya se encuentra registrado para este sector y sub-sector.\",\n}",
@@ -7526,6 +7680,11 @@ define({ "api": [
         {
           "title": "Invalid _id",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"sector\",\n      \"msg\": \"Disculpe, pero debe indicar el sector.\"\n    },\n    {\n      \"input\": \"subSector\",\n      \"msg\": \"Disculpe, pero debe indica el sub-sector.\"\n    },\n    {\n      \"input\": \"number\",\n      \"msg\": \"Disculpe, pero debe indicar el número del grupo.\"\n    },\n    {\n      \"input\": \"direction\",\n      \"msg\": \"Disculpe, pero debe indicar una dirección.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero la ubicación seleccionada en el mapa es incorrecta.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero las coordenadas de la ubicación seleccionada en el mapa son incorrectas.\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -7570,7 +7729,14 @@ define({ "api": [
       }
     },
     "filename": "Docs/Admin/FamiliesGroupsAdmin.js",
-    "groupTitle": "FamiliesGroupsAdmin"
+    "groupTitle": "FamiliesGroupsAdmin",
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"sector\": 99,\n\t\"subSector\": 99,\n\t\"number\": 99,\n\t\"direction\": \"Dirección cualquiera\",\n\t\"location\": {\n\t  \"type\": \"Point\",\n\t  \"coordinates\": [ -73.630175, 4.134516 ]\n\t}\n}",
+        "type": "JSON"
+      }
+    ]
   },
   {
     "type": "put",
@@ -9662,13 +9828,36 @@ define({ "api": [
             "optional": false,
             "field": "direction",
             "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "groups Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de la localización.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación del grupo.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n\t\t{\n\t\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\t\"sector\": 1,\n\t\t\t\"subSector\": 1,\n\t\t\t\"number\": 1,\n\t\t\t\"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n    {\n      \"location\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n          -64.18147,\n          10.451304\n        ]\n      },\n      \"_id\": \"6063385c98fc731c04777829\",\n      \"sector\": 1,\n      \"subSector\": 1,\n      \"number\": 1,\n      \"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\"\n    },\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
@@ -13846,6 +14035,13 @@ define({ "api": [
             "group": "group Object",
             "type": "Object",
             "optional": false,
+            "field": "location",
+            "description": "<p>Datos de la localización.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Object",
+            "optional": false,
             "field": "members",
             "description": "<p>Miembros del grupo.</p>"
           },
@@ -13861,7 +14057,23 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "updated_at",
-            "description": "<p>Fecha de creación del grupo.</p>"
+            "description": "<p>Fecha de la última actualización del grupo.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación del grupo.</p>"
           }
         ],
         "members Object": [
@@ -13949,7 +14161,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": 573151234561,\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"573151234567\",\n\t\t\t\t\"position\": \"ANFITRIÓN Y LÍDER\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\",\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-03 11:51:52\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupo Familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\"number\": 2,\n\t\t\"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n\t\t\"sector\": 4,\n\t\t\"subSector\": 2,\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -64.18147,\n        10.451304\n      ]\n    },\n\t\t\"members\": {\n\t\t\t\"leader\": {\n\t\t\t\t\"_id\": \"604068b49b20e72f341972ed\",\n\t\t\t\t\"names\": \"LIDER\",\n\t\t\t\t\"lastNames\": \"PRUEBA\",\n\t\t\t\t\"document\": \"CC1234123411\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": 573151234561,\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"host\": {\n\t\t\t\t\"_id\": \"604068461caad10e2c965406\",\n\t\t\t\t\"names\": \"PRUEBA\",\n\t\t\t\t\"lastNames\": \"USUARIO\",\n\t\t\t\t\"document\": \"CC123123123\",\n\t\t\t\t\"gender\": null,\n\t\t\t\t\"phone\": \"573151234567\",\n\t\t\t\t\"position\": \"ANFITRIÓN Y LÍDER\"\n\t\t\t},\n\t\t\t\"assistant\": {\n\t\t\t\t\"_id\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\t\t\"names\": \"PEDRO JOSÉ\",\n\t\t\t\t\"lastNames\": \"PÉREZ RODRIGUEZ\",\n\t\t\t\t\"document\": \"CC12345678\",\n\t\t\t\t\"gender\": 0,\n\t\t\t\t\"phone\": \"3161234567\",\n\t\t\t\t\"position\": null\n\t\t\t},\n\t\t\t\"master\": null\n\t\t},\n\t\t\"created_at\": \"2021-03-30 09:40:28\",\n\t\t\"updated_at\": \"2021-04-03 11:51:52\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -14335,48 +14547,71 @@ define({ "api": [
             "description": "<p>Listado de grupos familiares asociados al usuario.</p>"
           }
         ],
-        "groups Object": [
+        "groups Object[]": [
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "sector",
             "description": "<p>Nombres.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "subSector",
             "description": "<p>Apellidos.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "number",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "groups Object",
+            "group": "groups Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de la localización.</p>"
+          },
+          {
+            "group": "groups Object[]",
             "type": "String",
             "optional": false,
             "field": "created_at",
             "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación del grupo.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n\t\t{\n\t\t\t\"_id\": \"6063385c98fc731c04777829\",\n\t\t\t\"sector\": 4,\n\t\t\t\"subSector\": 2,\n\t\t\t\"number\": 2,\n\t\t\t\"created_at\": \"2021-03-30 09:40:28\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n    {\n      \"location\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n          -64.18147,\n          10.451304\n        ]\n      },\n      \"_id\": \"6063385c98fc731c04777829\",\n      \"sector\": 1,\n      \"subSector\": 1,\n      \"number\": 1,\n      \"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\"\n    },\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {

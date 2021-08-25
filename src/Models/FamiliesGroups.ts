@@ -2,6 +2,14 @@ import { Schema, model } from 'mongoose';
 import { getDate, setDate, toUpperValue } from '../Functions/GlobalFunctions';
 import { IFamiliesGroups } from '../Interfaces/IFamiliesGroups';
 
+const LocationSchema = new Schema(
+  {
+    type: { type: String, default: 'Point' },
+    coordinates: { type: [Number], default: [ -73.630175, 4.134516 ] },
+  },
+  { _id: false, id: false }
+);
+
 const MembersGroupSchema = new Schema(
   {
     leaderId: { type: String, default: null },
@@ -19,6 +27,7 @@ const FamiliesGroupsSchema = new Schema(
     subSector: { type: Number, require: true },
     members: { type: MembersGroupSchema, default: {MembersGroupSchema} },
     direction: { type: String, require: true, set: toUpperValue },
+    location: { type: LocationSchema, default: {LocationSchema} },
     created_at: { type: Number, default: setDate, get: getDate },
     updated_at: { type: Number, default: setDate, get: getDate }
   },

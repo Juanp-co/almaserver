@@ -28,8 +28,10 @@ export default async function getFamiliesGroups(req: Request, res: Response): Pr
     if (user.familyGroupId && user.familyGroupId.length > 0) {
       ret = await FamiliesGroups.find(
         { _id: { $in: user.familyGroupId } },
-        { number: 1, sector: 1, subSector: 1, direction: 1, created_at: 1, }
-        ).exec() as IFamiliesGroupsList[];
+        { number: 1, sector: 1, subSector: 1, direction: 1, location: 1, created_at: 1, }
+      )
+        .sort({ sector: 1, subSector: 1, number: 1 })
+        .exec() as IFamiliesGroupsList[];
     }
 
     return res.json({
@@ -45,18 +47,17 @@ export async function getFamiliesGroupsPublic(req: Request, res: Response): Prom
   try {
     const { sector, subSector, number } = req.query;
     const query: any = {};
-    let ret: IFamiliesGroupsList[] = [];
 
     if (/[0-9]{1,3}/.test(`${sector}`)) query.sector = Number.parseInt(`${sector}`, 10);
     if (/[0-9]{1,3}/.test(`${subSector}`)) query.subSector = Number.parseInt(`${subSector}`, 10);
     if (/[0-9]{1,3}/.test(`${number}`)) query.number = Number.parseInt(`${number}`, 10);
 
-    if (Object.keys(query).length > 0) {
-      ret = await FamiliesGroups.find(
-        query,
-        { number: 1, sector: 1, subSector: 1, direction: 1 }
-      ).exec() as IFamiliesGroupsList[];
-    }
+    const ret: IFamiliesGroupsList[] = await FamiliesGroups.find(
+      query,
+      { number: 1, sector: 1, subSector: 1, direction: 1, location: 1 }
+    )
+      .sort({ sector: 1, subSector: 1, number: 1 })
+      .exec() as IFamiliesGroupsList[];
 
     return res.json({
       msg: 'Grupos familiares',

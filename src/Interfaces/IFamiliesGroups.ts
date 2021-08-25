@@ -15,9 +15,15 @@ export interface IFamiliesGroupsMembersDetails {
   master: IUserSimpleInfo|null;
 }
 
+export interface IFamiliesGroupsLocation {
+  type: string;
+  coordinates: number[];
+}
+
 export interface IFamiliesGroups extends Document {
   number: number | null;
-  direction: string|null
+  direction: string|null;
+  location: IFamiliesGroupsLocation;
   sector: number|null;
   subSector: number|null;
   members: IFamiliesGroupsMembers;
@@ -27,21 +33,14 @@ export interface IFamiliesGroups extends Document {
 
 export interface IFamiliesGroupsForm {
   number: number|null;
-  direction: string|null;
   sector: number|null;
   subSector: number|null;
-  members: IFamiliesGroups['members']|any;
+  direction: string|null;
+  location: IFamiliesGroups['location'];
 }
 
 export interface IFamiliesGroupsUpdateMembersForm {
   members: IFamiliesGroups['members']|any;
-}
-
-export interface IFamiliesGroupsUpdateForm {
-  number: number|null;
-  direction: string|null;
-  sector: number|null;
-  subSector: number|null;
 }
 
 export interface IFamiliesGroupsList {
@@ -49,6 +48,7 @@ export interface IFamiliesGroupsList {
   number: IFamiliesGroups['number'] | null;
   sector: IFamiliesGroups['sector'];
   subSector: IFamiliesGroups['subSector'];
+  location?: IFamiliesGroups['location'];
   created_at: IFamiliesGroups['created_at'];
 }
 
@@ -58,6 +58,7 @@ export interface IFamiliesGroupsDetails {
   direction: IFamiliesGroups['direction'];
   sector: IFamiliesGroups['sector'];
   subSector: IFamiliesGroups['subSector'];
+  location: IFamiliesGroups['location'];
   members: IFamiliesGroupsMembersDetails;
   created_at: IFamiliesGroups['created_at'];
   updated_at: IFamiliesGroups['updated_at'];

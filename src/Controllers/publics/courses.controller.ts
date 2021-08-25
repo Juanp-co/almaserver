@@ -131,7 +131,7 @@ export async function updateHistoricalCourseContent(req: Request, res: Response)
     const { slug, _id, action } = req.params;
     const { tokenId } = req.body;
 
-    if (!/[^12]/.test(`${action}`)) return returnNotFound(res, 'errorAction');
+    if (!/[12]{1}/.test(`${action}`)) return returnNotFound(res, 'errorAction');
     if (!checkSlug(slug)) return returnNotFound(res, 'slug');
     if (!checkObjectId(_id)) return returnNotFound(res, 'errorThemeId');
 

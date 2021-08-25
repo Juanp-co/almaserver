@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPublicParams = exports.getPublicMembers = exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+exports.getOrganization = exports.getPublicParams = exports.getPublicMembers = exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
@@ -287,3 +287,51 @@ async function getPublicParams(req, res) {
     }
 }
 exports.getPublicParams = getPublicParams;
+/*
+  Params
+ */
+async function getOrganization(req, res) {
+    try {
+        const lvls = {
+            1: [],
+            2: [],
+            3: [],
+            4: [],
+        };
+        const ret = {
+            lvls: {},
+            users: []
+        };
+        const users = await Users_1.default.find({}, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1, roles: 1 }).exec();
+        if (users.length > 0) {
+            users.forEach(u => {
+                var _a;
+                const model = {
+                    _id: u._id || null,
+                    fullname: `${u.names || ''} ${u.lastNames || ''} `,
+                    gender: u.gender || null,
+                    picture: u.picture || null,
+                };
+                ret.users.push(model);
+                (_a = u.roles) === null || _a === void 0 ? void 0 : _a.forEach(r => {
+                    if (r !== 0)
+                        lvls[r].push(u._id);
+                });
+            });
+        }
+        ret.lvls = {
+            pastors: lvls[1],
+            supervisors: lvls[2],
+            leaders: lvls[3],
+            peoples: lvls[4],
+        };
+        return res.json({
+            msg: `Parámetros`,
+            data: ret
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getPublicParams`);
+    }
+}
+exports.getOrganization = getOrganization;

@@ -605,19 +605,30 @@
  * @apiSuccess (groups Object[]) {Number} subSector Número del sub-sector.
  * @apiSuccess (groups Object[]) {Number} number Número del grupo.
  * @apiSuccess (groups Object[]) {String} direction Dirección.
+ * @apiSuccess (groups Object[]) {Object} location Datos de la localización.
+ *
+ * @apiSuccess (location Object) {String} type Tipo de coordenada.
+ * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación del grupo.
  *
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
  * {
 	"msg": "Grupos familiares",
 	"groups": [
-		{
-			"_id": "6063385c98fc731c04777829",
-			"sector": 1,
-			"subSector": 1,
-			"number": 1,
-			"direction": "DIRECCIÓN CUALQUIERA EDITADA"
-		},
+    {
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          -64.18147,
+          10.451304
+        ]
+      },
+      "_id": "6063385c98fc731c04777829",
+      "sector": 1,
+      "subSector": 1,
+      "number": 1,
+      "direction": "DIRECCIÓN CUALQUIERA EDITADA"
+    },
 		.
 		.
 		.

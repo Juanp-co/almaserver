@@ -1,17 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUpdateMembersForm = exports.validateUpdateForm = void 0;
+exports.validateUpdateMembersForm = void 0;
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
 const membersList = ['leaderId', 'hostId', 'assistantId', 'masterId'];
 const membersMsgList = ['líder', 'anfitrión', 'asistente', 'maestro'];
-function validateFormData(data) {
-    var _a;
+const staticCoords = [-73.630175, 4.134516];
+const checkCoordsNumbersType = (coords = []) => {
+    let counter = 0;
+    coords === null || coords === void 0 ? void 0 : coords.forEach((c) => {
+        if (typeof c !== 'number')
+            counter += 1;
+    });
+    return counter === 0;
+};
+function validateDataForm(data) {
+    var _a, _b;
     const ret = {
         number: null,
         direction: null,
         sector: null,
         subSector: null,
+        location: {
+            type: 'Point',
+            coordinates: staticCoords
+        }
     };
     const errors = [];
     // sector
@@ -38,45 +51,22 @@ function validateFormData(data) {
     }
     else
         ret.direction = ((_a = data.direction) === null || _a === void 0 ? void 0 : _a.toString().trim()) || null;
+    // location
+    if (data.location) {
+        if (((_b = data.location.coordinates) === null || _b === void 0 ? void 0 : _b.length) !== 2) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero la ubicación seleccionada en el mapa es incorrecta.', 'location'));
+        }
+        else if (!checkCoordsNumbersType(data.location.coordinates)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero las coordenadas de la ubicación seleccionada en el mapa son incorrectas.', 'location'));
+        }
+        else {
+            ret.location.type = data.location.type || 'Point';
+            ret.location.coordinates = data.location.coordinates || staticCoords;
+        }
+    }
     return { data: ret, errors };
 }
-exports.default = validateFormData;
-function validateUpdateForm(data) {
-    var _a;
-    const ret = {
-        number: null,
-        direction: null,
-        sector: null,
-        subSector: null,
-    };
-    const errors = [];
-    // number
-    if (!/[0-9]{1,4}/.test(`${data.number}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el número del grupo.', 'number'));
-    }
-    else
-        ret.number = data.number;
-    // direction
-    if (!Validations_1.checkTitlesOrDescriptions(data.direction)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una dirección.', 'direction'));
-    }
-    else
-        ret.direction = ((_a = data.direction) === null || _a === void 0 ? void 0 : _a.toString().trim()) || null;
-    // sector
-    if (!/[0-9]{1,4}/.test(`${data.sector}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar seleccionar un sector.', 'sector'));
-    }
-    else
-        ret.sector = data.sector;
-    // subSector
-    if (!/[0-9]{1,4}/.test(`${data.subSector}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar seleccionar un sub-sector.', 'subSector'));
-    }
-    else
-        ret.subSector = data.subSector;
-    return { data: ret, errors };
-}
-exports.validateUpdateForm = validateUpdateForm;
+exports.default = validateDataForm;
 function validateUpdateMembersForm(data) {
     const ret = {
         members: {
