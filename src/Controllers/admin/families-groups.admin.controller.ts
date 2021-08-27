@@ -14,7 +14,7 @@ import { checkObjectId } from '../../Functions/Validations';
 import FamiliesGroups from '../../Models/FamiliesGroups';
 import FamiliesGroupsReports from '../../Models/FamiliesGroupsReports';
 
-const path = 'src/admin/families-groups.admin.controller';
+const path = 'Controllers/admin/families-groups.admin.controller';
 
 export default async function getFamiliesGroups(req: Request, res: Response) : Promise<Response> {
   try {

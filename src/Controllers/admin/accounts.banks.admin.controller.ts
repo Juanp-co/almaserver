@@ -5,7 +5,7 @@ import { checkBase64, checkObjectId } from '../../Functions/Validations';
 import responsesBanks from '../../ActionsData/AccountsBanksActions';
 import validateSimpleRegister from '../../FormRequest/AccountBankFormRequest';
 
-const path = 'src/controllers/events/events.controller';
+const path = 'Controllers/admin/accounts.banks.admin.controller';
 
 export default async function getBanks(req: Request, res: Response): Promise<Response> {
   try {

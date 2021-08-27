@@ -572,7 +572,7 @@ define({ "api": [
     }
   },
   {
-    "type": "post",
+    "type": "put",
     "url": "/api/admin/banks/:_id",
     "title": "(03) Actualizar datos de un banco.",
     "version": "0.0.25",
@@ -4282,6 +4282,1623 @@ define({ "api": [
     },
     "filename": "Docs/Courses.js",
     "groupTitle": "Courses"
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/devotionals",
+    "title": "(02) Agregar un devocional.",
+    "version": "0.0.38",
+    "name": "createDevotionalsAdmin",
+    "group": "DevotionalsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "devotional",
+            "description": "<p>Detalles del devocional.</p>"
+          }
+        ],
+        "devotional Object": [
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL video Youtube.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario que registró el devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del devocional.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se registrado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/devotionals/devotional-6128782a00553eba8dade339-1630042154.jpg\",\n    \"urlVideo\": \"https://www.youtube.com/watch?v=tRwyP2EV5dE\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    },\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 00:29:17\"\n  }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without picture and urlVideo",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se registrado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": null,\n    \"urlVideo\": null,\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    },\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 00:29:17\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/DevotionalsAdmin.js",
+    "groupTitle": "DevotionalsAdmin",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 de la imagen.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video de youtube.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"title\": \"1 Corintios 13:4-7\",\n\t\"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n\t\"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n\t\"urlVideo\": \"https://www.youtube.com/watch?v=tRwyP2EV5dE\"\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without picture and urlVideo",
+        "content": "{\n\t\"title\": \"1 Corintios 13:4-7\",\n\t\"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n\t\"picture\": null,\n\t\"urlVideo\": null\n}",
+        "type": "JSON"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"title\",\n      \"msg\": \"Disculpe, pero indicar un título válido.\"\n    },\n    {\n      \"input\": \"description\",\n      \"msg\": \"Disculpe, pero debe indicar una descripción.\"\n    },\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, pero la imagen suministrada es incorrecta.\"\n    },\n    {\n      \"input\": \"urlVideo\",\n      \"msg\": \"Disculpe, pero la URL para el video debe ser de YouTube.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/devotionals/:_id",
+    "title": "(04) Eliminar un devocional.",
+    "version": "0.0.38",
+    "name": "deleteDevotionalsAdmin",
+    "group": "DevotionalsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha eliminado el devocional exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/DevotionalsAdmin.js",
+    "groupTitle": "DevotionalsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado es incorrecto.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado no existe o no se encuentra disponible.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/devotionals/:_id",
+    "title": "(03) Obtener detalles de un devocional.",
+    "version": "0.0.38",
+    "name": "detailsDevotionalsAdmin",
+    "group": "DevotionalsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "devotional",
+            "description": "<p>Detalles del devocional.</p>"
+          }
+        ],
+        "devotional Object": [
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL video Youtube.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario que registró el devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del devocional.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se registrado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/devotionals/devotional-6128782a00553eba8dade339-1630042154.jpg\",\n    \"urlVideo\": \"https://www.youtube.com/watch?v=tRwyP2EV5dE\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    },\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 00:29:17\"\n  }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without picture and urlVideo",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se registrado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": null,\n    \"urlVideo\": null,\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    },\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 00:29:17\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/DevotionalsAdmin.js",
+    "groupTitle": "DevotionalsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado es incorrecto.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado no existe o no se encuentra disponible.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/devotionals",
+    "title": "(01) Obtener listado de devocionales.",
+    "version": "0.0.38",
+    "name": "getDevotionalsAdmin",
+    "group": "DevotionalsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "devotionals",
+            "description": "<p>Listado devocionales.</p>"
+          }
+        ],
+        "devotionals Object[]": [
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario que registró el devocional.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del devocional.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del devocional.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "fullname",
+            "description": "<p>Nombre completo del usuario.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Devocionales.\",\n  \"devotionals\": [\n    {\n      \"_id\": \"6128782300553eba8dade331\",\n      \"title\": \"1 CORINTIOS 13:4-7\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/devotionals/devotional-6128782300553eba8dade331-1630042147.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"fullname\": \"ANTHONY EDITADO ADMINISTRADOR\"\n      },\n      \"created_at\": \"2021-08-27 00:29:07\",\n      \"updated_at\": \"2021-08-27 00:29:10\"\n    },\n    .\n    .\n    .\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Devocionales\",\n\t\"devotionals\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/DevotionalsAdmin.js",
+    "groupTitle": "DevotionalsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/devotionals",
+    "title": "(00) Obtener total de devocionales.",
+    "version": "0.0.38",
+    "name": "getTotalsDevotionalsAdmin",
+    "group": "DevotionalsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Total de devocionales.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Total de devocionales.\",\n\t\"data\": {\n\t  \"totals\": 3\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/DevotionalsAdmin.js",
+    "groupTitle": "DevotionalsAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/devotionals/:_id",
+    "title": "(04) Actualizar datos de un banco.",
+    "version": "0.0.38",
+    "name": "updateDevotionalsAdmin",
+    "group": "DevotionalsAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 de la imagen.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL del video de youtube.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "devotional",
+            "description": "<p>Detalles del devocional.</p>"
+          }
+        ],
+        "devotional Object": [
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL video Youtube.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del devocional.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se actualizado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/devotionals/devotional-6128782a00553eba8dade339-1630042154.jpg\",\n    \"urlVideo\": \"https://www.youtube.com/watch?v=tRwyP2EV5dE\",\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 14:39:17\"\n  }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without picture and urlVideo",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se actualizado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": null,\n    \"urlVideo\": null,\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 00:29:17\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/DevotionalsAdmin.js",
+    "groupTitle": "DevotionalsAdmin",
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n\t\"title\": \"1 Corintios 13:4-7\",\n\t\"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n\t\"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n\t\"urlVideo\": \"https://www.youtube.com/watch?v=tRwyP2EV5dE\"\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without picture and urlVideo",
+        "content": "{\n\t\"title\": \"1 Corintios 13:4-7\",\n\t\"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n\t\"picture\": null,\n\t\"urlVideo\": null\n}",
+        "type": "JSON"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"title\",\n      \"msg\": \"Disculpe, pero indicar un título válido.\"\n    },\n    {\n      \"input\": \"description\",\n      \"msg\": \"Disculpe, pero debe indicar una descripción.\"\n    },\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, pero la imagen suministrada es incorrecta.\"\n    },\n    {\n      \"input\": \"urlVideo\",\n      \"msg\": \"Disculpe, pero la URL para el video debe ser de YouTube.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado es incorrecto.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado no existe o no se encuentra disponible.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/devotionals/:_id",
+    "title": "(02) Obtener detalles de un devocional.",
+    "version": "0.0.38",
+    "name": "detailsDevotionals",
+    "group": "Devotionals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "devotional",
+            "description": "<p>Detalles del devocional.</p>"
+          }
+        ],
+        "devotional Object": [
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "urlVideo",
+            "description": "<p>URL video Youtube.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario que registró el devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del devocional.</p>"
+          },
+          {
+            "group": "devotional Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del devocional.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se registrado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/devotionals/devotional-6128782a00553eba8dade339-1630042154.jpg\",\n    \"urlVideo\": \"https://www.youtube.com/watch?v=tRwyP2EV5dE\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    },\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 00:29:17\"\n  }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without picture and urlVideo",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se registrado el devocional exitosamente.\",\n  \"devotional\": {\n    \"_id\": \"6128782a00553eba8dade339\",\n    \"title\": \"1 CORINTIOS 13:4-7\",\n    \"description\": \"<h1><i><strong>Sed porttitor lectus nibh. Curabitur aliquet quam id dui posuere blandit. ...\",\n    \"picture\": null,\n    \"urlVideo\": null,\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY EDITADO\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    },\n    \"created_at\": \"2021-08-27 00:29:14\",\n    \"updated_at\": \"2021-08-27 00:29:17\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Devotionals.js",
+    "groupTitle": "Devotionals",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado es incorrecto.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"msg\": \"Disculpe, pero el devocional seleccionado no existe o no se encuentra disponible.\"\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/devotionals",
+    "title": "(01) Obtener listado de devocionales.",
+    "version": "0.0.38",
+    "name": "getDevotionals",
+    "group": "Devotionals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "devotionals",
+            "description": "<p>Listado devocionales.</p>"
+          }
+        ],
+        "devotionals Object[]": [
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del devocional.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario que registró el devocional.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del devocional.</p>"
+          },
+          {
+            "group": "devotionals Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del devocional.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del usuario.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "fullname",
+            "description": "<p>Nombre completo del usuario.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Devocionales.\",\n  \"devotionals\": [\n    {\n      \"_id\": \"6128782300553eba8dade331\",\n      \"title\": \"1 CORINTIOS 13:4-7\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/devotionals/devotional-6128782300553eba8dade331-1630042147.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"fullname\": \"ANTHONY EDITADO ADMINISTRADOR\"\n      },\n      \"created_at\": \"2021-08-27 00:29:07\",\n      \"updated_at\": \"2021-08-27 00:29:10\"\n    },\n    .\n    .\n    .\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Devocionales\",\n\t\"devotionals\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Devotionals.js",
+    "groupTitle": "Devotionals",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/devotionals",
+    "title": "(00) Obtener total de devocionales.",
+    "version": "0.0.38",
+    "name": "getTotalsDevotionals",
+    "group": "Devotionals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos de retorno.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Total de devocionales.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Total de devocionales.\",\n\t\"data\": {\n\t  \"totals\": 3\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Devotionals.js",
+    "groupTitle": "Devotionals",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
   },
   {
     "type": "post",

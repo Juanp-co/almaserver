@@ -31,7 +31,7 @@ const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
 const Events_1 = __importDefault(require("../../Models/Events"));
 const AWSService_1 = __importStar(require("../../Services/AWSService"));
-const path = 'src/controllers/events/events.controller';
+const path = 'Controllers/events/events.controller';
 async function getEvents(req, res) {
     try {
         const { tokenId } = req.body;

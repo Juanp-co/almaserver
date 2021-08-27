@@ -29,7 +29,7 @@ const Validations_1 = require("../../Functions/Validations");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const CoursesRequest_1 = require("../../FormRequest/CoursesRequest");
-const path = 'src/Controllers/publics/courses.controller';
+const path = 'Controllers/publics/courses.controller';
 async function getCourses(req, res) {
     try {
         const { tokenRoles, tokenId } = req.body;

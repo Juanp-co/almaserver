@@ -30,7 +30,7 @@ const Validations_1 = require("../../Functions/Validations");
 const Courses_1 = __importDefault(require("../../Models/Courses"));
 const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
 const Users_1 = __importDefault(require("../../Models/Users"));
-const path = 'src/admin/courses.admin.controller';
+const path = 'Controllers/admin/courses.admin.controller';
 // =====================================================================================================================
 async function getCourses(req, res) {
     try {

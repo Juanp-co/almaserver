@@ -30,7 +30,7 @@ const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
 const Groups_1 = __importDefault(require("../../Models/Groups"));
 const Users_1 = __importDefault(require("../../Models/Users"));
-const path = 'src/admin/groups.admin.controller';
+const path = 'Controllers/admin/groups.admin.controller';
 function return404(res) {
     return res.status(404).json({
         msg: 'Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.',

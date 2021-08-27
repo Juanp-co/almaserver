@@ -8,7 +8,17 @@ const fs_1 = __importDefault(require("fs"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const app_1 = __importDefault(require("./app"));
 const database_1 = __importDefault(require("./database"));
-const AdminRouter_1 = __importDefault(require("./Routes/AdminRouter"));
+const AdminRouter_1 = __importDefault(require("./Routes/Admin/AdminRouter"));
+const BanksAdminRouter_1 = __importDefault(require("./Routes/Admin/BanksAdminRouter"));
+const ConsolidatesAdminRouter_1 = __importDefault(require("./Routes/Admin/ConsolidatesAdminRouter"));
+const CoursesAdminRouter_1 = __importDefault(require("./Routes/Admin/CoursesAdminRouter"));
+const DevotionalsAdminRouter_1 = __importDefault(require("./Routes/Admin/DevotionalsAdminRouter"));
+const EventsAdminRouter_1 = __importDefault(require("./Routes/Admin/EventsAdminRouter"));
+const FamiliesGroupsAdminRouter_1 = __importDefault(require("./Routes/Admin/FamiliesGroupsAdminRouter"));
+const GroupsAdminRouter_1 = __importDefault(require("./Routes/Admin/GroupsAdminRouter"));
+const ReportsAdminRouter_1 = __importDefault(require("./Routes/Admin/ReportsAdminRouter"));
+const SettingsAdminRouter_1 = __importDefault(require("./Routes/Admin/SettingsAdminRouter"));
+const UsersAdminRouter_1 = __importDefault(require("./Routes/Admin/UsersAdminRouter"));
 const PublicRouter_1 = __importDefault(require("./Routes/PublicRouter"));
 const UserRouter_1 = __importDefault(require("./Routes/UserRouter"));
 // vars
@@ -34,7 +44,17 @@ if (logsFile && logsFile !== 'false') {
 }
 // routes
 app_1.default.use(`/api`, PublicRouter_1.default);
-app_1.default.use(`/api/admin`, AdminRouter_1.default);
+app_1.default.use(`/api/admin/`, AdminRouter_1.default);
+app_1.default.use(`/api/admin/banks`, BanksAdminRouter_1.default);
+app_1.default.use(`/api/admin/consolidates`, ConsolidatesAdminRouter_1.default);
+app_1.default.use(`/api/admin/courses`, CoursesAdminRouter_1.default);
+app_1.default.use(`/api/admin/devotionals`, DevotionalsAdminRouter_1.default);
+app_1.default.use(`/api/admin/events`, EventsAdminRouter_1.default);
+app_1.default.use(`/api/admin/families-groups`, FamiliesGroupsAdminRouter_1.default);
+app_1.default.use(`/api/admin/groups`, GroupsAdminRouter_1.default);
+app_1.default.use(`/api/admin/reports`, ReportsAdminRouter_1.default);
+app_1.default.use(`/api/admin/settings`, SettingsAdminRouter_1.default);
+app_1.default.use(`/api/admin/users`, UsersAdminRouter_1.default);
 app_1.default.use(`/api/user`, UserRouter_1.default);
 // server
 async function main() {

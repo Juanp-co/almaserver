@@ -12,7 +12,7 @@ import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 import Visits from '../../Models/Visits';
 
-const path = 'src/Controllers/publics/referrals.controller';
+const path = 'Controllers/publics/referrals.controller';
 
 export async function getReferrals(req: Request, res: Response): Promise<Response> {
   try {

@@ -2,7 +2,9 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { checkTokenDB } from './Functions/TokenActions';
 import { IUserToToken } from './Interfaces/IUser';
-import { checkIfExistsRoleInList } from './Functions/GlobalFunctions';
+import { checkIfExistsRoleInList, showConsoleError } from './Functions/GlobalFunctions';
+
+const path = 'src/middleware';
 
 function responseErrorSession(res: Response): Response{
   return res.status(401).json({
@@ -11,7 +13,8 @@ function responseErrorSession(res: Response): Response{
   });
 }
 
-function responseErrorCatchSessionToken(res: Response): Response {
+function responseErrorCatchSessionToken(res: Response, e: any): Response {
+  showConsoleError(path, e);
   return res.status(500).json({
     msg: 'Disculpe, pero ha ocurrido un error interno al momento de verificar las sesión.'
   });
@@ -32,7 +35,7 @@ export async function validateUser(req: Request, res: Response, next: any): Prom
 
     return next();
   } catch (e: any) {
-    return responseErrorCatchSessionToken(res);
+    return responseErrorCatchSessionToken(res, e);
   }
 }
 
@@ -51,7 +54,7 @@ export async function validatePublic(req: Request, res: Response, next: any): Pr
 
     return next();
   } catch (e: any) {
-    return responseErrorCatchSessionToken(res);
+    return responseErrorCatchSessionToken(res, e);
   }
 }
 
@@ -78,6 +81,6 @@ export async function validateAdmin(req: Request, res: Response, next: any): Pro
 
     return next();
   } catch (e: any) {
-    return responseErrorCatchSessionToken(res);
+    return responseErrorCatchSessionToken(res, e);
   }
 }

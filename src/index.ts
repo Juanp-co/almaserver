@@ -3,7 +3,17 @@ import fs from 'fs';
 import moment from 'moment-timezone';
 import App from './app';
 import startConnection from './database';
-import AdminRouter from './Routes/AdminRouter';
+import AdminRouter from './Routes/Admin/AdminRouter';
+import BanksAdminRouter from './Routes/Admin/BanksAdminRouter';
+import ConsolidatesAdminRouter from './Routes/Admin/ConsolidatesAdminRouter';
+import CoursesAdminRouter from './Routes/Admin/CoursesAdminRouter';
+import DevotionalsAdminRouter from './Routes/Admin/DevotionalsAdminRouter';
+import EventsAdminRouter from './Routes/Admin/EventsAdminRouter';
+import FamiliesGroupsAdminRouter from './Routes/Admin/FamiliesGroupsAdminRouter';
+import GroupsAdminRouter from './Routes/Admin/GroupsAdminRouter';
+import ReportsAdminRouter from './Routes/Admin/ReportsAdminRouter';
+import SettingsAdminRouter from './Routes/Admin/SettingsAdminRouter';
+import UsersAdminRouter from './Routes/Admin/UsersAdminRouter';
 import PublicRouter from './Routes/PublicRouter';
 import UserRouter from './Routes/UserRouter';
 
@@ -34,7 +44,17 @@ if (logsFile && logsFile !== 'false') {
 
 // routes
 App.use(`/api`, PublicRouter);
-App.use(`/api/admin`, AdminRouter);
+App.use(`/api/admin/`, AdminRouter);
+App.use(`/api/admin/banks`, BanksAdminRouter);
+App.use(`/api/admin/consolidates`, ConsolidatesAdminRouter);
+App.use(`/api/admin/courses`, CoursesAdminRouter);
+App.use(`/api/admin/devotionals`, DevotionalsAdminRouter);
+App.use(`/api/admin/events`, EventsAdminRouter);
+App.use(`/api/admin/families-groups`, FamiliesGroupsAdminRouter);
+App.use(`/api/admin/groups`, GroupsAdminRouter);
+App.use(`/api/admin/reports`, ReportsAdminRouter);
+App.use(`/api/admin/settings`, SettingsAdminRouter);
+App.use(`/api/admin/users`, UsersAdminRouter);
 App.use(`/api/user`, UserRouter);
 
 // server

@@ -23,7 +23,7 @@ import Users from '../../Models/Users';
 import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import Settings from '../../Models/Settings';
 
-const path = 'Controllers/publics/publics.controller';
+const path = 'Controllers/publics/public.controller';
 
 export function helloWorld(req: Request, res: Response): Response {
   return res.json({

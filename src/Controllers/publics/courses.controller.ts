@@ -16,7 +16,7 @@ import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
 import { validateTestData } from '../../FormRequest/CoursesRequest';
 
-const path = 'src/Controllers/publics/courses.controller';
+const path = 'Controllers/publics/courses.controller';
 
 export default async function getCourses(req: Request, res: Response) : Promise<Response>{
   try {

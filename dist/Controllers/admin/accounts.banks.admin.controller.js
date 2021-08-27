@@ -9,7 +9,7 @@ const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
 const AccountsBanksActions_1 = __importDefault(require("../../ActionsData/AccountsBanksActions"));
 const AccountBankFormRequest_1 = __importDefault(require("../../FormRequest/AccountBankFormRequest"));
-const path = 'src/controllers/events/events.controller';
+const path = 'Controllers/admin/accounts.banks.admin.controller';
 async function getBanks(req, res) {
     try {
         const banks = await AccountsBanks_1.default.find({}, { created_at: 0, updated_at: 0, __v: 0 }).exec();

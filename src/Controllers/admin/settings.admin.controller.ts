@@ -6,7 +6,7 @@ import { deleteFile } from '../../Services/AWSService';
 import { checkObjectId } from '../../Functions/Validations';
 import { return404Or422Settings, uploadLogoOrBanner } from '../../ActionsData/SettingsActions';
 
-const path = 'Controllers/admin/referrals.admin.controller';
+const path = 'Controllers/admin/settings.admin.controller';
 
 export default async function getSettings(req: Request, res: Response): Promise<Response> {
   try {

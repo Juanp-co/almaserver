@@ -16,7 +16,7 @@ const UsersRequest_1 = require("../../FormRequest/UsersRequest");
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
 const Visits_1 = __importDefault(require("../../Models/Visits"));
-const path = 'src/Controllers/publics/referrals.controller';
+const path = 'Controllers/publics/referrals.controller';
 async function getReferrals(req, res) {
     try {
         const { tokenId } = req.body;

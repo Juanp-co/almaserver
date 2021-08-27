@@ -8,7 +8,7 @@ import Users from '../../Models/Users';
 import Visits from '../../Models/Visits';
 import { IUserSimpleInfo } from '../../Interfaces/IUser';
 
-const path = 'Controllers/admin/users.admin.controller';
+const path = 'Controllers/admin/consolidated.admin.controller';
 
 // =====================================================================================================================
 

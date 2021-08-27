@@ -7,13 +7,15 @@ exports.validateAdmin = exports.validatePublic = exports.validateUser = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const TokenActions_1 = require("./Functions/TokenActions");
 const GlobalFunctions_1 = require("./Functions/GlobalFunctions");
+const path = 'src/middleware';
 function responseErrorSession(res) {
     return res.status(401).json({
         msg: 'Disculpe, pero su sesión ha expirado. Debe iniciar sesión nuevamente.',
         redirect: true
     });
 }
-function responseErrorCatchSessionToken(res) {
+function responseErrorCatchSessionToken(res, e) {
+    GlobalFunctions_1.showConsoleError(path, e);
     return res.status(500).json({
         msg: 'Disculpe, pero ha ocurrido un error interno al momento de verificar las sesión.'
     });
@@ -31,7 +33,7 @@ async function validateUser(req, res, next) {
         return next();
     }
     catch (e) {
-        return responseErrorCatchSessionToken(res);
+        return responseErrorCatchSessionToken(res, e);
     }
 }
 exports.validateUser = validateUser;
@@ -48,7 +50,7 @@ async function validatePublic(req, res, next) {
         return next();
     }
     catch (e) {
-        return responseErrorCatchSessionToken(res);
+        return responseErrorCatchSessionToken(res, e);
     }
 }
 exports.validatePublic = validatePublic;
@@ -72,7 +74,7 @@ async function validateAdmin(req, res, next) {
         return next();
     }
     catch (e) {
-        return responseErrorCatchSessionToken(res);
+        return responseErrorCatchSessionToken(res, e);
     }
 }
 exports.validateAdmin = validateAdmin;
