@@ -19,6 +19,11 @@ import {
   register
 } from '../Controllers/publics/public.controller';
 import { getFamiliesGroupsPublic } from '../Controllers/publics/family-group.controller';
+import {
+  getDevotionalsPublic,
+  getTotalsDevotionalsPublic,
+  showDevotionalPublic
+} from '../Controllers/publics/devotionals.controller';
 
 const router = Router();
 
@@ -40,6 +45,13 @@ router.get(`/courses`, validateUser, getCourses);
 router.get(`/courses/:slug`, validateUser, showCourse);
 router.post(`/courses/:slug/theme/:_id/quiz`, validateUser, evaluateQuiz);
 router.put(`/courses/:slug/theme/:_id/:action`, validateUser, updateHistoricalCourseContent);
+
+/*
+  Families Groups
+*/
+router.get(`/devotionals`, getDevotionalsPublic);
+router.get(`/devotionals/counters`, getTotalsDevotionalsPublic);
+router.get(`/devotionals/:_id`, showDevotionalPublic);
 
 /*
   Families Groups
@@ -87,4 +99,5 @@ router.put(`/recovery-password/:action`, recoveryPassword);
   Register
  */
 router.post(`/register`, register);
+
 export default router;

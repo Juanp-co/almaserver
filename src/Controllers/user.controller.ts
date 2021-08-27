@@ -19,7 +19,6 @@ import Visits from '../Models/Visits';
 import uploadFile, { deleteFile } from '../Services/AWSService';
 import { return404Or422 } from '../ActionsData/EventsActions';
 
-
 const path = 'Controllers/user.controller';
 
 export async function get(req: Request, res: Response): Promise<Response> {

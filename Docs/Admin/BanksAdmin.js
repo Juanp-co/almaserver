@@ -155,7 +155,7 @@
  */
 
 /**
- * @api {post} /api/admin/banks/:_id (03) Actualizar datos de un banco.
+ * @api {put} /api/admin/banks/:_id (03) Actualizar datos de un banco.
  * @apiVersion 0.0.25
  * @apiName updateBanksAdmin
  * @apiGroup BanksAdmin

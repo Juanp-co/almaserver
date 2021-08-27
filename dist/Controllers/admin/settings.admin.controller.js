@@ -29,7 +29,7 @@ const SettingsRequest_1 = __importStar(require("../../FormRequest/SettingsReques
 const AWSService_1 = require("../../Services/AWSService");
 const Validations_1 = require("../../Functions/Validations");
 const SettingsActions_1 = require("../../ActionsData/SettingsActions");
-const path = 'Controllers/admin/referrals.admin.controller';
+const path = 'Controllers/admin/settings.admin.controller';
 async function getSettings(req, res) {
     try {
         let settings = await Settings_1.default.findOne({}, { __v: 0 })

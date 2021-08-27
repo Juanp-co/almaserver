@@ -13,7 +13,7 @@ import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import Groups from '../../Models/Groups';
 import Users from '../../Models/Users';
 
-const path = 'src/admin/groups.admin.controller';
+const path = 'Controllers/admin/groups.admin.controller';
 
 function return404(res: Response) : Response {
   return res.status(404).json({

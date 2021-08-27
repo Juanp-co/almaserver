@@ -31,7 +31,7 @@ const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGr
 const Validations_1 = require("../../Functions/Validations");
 const FamiliesGroups_1 = __importDefault(require("../../Models/FamiliesGroups"));
 const Users_1 = __importDefault(require("../../Models/Users"));
-const path = 'src/Controllers/publics/family-group.controller';
+const path = 'Controllers/publics/family-group.controller';
 async function getFamiliesGroups(req, res) {
     try {
         const { tokenId } = req.body;

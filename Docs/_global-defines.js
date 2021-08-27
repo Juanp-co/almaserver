@@ -392,3 +392,33 @@
  * @apiSuccess (members Object) {String|Null} picture URL de la foto de perfil.
  * @apiSuccess (members Object) {String|Null} position Cargo o posición del miembro.
  */
+
+/**
+ * @apiDefine DevotionalDataResponse
+ *
+ * @apiSuccess (devotional Object) {String} _id ID del devocional.
+ * @apiSuccess (devotional Object) {String} title Título.
+ * @apiSuccess (devotional Object) {String} description Título.
+ * @apiSuccess (devotional Object) {String|Null} picture URL imagen.
+ * @apiSuccess (devotional Object) {String|Null} urlVideo URL video Youtube.
+ * @apiSuccess (devotional Object) {Object|Null} user Datos del usuario que registró el devocional.
+ * @apiSuccess (devotional Object) {String} created_at Fecha de creación del devocional.
+ * @apiSuccess (devotional Object) {String} updated_at Fecha de la última actualización del devocional.
+ *
+ */
+
+/**
+ * @apiDefine ErrorIdOrNotFoundDevotionalsError
+ *
+ * @apiErrorExample {JSON} Validation fields
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero el devocional seleccionado es incorrecto.""
+}
+ *
+ * @apiErrorExample {JSON} Not Found
+ * HTTP/1.1 404 Not Found
+ * {
+  "msg": "Disculpe, pero el devocional seleccionado no existe o no se encuentra disponible.""
+}
+ */

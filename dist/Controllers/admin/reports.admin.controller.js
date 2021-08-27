@@ -17,7 +17,7 @@ const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGr
 const Groups_1 = __importDefault(require("../../Models/Groups"));
 const Users_1 = __importDefault(require("../../Models/Users"));
 const Visits_1 = __importDefault(require("../../Models/Visits"));
-const path = 'src/admin/reports.admin.controller';
+const path = 'Controllers/admin/reports.admin.controller';
 async function getReports(req, res) {
     try {
         const { tokenRoles } = req.body;

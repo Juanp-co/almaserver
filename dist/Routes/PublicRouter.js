@@ -25,6 +25,7 @@ const courses_controller_1 = __importStar(require("../Controllers/publics/course
 const events_controller_1 = require("../Controllers/events/events.controller");
 const public_controller_1 = require("../Controllers/publics/public.controller");
 const family_group_controller_1 = require("../Controllers/publics/family-group.controller");
+const devotionals_controller_1 = require("../Controllers/publics/devotionals.controller");
 const router = express_1.Router();
 // ===================================================================================
 /* Test api */
@@ -39,6 +40,12 @@ router.get(`/courses`, middleware_1.validateUser, courses_controller_1.default);
 router.get(`/courses/:slug`, middleware_1.validateUser, courses_controller_1.showCourse);
 router.post(`/courses/:slug/theme/:_id/quiz`, middleware_1.validateUser, courses_controller_1.evaluateQuiz);
 router.put(`/courses/:slug/theme/:_id/:action`, middleware_1.validateUser, courses_controller_1.updateHistoricalCourseContent);
+/*
+  Families Groups
+*/
+router.get(`/devotionals`, devotionals_controller_1.getDevotionalsPublic);
+router.get(`/devotionals/counters`, devotionals_controller_1.getTotalsDevotionalsPublic);
+router.get(`/devotionals/:_id`, devotionals_controller_1.showDevotionalPublic);
 /*
   Families Groups
 */

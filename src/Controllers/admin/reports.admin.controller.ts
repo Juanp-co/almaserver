@@ -18,7 +18,7 @@ import Groups from '../../Models/Groups';
 import Users from '../../Models/Users';
 import Consolidates from '../../Models/Visits';
 
-const path = 'src/admin/reports.admin.controller';
+const path = 'Controllers/admin/reports.admin.controller';
 
 export default async function getReports(req: Request, res: Response) : Promise<Response>{
   try {

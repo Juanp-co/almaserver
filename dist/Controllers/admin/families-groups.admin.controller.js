@@ -30,7 +30,7 @@ const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
 const FamiliesGroups_1 = __importDefault(require("../../Models/FamiliesGroups"));
 const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGroupsReports"));
-const path = 'src/admin/families-groups.admin.controller';
+const path = 'Controllers/admin/families-groups.admin.controller';
 async function getFamiliesGroups(req, res) {
     try {
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);

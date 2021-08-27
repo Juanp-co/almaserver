@@ -8,7 +8,7 @@ import { checkDate, checkObjectId, checkUrl, isBase64 } from '../../Functions/Va
 import Events from '../../Models/Events';
 import uploadFile, { deleteFile } from '../../Services/AWSService';
 
-const path = 'src/controllers/events/events.controller';
+const path = 'Controllers/events/events.controller';
 
 export default async function getEvents(req: Request, res: Response): Promise<Response> {
   try {

@@ -63,6 +63,25 @@ export async function getNamesUsersList(listIds: string|any[], projection: any|n
   return ret;
 }
 
+export async function getUsersSimpleList(listIds: string[]): Promise<any[] | any> {
+  const ret: any[] = [];
+
+  if (listIds.length > 0) {
+    const users = await Users.find(
+      { _id: { $in: listIds } },
+      { names: 1, lastNames: 1 }
+    ).exec();
+
+    for (const value of users) {
+      ret.push({
+        _id: value._id,
+        fullname: `${value.names} ${value.lastNames}`,
+      });
+    }
+  }
+  return ret;
+}
+
 export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null) {
   if (listIds.length > 0) {
     await Users.updateMany(

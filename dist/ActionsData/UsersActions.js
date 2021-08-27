@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
+exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
@@ -58,6 +58,20 @@ async function getNamesUsersList(listIds, projection = null) {
     return ret;
 }
 exports.getNamesUsersList = getNamesUsersList;
+async function getUsersSimpleList(listIds) {
+    const ret = [];
+    if (listIds.length > 0) {
+        const users = await Users_1.default.find({ _id: { $in: listIds } }, { names: 1, lastNames: 1 }).exec();
+        for (const value of users) {
+            ret.push({
+                _id: value._id,
+                fullname: `${value.names} ${value.lastNames}`,
+            });
+        }
+    }
+    return ret;
+}
+exports.getUsersSimpleList = getUsersSimpleList;
 async function updateGroupIdInUsers(listIds, _id = null) {
     if (listIds.length > 0) {
         await Users_1.default.updateMany({ _id: { $in: listIds } }, { $set: { group: _id } }).exec();

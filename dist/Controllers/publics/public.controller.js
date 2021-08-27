@@ -34,7 +34,7 @@ const AccountsBanks_1 = __importDefault(require("../../Models/AccountsBanks"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
 const Settings_1 = __importDefault(require("../../Models/Settings"));
-const path = 'Controllers/publics/publics.controller';
+const path = 'Controllers/publics/public.controller';
 function helloWorld(req, res) {
     return res.json({
         msg: `Welcome to ALMA API REST.`

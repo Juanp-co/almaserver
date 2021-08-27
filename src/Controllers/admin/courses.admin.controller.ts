@@ -17,7 +17,7 @@ import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Users from '../../Models/Users';
 
-const path = 'src/admin/courses.admin.controller';
+const path = 'Controllers/admin/courses.admin.controller';
 
 // =====================================================================================================================
 

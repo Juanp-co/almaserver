@@ -11,7 +11,7 @@ const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const Validations_1 = require("../../Functions/Validations");
 const Users_1 = __importDefault(require("../../Models/Users"));
 const Visits_1 = __importDefault(require("../../Models/Visits"));
-const path = 'Controllers/admin/users.admin.controller';
+const path = 'Controllers/admin/consolidated.admin.controller';
 // =====================================================================================================================
 async function getConsolidates(req, res) {
     try {
