@@ -23,6 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFamilyGroup = exports.updateMembersFamilyGroup = exports.updateFamilyGroup = exports.saveFamilyGroup = exports.showFamilyGroup = exports.getFamiliesGroupsCounters = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const FamiliesGroupsActions_1 = __importStar(require("../../ActionsData/FamiliesGroupsActions"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const FamiliesGroupsRequest_1 = __importStar(require("../../FormRequest/FamiliesGroupsRequest"));
@@ -101,7 +102,7 @@ async function saveFamilyGroup(req, res) {
         await group.save();
         return res.json({
             msg: 'Se ha creado el nuevo grupo exitosamente.',
-            group
+            group: await FamiliesGroupsActions_1.default(group)
         });
     }
     catch (error) {
@@ -165,10 +166,14 @@ async function updateMembersFamilyGroup(req, res) {
             // remove previous members
             await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(group.members), group._id.toString(), true);
             // update new members
-            group.members = validate.data.members;
-            await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(validate.data.members), group._id.toString());
+            group.members.leaderId = validate.data.members.leaderId;
+            group.members.assistantsIds = lodash_1.default.uniq(validate.data.members.assistantsIds);
+            group.members.helperId = validate.data.members.helperId;
+            group.members.hostId = validate.data.members.hostId;
+            group.members.masterId = validate.data.members.masterId;
+            await group.save();
+            await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(group.members), group._id.toString());
         }
-        await group.save();
         return res.json({
             msg: 'Grupo Familiar',
             members: await FamiliesGroupsActions_1.getModelFamiliesGroupsMembersDetails(group.members)

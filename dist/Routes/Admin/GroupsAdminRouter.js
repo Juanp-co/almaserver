@@ -26,7 +26,7 @@ const router = express_1.Router();
 router.route('/')
     .get(middleware_1.validateAdmin, groups_admin_controller_1.default)
     .post(middleware_1.validateAdmin, groups_admin_controller_1.saveGroup);
-router.get('/groups/counters', middleware_1.validateAdmin, groups_admin_controller_1.getGroupsCounters);
+router.get('/counters', middleware_1.validateAdmin, groups_admin_controller_1.getGroupsCounters);
 router.route('/:_id')
     .get(middleware_1.validateAdmin, groups_admin_controller_1.showGroup)
     .put(middleware_1.validateAdmin, groups_admin_controller_1.updateGroup)

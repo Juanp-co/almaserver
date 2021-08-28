@@ -12,7 +12,8 @@ const router = Router();
 router.route('/')
   .get(validateAdmin, getGroups)
   .post(validateAdmin, saveGroup);
-router.get('/groups/counters', validateAdmin, getGroupsCounters);
+
+router.get('/counters', validateAdmin, getGroupsCounters);
 
 router.route('/:_id')
   .get(validateAdmin, showGroup)

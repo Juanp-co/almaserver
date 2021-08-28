@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateUpdateMembersForm = void 0;
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
-const membersList = ['leaderId', 'hostId', 'assistantId', 'masterId'];
-const membersMsgList = ['líder', 'anfitrión', 'asistente', 'maestro'];
+const membersList = ['leaderId', 'hostId', 'assistantsIds', 'helperId', 'masterId'];
+const membersMsgList = ['líder', 'anfitrión', 'asistentes', 'auxiliar', 'maestro'];
 const staticCoords = [-73.630175, 4.134516];
 const checkCoordsNumbersType = (coords = []) => {
     let counter = 0;
@@ -72,7 +72,8 @@ function validateUpdateMembersForm(data) {
         members: {
             leaderId: null,
             hostId: null,
-            assistantId: null,
+            assistantsIds: [],
+            helperId: null,
             masterId: null,
         },
     };
@@ -84,12 +85,25 @@ function validateUpdateMembersForm(data) {
     else {
         const { members } = data;
         for (const [index, value] of membersList.entries()) {
-            if (members[`${value}`]) {
-                if (!Validations_1.checkObjectId(data.members[value])) {
-                    errors.push(GlobalFunctions_1.setError(`Disculpe, pero el miembro seleccionado como ${membersMsgList[index] || 'líder'} es incorrecto.`, value));
+            if (value !== 'assistantsIds') {
+                if (members[`${value}`]) {
+                    if (!Validations_1.checkObjectId(data.members[value])) {
+                        errors.push(GlobalFunctions_1.setError(`Disculpe, pero el miembro seleccionado como ${membersMsgList[index] || 'líder'} es incorrecto.`, value));
+                    }
+                    else
+                        ret.members[value] = members[value];
                 }
-                else
-                    ret.members[value] = members[value];
+            }
+            else {
+                const { length } = (members === null || members === void 0 ? void 0 : members.assistantsIds) || [];
+                for (let i = 0; i < length; i++) {
+                    if (!Validations_1.checkObjectId(members.assistantsIds[i])) {
+                        errors.push(GlobalFunctions_1.setError(`Disculpe, pero uno de los miembros seleccionados como asistentes es incorrecto.`, 'assistantsIds'));
+                        break;
+                    }
+                    else
+                        ret.members.assistantsIds.push(members.assistantsIds[i]);
+                }
             }
         }
     }

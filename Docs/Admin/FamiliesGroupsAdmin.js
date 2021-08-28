@@ -3,14 +3,14 @@
 /**
  * @apiDefine SimpleModelLHAMFamiliesGroups
  *
- * @apiSuccess (leader, host, assistant and master Object) {String} _id ID del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String} names Nombre(s).
- * @apiSuccess (leader, host, assistant and master Object) {String} lastNames Apellido(s).
- * @apiSuccess (leader, host, assistant and master Object) {String|Null} document Número de documento.
- * @apiSuccess (leader, host, assistant and master Object) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (leader, host, assistant and master Object) {String} phone Teléfono del miembro.
- * @apiSuccess (leader, host, assistant and master Object) {String|Null} picture URL de la foto de perfil.
- * @apiSuccess (leader, host, assistant and master Object) {String|Null} position Cargo o posición del miembro.
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {String} _id ID del miembro.
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {String} names Nombre(s).
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (leader, host, helper and master Object and assistants Object[]) {String|Null} position Cargo o posición del miembro.
  */
 
 /**
@@ -52,11 +52,11 @@
  * @apiSuccess (group Object) {String} created_at Fecha de creación del grupo.
  * @apiSuccess (group Object) {String} updated_at Fecha de la última actualización del grupo.
  *
- * @apiSuccess (members Object) {Object|Null} leader Datos del líder del grupo.
- * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión del grupo.
- * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
- * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
- * @apiSuccess (group Object) {Object} location Datos de la localización.
+ * @apiSuccess (members Object) {Object|Null} leader Datos del líder.
+ * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión.
+ * @apiSuccess (members Object) {Object|Null} helper Datos del asistente.
+ * @apiSuccess (members Object) {Object|Null} master Datos del maestro.
+ * @apiSuccess (members Object) {Object[]} assistants Listado de asistentes..
  *
  * @apiSuccess (location Object) {String} type Tipo de coordenada.
  * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación del grupo.
@@ -181,7 +181,8 @@
       "leaderId": null,
       "hostId": null,
       "assistantId": null,
-      "masterId": null
+      "masterId": null,
+      "assistantsIds": []
     },
     "location": {
       "type": "Point",
@@ -254,7 +255,7 @@
         "picture": null,
         "position": null
       },
-      "assistant": {
+      "helper": {
         "_id": "5fcf0821fc917d476c1cf3e3",
         "names": "PEDRO JOSÉ",
         "lastNames": "PÉREZ RODRIGUEZ",
@@ -264,10 +265,25 @@
         "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
         "position": null
       },
-      "master": null
+      "master": null,
+      "assistants": [
+        {
+          "_id": "5fcf0821fc917d476c1cf3e9",
+          "names": "EMILIA",
+          "lastNames": "GOMEZ",
+          "document": "CC99999999",
+          "gender": 1,
+          "phone": "3169999999",
+          "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e9/picture-5fcf0821fc917d476c1cf3e9-1629254970.jpg",
+          "position": null
+        },
+        .
+        .
+        .
+      ]
     },
     "created_at": "2021-03-30 09:40:28",
-    "updated_at": "2021-04-03 11:51:52"
+    "updated_at": "2021-08-27 17:51:52"
   }
 }
  *
@@ -364,26 +380,29 @@
  *
  * @apiParam (member Object) {String|Null} leaderId ID del miembro líder.
  * @apiParam (member Object) {String|Null} hostId ID del miembro anfitrión.
- * @apiParam (member Object) {String|Null} assistantId ID del miembro asistente.
+ * @apiParam (member Object) {String|Null} helperId ID del miembro auxiliar.
  * @apiParam (member Object) {String|Null} masterId ID del miembro maestro.
+ * @apiParam (member Object) {String[]} assistantsIds Listado de IDs de los asistentes
  *
  * @apiExample {JSON} Example JSON Request
  * {
 	"members": {
 		"leaderId": null,
 		"hostId": "604068461caad10e2c965406",
-		"assistantId": "5fcf0821fc917d476c1cf3e3",
-		"masterId": null
+		"helperId": "5fcf0821fc917d476c1cf3e3",
+		"masterId": null,
+		"assistantsIds": [ "5fcf0821fc917d476c1cf3e9", ... ]
 	}
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} members Datos de los miembros.
  *
- * @apiSuccess (members Object) {Object|Null} leader Datos del líder del grupo.
- * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión del grupo.
- * @apiSuccess (members Object) {Object|Null} assistant Datos del asistente del grupo.
- * @apiSuccess (members Object) {Object|Null} master Datos del maestro del grupo.
+ * @apiSuccess (members Object) {Object|Null} leader Datos del líder.
+ * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión.
+ * @apiSuccess (members Object) {Object|Null} helper Datos del auxiliar.
+ * @apiSuccess (members Object) {Object|Null} master Datos del maestro.
+ * @apiSuccess (members Object) {Object|Null} assistants Listado de asistentes.
  *
  * @apiUse SimpleModelLHAMFamiliesGroups
  *
@@ -403,7 +422,7 @@
       "picture": null,
       "position": null
     },
-    "assistant": {
+    "helper": {
       "_id": "5fcf0821fc917d476c1cf3e3",
       "names": "PEDRO JOSÉ",
       "lastNames": "PÉREZ RODRIGUEZ",
@@ -413,7 +432,22 @@
       "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg",
       "position": null
     },
-    "master": null
+    "master": null,
+    "assistants": [
+      {
+        "_id": "5fcf0821fc917d476c1cf3e9",
+        "names": "EMILIA",
+        "lastNames": "GOMEZ",
+        "document": "CC99999999",
+        "gender": 1,
+        "phone": "3169999999",
+        "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e9/picture-5fcf0821fc917d476c1cf3e9-1629254970.jpg",
+        "position": null
+      },
+      .
+      .
+      .
+    ]
   }
 }
  *
@@ -445,12 +479,16 @@
       "msg": "Disculpe, pero el miembro seleccionado como anfitrión es incorrecto."
     },
     {
-      "input": "assistantId",
-      "msg": "Disculpe, pero el miembro seleccionado como asistente es incorrecto."
+      "input": "helperId",
+      "msg": "Disculpe, pero el miembro seleccionado como auxiliar es incorrecto."
     },
     {
       "input": "masterId",
       "msg": "Disculpe, pero el miembro seleccionado como maestro es incorrecto."
+    },
+    {
+      "input": "assistantsIds",
+      "msg": "Disculpe, pero uno de los miembros seleccionados como asistentes es incorrecto."
     }
   ]
 }

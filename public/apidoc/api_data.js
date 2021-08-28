@@ -8277,28 +8277,35 @@ define({ "api": [
             "type": "Object|Null",
             "optional": false,
             "field": "leader",
-            "description": "<p>Datos del líder del grupo.</p>"
+            "description": "<p>Datos del líder.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
             "field": "host",
-            "description": "<p>Datos del anfitrión del grupo.</p>"
+            "description": "<p>Datos del anfitrión.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
-            "field": "assistant",
-            "description": "<p>Datos del asistente del grupo.</p>"
+            "field": "helper",
+            "description": "<p>Datos del asistente.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
             "field": "master",
-            "description": "<p>Datos del maestro del grupo.</p>"
+            "description": "<p>Datos del maestro.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "assistants",
+            "description": "<p>Listado de asistentes..</p>"
           }
         ],
         "location Object": [
@@ -8317,58 +8324,58 @@ define({ "api": [
             "description": "<p>Coordenadas de la ubicación del grupo.</p>"
           }
         ],
-        "leader, host, assistant and master Object": [
+        "leader, host, helper and master Object and assistants Object[]": [
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la foto de perfil.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "position",
@@ -8379,7 +8386,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha creado el nuevo grupo exitosamente.\",\n  \"group\": {\n    \"members\": {\n      \"leaderId\": null,\n      \"hostId\": null,\n      \"assistantId\": null,\n      \"masterId\": null\n    },\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -73.630175,\n        4.134516\n      ]\n    },\n    \"_id\": \"6126901bc09d294bd193e34b\",\n    \"number\": 99,\n    \"direction\": \"DIRECCIÓN CUALQUIERA\",\n    \"sector\": 99,\n    \"subSector\": 99,\n    \"created_at\": \"2021-08-25 13:46:51\",\n    \"updated_at\": \"2021-08-25 13:46:51\"\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha creado el nuevo grupo exitosamente.\",\n  \"group\": {\n    \"members\": {\n      \"leaderId\": null,\n      \"hostId\": null,\n      \"assistantId\": null,\n      \"masterId\": null,\n      \"assistantsIds\": []\n    },\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -73.630175,\n        4.134516\n      ]\n    },\n    \"_id\": \"6126901bc09d294bd193e34b\",\n    \"number\": 99,\n    \"direction\": \"DIRECCIÓN CUALQUIERA\",\n    \"sector\": 99,\n    \"subSector\": 99,\n    \"created_at\": \"2021-08-25 13:46:51\",\n    \"updated_at\": \"2021-08-25 13:46:51\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -8750,28 +8757,35 @@ define({ "api": [
             "type": "Object|Null",
             "optional": false,
             "field": "leader",
-            "description": "<p>Datos del líder del grupo.</p>"
+            "description": "<p>Datos del líder.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
             "field": "host",
-            "description": "<p>Datos del anfitrión del grupo.</p>"
+            "description": "<p>Datos del anfitrión.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
-            "field": "assistant",
-            "description": "<p>Datos del asistente del grupo.</p>"
+            "field": "helper",
+            "description": "<p>Datos del asistente.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
             "field": "master",
-            "description": "<p>Datos del maestro del grupo.</p>"
+            "description": "<p>Datos del maestro.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "assistants",
+            "description": "<p>Listado de asistentes..</p>"
           }
         ],
         "location Object": [
@@ -8790,58 +8804,58 @@ define({ "api": [
             "description": "<p>Coordenadas de la ubicación del grupo.</p>"
           }
         ],
-        "leader, host, assistant and master Object": [
+        "leader, host, helper and master Object and assistants Object[]": [
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la foto de perfil.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "position",
@@ -8852,7 +8866,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"group\": {\n    \"_id\": \"6063385c98fc731c04777829\",\n    \"number\": 2,\n    \"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n    \"sector\": 4,\n    \"subSector\": 2,\n    \"members\": {\n      \"leader\": null,\n      \"host\": {\n        \"_id\": \"604068461caad10e2c965406\",\n        \"names\": \"PRUEBA\",\n        \"lastNames\": \"USUARIO\",\n        \"document\": \"CC123123123\",\n        \"gender\": null,\n        \"phone\": \"573151234567\",\n        \"picture\": null,\n        \"position\": null\n      },\n      \"assistant\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n      \"master\": null\n    },\n    \"created_at\": \"2021-03-30 09:40:28\",\n    \"updated_at\": \"2021-04-03 11:51:52\"\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"group\": {\n    \"_id\": \"6063385c98fc731c04777829\",\n    \"number\": 2,\n    \"direction\": \"DIRECCIÓN CUALQUIERA ASDASD ASDASD\",\n    \"sector\": 4,\n    \"subSector\": 2,\n    \"members\": {\n      \"leader\": null,\n      \"host\": {\n        \"_id\": \"604068461caad10e2c965406\",\n        \"names\": \"PRUEBA\",\n        \"lastNames\": \"USUARIO\",\n        \"document\": \"CC123123123\",\n        \"gender\": null,\n        \"phone\": \"573151234567\",\n        \"picture\": null,\n        \"position\": null\n      },\n      \"helper\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n      \"master\": null,\n      \"assistants\": [\n        {\n          \"_id\": \"5fcf0821fc917d476c1cf3e9\",\n          \"names\": \"EMILIA\",\n          \"lastNames\": \"GOMEZ\",\n          \"document\": \"CC99999999\",\n          \"gender\": 1,\n          \"phone\": \"3169999999\",\n          \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e9/picture-5fcf0821fc917d476c1cf3e9-1629254970.jpg\",\n          \"position\": null\n        },\n        .\n        .\n        .\n      ]\n    },\n    \"created_at\": \"2021-03-30 09:40:28\",\n    \"updated_at\": \"2021-08-27 17:51:52\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -9414,8 +9428,8 @@ define({ "api": [
             "group": "member Object",
             "type": "String|Null",
             "optional": false,
-            "field": "assistantId",
-            "description": "<p>ID del miembro asistente.</p>"
+            "field": "helperId",
+            "description": "<p>ID del miembro auxiliar.</p>"
           },
           {
             "group": "member Object",
@@ -9423,6 +9437,13 @@ define({ "api": [
             "optional": false,
             "field": "masterId",
             "description": "<p>ID del miembro maestro.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String[]",
+            "optional": false,
+            "field": "assistantsIds",
+            "description": "<p>Listado de IDs de los asistentes</p>"
           }
         ]
       }
@@ -9430,7 +9451,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n\t\"members\": {\n\t\t\"leaderId\": null,\n\t\t\"hostId\": \"604068461caad10e2c965406\",\n\t\t\"assistantId\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"masterId\": null\n\t}\n}",
+        "content": "{\n\t\"members\": {\n\t\t\"leaderId\": null,\n\t\t\"hostId\": \"604068461caad10e2c965406\",\n\t\t\"helperId\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"masterId\": null,\n\t\t\"assistantsIds\": [ \"5fcf0821fc917d476c1cf3e9\", ... ]\n\t}\n}",
         "type": "JSON"
       }
     ],
@@ -9458,82 +9479,89 @@ define({ "api": [
             "type": "Object|Null",
             "optional": false,
             "field": "leader",
-            "description": "<p>Datos del líder del grupo.</p>"
+            "description": "<p>Datos del líder.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
             "field": "host",
-            "description": "<p>Datos del anfitrión del grupo.</p>"
+            "description": "<p>Datos del anfitrión.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
-            "field": "assistant",
-            "description": "<p>Datos del asistente del grupo.</p>"
+            "field": "helper",
+            "description": "<p>Datos del auxiliar.</p>"
           },
           {
             "group": "members Object",
             "type": "Object|Null",
             "optional": false,
             "field": "master",
-            "description": "<p>Datos del maestro del grupo.</p>"
+            "description": "<p>Datos del maestro.</p>"
+          },
+          {
+            "group": "members Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "assistants",
+            "description": "<p>Listado de asistentes.</p>"
           }
         ],
-        "leader, host, assistant and master Object": [
+        "leader, host, helper and master Object and assistants Object[]": [
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la foto de perfil.</p>"
           },
           {
-            "group": "leader, host, assistant and master Object",
+            "group": "leader, host, helper and master Object and assistants Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "position",
@@ -9544,7 +9572,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"members\": {\n    \"leader\": null,\n    \"host\": {\n      \"_id\": \"604068461caad10e2c965406\",\n      \"names\": \"PRUEBA\",\n      \"lastNames\": \"USUARIO\",\n      \"document\": \"CC123123123\",\n      \"gender\": null,\n      \"phone\": \"573151234567\",\n      \"picture\": null,\n      \"position\": null\n    },\n    \"assistant\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n      \"names\": \"PEDRO JOSÉ\",\n      \"lastNames\": \"PÉREZ RODRIGUEZ\",\n      \"document\": \"CC12345678\",\n      \"gender\": null,\n      \"phone\": \"3161234567\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n      \"position\": null\n    },\n    \"master\": null\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Grupo Familiar\",\n  \"members\": {\n    \"leader\": null,\n    \"host\": {\n      \"_id\": \"604068461caad10e2c965406\",\n      \"names\": \"PRUEBA\",\n      \"lastNames\": \"USUARIO\",\n      \"document\": \"CC123123123\",\n      \"gender\": null,\n      \"phone\": \"573151234567\",\n      \"picture\": null,\n      \"position\": null\n    },\n    \"helper\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n      \"names\": \"PEDRO JOSÉ\",\n      \"lastNames\": \"PÉREZ RODRIGUEZ\",\n      \"document\": \"CC12345678\",\n      \"gender\": null,\n      \"phone\": \"3161234567\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n      \"position\": null\n    },\n    \"master\": null,\n    \"assistants\": [\n      {\n        \"_id\": \"5fcf0821fc917d476c1cf3e9\",\n        \"names\": \"EMILIA\",\n        \"lastNames\": \"GOMEZ\",\n        \"document\": \"CC99999999\",\n        \"gender\": 1,\n        \"phone\": \"3169999999\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e9/picture-5fcf0821fc917d476c1cf3e9-1629254970.jpg\",\n        \"position\": null\n      },\n      .\n      .\n      .\n    ]\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -9553,7 +9581,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero no se recibió la información a actualizar.\"\n    },\n    {\n      \"input\": \"leaderId\",\n      \"msg\": \"Disculpe, pero debe seleccionar a un miembro como líder del grupo.\"\n    },\n    {\n      \"input\": \"leaderId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como líder es incorrecto.\"\n    },\n    {\n      \"input\": \"hostId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como anfitrión es incorrecto.\"\n    },\n    {\n      \"input\": \"assistantId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como asistente es incorrecto.\"\n    },\n    {\n      \"input\": \"masterId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como maestro es incorrecto.\"\n    }\n  ]\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero no se recibió la información a actualizar.\"\n    },\n    {\n      \"input\": \"leaderId\",\n      \"msg\": \"Disculpe, pero debe seleccionar a un miembro como líder del grupo.\"\n    },\n    {\n      \"input\": \"leaderId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como líder es incorrecto.\"\n    },\n    {\n      \"input\": \"hostId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como anfitrión es incorrecto.\"\n    },\n    {\n      \"input\": \"helperId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como auxiliar es incorrecto.\"\n    },\n    {\n      \"input\": \"masterId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como maestro es incorrecto.\"\n    },\n    {\n      \"input\": \"assistantsIds\",\n      \"msg\": \"Disculpe, pero uno de los miembros seleccionados como asistentes es incorrecto.\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
