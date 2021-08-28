@@ -41,7 +41,7 @@ async function getEvents(req, res) {
         if (!req.body.superadmin)
             query.userid = tokenId;
         if (Validations_1.checkDate(initDate)) {
-            query.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+            query.date = { $gte: moment_timezone_1.default(`${initDate}`, 'YYYY-MM-DD', true).startOf('d').unix() };
         }
         return res.json({
             msg: `Eventos.`,

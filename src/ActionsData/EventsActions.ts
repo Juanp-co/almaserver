@@ -20,7 +20,7 @@ export default async function getEventsList({ query, skip, sort, limit, endDate 
     let end = 0;
     let list: any[] = [];
 
-    if (endDate && checkDate(endDate)) end = moment(`${endDate}`).endOf('d').unix();
+    if (endDate && checkDate(endDate)) end = moment(`${endDate}`, 'YYYY-MM-DD', true).endOf('d').unix();
 
     if (end !== 0) {
       events.forEach((e: any) => {

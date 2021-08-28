@@ -20,7 +20,7 @@ export default async function getEvents(req: Request, res: Response): Promise<Re
     if (!req.body.superadmin) query.userid = tokenId;
 
     if (checkDate(initDate)) {
-      query.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
+      query.date = { $gte: moment(`${initDate}`, 'YYYY-MM-DD', true).startOf('d').unix() };
     }
 
     return res.json({
