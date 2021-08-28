@@ -20,7 +20,7 @@ async function getEventsList({ query, skip, sort, limit, endDate }) {
         let end = 0;
         let list = [];
         if (endDate && Validations_1.checkDate(endDate))
-            end = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+            end = moment_timezone_1.default(`${endDate}`, 'YYYY-MM-DD', true).endOf('d').unix();
         if (end !== 0) {
             events.forEach((e) => {
                 if (e.toObject({ getters: false }).date <= end)
