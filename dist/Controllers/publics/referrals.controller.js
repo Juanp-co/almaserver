@@ -149,7 +149,7 @@ async function saveReferralVisit(req, res) {
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const consolidate = new Visits_1.default({
-            referred: tokenId,
+            referred: validate.data.visitor || tokenId,
             userid: validate.data.userId,
             ...validate.data
         });

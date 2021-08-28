@@ -168,7 +168,7 @@ export async function saveReferralVisit(req: Request, res: Response): Promise<Re
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const consolidate = new Visits({
-      referred: tokenId,
+      referred: validate.data.visitor || tokenId,
       userid: validate.data.userId,
       ...validate.data
     });

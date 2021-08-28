@@ -313,13 +313,14 @@
 
 /**
  * @api {post} /api/user/referrals/visit (03) Registrar visita a un hijo espiritual.
- * @apiVersion 0.0.31
+ * @apiVersion 0.0.39
  * @apiName saveVisitUserReferrals
  * @apiGroup UserReferrals
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
- * @apiParam {String} userId ID del usuario visitado.
+ * @apiParam {String} userId ID del miembro visitado.
+ * @apiParam {String|Null} userId ID del miembro que realizó la visita (opcional si el visitador es el usuario logueado).
  * @apiParam {String} date Fecha de la visita (YYYY-MM-DD).
  * @apiParam {String|Number|Null} action Acción realizada (0 = Visita, 1 = Llamada).
  * @apiParam {String} observation Observaciones de la visita.
@@ -327,6 +328,7 @@
  * @apiExample {JSON} Example JSON Request with Referred
  * {
 	"userId": "5fcf0821fc917d476c1cf3e2",
+  "visitor": "611902c09e346616b6eaadb5",
 	"date": "2021-04-01",
 	"action": 1,
 	"observation": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat."
@@ -351,7 +353,11 @@
   "errors": [
     {
       "input": "userId",
-      "msg": "Disculpe, pero el miembro seleccionado es incorrecto."
+      "msg": "Disculpe, pero el miembro seleccionado para la visita es incorrecto."
+    },
+    {
+      "input": "visitor",
+      "msg": "Disculpe, pero el miembro seleccionado como visitador es incorrecto."
     },
     {
       "input": "date",
@@ -360,6 +366,10 @@
     {
       "input": "observation",
       "msg": "Disculpe, pero indicar un observación válida."
+    },
+    {
+      "input": "action",
+      "msg": "Disculpe, pero debe indicar el tipo de acción realizada."
     }
   ]
 }

@@ -26,7 +26,7 @@ async function getConsolidates(req, res) {
             pendingVisits: []
         };
         if (input && input === 'date')
-            sort.date = value && value === '1' ? 1 : -1;
+            sort.created_at = value && value === '1' ? 1 : -1;
         if (initDate && Validations_1.checkDate(initDate)) {
             query.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
             query2.created_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
@@ -111,7 +111,7 @@ async function saveConsolidateVisit(req, res) {
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         const visit = new Visits_1.default({
-            referred: tokenId,
+            referred: validate.data.visitor || tokenId,
             userid: validate.data.userId,
             ...validate.data
         });
@@ -127,7 +127,9 @@ async function saveConsolidateVisit(req, res) {
 exports.saveConsolidateVisit = saveConsolidateVisit;
 async function getConsolidatesMembers(req, res) {
     try {
-        const members = await Users_1.default.find({ referred: { $ne: null }, consolidated: { $ne: false } }, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1 })
+        const members = await Users_1.default.find(
+        // { referred: { $ne: null }, consolidated: { $ne: false } },
+        {}, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1 })
             .sort({ names: 1 })
             .exec();
         return res.json({

@@ -12,12 +12,13 @@ function validateSimpleRegister(data) {
         action: null,
         observation: null,
         date: null,
+        visitor: null,
     };
     const errors = [];
     const types = ['Visita', 'Llamada'];
     // userId
     if (!Validations_1.checkObjectId(data.userId)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'userId'));
+        errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado para la visita es incorrecto.', 'userId'));
     }
     else
         ret.userId = data.userId;
@@ -26,7 +27,7 @@ function validateSimpleRegister(data) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una fecha para la visita.', 'date'));
     }
     else
-        ret.date = moment_timezone_1.default(data.date, 'YYYY-MM-DD', true).unix();
+        ret.date = moment_timezone_1.default(data.date, 'YYYY-MM-DD', true).startOf('d').unix();
     // date
     if (!types[`${data.action || 0}`]) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el tipo de acción realizada.', 'action'));
@@ -34,11 +35,19 @@ function validateSimpleRegister(data) {
     else
         ret.action = types[data.action || 0];
     // observation
-    if (!Validations_1.checkTitlesOrDescriptions(data.observation)) {
+    if (!data.observation) {
         errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un observación válida.', 'observation'));
     }
     else
         ret.observation = data.observation;
+    // userId
+    if (data.visitor) {
+        if (!Validations_1.checkObjectId(data.visitor)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado como visitador es incorrecto.', 'visitor'));
+        }
+        else
+            ret.visitor = data.visitor;
+    }
     return { data: ret, errors };
 }
 exports.default = validateSimpleRegister;

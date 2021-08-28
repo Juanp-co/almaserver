@@ -104,19 +104,21 @@
 
 /**
  * @api {post} /api/admin/consolidates/report (01) Registrar visita de consolidación.
- * @apiVersion 0.0.30
+ * @apiVersion 0.0.39
  * @apiName registerVisitConsolidatesAdmin
  * @apiGroup ConsolidatesAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión admin.
  *
  * @apiParam {String} userId ID del miembro consolidado que ha sido visitado.
+ * @apiParam {String|Null} userId ID del miembro que realizó la visita (opcional si el visitador es el usuario logueado).
  * @apiParam {String} date Fecha de registro de la visita.
  * @apiParam {String} Observation Observación indicada de la visita.
  *
  * @apiExample {JSON} Example JSON Request
  * {
   "userId": "606b6b833784652d9c46eb04",
+  "visitor": "611902c09e346616b6eaadb5",
   "date": "2021-02-05",
   "observation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat."
 }
@@ -140,7 +142,11 @@
   "errors": [
     {
       "input": "userId",
-      "msg": "Disculpe, pero el miembro seleccionado es incorrecto."
+      "msg": "Disculpe, pero el miembro seleccionado para la visita es incorrecto."
+    },
+    {
+      "input": "visitor",
+      "msg": "Disculpe, pero el miembro seleccionado como visitador es incorrecto."
     },
     {
       "input": "date",
@@ -149,6 +155,10 @@
     {
       "input": "observation",
       "msg": "Disculpe, pero indicar un observación válida."
+    },
+    {
+      "input": "action",
+      "msg": "Disculpe, pero debe indicar el tipo de acción realizada"
     }
   ]
 }

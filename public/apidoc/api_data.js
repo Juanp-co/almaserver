@@ -1179,7 +1179,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/admin/consolidates/report",
     "title": "(01) Registrar visita de consolidación.",
-    "version": "0.0.30",
+    "version": "0.0.39",
     "name": "registerVisitConsolidatesAdmin",
     "group": "ConsolidatesAdmin",
     "header": {
@@ -1225,7 +1225,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"userId\": \"606b6b833784652d9c46eb04\",\n  \"date\": \"2021-02-05\",\n  \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\"\n}",
+        "content": "{\n  \"userId\": \"606b6b833784652d9c46eb04\",\n  \"visitor\": \"611902c09e346616b6eaadb5\",\n  \"date\": \"2021-02-05\",\n  \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\"\n}",
         "type": "JSON"
       }
     ],
@@ -1253,7 +1253,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"userId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n    },\n    {\n      \"input\": \"date\",\n      \"msg\": \"Disculpe, pero indicar una fecha para la visita.\"\n    },\n    {\n      \"input\": \"observation\",\n      \"msg\": \"Disculpe, pero indicar un observación válida.\"\n    }\n  ]\n}",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"userId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado para la visita es incorrecto.\"\n    },\n    {\n      \"input\": \"visitor\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como visitador es incorrecto.\"\n    },\n    {\n      \"input\": \"date\",\n      \"msg\": \"Disculpe, pero indicar una fecha para la visita.\"\n    },\n    {\n      \"input\": \"observation\",\n      \"msg\": \"Disculpe, pero indicar un observación válida.\"\n    },\n    {\n      \"input\": \"action\",\n      \"msg\": \"Disculpe, pero debe indicar el tipo de acción realizada\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -17647,6 +17647,143 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/api/user/referrals/visit",
+    "title": "(03) Registrar visita a un hijo espiritual.",
+    "version": "0.0.39",
+    "name": "saveVisitUserReferrals",
+    "group": "UserReferrals",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>ID del miembro visitado.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "date",
+            "description": "<p>Fecha de la visita (YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Number|Null",
+            "optional": false,
+            "field": "action",
+            "description": "<p>Acción realizada (0 = Visita, 1 = Llamada).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "observation",
+            "description": "<p>Observaciones de la visita.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request with Referred",
+        "content": "{\n\t\"userId\": \"5fcf0821fc917d476c1cf3e2\",\n  \"visitor\": \"611902c09e346616b6eaadb5\",\n\t\"date\": \"2021-04-01\",\n\t\"action\": 1,\n\t\"observation\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha registrado la visita al consolidado exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"userId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado para la visita es incorrecto.\"\n    },\n    {\n      \"input\": \"visitor\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado como visitador es incorrecto.\"\n    },\n    {\n      \"input\": \"date\",\n      \"msg\": \"Disculpe, pero indicar una fecha para la visita.\"\n    },\n    {\n      \"input\": \"observation\",\n      \"msg\": \"Disculpe, pero indicar un observación válida.\"\n    },\n    {\n      \"input\": \"action\",\n      \"msg\": \"Disculpe, pero debe indicar el tipo de acción realizada.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserReferrals.js",
+    "groupTitle": "UserReferrals"
+  },
+  {
+    "type": "post",
     "url": "/api/user/referrals",
     "title": "(00) Registrar nuevo referido (hijo espiritual/consolidado).",
     "version": "0.0.31",
@@ -17801,143 +17938,6 @@ define({ "api": [
         {
           "title": "Validation fields",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"phone\",\n      \"msg\": \"Disculpe, pero debe indicar un número de teléfono.\"\n    },\n    {\n      \"input\": \"names\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro.\"\n    },\n    {\n      \"input\": \"lastNames\",\n      \"msg\": \"Disculpe, pero debe asegurarse de indicar el apellido del miembro.\"\n    }\n  ]\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error token",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error internal server",
-          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
-          "type": "JSON"
-        }
-      ],
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje general.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Object[]",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Listado de errores a mostrar.</p>"
-          }
-        ],
-        "errors Object[]": [
-          {
-            "group": "errors Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "msg[msg]",
-            "description": "<p>Mensaje de error.</p>"
-          },
-          {
-            "group": "errors Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "input[input]",
-            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
-          }
-        ]
-      }
-    },
-    "filename": "Docs/UserReferrals.js",
-    "groupTitle": "UserReferrals"
-  },
-  {
-    "type": "post",
-    "url": "/api/user/referrals/visit",
-    "title": "(03) Registrar visita a un hijo espiritual.",
-    "version": "0.0.31",
-    "name": "saveVisitUserReferrals",
-    "group": "UserReferrals",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>Token de la sesión.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "userId",
-            "description": "<p>ID del usuario visitado.</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "date",
-            "description": "<p>Fecha de la visita (YYYY-MM-DD).</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String|Number|Null",
-            "optional": false,
-            "field": "action",
-            "description": "<p>Acción realizada (0 = Visita, 1 = Llamada).</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "observation",
-            "description": "<p>Observaciones de la visita.</p>"
-          }
-        ]
-      }
-    },
-    "examples": [
-      {
-        "title": "Example JSON Request with Referred",
-        "content": "{\n\t\"userId\": \"5fcf0821fc917d476c1cf3e2\",\n\t\"date\": \"2021-04-01\",\n\t\"action\": 1,\n\t\"observation\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\"\n}",
-        "type": "JSON"
-      }
-    ],
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje del proceso.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha registrado la visita al consolidado exitosamente.\"\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Validation fields",
-          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"userId\",\n      \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n    },\n    {\n      \"input\": \"date\",\n      \"msg\": \"Disculpe, pero indicar una fecha para la visita.\"\n    },\n    {\n      \"input\": \"observation\",\n      \"msg\": \"Disculpe, pero indicar un observación válida.\"\n    }\n  ]\n}",
           "type": "JSON"
         },
         {

@@ -25,7 +25,7 @@ export default async function getConsolidates(req: Request, res: Response): Prom
       pendingVisits: []
     };
 
-    if (input && input === 'date') sort.date = value && value === '1' ? 1 : -1;
+    if (input && input === 'date') sort.created_at = value && value === '1' ? 1 : -1;
 
     if (initDate && checkDate(initDate)) {
       query.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
@@ -118,7 +118,7 @@ export async function saveConsolidateVisit(req: Request, res: Response): Promise
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     const visit = new Visits({
-      referred: tokenId,
+      referred: validate.data.visitor || tokenId,
       userid: validate.data.userId,
       ...validate.data
     });
@@ -136,7 +136,8 @@ export async function saveConsolidateVisit(req: Request, res: Response): Promise
 export async function getConsolidatesMembers(req: Request, res: Response): Promise<Response> {
   try {
     const members = await Users.find(
-      { referred: { $ne: null }, consolidated: { $ne: false } },
+      // { referred: { $ne: null }, consolidated: { $ne: false } },
+      {},
       { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1 }
       )
       .sort({ names: 1 })

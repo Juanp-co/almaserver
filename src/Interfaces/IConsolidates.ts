@@ -14,4 +14,5 @@ export interface IConsolidatesForm {
   date: string | number | null;
   action: string | number | null | undefined;
   observation: string | null;
+  visitor: string | null;
 }
