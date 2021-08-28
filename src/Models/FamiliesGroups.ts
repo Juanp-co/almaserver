@@ -14,8 +14,9 @@ const MembersGroupSchema = new Schema(
   {
     leaderId: { type: String, default: null },
     hostId: { type: String, default: null },
-    assistantId: { type: String, default: null },
+    helperId: { type: String, default: null },
     masterId: { type: String, default: null },
+    assistantsIds: { type: [String], default: [] },
   },
   { _id: false, id: false }
 );

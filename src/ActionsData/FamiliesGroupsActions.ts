@@ -13,12 +13,38 @@ import FamiliesGroupsReports from '../Models/FamiliesGroupsReports';
 import Users from '../Models/Users';
 
 export function getUsersIdsList(members: IFamiliesGroupsMembers) : string[] {
-  const listIds: string[] = [];
+  let listIds: string[] = [];
+
   if (members.leaderId) listIds.push(members.leaderId);
   if (members.hostId) listIds.push(members.hostId);
-  if (members.assistantId) listIds.push(members.assistantId);
+  if (members.helperId) listIds.push(members.helperId);
   if (members.masterId) listIds.push(members.masterId);
+  if (members.assistantsIds) listIds = listIds.concat(members.assistantsIds);
+
   return listIds;
+}
+
+export function setDataMembersGroup(members: IUserSimpleInfo[], data: IFamiliesGroupsMembers) : IFamiliesGroupsMembersDetails {
+  const ret: IFamiliesGroupsMembersDetails = {
+    leader: null,
+    host: null,
+    helper: null,
+    master: null,
+    assistants: [],
+  };
+
+  if (members.length > 0) {
+    members.forEach(m => {
+      const _id = m._id.toString();
+      if (_id === data.leaderId) ret.leader = m;
+      else if (_id === data.hostId) ret.host = m;
+      else if (_id === data.helperId) ret.helper = m;
+      else if (_id === data.masterId) ret.master = m;
+      else if (data.assistantsIds.includes(_id)) ret.assistants.push(m);
+    })
+  }
+
+  return ret;
 }
 
 export default async function getModelFamiliesGroupsDetails(data: IFamiliesGroups): Promise<IFamiliesGroupsDetails|null> {
@@ -27,10 +53,7 @@ export default async function getModelFamiliesGroupsDetails(data: IFamiliesGroup
   // getNamesUsersList
   const listIds: string[] = getUsersIdsList(data.members);
 
-  let members: IUserSimpleInfo[]|null = null;
-  if (listIds.length > 0){
-    members = await getNamesUsersList(listIds);
-  }
+  const members: IUserSimpleInfo[] = await getNamesUsersList(listIds);
 
   const ret: IFamiliesGroupsDetails = {} as IFamiliesGroupsDetails;
   ret._id = data._id;
@@ -40,12 +63,7 @@ export default async function getModelFamiliesGroupsDetails(data: IFamiliesGroup
   ret.sector = data.sector;
   ret.subSector = data.subSector;
   ret.location = data.location;
-  ret.members = {
-    leader: members ? (members.find(m => m._id.toString() === data.members.leaderId) || null) : null,
-    host: members ? (members.find(m => m._id.toString() === data.members.hostId) || null) : null,
-    assistant: members ? (members.find(m => m._id.toString() === data.members.assistantId) || null) : null,
-    master: members ? (members.find(m => m._id.toString() === data.members.masterId) || null) : null,
-  };
+  ret.members = setDataMembersGroup(members || [], data.members);
   ret.created_at = data.created_at;
   ret.updated_at = data.updated_at;
 
@@ -55,20 +73,16 @@ export default async function getModelFamiliesGroupsDetails(data: IFamiliesGroup
 export async function getModelFamiliesGroupsMembersDetails(data: IFamiliesGroupsMembers): Promise<IFamiliesGroupsMembersDetails|null> {
   if (!data) return null;
   const listIds: string[] = getUsersIdsList(data); // getNamesUsersList
-  const membersLists = await getNamesUsersList(listIds || []);
-  return {
-    leader: membersLists.find((m: any) => m._id.toString() === data.leaderId) || null,
-    host: membersLists.find((m: any) => m._id.toString() === data.hostId) || null,
-    assistant: membersLists.find((m: any) => m._id.toString() === data.assistantId) || null,
-    master: membersLists.find((m: any) => m._id.toString() === data.masterId) || null,
-  } as IFamiliesGroupsMembersDetails;
+  const members = await getNamesUsersList(listIds || []);
+  return setDataMembersGroup(members, data);
 }
 
 export function checkIfMembersWasChanged(currentMembers: IFamiliesGroupsMembers, newMembers: IFamiliesGroupsMembers) : number {
   let totals = 0;
   if (currentMembers.leaderId !== newMembers.leaderId) totals++;
   if (currentMembers.hostId !== newMembers.hostId) totals++;
-  if (currentMembers.assistantId !== newMembers.assistantId) totals++;
+  if (currentMembers.helperId !== newMembers.helperId) totals++;
+  if (currentMembers.assistantsIds.toString() !== newMembers.assistantsIds.toString()) totals++;
   if (currentMembers.masterId !== newMembers.masterId) totals++;
   return totals;
 }

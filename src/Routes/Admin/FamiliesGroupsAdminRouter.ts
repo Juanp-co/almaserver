@@ -10,7 +10,8 @@ const router = Router();
 router.route('/')
   .get(validateAdmin, getFamiliesGroups)
   .post(validateAdmin, saveFamilyGroup);
-router.get('/families-groups/counters', validateAdmin, getFamiliesGroupsCounters);
+
+router.get('/counters', validateAdmin, getFamiliesGroupsCounters);
 
 router.route('/:_id')
   .delete(validateAdmin, deleteFamilyGroup)

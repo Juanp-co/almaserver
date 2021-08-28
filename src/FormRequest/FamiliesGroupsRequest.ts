@@ -5,8 +5,8 @@ import {
   IFamiliesGroupsUpdateMembersForm
 } from '../Interfaces/IFamiliesGroups';
 
-const membersList: string[] = ['leaderId', 'hostId', 'assistantId', 'masterId'];
-const membersMsgList: string[] = ['líder', 'anfitrión', 'asistente', 'maestro'];
+const membersList: string[] = ['leaderId', 'hostId', 'assistantsIds', 'helperId', 'masterId'];
+const membersMsgList: string[] = ['líder', 'anfitrión', 'asistentes', 'auxiliar', 'maestro'];
 const staticCoords = [ -73.630175, 4.134516 ];
 const checkCoordsNumbersType = (coords: any = []) => {
   let counter = 0;
@@ -89,7 +89,8 @@ export function validateUpdateMembersForm(data: IFamiliesGroupsUpdateMembersForm
     members: {
       leaderId: null,
       hostId: null,
-      assistantId: null,
+      assistantsIds: [],
+      helperId: null,
       masterId: null,
     },
   } as IFamiliesGroupsUpdateMembersForm;
@@ -103,16 +104,34 @@ export function validateUpdateMembersForm(data: IFamiliesGroupsUpdateMembersForm
     );
   }
   else {
-    const {members} = data;
+    const { members } = data;
 
     for (const [index, value] of membersList.entries()) {
-      if (members[`${value}`]) {
-        if (!checkObjectId(data.members[value])) {
-          errors.push(
-            setError(`Disculpe, pero el miembro seleccionado como ${membersMsgList[index] || 'líder'} es incorrecto.`, value)
-          );
+      if (value !== 'assistantsIds') {
+        if (members[`${value}`]) {
+          if (!checkObjectId(data.members[value])) {
+            errors.push(
+              setError(`Disculpe, pero el miembro seleccionado como ${membersMsgList[index] || 'líder'} es incorrecto.`, value)
+            );
+          }
+          else ret.members[value] = members[value];
         }
-        else ret.members[value] = members[value];
+      }
+      else {
+        const { length } = members?.assistantsIds || [];
+
+        for (let i = 0; i < length; i++) {
+          if (!checkObjectId(members.assistantsIds[i])) {
+            errors.push(
+              setError(
+                `Disculpe, pero uno de los miembros seleccionados como asistentes es incorrecto.`,
+                'assistantsIds'
+              )
+            );
+            break;
+          }
+          else ret.members.assistantsIds.push(members.assistantsIds[i]);
+        }
       }
     }
   }

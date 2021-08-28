@@ -4,14 +4,16 @@ import { IUserSimpleInfo } from './IUser';
 export interface IFamiliesGroupsMembers {
   leaderId: string|null;
   hostId: string|null;
-  assistantId: string|null;
+  assistantsIds: string[];
+  helperId: string|null;
   masterId: string|null;
 }
 
 export interface IFamiliesGroupsMembersDetails {
   leader: IUserSimpleInfo|null;
   host: IUserSimpleInfo|null;
-  assistant: IUserSimpleInfo|null;
+  assistants: IUserSimpleInfo[];
+  helper: IUserSimpleInfo|null;
   master: IUserSimpleInfo|null;
 }
 

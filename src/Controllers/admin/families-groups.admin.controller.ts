@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Request, Response } from 'express';
 import getModelFamiliesGroupsDetails, {
   checkIfExistsGroup,
@@ -93,7 +94,7 @@ export async function saveFamilyGroup(req: Request, res: Response) : Promise<Res
 
     return res.json({
       msg: 'Se ha creado el nuevo grupo exitosamente.',
-      group
+      group: await getModelFamiliesGroupsDetails(group)
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/saveFamilyGroup`);
@@ -108,7 +109,10 @@ export async function updateFamilyGroup(req: Request, res: Response) : Promise<R
     const validate = validateDataForm(req.body);
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
-    const group = await FamiliesGroups.findOne({ _id }, { __v: 0, members: 0, created_at: 0 }).exec();
+    const group = await FamiliesGroups.findOne(
+      { _id },
+      { __v: 0, members: 0, created_at: 0 }
+    ).exec();
 
     if (!group) return return404(res);
 
@@ -164,15 +168,19 @@ export async function updateMembersFamilyGroup(req: Request, res: Response) : Pr
         true
       );
       // update new members
-      group.members = validate.data.members;
+      group.members.leaderId = validate.data.members.leaderId;
+      group.members.assistantsIds = _.uniq(validate.data.members.assistantsIds);
+      group.members.helperId = validate.data.members.helperId;
+      group.members.hostId = validate.data.members.hostId;
+      group.members.masterId = validate.data.members.masterId;
+
+      await group.save();
 
       await setFamilyGroupIdValueUsers(
-        getUsersIdsList(validate.data.members),
+        getUsersIdsList(group.members),
         group._id.toString()
       );
     }
-
-    await group.save();
 
     return res.json({
       msg: 'Grupo Familiar',

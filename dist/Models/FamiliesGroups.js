@@ -9,8 +9,9 @@ const LocationSchema = new mongoose_1.Schema({
 const MembersGroupSchema = new mongoose_1.Schema({
     leaderId: { type: String, default: null },
     hostId: { type: String, default: null },
-    assistantId: { type: String, default: null },
+    helperId: { type: String, default: null },
     masterId: { type: String, default: null },
+    assistantsIds: { type: [String], default: [] },
 }, { _id: false, id: false });
 const FamiliesGroupsSchema = new mongoose_1.Schema({
     number: { type: Number, require: true },

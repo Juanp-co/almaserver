@@ -26,7 +26,7 @@ const router = express_1.Router();
 router.route('/')
     .get(middleware_1.validateAdmin, families_groups_admin_controller_1.default)
     .post(middleware_1.validateAdmin, families_groups_admin_controller_1.saveFamilyGroup);
-router.get('/families-groups/counters', middleware_1.validateAdmin, families_groups_admin_controller_1.getFamiliesGroupsCounters);
+router.get('/counters', middleware_1.validateAdmin, families_groups_admin_controller_1.getFamiliesGroupsCounters);
 router.route('/:_id')
     .delete(middleware_1.validateAdmin, families_groups_admin_controller_1.deleteFamilyGroup)
     .get(middleware_1.validateAdmin, families_groups_admin_controller_1.showFamilyGroup)

@@ -3,33 +3,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.returnFamilyGroup404 = exports.return404 = exports.returnErrorId = exports.getReportsFamilyGroup = exports.checkIfUsersBelowAtFamilyGroup = exports.getQueryParamsList = exports.checkIfExistsGroup = exports.checkIfMembersWasChanged = exports.getModelFamiliesGroupsMembersDetails = exports.getUsersIdsList = void 0;
+exports.returnFamilyGroup404 = exports.return404 = exports.returnErrorId = exports.getReportsFamilyGroup = exports.checkIfUsersBelowAtFamilyGroup = exports.getQueryParamsList = exports.checkIfExistsGroup = exports.checkIfMembersWasChanged = exports.getModelFamiliesGroupsMembersDetails = exports.setDataMembersGroup = exports.getUsersIdsList = void 0;
 const UsersActions_1 = require("./UsersActions");
 const FamiliesGroups_1 = __importDefault(require("../Models/FamiliesGroups"));
 const FamiliesGroupsReports_1 = __importDefault(require("../Models/FamiliesGroupsReports"));
 const Users_1 = __importDefault(require("../Models/Users"));
 function getUsersIdsList(members) {
-    const listIds = [];
+    let listIds = [];
     if (members.leaderId)
         listIds.push(members.leaderId);
     if (members.hostId)
         listIds.push(members.hostId);
-    if (members.assistantId)
-        listIds.push(members.assistantId);
+    if (members.helperId)
+        listIds.push(members.helperId);
     if (members.masterId)
         listIds.push(members.masterId);
+    if (members.assistantsIds)
+        listIds = listIds.concat(members.assistantsIds);
     return listIds;
 }
 exports.getUsersIdsList = getUsersIdsList;
+function setDataMembersGroup(members, data) {
+    const ret = {
+        leader: null,
+        host: null,
+        helper: null,
+        master: null,
+        assistants: [],
+    };
+    if (members.length > 0) {
+        members.forEach(m => {
+            const _id = m._id.toString();
+            if (_id === data.leaderId)
+                ret.leader = m;
+            else if (_id === data.hostId)
+                ret.host = m;
+            else if (_id === data.helperId)
+                ret.helper = m;
+            else if (_id === data.masterId)
+                ret.master = m;
+            else if (data.assistantsIds.includes(_id))
+                ret.assistants.push(m);
+        });
+    }
+    return ret;
+}
+exports.setDataMembersGroup = setDataMembersGroup;
 async function getModelFamiliesGroupsDetails(data) {
     if (!data)
         return null;
     // getNamesUsersList
     const listIds = getUsersIdsList(data.members);
-    let members = null;
-    if (listIds.length > 0) {
-        members = await UsersActions_1.getNamesUsersList(listIds);
-    }
+    const members = await UsersActions_1.getNamesUsersList(listIds);
     const ret = {};
     ret._id = data._id;
     // ret.name = data.name;
@@ -38,12 +63,7 @@ async function getModelFamiliesGroupsDetails(data) {
     ret.sector = data.sector;
     ret.subSector = data.subSector;
     ret.location = data.location;
-    ret.members = {
-        leader: members ? (members.find(m => m._id.toString() === data.members.leaderId) || null) : null,
-        host: members ? (members.find(m => m._id.toString() === data.members.hostId) || null) : null,
-        assistant: members ? (members.find(m => m._id.toString() === data.members.assistantId) || null) : null,
-        master: members ? (members.find(m => m._id.toString() === data.members.masterId) || null) : null,
-    };
+    ret.members = setDataMembersGroup(members || [], data.members);
     ret.created_at = data.created_at;
     ret.updated_at = data.updated_at;
     return ret;
@@ -53,13 +73,8 @@ async function getModelFamiliesGroupsMembersDetails(data) {
     if (!data)
         return null;
     const listIds = getUsersIdsList(data); // getNamesUsersList
-    const membersLists = await UsersActions_1.getNamesUsersList(listIds || []);
-    return {
-        leader: membersLists.find((m) => m._id.toString() === data.leaderId) || null,
-        host: membersLists.find((m) => m._id.toString() === data.hostId) || null,
-        assistant: membersLists.find((m) => m._id.toString() === data.assistantId) || null,
-        master: membersLists.find((m) => m._id.toString() === data.masterId) || null,
-    };
+    const members = await UsersActions_1.getNamesUsersList(listIds || []);
+    return setDataMembersGroup(members, data);
 }
 exports.getModelFamiliesGroupsMembersDetails = getModelFamiliesGroupsMembersDetails;
 function checkIfMembersWasChanged(currentMembers, newMembers) {
@@ -68,7 +83,9 @@ function checkIfMembersWasChanged(currentMembers, newMembers) {
         totals++;
     if (currentMembers.hostId !== newMembers.hostId)
         totals++;
-    if (currentMembers.assistantId !== newMembers.assistantId)
+    if (currentMembers.helperId !== newMembers.helperId)
+        totals++;
+    if (currentMembers.assistantsIds.toString() !== newMembers.assistantsIds.toString())
         totals++;
     if (currentMembers.masterId !== newMembers.masterId)
         totals++;
