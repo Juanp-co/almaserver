@@ -23,6 +23,7 @@ jobs:
 
     - run: sudo rm -f package-lock.json
     - run: sudo npm install
-    - run: sudo npm run build --if-present
+    # - run: sudo npm run build --if-present
+    # - run: sudo npm run start --if-present
     # - run: sudo pm2 start npm --name "server-gaitan" -- start
     # - run: pm2 reload server-gaitan
