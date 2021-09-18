@@ -14,6 +14,7 @@
  * @apiSuccess (groups Object[]) {Number} subSector Apellidos.
  * @apiSuccess (groups Object[]) {Number} number Número de documento.
  * @apiSuccess (groups Object[]) {Object} location Datos de la localización.
+ * @apiSuccess (groups Object[]) {Boolean} isLeader Indica si el miembro es líder.
  * @apiSuccess (groups Object[]) {String} created_at Fecha de creación del grupo.
  *
  * @apiSuccess (location Object) {String} type Tipo de coordenada.
@@ -25,6 +26,11 @@
 	"msg": "Grupos familiares",
 	"groups": [
     {
+      "_id": "6063385c98fc731c04777829",
+      "number": 1,
+      "sector": 1,
+      "subSector": 1,
+      "direction": "DIRECCIÓN CUALQUIERA EDITADA",
       "location": {
         "type": "Point",
         "coordinates": [
@@ -32,11 +38,8 @@
           10.451304
         ]
       },
-      "_id": "6063385c98fc731c04777829",
-      "sector": 1,
-      "subSector": 1,
-      "number": 1,
-      "direction": "DIRECCIÓN CUALQUIERA EDITADA"
+      "isLeader": true,
+      "created_at": "2021-03-30 09:40:28"
     },
 		.
 		.

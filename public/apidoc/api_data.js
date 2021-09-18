@@ -16230,6 +16230,13 @@ define({ "api": [
           },
           {
             "group": "groups Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "isLeader",
+            "description": "<p>Indica si el miembro es líder.</p>"
+          },
+          {
+            "group": "groups Object[]",
             "type": "String",
             "optional": false,
             "field": "created_at",
@@ -16256,7 +16263,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n    {\n      \"location\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n          -64.18147,\n          10.451304\n        ]\n      },\n      \"_id\": \"6063385c98fc731c04777829\",\n      \"sector\": 1,\n      \"subSector\": 1,\n      \"number\": 1,\n      \"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\"\n    },\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n    {\n      \"_id\": \"6063385c98fc731c04777829\",\n      \"number\": 1,\n      \"sector\": 1,\n      \"subSector\": 1,\n      \"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\",\n      \"location\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n          -64.18147,\n          10.451304\n        ]\n      },\n      \"isLeader\": true,\n      \"created_at\": \"2021-03-30 09:40:28\"\n    },\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {
