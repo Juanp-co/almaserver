@@ -40,9 +40,24 @@ async function getFamiliesGroups(req, res) {
         if (!user)
             return FamiliesGroupsActions_1.returnFamilyGroup404(res);
         if (user.familyGroupId && user.familyGroupId.length > 0) {
-            ret = await FamiliesGroups_1.default.find({ _id: { $in: user.familyGroupId } }, { number: 1, sector: 1, subSector: 1, direction: 1, location: 1, created_at: 1, })
+            const groups = await FamiliesGroups_1.default.find({ _id: { $in: user.familyGroupId } }, { number: 1, sector: 1, subSector: 1, direction: 1, members: 1, location: 1, created_at: 1, })
                 .sort({ sector: 1, subSector: 1, number: 1 })
                 .exec();
+            if (groups.length > 0) {
+                groups.forEach(g => {
+                    var _a;
+                    ret.push({
+                        _id: g._id,
+                        number: g.number,
+                        sector: g.sector,
+                        subSector: g.subSector,
+                        direction: g.direction,
+                        location: g.location,
+                        isLeader: ((_a = g === null || g === void 0 ? void 0 : g.members) === null || _a === void 0 ? void 0 : _a.leaderId) === tokenId,
+                        created_at: g.created_at,
+                    });
+                });
+            }
         }
         return res.json({
             msg: 'Grupos familiares',

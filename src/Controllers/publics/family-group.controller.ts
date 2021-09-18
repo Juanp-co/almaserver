@@ -26,12 +26,28 @@ export default async function getFamiliesGroups(req: Request, res: Response): Pr
     if (!user) return returnFamilyGroup404(res);
 
     if (user.familyGroupId && user.familyGroupId.length > 0) {
-      ret = await FamiliesGroups.find(
+      const groups: any[] = await FamiliesGroups.find(
         { _id: { $in: user.familyGroupId } },
-        { number: 1, sector: 1, subSector: 1, direction: 1, location: 1, created_at: 1, }
+        { number: 1, sector: 1, subSector: 1, direction: 1, members: 1, location: 1, created_at: 1, }
       )
         .sort({ sector: 1, subSector: 1, number: 1 })
-        .exec() as IFamiliesGroupsList[];
+        .exec();
+
+      if (groups.length > 0) {
+        groups.forEach(g => {
+          ret.push({
+            _id: g._id,
+            number: g.number,
+            sector: g.sector,
+            subSector: g.subSector,
+            direction: g.direction,
+            location: g.location,
+            isLeader: g?.members?.leaderId === tokenId,
+            created_at: g.created_at,
+          });
+        })
+
+      }
     }
 
     return res.json({

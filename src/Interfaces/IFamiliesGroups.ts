@@ -50,7 +50,9 @@ export interface IFamiliesGroupsList {
   number: IFamiliesGroups['number'] | null;
   sector: IFamiliesGroups['sector'];
   subSector: IFamiliesGroups['subSector'];
+  direction?: IFamiliesGroups['direction'];
   location?: IFamiliesGroups['location'];
+  isLeader?: boolean;
   created_at: IFamiliesGroups['created_at'];
 }
 
