@@ -21,16 +21,7 @@ async function getUsers(req, res) {
     try {
         const { tokenId } = req.body;
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: tokenId } }, req.query.word);
-        if (req.query.ignoreIds) {
-            const ids = req.query.ignoreIds.toString().split(',');
-            if (ids.length > 0) {
-                const list = [tokenId];
-                ids.forEach(i => { if (Validations_1.checkObjectId(i))
-                    list.push(i); });
-                query._id = { $nin: list };
-            }
-        }
+        const query = UsersActions_1.checkFindValueSearch(req.query, tokenId);
         const users = await Users_1.default.find(query, {
             names: 1,
             lastNames: 1,
@@ -58,7 +49,7 @@ exports.default = getUsers;
 async function getUsersCounters(req, res) {
     try {
         const { tokenId } = req.body;
-        const query = UsersActions_1.checkFindValueSearch({ _id: { $ne: tokenId } }, req.query.word);
+        const query = UsersActions_1.checkFindValueSearch(req.query, tokenId);
         const totals = await Users_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: `Total miembros.`,

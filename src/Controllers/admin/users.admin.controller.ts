@@ -33,17 +33,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
   try {
     const { tokenId } = req.body;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const query: any = checkFindValueSearch({ _id: { $ne: tokenId } }, req.query.word);
-
-    if (req.query.ignoreIds) {
-      const ids = req.query.ignoreIds.toString().split(',');
-
-      if (ids.length > 0) {
-        const list = [tokenId];
-        ids.forEach(i => { if (checkObjectId(i)) list.push(i); });
-        query._id = { $nin: list };
-      }
-    }
+    const query: any = checkFindValueSearch(req.query, tokenId);
 
     const users = await Users.find(
       query,
@@ -74,7 +64,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
 export async function getUsersCounters(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
-    const query = checkFindValueSearch({ _id: { $ne: tokenId } } , req.query.word);
+    const query: any = checkFindValueSearch(req.query, tokenId);
 
     const totals = await Users.find(query).countDocuments().exec();
 

@@ -1,13 +1,14 @@
 /**
  * @api {get} /api/admin/users/counters (00) Obtener total de miembros.
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.40
  * @apiName countersUsersAdmin
  * @apiGroup UsersAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin).
  *
- * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
+ * @apiParam (Query Params) {String} search Número de documento o nombre a buscar (Opcional).
  * @apiParam (Query Params) {String} admins Obtiene los usuarios de tipo admin (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder) (Opcional).
+ * @apiParam (Query Params) {Any} referreds Cargar solo miembros que fueron referidos.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} totals Total de miembros.
@@ -28,7 +29,7 @@
 
 /**
  * @api {get} /api/admin/users (01) Obtener listado de miembros.
- * @apiVersion 0.0.36
+ * @apiVersion 0.0.40
  * @apiName getUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -37,8 +38,10 @@
  * @apiParam (Query Params) {String} limit Total de resultados por página (por defecto = 10).
  * @apiParam (Query Params) {String} page Página (por defecto = 1).
  * @apiParam (Query Params) {String} input Campo por ordenar (campos = document | created | names | lastNames) (Opcional).
- * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional).
- * @apiParam (Query Params) {String} word Número de documento o nombre a buscar (Opcional).
+ * @apiParam (Query Params) {Number} value Ordenado de input (1 = ASC | -1 = DESC) (Opcional).).
+ * @apiParam (Query Params) {String} admins Obtiene los usuarios de tipo admin (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder) (Opcional).
+ * @apiParam (Query Params) {String} search Número de documento o nombre a buscar (Opcional).
+ * @apiParam (Query Params) {Any} referreds Cargar solo miembros que fueron referidos.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} users Listado de usuarios.

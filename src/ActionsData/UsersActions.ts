@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { checkNameOrLastName } from '../Functions/Validations';
+import { checkNameOrLastName, checkObjectId } from '../Functions/Validations';
 import IUser, { IUserData, IUserReferralInfo, IUserReferralSimpleData, IUserSimpleInfo } from '../Interfaces/IUser';
 import Users from '../Models/Users';
 import Referrals from '../Models/Referrals';
@@ -263,19 +263,61 @@ export async function setFamilyGroupIdValueUsers(listIds: string[], groupId: str
 /*
   Static functions
  */
-export function checkFindValueSearch(query: any, value: any): any {
-  if (value) {
-    if (checkNameOrLastName(value)) {
-      const pattern = value ? value.toString().trim().replace(' ', '|') : null;
-      if (pattern) {
-        query.$or = [
-          { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-          { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-        ];
+export function checkFindValueSearch(params: any = {}, tokenId: string|null = null): any {
+  const query: any = {};
+  if (tokenId) query._id = { $ne: tokenId };
+
+  if (params) {
+    if (params.ignoreIds) {
+      const ids: string[] = params.ignoreIds.toString().split(',') || [];
+
+      if (ids.length > 0) {
+        const list = tokenId ? [tokenId] : [];
+        ids.forEach((id: any) => {
+          if (checkObjectId(id)) list.push(id);
+        });
+        query._id = { $nin: list };
       }
     }
-    else
-      query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
+
+    if (params.search) {
+      if (checkNameOrLastName(params.search)) {
+        const pattern = params.search ? params.search.toString().trim().replace(' ', '|') : null;
+        if (pattern) {
+          query.$or = [
+            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+          ];
+        }
+      }
+      else
+        query.document = { $regex: new RegExp(`${params.search}`.toUpperCase(), 'i') };
+    }
+
+    if (params.referreds) query.referred = { $ne: null };
+    if (params.admins) query.roles = { $eq: 0 };
+  }
+
+  return query;
+}
+
+export function checkFindValueSearchForGroups(query: any = {}, params: any = {}): any {
+  if (params) {
+    if (params.search) {
+      if (checkNameOrLastName(params.search)) {
+        const pattern = params.search ? params.search.toString().trim().replace(' ', '|') : null;
+        if (pattern) {
+          query.$or = [
+            { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+            { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+          ];
+        }
+      }
+      else
+        query.document = { $regex: new RegExp(`${params.search}`.toUpperCase(), 'i') };
+    }
+
+    if (params.referreds) query.referred = { $ne: null };
   }
 
   return query;

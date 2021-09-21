@@ -285,11 +285,11 @@ async function findNewMembers(req, res) {
             .exec();
         if (!group)
             return return404(res);
-        const query = UsersActions_1.checkFindValueSearch({
+        const query = UsersActions_1.checkFindValueSearchForGroups({
             _id: { $nin: [tokenId, ...group.members] },
-            role: { $ne: 0 },
+            roles: { $nin: [0] },
             group: { $in: [null, undefined, ''] },
-        }, req.query.word);
+        }, req.query);
         const users = await Users_1.default.find(query, {
             names: 1,
             lastNames: 1,

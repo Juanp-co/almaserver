@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { Request, Response } from 'express';
 import {
-  checkFindValueSearch,
+  checkFindValueSearchForGroups,
   getNamesUsersList,
   updateGroupIdInUsers
 } from '../../ActionsData/UsersActions';
@@ -306,13 +306,13 @@ export async function findNewMembers(req: Request, res: Response) : Promise<Resp
 
     if (!group) return return404(res);
 
-    const query: any = checkFindValueSearch(
+    const query: any = checkFindValueSearchForGroups(
       {
         _id: { $nin: [tokenId, ...group.members] },
-        role: { $ne: 0 },
+        roles: { $nin: [0] },
         group: { $in: [null, undefined, ''] },
       },
-      req.query.word
+      req.query
     );
 
     const users = await Users.find(
