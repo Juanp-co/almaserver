@@ -19756,7 +19756,7 @@
     "type": "get",
     "url": "/api/admin/users/counters",
     "title": "(00) Obtener total de miembros.",
-    "version": "0.0.16",
+    "version": "0.0.40",
     "name": "countersUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -19779,7 +19779,7 @@
             "group": "Query Params",
             "type": "String",
             "optional": false,
-            "field": "word",
+            "field": "search",
             "description": "<p>Número de documento o nombre a buscar (Opcional).</p>"
           },
           {
@@ -19788,6 +19788,13 @@
             "optional": false,
             "field": "admins",
             "description": "<p>Obtiene los usuarios de tipo admin (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder) (Opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Any",
+            "optional": false,
+            "field": "referreds",
+            "description": "<p>Cargar solo miembros que fueron referidos.</p>"
           }
         ]
       }
@@ -20852,7 +20859,7 @@
     "type": "get",
     "url": "/api/admin/users",
     "title": "(01) Obtener listado de miembros.",
-    "version": "0.0.36",
+    "version": "0.0.40",
     "name": "getUsersAdmin",
     "group": "UsersAdmin",
     "header": {
@@ -20897,14 +20904,28 @@
             "type": "Number",
             "optional": false,
             "field": "value",
-            "description": "<p>Ordenado de input (1 = ASC | -1 = DESC) (Opcional).</p>"
+            "description": "<p>Ordenado de input (1 = ASC | -1 = DESC) (Opcional).).</p>"
           },
           {
             "group": "Query Params",
             "type": "String",
             "optional": false,
-            "field": "word",
+            "field": "admins",
+            "description": "<p>Obtiene los usuarios de tipo admin (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder) (Opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "search",
             "description": "<p>Número de documento o nombre a buscar (Opcional).</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Any",
+            "optional": false,
+            "field": "referreds",
+            "description": "<p>Cargar solo miembros que fueron referidos.</p>"
           }
         ]
       }

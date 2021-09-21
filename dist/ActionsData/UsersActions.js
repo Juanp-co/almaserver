@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearch = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
+exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearchForGroups = exports.checkFindValueSearch = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
@@ -229,23 +229,64 @@ exports.setFamilyGroupIdValueUsers = setFamilyGroupIdValueUsers;
 /*
   Static functions
  */
-function checkFindValueSearch(query, value) {
-    if (value) {
-        if (Validations_1.checkNameOrLastName(value)) {
-            const pattern = value ? value.toString().trim().replace(' ', '|') : null;
-            if (pattern) {
-                query.$or = [
-                    { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                    { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                ];
+function checkFindValueSearch(params = {}, tokenId = null) {
+    const query = {};
+    if (tokenId)
+        query._id = { $ne: tokenId };
+    if (params) {
+        if (params.ignoreIds) {
+            const ids = params.ignoreIds.toString().split(',') || [];
+            if (ids.length > 0) {
+                const list = tokenId ? [tokenId] : [];
+                ids.forEach((id) => {
+                    if (Validations_1.checkObjectId(id))
+                        list.push(id);
+                });
+                query._id = { $nin: list };
             }
         }
-        else
-            query.document = { $regex: new RegExp(`${value}`.toUpperCase(), 'i') };
+        if (params.search) {
+            if (Validations_1.checkNameOrLastName(params.search)) {
+                const pattern = params.search ? params.search.toString().trim().replace(' ', '|') : null;
+                if (pattern) {
+                    query.$or = [
+                        { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                        { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                    ];
+                }
+            }
+            else
+                query.document = { $regex: new RegExp(`${params.search}`.toUpperCase(), 'i') };
+        }
+        if (params.referreds)
+            query.referred = { $ne: null };
+        if (params.admins)
+            query.roles = { $eq: 0 };
     }
     return query;
 }
 exports.checkFindValueSearch = checkFindValueSearch;
+function checkFindValueSearchForGroups(query = {}, params = {}) {
+    if (params) {
+        if (params.search) {
+            if (Validations_1.checkNameOrLastName(params.search)) {
+                const pattern = params.search ? params.search.toString().trim().replace(' ', '|') : null;
+                if (pattern) {
+                    query.$or = [
+                        { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                        { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
+                    ];
+                }
+            }
+            else
+                query.document = { $regex: new RegExp(`${params.search}`.toUpperCase(), 'i') };
+        }
+        if (params.referreds)
+            query.referred = { $ne: null };
+    }
+    return query;
+}
+exports.checkFindValueSearchForGroups = checkFindValueSearchForGroups;
 function checkRoleToActions(roles) {
     return (roles === null || roles === void 0 ? void 0 : roles.some(r => [0, 1].includes(r))) || false;
 }
