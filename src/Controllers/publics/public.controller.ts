@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { addCoursesToUser } from '../../ActionsData/CoursesActions';
-import { getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
+import { checkFindValueSearch, getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
 import {
   checkIfExistsRoleInList,
@@ -234,23 +234,9 @@ export async function getBanks(req: Request, res: Response): Promise<Response> {
 export async function getPublicMembers(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
-    const { word } = req.query;
+    const query: any = checkFindValueSearch(req.query, tokenId);
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const query: any = { _id: { $ne: tokenId } };
     let members: IUserSimpleInfo[] = [];
-
-    if (/^[0-9]{1,13}/.test(`${word}`.trim())) {
-      query.phone = { $regex: new RegExp(`${word}`, 'i')};
-    }
-    else if (checkNameOrLastName(word)) {
-      const pattern = word ? word.toString().trim().replace(' ', '|') : null;
-      if (pattern) {
-        query.$or = [
-          { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-          { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-        ]
-      }
-    }
 
     if (query.phone || query.$or) {
       members = await Users.find(

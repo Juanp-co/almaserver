@@ -8,7 +8,7 @@ import getModelFamiliesGroupsDetails, {
   return404,
   returnErrorId
 } from '../../ActionsData/FamiliesGroupsActions';
-import { setFamilyGroupIdValueUsers } from '../../ActionsData/UsersActions';
+import { checkLeaderUserRole, setFamilyGroupIdValueUsers } from '../../ActionsData/UsersActions';
 import validateDataForm, { validateUpdateMembersForm } from '../../FormRequest/FamiliesGroupsRequest';
 import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
@@ -161,12 +161,18 @@ export async function updateMembersFamilyGroup(req: Request, res: Response) : Pr
 
     // check if the members of the group was changed
     if (checkIfMembersWasChanged(group.members, validate.data.members) > 0) {
+      const leaderIds = {
+        old: group.members.leaderId,
+        newLeader: validate.data.members.leaderId,
+      };
+
       // remove previous members
       await setFamilyGroupIdValueUsers(
         getUsersIdsList(group.members),
         group._id.toString(),
         true
       );
+
       // update new members
       group.members.leaderId = validate.data.members.leaderId;
       group.members.assistantsIds = _.uniq(validate.data.members.assistantsIds);
@@ -180,6 +186,10 @@ export async function updateMembersFamilyGroup(req: Request, res: Response) : Pr
         getUsersIdsList(group.members),
         group._id.toString()
       );
+
+      // check if group leader have the rol
+      if (leaderIds.old) await checkLeaderUserRole(leaderIds.old, true);
+      if (leaderIds.newLeader) await checkLeaderUserRole(leaderIds.newLeader);
     }
 
     return res.json({

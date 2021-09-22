@@ -218,22 +218,9 @@ exports.getBanks = getBanks;
 async function getPublicMembers(req, res) {
     try {
         const { tokenId } = req.body;
-        const { word } = req.query;
+        const query = UsersActions_1.checkFindValueSearch(req.query, tokenId);
         const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const query = { _id: { $ne: tokenId } };
         let members = [];
-        if (/^[0-9]{1,13}/.test(`${word}`.trim())) {
-            query.phone = { $regex: new RegExp(`${word}`, 'i') };
-        }
-        else if (Validations_1.checkNameOrLastName(word)) {
-            const pattern = word ? word.toString().trim().replace(' ', '|') : null;
-            if (pattern) {
-                query.$or = [
-                    { names: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                    { lastNames: { $regex: new RegExp(`(${pattern})`, 'i') } },
-                ];
-            }
-        }
         if (query.phone || query.$or) {
             members = await Users_1.default.find(query, {
                 names: 1,

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearchForGroups = exports.checkFindValueSearch = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
+exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearchForGroups = exports.checkFindValueSearch = exports.checkLeaderUserRole = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
@@ -226,6 +226,21 @@ async function setFamilyGroupIdValueUsers(listIds, groupId, remove = false) {
     }
 }
 exports.setFamilyGroupIdValueUsers = setFamilyGroupIdValueUsers;
+async function checkLeaderUserRole(_id, remove = false) {
+    var _a;
+    const user = await Users_1.default.findOne({ _id }, { roles: 1 }).exec();
+    if (user) {
+        if (remove) {
+            user.roles = ((_a = user.roles) === null || _a === void 0 ? void 0 : _a.filter((r) => r !== 3)) || [];
+            await user.save();
+        }
+        else if (!user.roles.includes(3)) {
+            user.roles.push(3);
+            await user.save();
+        }
+    }
+}
+exports.checkLeaderUserRole = checkLeaderUserRole;
 /*
   Static functions
  */
@@ -256,7 +271,10 @@ function checkFindValueSearch(params = {}, tokenId = null) {
                 }
             }
             else
-                query.document = { $regex: new RegExp(`${params.search}`.toUpperCase(), 'i') };
+                query.$or = [
+                    { document: { $regex: new RegExp(`(${params.search})`, 'i') } },
+                    { phones: { $regex: new RegExp(`(${params.search})`, 'i') } },
+                ];
         }
         if (params.referreds)
             query.referred = { $ne: null };
