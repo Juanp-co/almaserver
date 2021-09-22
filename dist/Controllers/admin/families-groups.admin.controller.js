@@ -163,6 +163,10 @@ async function updateMembersFamilyGroup(req, res) {
             return FamiliesGroupsActions_1.return404(res);
         // check if the members of the group was changed
         if (FamiliesGroupsActions_1.checkIfMembersWasChanged(group.members, validate.data.members) > 0) {
+            const leaderIds = {
+                old: group.members.leaderId,
+                newLeader: validate.data.members.leaderId,
+            };
             // remove previous members
             await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(group.members), group._id.toString(), true);
             // update new members
@@ -173,6 +177,11 @@ async function updateMembersFamilyGroup(req, res) {
             group.members.masterId = validate.data.members.masterId;
             await group.save();
             await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(group.members), group._id.toString());
+            // check if group leader have the rol
+            if (leaderIds.old)
+                await UsersActions_1.checkLeaderUserRole(leaderIds.old, true);
+            if (leaderIds.newLeader)
+                await UsersActions_1.checkLeaderUserRole(leaderIds.newLeader);
         }
         return res.json({
             msg: 'Grupo Familiar',

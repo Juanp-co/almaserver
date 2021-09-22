@@ -61,7 +61,7 @@ async function validateAdmin(req, res, next) {
         const session = await TokenActions_1.checkTokenDB(token);
         if (!session)
             return responseErrorSession(res);
-        if (GlobalFunctions_1.checkIfExistsRoleInList(check.roles, [5])) {
+        if (!GlobalFunctions_1.checkIfExistsRoleInList(check.roles, [0, 1, 3])) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no cuenta con privilegios para realizar esta acción.',
                 redirect: true

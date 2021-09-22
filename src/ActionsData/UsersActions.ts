@@ -260,6 +260,21 @@ export async function setFamilyGroupIdValueUsers(listIds: string[], groupId: str
   }
 }
 
+export async function checkLeaderUserRole(_id: string, remove = false) {
+  const user: any = await Users.findOne({ _id }, { roles: 1 }).exec();
+
+  if (user) {
+    if (remove) {
+      user.roles = user.roles?.filter((r: number) => r !== 3) || [];
+      await user.save();
+    }
+    else if (!user.roles.includes(3)) {
+      user.roles.push(3);
+      await user.save();
+    }
+  }
+}
+
 /*
   Static functions
  */
@@ -291,7 +306,10 @@ export function checkFindValueSearch(params: any = {}, tokenId: string|null = nu
         }
       }
       else
-        query.document = { $regex: new RegExp(`${params.search}`.toUpperCase(), 'i') };
+        query.$or = [
+          { document: { $regex: new RegExp(`(${params.search})`, 'i') } },
+          { phones: { $regex: new RegExp(`(${params.search})`, 'i') } },
+        ];
     }
 
     if (params.referreds) query.referred = { $ne: null };
