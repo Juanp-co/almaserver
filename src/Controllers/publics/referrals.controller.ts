@@ -5,7 +5,7 @@ import { addCoursesToUser } from '../../ActionsData/CoursesActions';
 import { getTotalsReferrals } from '../../ActionsData/ReferralsActions';
 import { getInfoUserReferred, getNamesUsersList } from '../../ActionsData/UsersActions';
 import validateSimpleRegister from '../../FormRequest/ConsolidatesFormRequest';
-import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import { checkIfExistsRoleInList, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
 import { validateFormMemberRegisterFromUser } from '../../FormRequest/UsersRequest';
 import Referrals from '../../Models/Referrals';
@@ -102,7 +102,7 @@ export async function saveReferral(req: Request, res: Response): Promise<Respons
 export async function getMemberReferred(req: Request, res: Response): Promise<Response> {
   try {
     const { _id } = req.params;
-    const { tokenId } = req.body;
+    const { tokenId, tokenRoles } = req.body;
 
     if (!checkObjectId(_id)) {
       return res.status(422).json({
@@ -110,13 +110,15 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
       });
     }
 
-    const checkMember = await Referrals.find({ _id: tokenId, members: _id }).countDocuments().exec();
-    const checkMember2 = await Users.find({ _id: tokenId, referred: _id }).countDocuments().exec();
+    if (!checkIfExistsRoleInList(tokenRoles, [0, 1, 2])) {
+      const checkMember = await Referrals.find({ _id: tokenId, members: _id }).countDocuments().exec();
+      const checkMember2 = await Users.find({ _id: tokenId, referred: _id }).countDocuments().exec();
 
-    if (checkMember === 0 && checkMember2 === 0) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero no está autorizado para visualizar la información de este miembro.'
-      });
+      if (checkMember === 0 && checkMember2 === 0) {
+        return res.status(404).json({
+          msg: 'Disculpe, pero no está autorizado para visualizar la información de este miembro.'
+        });
+      }
     }
 
     const ret = await getInfoUserReferred(_id);

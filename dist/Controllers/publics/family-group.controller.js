@@ -72,16 +72,33 @@ exports.default = getFamiliesGroups;
 async function getFamiliesGroupsPublic(req, res) {
     try {
         const { sector, subSector, number } = req.query;
+        const { tokenId } = req.body;
         const query = {};
+        const ret = [];
         if (/[0-9]{1,3}/.test(`${sector}`))
             query.sector = Number.parseInt(`${sector}`, 10);
         if (/[0-9]{1,3}/.test(`${subSector}`))
             query.subSector = Number.parseInt(`${subSector}`, 10);
         if (/[0-9]{1,3}/.test(`${number}`))
             query.number = Number.parseInt(`${number}`, 10);
-        const ret = await FamiliesGroups_1.default.find(query, { number: 1, sector: 1, subSector: 1, direction: 1, location: 1 })
+        const familiesGroups = await FamiliesGroups_1.default.find(query, { number: 1, sector: 1, subSector: 1, direction: 1, location: 1, members: 1 })
             .sort({ sector: 1, subSector: 1, number: 1 })
             .exec();
+        if (familiesGroups.length > 0) {
+            familiesGroups.forEach((fg) => {
+                var _a;
+                ret.push({
+                    _id: fg._id,
+                    number: fg.number,
+                    sector: fg.sector,
+                    subSector: fg.subSector,
+                    direction: fg.direction,
+                    location: fg.location,
+                    isLeader: ((_a = fg.members) === null || _a === void 0 ? void 0 : _a.leaderId) === tokenId,
+                    created_at: fg.created_at,
+                });
+            });
+        }
         return res.json({
             msg: 'Grupos familiares',
             groups: ret

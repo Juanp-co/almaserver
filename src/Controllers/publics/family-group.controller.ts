@@ -62,18 +62,35 @@ export default async function getFamiliesGroups(req: Request, res: Response): Pr
 export async function getFamiliesGroupsPublic(req: Request, res: Response): Promise<Response> {
   try {
     const { sector, subSector, number } = req.query;
+    const { tokenId } = req.body;
     const query: any = {};
+    const ret: IFamiliesGroupsList[] = [];
 
     if (/[0-9]{1,3}/.test(`${sector}`)) query.sector = Number.parseInt(`${sector}`, 10);
     if (/[0-9]{1,3}/.test(`${subSector}`)) query.subSector = Number.parseInt(`${subSector}`, 10);
     if (/[0-9]{1,3}/.test(`${number}`)) query.number = Number.parseInt(`${number}`, 10);
 
-    const ret: IFamiliesGroupsList[] = await FamiliesGroups.find(
+    const familiesGroups: IFamiliesGroupsList[] = await FamiliesGroups.find(
       query,
-      { number: 1, sector: 1, subSector: 1, direction: 1, location: 1 }
+      { number: 1, sector: 1, subSector: 1, direction: 1, location: 1, members: 1 }
     )
       .sort({ sector: 1, subSector: 1, number: 1 })
       .exec() as IFamiliesGroupsList[];
+
+    if (familiesGroups.length > 0) {
+      familiesGroups.forEach((fg: any) => {
+        ret.push({
+          _id: fg._id,
+          number: fg.number,
+          sector: fg.sector,
+          subSector: fg.subSector,
+          direction: fg.direction,
+          location: fg.location,
+          isLeader: fg.members?.leaderId === tokenId,
+          created_at: fg.created_at,
+        })
+      })
+    }
 
     return res.json({
       msg: 'Grupos familiares',

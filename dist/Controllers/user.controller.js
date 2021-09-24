@@ -366,6 +366,7 @@ async function getReports(req, res) {
                 const members = await Referrals_1.default.find({ _id: { $in: myReferrals.members } }, { members: 1 }).exec();
                 const users = await Users_1.default.find({ _id: { $in: myReferrals.members } }, { names: 1, lastNames: 1 }).exec();
                 if (members.length > 0) {
+                    ret.visits.data[1].qty = visits.length;
                     let listsMembersDetails = []; // generate a new array data
                     let listIdsPending = []; // generate a new array data
                     let limit = 0;
@@ -394,21 +395,17 @@ async function getReports(req, res) {
                         const index = members.findIndex(m => m._id.toString() === v.userid);
                         // check last visit and add or remove id from list
                         if (index > -1) {
-                            if (moment_timezone_1.default().diff(moment_timezone_1.default(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+                            if (moment_timezone_1.default().diff(moment_timezone_1.default(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') > 0) {
                                 if (!listIdsPending.includes(members[index]._id.toString()))
                                     listIdsPending.push(members[index]._id.toString());
+                                else
+                                    listIdsPending = listIdsPending.filter((lip) => lip !== members[index]._id.toString());
                             }
-                            else
-                                listIdsPending = listIdsPending.filter((lip) => lip !== members[index]._id.toString());
                         }
                     }
-                    if (listsMembersDetails.length > 0) {
+                    if (listsMembersDetails.length > 0)
                         ret.referrals.data.push(listsMembersDetails);
-                    }
-                    if (listIdsPending.length > 0) {
-                        ret.visits.data[1].qty = listIdsPending.length;
-                        ret.visits.data[0].qty = visits.length;
-                    }
+                    ret.visits.data[0].qty = listIdsPending.length;
                 }
             }
         }
