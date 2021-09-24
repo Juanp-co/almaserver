@@ -402,6 +402,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
         const users = await Users.find({ _id: { $in: myReferrals.members } }, { names: 1, lastNames: 1 }).exec();
 
         if (members.length > 0) {
+          ret.visits.data[1].qty = visits.length;
           let listsMembersDetails: any = []; // generate a new array data
           let listIdsPending: any = []; // generate a new array data
           let limit = 0;
@@ -436,22 +437,17 @@ export async function getReports(req: Request, res: Response): Promise<Response>
 
             // check last visit and add or remove id from list
             if (index > -1) {
-              if (moment().diff(moment(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+              if (moment().diff(moment(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') > 0) {
                 if (!listIdsPending.includes(members[index]._id.toString()))
                   listIdsPending.push(members[index]._id.toString());
+                else listIdsPending = listIdsPending.filter((lip: string) => lip !== members[index]._id.toString());
               }
-              else listIdsPending = listIdsPending.filter((lip: string) => lip !== members[index]._id.toString());
             }
           }
 
-          if (listsMembersDetails.length > 0) {
-            ret.referrals.data.push(listsMembersDetails);
-          }
+          if (listsMembersDetails.length > 0) ret.referrals.data.push(listsMembersDetails);
 
-          if (listIdsPending.length > 0) {
-            ret.visits.data[1].qty = listIdsPending.length;
-            ret.visits.data[0].qty = visits.length;
-          }
+          ret.visits.data[0].qty = listIdsPending.length;
         }
       }
     }

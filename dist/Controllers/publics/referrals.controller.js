@@ -94,18 +94,20 @@ exports.saveReferral = saveReferral;
 async function getMemberReferred(req, res) {
     try {
         const { _id } = req.params;
-        const { tokenId } = req.body;
+        const { tokenId, tokenRoles } = req.body;
         if (!Validations_1.checkObjectId(_id)) {
             return res.status(422).json({
                 msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
             });
         }
-        const checkMember = await Referrals_1.default.find({ _id: tokenId, members: _id }).countDocuments().exec();
-        const checkMember2 = await Users_1.default.find({ _id: tokenId, referred: _id }).countDocuments().exec();
-        if (checkMember === 0 && checkMember2 === 0) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero no está autorizado para visualizar la información de este miembro.'
-            });
+        if (!GlobalFunctions_1.checkIfExistsRoleInList(tokenRoles, [0, 1, 2])) {
+            const checkMember = await Referrals_1.default.find({ _id: tokenId, members: _id }).countDocuments().exec();
+            const checkMember2 = await Users_1.default.find({ _id: tokenId, referred: _id }).countDocuments().exec();
+            if (checkMember === 0 && checkMember2 === 0) {
+                return res.status(404).json({
+                    msg: 'Disculpe, pero no está autorizado para visualizar la información de este miembro.'
+                });
+            }
         }
         const ret = await UsersActions_1.getInfoUserReferred(_id);
         if (!ret) {

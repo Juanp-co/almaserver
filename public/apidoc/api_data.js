@@ -11347,6 +11347,176 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/families-groups",
+    "title": "(12) Obtener listado de grupos familiares.",
+    "version": "0.0.41",
+    "name": "getFamiliesGroupsPublic",
+    "group": "Public",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "groups",
+            "description": "<p>Listado de grupos familiares asociados al usuario.</p>"
+          }
+        ],
+        "groups Object[]": [
+          {
+            "group": "groups Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "groups Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "sector",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "groups Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "subSector",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "groups Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "number",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "groups Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de la localización.</p>"
+          },
+          {
+            "group": "groups Object[]",
+            "type": "Boolean",
+            "optional": false,
+            "field": "isLeader",
+            "description": "<p>Indica si el miembro es líder.</p>"
+          },
+          {
+            "group": "groups Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación del grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": [\n    {\n      \"_id\": \"6063385c98fc731c04777829\",\n      \"number\": 1,\n      \"sector\": 1,\n      \"subSector\": 1,\n      \"direction\": \"DIRECCIÓN CUALQUIERA EDITADA\",\n      \"location\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n          -64.18147,\n          10.451304\n        ]\n      },\n      \"isLeader\": true,\n      \"created_at\": \"2021-03-30 09:40:28\"\n    },\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Grupos familiares\",\n\t\"groups\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/members",
     "title": "(10) Obtener listado de grupos familiares.",
     "version": "0.0.25",
