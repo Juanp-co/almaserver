@@ -18762,7 +18762,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/user/reports",
     "title": "(05) Obtener reportes de la cuenta.",
-    "version": "0.0.19",
+    "version": "0.0.42",
     "name": "getReportsUser",
     "group": "User",
     "header": {
@@ -18812,43 +18812,57 @@ define({ "api": [
             "group": "Success 200",
             "type": "Object",
             "optional": false,
-            "field": "report",
+            "field": "reports",
             "description": "<p>Listado de curso del miembro.</p>"
           }
         ],
-        "report Object": [
+        "reports Object": [
           {
-            "group": "report Object",
+            "group": "reports Object",
             "type": "Object",
             "optional": false,
             "field": "courses",
             "description": "<p>Cursos del miembro.</p>"
           },
           {
-            "group": "report Object",
+            "group": "reports Object",
             "type": "Object",
             "optional": false,
             "field": "referrals",
             "description": "<p>Referidos del miembro.</p>"
+          },
+          {
+            "group": "reports Object",
+            "type": "Object",
+            "optional": false,
+            "field": "visits",
+            "description": "<p>Visitas realizadas.</p>"
+          },
+          {
+            "group": "reports Object",
+            "type": "Object",
+            "optional": false,
+            "field": "typeVisits",
+            "description": "<p>Tipos de visitas realizadas.</p>"
           }
         ],
-        "courses and referrals Object": [
+        "courses, referrals, visits and typVisits Object": [
           {
-            "group": "courses and referrals Object",
+            "group": "courses, referrals, visits and typVisits Object",
             "type": "String",
             "optional": false,
             "field": "title",
             "description": "<p>Título de la sección.</p>"
           },
           {
-            "group": "courses and referrals Object",
+            "group": "courses, referrals, visits and typVisits Object",
             "type": "Object[]|Array[]",
             "optional": false,
             "field": "data",
             "description": "<p>Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.</p>"
           },
           {
-            "group": "courses and referrals Object",
+            "group": "courses, referrals, visits and typVisits Object",
             "type": "Number",
             "optional": false,
             "field": "qty",
@@ -18877,7 +18891,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 1\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PRUEBA USUARIO\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PADRE PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"SUPERVISOR PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"visits\": {\n\t\t\t\"title\": \"Visitas\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Realizadas\",\n\t\t\t\t\t\"qty\": 2\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 3\n\t\t},\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 1\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PRUEBA USUARIO\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PADRE PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"SUPERVISOR PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"visits\": {\n\t\t\t\"title\": \"Visitas\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Realizadas\",\n\t\t\t\t\t\"qty\": 18\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 18\n\t\t},\n\t\t\"typeVisits\": {\n\t\t  \"title\": \"Tipos de Visitas\",\n\t\t  \"data\": [\n\t\t    {\n\t\t      \"label\":\"Presencial\",\n\t\t      \"qty\":18\n        },\n        {\n          \"label\":\"Telefónica\",\n          \"qty\":0\n        }\n      ],\n      \"qty\":18\n    }\n\t}\n}",
           "type": "JSON"
         },
         {

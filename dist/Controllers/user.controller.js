@@ -337,6 +337,14 @@ async function getReports(req, res) {
                 ],
                 qty: 0,
             },
+            typeVisits: {
+                title: 'Tipos de Visitas',
+                data: [
+                    { label: 'Presencial', qty: 0 },
+                    { label: 'Telefónica', qty: 0 }
+                ],
+                qty: 0,
+            },
         };
         if (initDate && Validations_1.checkDate(initDate)) {
             query['courses.created_at'] = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
@@ -391,6 +399,10 @@ async function getReports(req, res) {
                     }
                     // VISITS
                     for (const v of visits) {
+                        if (v.action !== 'Llamada')
+                            ret.typeVisits.data[0].qty += 1;
+                        else
+                            ret.typeVisits.data[1].qty += 1;
                         // add to list for the next check
                         const index = members.findIndex(m => m._id.toString() === v.userid);
                         // check last visit and add or remove id from list
@@ -406,6 +418,7 @@ async function getReports(req, res) {
                     if (listsMembersDetails.length > 0)
                         ret.referrals.data.push(listsMembersDetails);
                     ret.visits.data[0].qty = listIdsPending.length;
+                    ret.typeVisits.qty = (ret.typeVisits.data[0].qty + ret.typeVisits.data[1].qty) || 0;
                 }
             }
         }
