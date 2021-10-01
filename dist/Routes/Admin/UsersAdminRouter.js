@@ -27,6 +27,7 @@ router.route('/')
     .get(middleware_1.validateAdmin, users_admin_controller_1.default)
     .post(middleware_1.validateAdmin, users_admin_controller_1.saveUser);
 router.get('/counters', middleware_1.validateAdmin, users_admin_controller_1.getUsersCounters);
+router.get('/download', middleware_1.validateAdmin, users_admin_controller_1.downLoadData);
 router.route('/:_id')
     .delete(middleware_1.validateAdmin, users_admin_controller_1.deleteUser)
     .get(middleware_1.validateAdmin, users_admin_controller_1.showUser)
