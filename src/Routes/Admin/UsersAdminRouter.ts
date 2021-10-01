@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { validateAdmin } from '../../middleware';
 import getUsers, {
   changeRoleUser,
-  deleteUser, getCoursesUser, getReferralsUser,
+  deleteUser, downLoadData, getCoursesUser, getReferralsUser,
   getUsersCounters,
   saveUser,
   showUser,
@@ -16,6 +16,7 @@ router.route('/')
   .post(validateAdmin, saveUser);
 
 router.get('/counters', validateAdmin, getUsersCounters);
+router.get('/download', validateAdmin, downLoadData);
 
 router.route('/:_id')
   .delete(validateAdmin, deleteUser)

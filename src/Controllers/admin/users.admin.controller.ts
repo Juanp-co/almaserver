@@ -12,9 +12,10 @@ import {
   validateUpdate
 } from '../../FormRequest/UsersRequest';
 import {
+  getDate,
   getLimitSkipSortSearch,
   returnError,
-  returnErrorParams
+  returnErrorParams, setDate, toUpperValue
 } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
 import { checkObjectId } from '../../Functions/Validations';
@@ -71,6 +72,49 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
     return res.json({
       msg: `Total miembros.`,
       totals
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getUsersCounters`);
+  }
+}
+
+export async function downLoadData(req: Request, res: Response): Promise<Response> {
+  try {
+    const members = await Users.find(
+      {},
+
+      {
+        phone: 1,
+        document: 1,
+        names: 1,
+        lastNames: 1,
+        email: 1,
+        // position: 1,
+        gender: 1,
+        birthday: 1,
+        civilStatus: 1,
+        educationLevel: 1,
+        profession: 1,
+        bloodType: 1,
+        company: 1,
+        companyType: 1,
+        baptized: 1,
+        // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona
+        roles: 1,
+        consolidated: 1,
+        petition: 1,
+        meetingNew: 1,
+        department: 1,
+        city: 1,
+        locality: 1,
+        direction: 1,
+        created_at: 1,
+      },
+    ).exec();
+
+    return res.json({
+      msg: `Total miembros.`,
+      members
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getUsersCounters`);

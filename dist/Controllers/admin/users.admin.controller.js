@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReferralsUser = exports.getCoursesUser = exports.deleteUser = exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.getUsersCounters = void 0;
+exports.getReferralsUser = exports.getCoursesUser = exports.deleteUser = exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.downLoadData = exports.getUsersCounters = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UsersActions_1 = require("../../ActionsData/UsersActions");
 const UsersRequest_1 = require("../../FormRequest/UsersRequest");
@@ -61,6 +61,45 @@ async function getUsersCounters(req, res) {
     }
 }
 exports.getUsersCounters = getUsersCounters;
+async function downLoadData(req, res) {
+    try {
+        const members = await Users_1.default.find({}, {
+            phone: 1,
+            document: 1,
+            names: 1,
+            lastNames: 1,
+            email: 1,
+            // position: 1,
+            gender: 1,
+            birthday: 1,
+            civilStatus: 1,
+            educationLevel: 1,
+            profession: 1,
+            bloodType: 1,
+            company: 1,
+            companyType: 1,
+            baptized: 1,
+            // 0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona
+            roles: 1,
+            consolidated: 1,
+            petition: 1,
+            meetingNew: 1,
+            department: 1,
+            city: 1,
+            locality: 1,
+            direction: 1,
+            created_at: 1,
+        }).exec();
+        return res.json({
+            msg: `Total miembros.`,
+            members
+        });
+    }
+    catch (error) {
+        return GlobalFunctions_1.returnError(res, error, `${path}/getUsersCounters`);
+    }
+}
+exports.downLoadData = downLoadData;
 async function saveUser(req, res) {
     try {
         const { tokenRoles } = req.body;
