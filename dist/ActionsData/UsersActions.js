@@ -306,7 +306,7 @@ function checkFindValueSearchForGroups(query = {}, params = {}) {
 }
 exports.checkFindValueSearchForGroups = checkFindValueSearchForGroups;
 function checkRoleToActions(roles) {
-    return (roles === null || roles === void 0 ? void 0 : roles.some(r => [0, 1].includes(r))) || false;
+    return (roles === null || roles === void 0 ? void 0 : roles.some(r => [0, 1, 2, 3].includes(r))) || false;
 }
 exports.checkRoleToActions = checkRoleToActions;
 function responseUsersAdmin(res, option) {

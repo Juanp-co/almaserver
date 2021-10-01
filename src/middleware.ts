@@ -67,7 +67,7 @@ export async function validateAdmin(req: Request, res: Response, next: any): Pro
 
     if (!session) return responseErrorSession(res);
 
-    if (!checkIfExistsRoleInList(check.roles, [0, 1, 3])) {
+    if (!checkIfExistsRoleInList(check.roles, [0, 1, 2, 3])) {
       return res.status(401).json({
         msg: 'Disculpe, pero no cuenta con privilegios para realizar esta acción.',
         redirect: true

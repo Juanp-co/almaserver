@@ -342,7 +342,7 @@ export function checkFindValueSearchForGroups(query: any = {}, params: any = {})
 }
 
 export function checkRoleToActions(roles: any[] | null | undefined): boolean {
-  return roles?.some(r => [0, 1].includes(r)) || false;
+  return roles?.some(r => [0, 1, 2, 3].includes(r)) || false;
 }
 
 export function responseUsersAdmin(res: Response, option: number) : Response {

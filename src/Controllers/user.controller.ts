@@ -369,6 +369,14 @@ export async function getReports(req: Request, res: Response): Promise<Response>
         ],
         qty: 0,
       },
+      typeVisits: {
+        title: 'Tipos de Visitas',
+        data: [
+          { label: 'Presencial', qty: 0 },
+          { label: 'Telefónica', qty: 0 }
+        ],
+        qty: 0,
+      },
     };
 
     if (initDate && checkDate(initDate)) {
@@ -432,6 +440,8 @@ export async function getReports(req: Request, res: Response): Promise<Response>
 
           // VISITS
           for (const v of visits) {
+            if (v.action !== 'Llamada') ret.typeVisits.data[0].qty += 1;
+            else ret.typeVisits.data[1].qty += 1;
             // add to list for the next check
             const index = members.findIndex(m => m._id.toString() === v.userid);
 
@@ -448,6 +458,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
           if (listsMembersDetails.length > 0) ret.referrals.data.push(listsMembersDetails);
 
           ret.visits.data[0].qty = listIdsPending.length;
+          ret.typeVisits.qty = (ret.typeVisits.data[0].qty + ret.typeVisits.data[1].qty) || 0;
         }
       }
     }

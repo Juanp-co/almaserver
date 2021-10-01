@@ -377,7 +377,7 @@
 
 /**
  * @api {get} /api/user/reports (05) Obtener reportes de la cuenta.
- * @apiVersion 0.0.19
+ * @apiVersion 0.0.42
  * @apiName getReportsUser
  * @apiGroup User
  *
@@ -387,19 +387,21 @@
  * @apiParam (Query Params) {String} endDate Fecha de busqueda final (formato: YYYY-MM-DD) (requerido si 'initDate' es enviado).
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object} report Listado de curso del miembro.
+ * @apiSuccess {Object} reports Listado de curso del miembro.
  *
- * @apiSuccess (report Object) {Object} courses Cursos del miembro.
- * @apiSuccess (report Object) {Object} referrals Referidos del miembro.
+ * @apiSuccess (reports Object) {Object} courses Cursos del miembro.
+ * @apiSuccess (reports Object) {Object} referrals Referidos del miembro.
+ * @apiSuccess (reports Object) {Object} visits Visitas realizadas.
+ * @apiSuccess (reports Object) {Object} typeVisits Tipos de visitas realizadas.
  *
- * @apiSuccess (courses and referrals Object) {String} title Título de la sección.
- * @apiSuccess (courses and referrals Object) {Object[]|Array[]} data Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.
- * @apiSuccess (courses and referrals Object) {Number} qty Datos del reporte.
+ * @apiSuccess (courses, referrals, visits and typVisits Object) {String} title Título de la sección.
+ * @apiSuccess (courses, referrals, visits and typVisits Object) {Object[]|Array[]} data Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.
+ * @apiSuccess (courses, referrals, visits and typVisits Object) {Number} qty Datos del reporte.
  *
  * @apiSuccess (data Array[] in referrals Object) {Object} data Datos del reporte.
  *
  * @apiSuccess (data Object[]) {String} data Etiqueta.
- * @apiSuccess (data Object[]) {Number} data Total de datos.
+ * @apiSuccess (data Object[]) {Number} data Totalizador.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -455,11 +457,25 @@
 				},
 				{
 					"label": "Realizadas",
-					"qty": 2
+					"qty": 18
 				}
 			],
-			"qty": 3
+			"qty": 18
 		},
+		"typeVisits": {
+		  "title": "Tipos de Visitas",
+		  "data": [
+		    {
+		      "label":"Presencial",
+		      "qty":18
+        },
+        {
+          "label":"Telefónica",
+          "qty":0
+        }
+      ],
+      "qty":18
+    }
 	}
 }
  *
