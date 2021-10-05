@@ -378,6 +378,10 @@ export async function getReports(req: Request, res: Response): Promise<Response>
         qty: 0,
       },
     };
+    let members: any[] = [];
+    let users: any[] = [];
+    let listsMembersDetails: any = []; // generate a new array data
+    let listIdsPending: any = []; // generate a new array data
 
     if (initDate && checkDate(initDate)) {
       query['courses.created_at'] = { $gte: moment(`${initDate}`).startOf('d').unix() };
@@ -392,7 +396,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
 
     const myCourses = await CoursesUsers.findOne({ userid: tokenId, ...query }, { courses: 1 }).exec();
     const myReferrals = await Referrals.findOne({ _id: tokenId, ...queryReferrals }, { members: 1 }).exec();
-    const visits = await Visits.find({ referred: tokenId, ...query2 }, { date: 1, userid: 1 }).exec();
+    const visits = await Visits.find({ referred: tokenId, ...query2 }, { date: 1, userid: 1, action: 1 }).exec();
 
     if (myCourses) {
       ret.courses.qty = myCourses.courses.length;
@@ -406,13 +410,11 @@ export async function getReports(req: Request, res: Response): Promise<Response>
       ret.referrals.qty = myReferrals.members.length;
 
       if (ret.referrals.qty > 0) {
-        const members = await Referrals.find({ _id: { $in: myReferrals.members } }, { members: 1 }).exec();
-        const users = await Users.find({ _id: { $in: myReferrals.members } }, { names: 1, lastNames: 1 }).exec();
+        members = await Referrals.find({ _id: { $in: myReferrals.members } }, { members: 1 }).exec();
+        users = await Users.find({ _id: { $in: myReferrals.members } }, { names: 1, lastNames: 1 }).exec();
 
         if (members.length > 0) {
           ret.visits.data[1].qty = visits.length;
-          let listsMembersDetails: any = []; // generate a new array data
-          let listIdsPending: any = []; // generate a new array data
           let limit = 0;
 
           for (const m of members) {
@@ -437,31 +439,31 @@ export async function getReports(req: Request, res: Response): Promise<Response>
               limit = 0;
             }
           }
-
-          // VISITS
-          for (const v of visits) {
-            if (v.action !== 'Llamada') ret.typeVisits.data[0].qty += 1;
-            else ret.typeVisits.data[1].qty += 1;
-            // add to list for the next check
-            const index = members.findIndex(m => m._id.toString() === v.userid);
-
-            // check last visit and add or remove id from list
-            if (index > -1) {
-              if (moment().diff(moment(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') > 0) {
-                if (!listIdsPending.includes(members[index]._id.toString()))
-                  listIdsPending.push(members[index]._id.toString());
-                else listIdsPending = listIdsPending.filter((lip: string) => lip !== members[index]._id.toString());
-              }
-            }
-          }
-
-          if (listsMembersDetails.length > 0) ret.referrals.data.push(listsMembersDetails);
-
-          ret.visits.data[0].qty = listIdsPending.length;
-          ret.typeVisits.qty = (ret.typeVisits.data[0].qty + ret.typeVisits.data[1].qty) || 0;
         }
       }
     }
+
+    // VISITS
+    for (const v of visits) {
+      if (v.action !== 'Llamada') ret.typeVisits.data[0].qty += 1;
+      else ret.typeVisits.data[1].qty += 1;
+      // add to list for the next check
+      const index = members.findIndex(m => m._id.toString() === v.userid);
+
+      // check last visit and add or remove id from list
+      if (index > -1) {
+        if (moment().diff(moment(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') > 0) {
+          if (!listIdsPending.includes(members[index]._id.toString()))
+            listIdsPending.push(members[index]._id.toString());
+          else listIdsPending = listIdsPending.filter((lip: string) => lip !== members[index]._id.toString());
+        }
+      }
+    }
+
+    if (listsMembersDetails.length > 0) ret.referrals.data.push(listsMembersDetails);
+
+    ret.visits.data[0].qty = listIdsPending?.length || 0;
+    ret.typeVisits.qty = ((ret.typeVisits.data[0].qty || 0) + (ret.typeVisits.data[1].qty || 0)) || 0;
 
     return res.json({
       msg: `Mis reportes.`,
