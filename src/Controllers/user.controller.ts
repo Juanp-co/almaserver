@@ -367,6 +367,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
           { label: 'Pendientes', qty: 0 },
           { label: 'Realizadas', qty: 0 }
         ],
+        membersPendingVisits: [],
         qty: 0,
       },
       typeVisits: {
@@ -406,39 +407,40 @@ export async function getReports(req: Request, res: Response): Promise<Response>
       }
     }
 
-    if (myReferrals) {
-      ret.referrals.qty = myReferrals.members.length;
+    if (myReferrals && myReferrals?.members?.length > 0) {
+      ret.referrals.qty = myReferrals?.members?.length;
+      members = await Referrals.find({ _id: { $in: myReferrals?.members } }, { members: 1 }).exec();
+      users = await Users.find({ _id: { $in: myReferrals?.members } }, { names: 1, lastNames: 1 }).exec();
 
-      if (ret.referrals.qty > 0) {
-        members = await Referrals.find({ _id: { $in: myReferrals.members } }, { members: 1 }).exec();
-        users = await Users.find({ _id: { $in: myReferrals.members } }, { names: 1, lastNames: 1 }).exec();
+      if (members.length > 0) {
+        ret.visits.data[1].qty = visits.length;
+        let limit = 0;
 
-        if (members.length > 0) {
-          ret.visits.data[1].qty = visits.length;
-          let limit = 0;
+        for (const m of members) {
+          const data: any = {
+            label: null,
+            qty: null
+          };
 
-          for (const m of members) {
-            const data: any = {
-              label: null,
-              qty: null
-            };
+          // get names and lastNames
+          const dataUser = users.find(u => u._id.toString() === m._id.toString());
 
-            // get names and lastNames
-            const dataUser = users.find(u => u._id.toString() === m._id.toString());
-
-            if (dataUser) {
-              data.label = `${dataUser.names} ${dataUser.lastNames}`;
-              data.qty = m.members.length;
-              listsMembersDetails.push(data);
-              limit += 1;
-            }
-
-            if (limit === 3) {
-              ret.referrals.data.push(listsMembersDetails);
-              listsMembersDetails = [];
-              limit = 0;
-            }
+          if (dataUser) {
+            data.label = `${dataUser.names} ${dataUser.lastNames}`;
+            data.qty = m.members.length;
+            listsMembersDetails.push(data);
+            limit += 1;
           }
+
+          if (limit === 3) {
+            ret.referrals.data.push(listsMembersDetails);
+            listsMembersDetails = [];
+            limit = 0;
+          }
+        }
+
+        if (listsMembersDetails.length > 0) {
+          ret.referrals.data = listsMembersDetails;
         }
       }
     }
@@ -460,9 +462,38 @@ export async function getReports(req: Request, res: Response): Promise<Response>
       }
     }
 
-    if (listsMembersDetails.length > 0) ret.referrals.data.push(listsMembersDetails);
+    if (listIdsPending?.length > 0) {
+      // check the pendings if visited for another member.
+      const membersIds: string[] = [];
+      const visitsFilterToCheck: any[] = [];
+      // obtain the visits
+      listIdsPending = _.uniq(listIdsPending);
+      const checkingVisits: any[] = await Visits.find(
+        { userid: { $in: listIdsPending } },
+        { userid: 1, date: 1 }
+      )
+        .sort({ date: -1 })
+        .limit(100)
+        .exec();
 
-    ret.visits.data[0].qty = listIdsPending?.length || 0;
+      if (checkingVisits.length > 0) {
+        listIdsPending.forEach((id: string) => {
+          const v = checkingVisits.find(cv => cv.userid === id);
+          if (v && visitsFilterToCheck.findIndex(vtc => vtc.userid === v.userid) === -1) {
+            visitsFilterToCheck.push(v);
+          }
+        });
+
+        for (const vtc of visitsFilterToCheck) {
+          if (moment().diff(moment(`${vtc.date}`, 'YYYY-MM-DD', true), 'months') > 0)
+            if (!membersIds.includes(vtc.userid)) membersIds.push(vtc.userid);
+        }
+
+      }
+      ret.visits.membersPendingVisits = await getNamesUsersList(membersIds) || [];
+      ret.visits.data[0].qty = ret.visits.membersPendingVisits.length;
+
+    }
     ret.typeVisits.qty = ((ret.typeVisits.data[0].qty || 0) + (ret.typeVisits.data[1].qty || 0)) || 0;
 
     return res.json({

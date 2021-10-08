@@ -18762,7 +18762,7 @@
     "type": "get",
     "url": "/api/user/reports",
     "title": "(05) Obtener reportes de la cuenta.",
-    "version": "0.0.42",
+    "version": "0.0.43",
     "name": "getReportsUser",
     "group": "User",
     "header": {
@@ -18846,27 +18846,115 @@
             "description": "<p>Tipos de visitas realizadas.</p>"
           }
         ],
-        "courses, referrals, visits and typVisits Object": [
+        "courses, referrals and typVisits Object": [
           {
-            "group": "courses, referrals, visits and typVisits Object",
+            "group": "courses, referrals and typVisits Object",
             "type": "String",
             "optional": false,
             "field": "title",
             "description": "<p>Título de la sección.</p>"
           },
           {
-            "group": "courses, referrals, visits and typVisits Object",
-            "type": "Object[]|Array[]",
+            "group": "courses, referrals and typVisits Object",
+            "type": "Object[]",
             "optional": false,
             "field": "data",
             "description": "<p>Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.</p>"
           },
           {
-            "group": "courses, referrals, visits and typVisits Object",
+            "group": "courses, referrals and typVisits Object",
             "type": "Number",
             "optional": false,
             "field": "qty",
             "description": "<p>Datos del reporte.</p>"
+          }
+        ],
+        "visits Object": [
+          {
+            "group": "visits Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título de la sección.</p>"
+          },
+          {
+            "group": "visits Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.</p>"
+          },
+          {
+            "group": "visits Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "membersPendingVisits",
+            "description": "<p>Datos de los miembros pendientes por visitas.</p>"
+          },
+          {
+            "group": "visits Object",
+            "type": "Number",
+            "optional": false,
+            "field": "qty",
+            "description": "<p>Datos del reporte.</p>"
+          }
+        ],
+        "membersPendingVisits Object[]": [
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "membersPendingVisits Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
           }
         ],
         "data Array[] in referrals Object": [
@@ -18891,12 +18979,12 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 1\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PRUEBA USUARIO\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PADRE PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"SUPERVISOR PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"visits\": {\n\t\t\t\"title\": \"Visitas\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Realizadas\",\n\t\t\t\t\t\"qty\": 18\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 18\n\t\t},\n\t\t\"typeVisits\": {\n\t\t  \"title\": \"Tipos de Visitas\",\n\t\t  \"data\": [\n\t\t    {\n\t\t      \"label\":\"Presencial\",\n\t\t      \"qty\":18\n        },\n        {\n          \"label\":\"Telefónica\",\n          \"qty\":0\n        }\n      ],\n      \"qty\":18\n    }\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 1\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PRUEBA USUARIO\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"PADRE PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"ANTHONY ALEJANDRO VELÁSQUEZ RODRÍGUEZ\",\n\t\t\t\t\t\t\"qty\": 1\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t[\n\t\t\t\t\t{\n\t\t\t\t\t\t\"label\": \"SUPERVISOR PRUEBA\",\n\t\t\t\t\t\t\"qty\": 0\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t],\n\t\t\t\"qty\": 4\n\t\t},\n\t\t\"visits\": {\n\t\t\t\"title\": \"Visitas\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Pendientes\",\n\t\t\t\t\t\"qty\": 1\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Realizadas\",\n\t\t\t\t\t\"qty\": 18\n\t\t\t\t}\n\t\t\t],\n      \"membersPendingVisits\": [\n        {\n          \"_id\": \"6074337457d2b11cf80442dd\",\n          \"names\": \"AMBER\",\n          \"lastNames\": \"VELASQUEZ\",\n          \"document\": \"CC123456789\",\n          \"gender\": null,\n          \"phone\": \"3167654321\",\n          \"picture\": null,\n          \"position\": null\n        },\n        .\n        .\n        .\n      ],\n\t\t\t\"qty\": 18\n\t\t},\n\t\t\"typeVisits\": {\n\t\t  \"title\": \"Tipos de Visitas\",\n\t\t  \"data\": [\n\t\t    {\n\t\t      \"label\":\"Presencial\",\n\t\t      \"qty\":18\n        },\n        {\n          \"label\":\"Telefónica\",\n          \"qty\":0\n        }\n      ],\n      \"qty\":18\n    }\n\t}\n}",
           "type": "JSON"
         },
         {
           "title": "Success without referrals data",
-          "content": "HTTP/1.1 200 Success\n{{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n\t\t\t\"qty\": 0\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [],\n\t\t\t\"qty\": 0\n\t\t}\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{{\n\t\"msg\": \"Mis reportes.\",\n\t\"reports\": {\n\t\t\"courses\": {\n\t\t\t\"title\": \"Mis cursos\",\n\t\t\t\"data\": [\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Aprobados\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t},\n\t\t\t\t{\n\t\t\t\t\t\"label\": \"Cursando\",\n\t\t\t\t\t\"qty\": 0\n\t\t\t\t}\n\t\t\t],\n      \"membersPendingVisits\": [],\n\t\t\t\"qty\": 0\n\t\t},\n\t\t\"referrals\": {\n\t\t\t\"title\": \"Hijos espirituales\",\n\t\t\t\"data\": [],\n\t\t\t\"qty\": 0\n\t\t}\n\t}\n}",
           "type": "JSON"
         }
       ]
