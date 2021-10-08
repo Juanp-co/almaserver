@@ -377,7 +377,7 @@
 
 /**
  * @api {get} /api/user/reports (05) Obtener reportes de la cuenta.
- * @apiVersion 0.0.42
+ * @apiVersion 0.0.43
  * @apiName getReportsUser
  * @apiGroup User
  *
@@ -394,9 +394,23 @@
  * @apiSuccess (reports Object) {Object} visits Visitas realizadas.
  * @apiSuccess (reports Object) {Object} typeVisits Tipos de visitas realizadas.
  *
- * @apiSuccess (courses, referrals, visits and typVisits Object) {String} title Título de la sección.
- * @apiSuccess (courses, referrals, visits and typVisits Object) {Object[]|Array[]} data Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.
- * @apiSuccess (courses, referrals, visits and typVisits Object) {Number} qty Datos del reporte.
+ * @apiSuccess (courses, referrals and typVisits Object) {String} title Título de la sección.
+ * @apiSuccess (courses, referrals and typVisits Object) {Object[]} data Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.
+ * @apiSuccess (courses, referrals and typVisits Object) {Number} qty Datos del reporte.
+ *
+ * @apiSuccess (visits Object) {String} title Título de la sección.
+ * @apiSuccess (visits Object) {Object[]} data Datos del reporte. El arreglo contiene otros arreglos con el modelo de data.
+ * @apiSuccess (visits Object) {Object[]} membersPendingVisits Datos de los miembros pendientes por visitas.
+ * @apiSuccess (visits Object) {Number} qty Datos del reporte.
+ *
+ * @apiSuccess (membersPendingVisits Object[]) {String} _id ID del miembro.
+ * @apiSuccess (membersPendingVisits Object[]) {String} names Nombre(s).
+ * @apiSuccess (membersPendingVisits Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (membersPendingVisits Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (membersPendingVisits Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (membersPendingVisits Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (membersPendingVisits Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (membersPendingVisits Object[]) {String|Null} position Cargo o posición del miembro.
  *
  * @apiSuccess (data Array[] in referrals Object) {Object} data Datos del reporte.
  *
@@ -460,6 +474,21 @@
 					"qty": 18
 				}
 			],
+      "membersPendingVisits": [
+        {
+          "_id": "6074337457d2b11cf80442dd",
+          "names": "AMBER",
+          "lastNames": "VELASQUEZ",
+          "document": "CC123456789",
+          "gender": null,
+          "phone": "3167654321",
+          "picture": null,
+          "position": null
+        },
+        .
+        .
+        .
+      ],
 			"qty": 18
 		},
 		"typeVisits": {
@@ -496,6 +525,7 @@
 					"qty": 0
 				}
 			],
+      "membersPendingVisits": [],
 			"qty": 0
 		},
 		"referrals": {
