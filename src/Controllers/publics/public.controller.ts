@@ -97,7 +97,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
     }
 
     if (validate.data.admin) {
-      if (checkIfExistsRoleInList(user.roles, [4])) {
+      if (!checkIfExistsRoleInList(user.roles, [0, 1, 2, 3])) {
         return res.status(401).json({
           msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
         });
