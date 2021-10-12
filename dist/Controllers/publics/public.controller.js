@@ -96,7 +96,7 @@ async function login(req, res) {
             });
         }
         if (validate.data.admin) {
-            if (GlobalFunctions_1.checkIfExistsRoleInList(user.roles, [4])) {
+            if (!GlobalFunctions_1.checkIfExistsRoleInList(user.roles, [0, 1, 2, 3])) {
                 return res.status(401).json({
                     msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
                 });

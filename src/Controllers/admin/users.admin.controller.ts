@@ -12,10 +12,10 @@ import {
   validateUpdate
 } from '../../FormRequest/UsersRequest';
 import {
-  getDate,
+  checkIfExistsRoleInList,
   getLimitSkipSortSearch,
   returnError,
-  returnErrorParams, setDate, toUpperValue
+  returnErrorParams
 } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
 import { checkObjectId } from '../../Functions/Validations';
@@ -233,6 +233,10 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
 export async function changeRoleUser(req: Request, res: Response): Promise<Response> {
   try {
+    const { tokenRoles } = req.body;
+
+    if (!checkIfExistsRoleInList(tokenRoles, [0, 1])) return responseUsersAdmin(res, 3);
+
     const { _id } = req.params;
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
@@ -269,6 +273,11 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
     const user = await Users.findOne({_id}, { __v: 0 }).exec();
 
     if (!user) return responseUsersAdmin(res, 1);
+
+    // checking if the user to delete is admin and if the session user also admin
+    const check1 = checkIfExistsRoleInList(user.roles, [0]);
+    const check2 = checkIfExistsRoleInList(tokenRoles, [0]);
+    if (check1 &&!check2) return responseUsersAdmin(res, 3);
 
     // delete all data
     const groups = await Groups.find({ members: _id }).exec();

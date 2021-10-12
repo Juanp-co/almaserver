@@ -199,6 +199,9 @@ async function updateUser(req, res) {
 exports.updateUser = updateUser;
 async function changeRoleUser(req, res) {
     try {
+        const { tokenRoles } = req.body;
+        if (!GlobalFunctions_1.checkIfExistsRoleInList(tokenRoles, [0, 1]))
+            return UsersActions_1.responseUsersAdmin(res, 3);
         const { _id } = req.params;
         if (!Validations_1.checkObjectId(_id))
             return UsersActions_1.responseUsersAdmin(res, 0);
@@ -232,6 +235,11 @@ async function deleteUser(req, res) {
         const user = await Users_1.default.findOne({ _id }, { __v: 0 }).exec();
         if (!user)
             return UsersActions_1.responseUsersAdmin(res, 1);
+        // checking if the user to delete is admin and if the session user also admin
+        const check1 = GlobalFunctions_1.checkIfExistsRoleInList(user.roles, [0]);
+        const check2 = GlobalFunctions_1.checkIfExistsRoleInList(tokenRoles, [0]);
+        if (check1 && !check2)
+            return UsersActions_1.responseUsersAdmin(res, 3);
         // delete all data
         const groups = await Groups_1.default.find({ members: _id }).exec();
         const referrals = await Referrals_1.default.find({ members: _id }).exec();
