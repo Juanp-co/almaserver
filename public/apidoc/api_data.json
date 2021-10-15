@@ -17312,6 +17312,13 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Listado de roles.</p>"
           }
         ],
         "courses Object[]": [
@@ -17457,7 +17464,7 @@
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Miembro.\",\n  \"data\": {\n    \"member\": {\n      \"email\": \"4121490198@example.com\",\n      \"position\": null,\n      \"gender\": null,\n      \"birthday\": null,\n      \"civilStatus\": null,\n      \"consolidated\": false,\n      \"petition\": null,\n      \"department\": null,\n      \"city\": null,\n      \"locality\": null,\n      \"direction\": null,\n      \"picture\": null,\n      \"_id\": \"605e37d154abd33060a689dc\",\n      \"phone\": \"573151234568\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELÁSQUEZ\"\n    },\n    \"totalCourses\": 9,\n    \"totalReferrals\": 6,\n    \"courses\": [\n      {\n        \"_id\": \"603afb2309bf7a3428ac58f1\",\n        \"slug\": \"nivel-uno-2\",\n        \"title\": \"NIVEL UNO\",\n        \"description\": \"Donec sollicitudin molestie malesuada. ...\",\n        \"level\": 1,\n        \"approved\": false\n      },\n      .\n      .\n      .\n    ],\n    \"referrals\": [\n      {\n        \"_id\": \"607fb9d275581c087c36922c\",\n        \"names\": \"EIMY VALENTINA\",\n        \"lastNames\": \"VELASQUEZ TIRADO\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"3167654321\",\n        \"picture\": null,\n        \"position\": null,\n        \"totalsReferrals\": 0\n      },\n      .\n      .\n      .\n    ],\n    \"visits\": []\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Miembro.\",\n  \"data\": {\n    \"member\": {\n      \"email\": \"4121490198@example.com\",\n      \"position\": null,\n      \"gender\": null,\n      \"birthday\": null,\n      \"civilStatus\": null,\n      \"consolidated\": false,\n      \"petition\": null,\n      \"department\": null,\n      \"city\": null,\n      \"locality\": null,\n      \"direction\": null,\n      \"picture\": null,\n      \"_id\": \"605e37d154abd33060a689dc\",\n      \"phone\": \"573151234568\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELÁSQUEZ\",\n      \"roles\": [ 3, 4 ]\n    },\n    \"totalCourses\": 9,\n    \"totalReferrals\": 6,\n    \"courses\": [\n      {\n        \"_id\": \"603afb2309bf7a3428ac58f1\",\n        \"slug\": \"nivel-uno-2\",\n        \"title\": \"NIVEL UNO\",\n        \"description\": \"Donec sollicitudin molestie malesuada. ...\",\n        \"level\": 1,\n        \"approved\": false\n      },\n      .\n      .\n      .\n    ],\n    \"referrals\": [\n      {\n        \"_id\": \"607fb9d275581c087c36922c\",\n        \"names\": \"EIMY VALENTINA\",\n        \"lastNames\": \"VELASQUEZ TIRADO\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"3167654321\",\n        \"picture\": null,\n        \"position\": null,\n        \"totalsReferrals\": 0\n      },\n      .\n      .\n      .\n    ],\n    \"visits\": []\n  }\n}",
           "type": "JSON"
         }
       ]
