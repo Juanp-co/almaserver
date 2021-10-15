@@ -190,6 +190,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         direction: 1,
         birthday: 1,
         picture: 1,
+        roles: 1,
       }
     ).exec() as IUserReferralSimpleData;
 

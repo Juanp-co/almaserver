@@ -202,6 +202,7 @@
  * @apiSuccess (member Object) {String} phone Número de teléfono.
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
+ * @apiSuccess (member Object) {Number[]} roles Listado de roles.
  *
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
@@ -246,7 +247,8 @@
       "_id": "605e37d154abd33060a689dc",
       "phone": "573151234568",
       "names": "ANTHONY",
-      "lastNames": "VELÁSQUEZ"
+      "lastNames": "VELÁSQUEZ",
+      "roles": [ 3, 4 ]
     },
     "totalCourses": 9,
     "totalReferrals": 6,

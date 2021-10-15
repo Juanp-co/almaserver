@@ -168,6 +168,7 @@ async function getInfoUserReferred(_id) {
             direction: 1,
             birthday: 1,
             picture: 1,
+            roles: 1,
         }).exec();
         if (!ret.member)
             return ret;
