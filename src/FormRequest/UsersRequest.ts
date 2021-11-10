@@ -355,22 +355,20 @@ export async function validateUpdate(data: IUserModelUpdate, _id: string, admin 
     ret.lastNames = data.lastNames.trim();
   }
 
-  if (admin) {
-    // document
-    if (data.document) {
-      if (!data.document || !checkDocument(data.document)) {
-        errors.push(
-          setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document')
-        );
-      } else if (await checkIfExistDocument(data.document, _id)) {
-        errors.push(
-          setError(
-            'Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
-            'email'
-          )
-        );
-      } else ret.document = data.document.toLowerCase();
-    }
+  // document
+  if (data.document) {
+    if (!checkDocument(data.document)) {
+      errors.push(
+        setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document')
+      );
+    } else if (await checkIfExistDocument(data.document, _id)) {
+      errors.push(
+        setError(
+          'Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.',
+          'document'
+        )
+      );
+    } else ret.document = data.document.toUpperCase();
   }
 
   // email

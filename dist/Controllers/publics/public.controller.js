@@ -32,8 +32,8 @@ const TokenActions_1 = require("../../Functions/TokenActions");
 const Validations_1 = require("../../Functions/Validations");
 const AccountsBanks_1 = __importDefault(require("../../Models/AccountsBanks"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
-const Users_1 = __importDefault(require("../../Models/Users"));
 const Settings_1 = __importDefault(require("../../Models/Settings"));
+const Users_1 = __importDefault(require("../../Models/Users"));
 const path = 'Controllers/publics/public.controller';
 function helloWorld(req, res) {
     return res.json({
@@ -137,55 +137,63 @@ async function logout(req, res) {
 exports.logout = logout;
 async function recoveryPassword(req, res) {
     try {
-        const actionsList = ['check-document', 'check-params', 'change-password'];
+        const actionsList = ['check-phone', 'check-params', 'change-password'];
         const ret = {
             msg: null,
         };
         const { action } = req.params;
-        const { document } = req.body;
+        const { phone } = req.body;
         if (actionsList.indexOf(`${action}`) === -1)
             return UsersActions_1.responseErrorsRecoveryPassword(res, 0);
-        if (!Validations_1.checkDocument(document))
+        if (!Validations_1.checkPhone(phone))
             return UsersActions_1.responseErrorsRecoveryPassword(res, 1);
         const user = await Users_1.default.findOne({
-            document: document.toString().toUpperCase(),
+            phone: `${phone}`.trim(),
             role: { $nin: [0, 1] }
         }, { email: 1, birthday: 1 }).exec();
         if (!user)
             return UsersActions_1.responseErrorsRecoveryPassword(res, 2);
-        if (action === 'check-document') {
-            ret.msg = 'Por favor, complete los siguientes campos para recuperar su contraseña.';
-            ret.check = {
-                email: !!user.email,
-                birthday: !!user.birthday,
-            };
+        if (action === 'check-phone') {
+            if (!!user.email || !!user.birthday) {
+                ret.msg = 'Por favor, complete los siguientes campos para recuperar su contraseña.';
+                ret.check = {
+                    email: !!user.email,
+                    birthday: !!user.birthday,
+                };
+            }
+            else {
+                ret.msg = 'Ahora puede asignar su nueva contraseña para recuperar el acceso a su cuenta.';
+                ret.setNewPassword = true;
+            }
             return res.json(ret);
         }
         // validate extra params
         const { check } = req.body;
         if (!check || (check && Object.keys(check).length === 0))
             return UsersActions_1.responseErrorsRecoveryPassword(res, 3);
-        if (user.email) {
-            if (!Validations_1.checkEmail(check.email))
-                return UsersActions_1.responseErrorsRecoveryPassword(res, 4);
-            if (check.email !== user.email)
-                return UsersActions_1.responseErrorsRecoveryPassword(res, 5);
-        }
-        if (user.birthday) {
-            if (!Validations_1.checkDate(check.birthday))
-                return UsersActions_1.responseErrorsRecoveryPassword(res, 6);
-            if (check.birthday !== user.birthday)
-                return UsersActions_1.responseErrorsRecoveryPassword(res, 7);
-        }
-        if (action === 'check-params') {
-            ret.msg = 'Por favor, indique su nueva contraseña.';
-            ret.setNewPassword = true;
-            return res.json(ret);
+        if (!check.ommiteChecking) {
+            if (user.email) {
+                if (!Validations_1.checkEmail(check.email))
+                    return UsersActions_1.responseErrorsRecoveryPassword(res, 4);
+                if (check.email !== user.email)
+                    return UsersActions_1.responseErrorsRecoveryPassword(res, 5);
+            }
+            if (user.birthday) {
+                if (!Validations_1.checkDate(check.birthday))
+                    return UsersActions_1.responseErrorsRecoveryPassword(res, 6);
+                if (check.birthday !== user.birthday)
+                    return UsersActions_1.responseErrorsRecoveryPassword(res, 7);
+            }
+            if (action === 'check-params') {
+                ret.msg = 'Por favor, indique su nueva contraseña.';
+                ret.setNewPassword = true;
+                return res.json(ret);
+            }
         }
         const { password } = req.body;
         if (!Validations_1.checkPassword(password))
             return UsersActions_1.responseErrorsRecoveryPassword(res, 8);
-        user.password = bcrypt_1.default.hashSync(password, 10);
+        user.password = bcrypt_1.default.hashSync(`${password}`, 10);
         await user.save();
         ret.msg = 'Se ha asignado la nueva contraseña a su cuenta exitosamente.';
         ret.changed = true;

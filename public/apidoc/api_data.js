@@ -12833,7 +12833,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/recovery-password/change-password",
     "title": "(07) Recuperar contraseña - Cambiar contraseña.",
-    "version": "0.0.22",
+    "version": "0.0.45",
     "name": "recoveryPasswordChangePassPublic",
     "group": "Public",
     "parameter": {
@@ -12843,8 +12843,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento del identidad.</p>"
+            "field": "phone",
+            "description": "<p>Número de teléfono.</p>"
           },
           {
             "group": "Parameter",
@@ -12882,12 +12882,12 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request with check only email",
-        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": null\n\t},\n\t\"password\": \"password\"\n}",
+        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": null\n\t},\n\t\"password\": \"password\"\n}",
         "type": "JSON"
       },
       {
         "title": "Example JSON Request with check email and birthday",
-        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": \"1994-07-07\"\n\t},\n\t\"password\": \"password\"\n}",
+        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": \"1994-07-07\"\n\t},\n\t\"password\": \"password\"\n}",
         "type": "JSON"
       }
     ],
@@ -13011,9 +13011,9 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/api/recovery-password/check-document",
-    "title": "(05) Recuperar contraseña - Verificar documento.",
-    "version": "0.0.22",
+    "url": "/api/recovery-password/check-phone",
+    "title": "(05) Recuperar contraseña - Verificar número de teléfono.",
+    "version": "0.0.45",
     "name": "recoveryPasswordCheckDocumentPublic",
     "group": "Public",
     "parameter": {
@@ -13023,8 +13023,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento del identidad.</p>"
+            "field": "phone",
+            "description": "<p>Número de teléfono.</p>"
           }
         ]
       }
@@ -13032,7 +13032,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n\t\"document\": \"CC12345678\"\n}",
+        "content": "{\n\t\"phone\": \"3161234567\"\n}",
         "type": "JSON"
       }
     ],
@@ -13048,10 +13048,17 @@ define({ "api": [
           },
           {
             "group": "Success 200",
-            "type": "Object",
+            "type": "Object|Null",
             "optional": false,
             "field": "check",
             "description": "<p>Datos a verificar.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean|Null",
+            "optional": false,
+            "field": "setNewPassword",
+            "description": "<p>Indica que se salta el paso de verificación y se procede a cambiar la contraseña.</p>"
           }
         ],
         "check Object": [
@@ -13080,6 +13087,11 @@ define({ "api": [
         {
           "title": "Success, check email and birthday",
           "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Por favor, complete los siguientes campos para recuperar su contraseña.\",\n\t\"check\": {\n\t\t\"email\": true,\n\t\t\"birthday\": true\n\t}\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success, but checking ommited.",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Ahora puede asignar su nueva contraseña para recuperar el acceso a su cuenta.\",\n\t\"setNewPassword\": true\n}",
           "type": "JSON"
         }
       ]
@@ -13149,7 +13161,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/recovery-password/check-params",
     "title": "(06) Recuperar contraseña - Verificar datos solicitados.",
-    "version": "0.0.22",
+    "version": "0.0.45",
     "name": "recoveryPasswordCheckParamsPublic",
     "group": "Public",
     "parameter": {
@@ -13159,8 +13171,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "document",
-            "description": "<p>Número de documento del identidad.</p>"
+            "field": "phone",
+            "description": "<p>Número de teléfono.</p>"
           },
           {
             "group": "Parameter",
@@ -13191,12 +13203,12 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request with check only email",
-        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": null\n\t}\n}",
+        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": null\n\t}\n}",
         "type": "JSON"
       },
       {
         "title": "Example JSON Request with check email and birthday",
-        "content": "{\n\t\"document\": \"CC12345678\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": \"1994-07-07\"\n\t}\n}",
+        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"check\": {\n\t\t\"email\": \"user@example.com\",\n\t\t\"birthday\": \"1994-07-07\"\n\t}\n}",
         "type": "JSON"
       }
     ],
@@ -19050,8 +19062,8 @@ define({ "api": [
   {
     "type": "put",
     "url": "/api/user",
-    "title": "(02) Actualizar foto perfil.",
-    "version": "0.0.36",
+    "title": "(01) Actualizar datos del perfil.",
+    "version": "0.0.45",
     "name": "registerUser",
     "group": "User",
     "header": {
@@ -19072,150 +19084,11 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "String|Null",
-            "optional": false,
-            "field": "picture",
-            "description": "<p>Base64 o URL de la foto de perfil (para eliminarla solo enviar el parámetro en null).</p>"
-          }
-        ]
-      }
-    },
-    "examples": [
-      {
-        "title": "Example JSON Request Base64",
-        "content": "{\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n}",
-        "type": "JSON"
-      },
-      {
-        "title": "Example JSON Request URL",
-        "content": "{\n  \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n}",
-        "type": "JSON"
-      },
-      {
-        "title": "Example JSON Request Null",
-        "content": "{\n  \"picture\": null,\n}",
-        "type": "JSON"
-      }
-    ],
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje del proceso.</p>"
+            "field": "document",
+            "description": "<p>Número de documento (Ejm: CC123456789).</p>"
           },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Datos actualizados.</p>"
-          }
-        ],
-        "data Object": [
-          {
-            "group": "data Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "picture",
-            "description": "<p>URL de la imagen de perfil.</p>"
-          }
-        ],
-        "securityQuestion Object": [
-          {
-            "group": "securityQuestion Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado su foto de perfil exitosamente.\",\n\t\"data\": {\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\"\n\t}\n}",
-          "type": "JSON"
-        }
-      ]
-    },
-    "filename": "Docs/User.js",
-    "groupTitle": "User",
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "msg",
-            "description": "<p>Mensaje general.</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Object[]",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Listado de errores a mostrar.</p>"
-          }
-        ],
-        "errors Object[]": [
-          {
-            "group": "errors Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "msg[msg]",
-            "description": "<p>Mensaje de error.</p>"
-          },
-          {
-            "group": "errors Object[]",
-            "type": "String",
-            "optional": false,
-            "field": "input[input]",
-            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error token",
-          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
-          "type": "JSON"
-        },
-        {
-          "title": "Error internal server",
-          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
-          "type": "JSON"
-        }
-      ]
-    }
-  },
-  {
-    "type": "put",
-    "url": "/api/user",
-    "title": "(01) Actualizar datos del perfil.",
-    "version": "0.0.34",
-    "name": "registerUser",
-    "group": "User",
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "x-access-token",
-            "description": "<p>Token de la sesión.</p>"
-          }
-        ]
-      }
-    },
-    "parameter": {
-      "fields": {
-        "Parameter": [
           {
             "group": "Parameter",
             "type": "String",
@@ -19348,7 +19221,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": \"user3@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"Velasquez rodriguez\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"meetingNew\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
+        "content": "{\n    \"document\": \"CC123456789\",\n    \"email\": \"user3@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"Velasquez rodriguez\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"meetingNew\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
         "type": "JSON"
       }
     ],
@@ -19525,7 +19398,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"meetingNew\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"names\": \"ANTHONY ALEJANDRO\",\n\t\t\"lastNames\": \"VELASQUEZ RODRIGUEZ\",\n\t\t\"phone\": \"573161234567\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"meetingNew\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"names\": \"ANTHONY ALEJANDRO\",\n\t\t\"lastNames\": \"VELASQUEZ RODRIGUEZ\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"document\": \"CC123456789\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -19585,6 +19458,152 @@ define({ "api": [
     },
     "filename": "Docs/User.js",
     "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/api/user",
+    "title": "(02) Actualizar foto perfil.",
+    "version": "0.0.36",
+    "name": "registerUser",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 o URL de la foto de perfil (para eliminarla solo enviar el parámetro en null).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request Base64",
+        "content": "{\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request URL",
+        "content": "{\n  \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request Null",
+        "content": "{\n  \"picture\": null,\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Datos actualizados.</p>"
+          }
+        ],
+        "data Object": [
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la imagen de perfil.</p>"
+          }
+        ],
+        "securityQuestion Object": [
+          {
+            "group": "securityQuestion Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "questionId",
+            "description": "<p>ID de la pregunta de seguridad.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado su foto de perfil exitosamente.\",\n\t\"data\": {\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\"\n\t}\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/User.js",
+    "groupTitle": "User",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
   },
   {
     "type": "put",

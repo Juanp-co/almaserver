@@ -335,20 +335,21 @@
  */
 
 /**
- * @api {post} /api/recovery-password/check-document (05) Recuperar contraseña - Verificar documento.
- * @apiVersion 0.0.22
+ * @api {post} /api/recovery-password/check-phone (05) Recuperar contraseña - Verificar número de teléfono.
+ * @apiVersion 0.0.45
  * @apiName recoveryPasswordCheckDocumentPublic
  * @apiGroup Public
  *
- * @apiParam {String} document Número de documento del identidad.
+ * @apiParam {String} phone Número de teléfono.
  *
  * @apiExample {JSON} Example JSON Request
  * {
-	"document": "CC12345678"
+	"phone": "3161234567"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
- * @apiSuccess {Object} check Datos a verificar.
+ * @apiSuccess {Object|Null} check Datos a verificar.
+ * @apiSuccess {Boolean|Null} setNewPassword Indica que se salta el paso de verificación y se procede a cambiar la contraseña.
  *
  * @apiSuccess (check Object) {Boolean} email Verificar correo electrónico.
  * @apiSuccess (check Object) {Boolean} birthday Verificar fecha de nacimiento.
@@ -371,6 +372,12 @@
 		"birthday": true
 	}
 }
+ * @apiSuccessExample {JSON} Success, but checking ommited.
+ * HTTP/1.1 201 Created
+ * {
+	"msg": "Ahora puede asignar su nueva contraseña para recuperar el acceso a su cuenta.",
+	"setNewPassword": true
+}
  *
  * @apiUse GlobalParamsErrors
  *
@@ -381,11 +388,11 @@
 
 /**
  * @api {post} /api/recovery-password/check-params (06) Recuperar contraseña - Verificar datos solicitados.
- * @apiVersion 0.0.22
+ * @apiVersion 0.0.45
  * @apiName recoveryPasswordCheckParamsPublic
  * @apiGroup Public
  *
- * @apiParam {String} document Número de documento del identidad.
+ * @apiParam {String} phone Número de teléfono.
  * @apiParam {Object} check Datos a validar.
  *
  * @apiParam (check Object) {String} email Correo electrónico.
@@ -393,7 +400,7 @@
  *
  * @apiExample {JSON} Example JSON Request with check only email
  * {
-	"document": "CC12345678",
+	"phone": "3161234567",
 	"check": {
 		"email": "user@example.com",
 		"birthday": null
@@ -401,7 +408,7 @@
 }
  * @apiExample {JSON} Example JSON Request with check email and birthday
  * {
-	"document": "CC12345678",
+	"phone": "3161234567",
 	"check": {
 		"email": "user@example.com",
 		"birthday": "1994-07-07"
@@ -429,11 +436,11 @@
 
 /**
  * @api {put} /api/recovery-password/change-password (07) Recuperar contraseña - Cambiar contraseña.
- * @apiVersion 0.0.22
+ * @apiVersion 0.0.45
  * @apiName recoveryPasswordChangePassPublic
  * @apiGroup Public
  *
- * @apiParam {String} document Número de documento del identidad.
+ * @apiParam {String} phone Número de teléfono.
  * @apiParam {Object} check Datos a validar.
  * @apiParam {String} password Nueva contraseña.
  *
@@ -442,7 +449,7 @@
  *
  * @apiExample {JSON} Example JSON Request with check only email
  * {
-	"document": "CC12345678",
+	"phone": "3161234567",
 	"check": {
 		"email": "user@example.com",
 		"birthday": null
@@ -451,7 +458,7 @@
 }
  * @apiExample {JSON} Example JSON Request with check email and birthday
  * {
-	"document": "CC12345678",
+	"phone": "3161234567",
 	"check": {
 		"email": "user@example.com",
 		"birthday": "1994-07-07"
