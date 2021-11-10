@@ -12,16 +12,15 @@ import {
 import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import {
   checkDate,
-  checkDocument,
   checkEmail,
-  checkNameOrLastName,
-  checkPassword
+  checkPassword,
+  checkPhone
 } from '../../Functions/Validations';
+import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import AccountsBanks from '../../Models/AccountsBanks';
 import Referrals from '../../Models/Referrals';
-import Users from '../../Models/Users';
-import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import Settings from '../../Models/Settings';
+import Users from '../../Models/Users';
 
 const path = 'Controllers/publics/public.controller';
 
@@ -143,20 +142,20 @@ export async function logout(req: Request, res: Response): Promise<Response> {
 
 export async function recoveryPassword(req: Request, res: Response): Promise<Response> {
   try {
-    const actionsList = ['check-document', 'check-params', 'change-password'];
+    const actionsList = ['check-phone', 'check-params', 'change-password'];
     const ret: any = {
       msg: null,
     };
     const { action } = req.params;
-    const { document } = req.body;
+    const { phone } = req.body;
 
     if (actionsList.indexOf(`${action}`) === -1) return responseErrorsRecoveryPassword(res, 0);
 
-    if (!checkDocument(document)) return responseErrorsRecoveryPassword(res, 1);
+    if (!checkPhone(phone)) return responseErrorsRecoveryPassword(res, 1);
 
     const user = await Users.findOne(
       {
-        document: document.toString().toUpperCase(),
+        phone: `${phone}`.trim(),
         role: { $nin: [0, 1] }
       },
       { email: 1, birthday: 1 }
@@ -164,12 +163,18 @@ export async function recoveryPassword(req: Request, res: Response): Promise<Res
 
     if (!user) return responseErrorsRecoveryPassword(res, 2);
 
-    if (action === 'check-document') {
-      ret.msg = 'Por favor, complete los siguientes campos para recuperar su contraseña.';
-      ret.check = {
-        email: !!user.email,
-        birthday: !!user.birthday,
-      };
+    if (action === 'check-phone') {
+      if (!!user.email || !!user.birthday) {
+        ret.msg = 'Por favor, complete los siguientes campos para recuperar su contraseña.';
+        ret.check = {
+          email: !!user.email,
+          birthday: !!user.birthday,
+        };
+      }
+      else {
+        ret.msg = 'Ahora puede asignar su nueva contraseña para recuperar el acceso a su cuenta.';
+        ret.setNewPassword = true;
+      }
 
       return res.json(ret);
     }
@@ -179,28 +184,30 @@ export async function recoveryPassword(req: Request, res: Response): Promise<Res
     const { check } = req.body;
     if (!check || (check && Object.keys(check).length === 0)) return responseErrorsRecoveryPassword(res, 3);
 
-    if (user.email) {
-      if (!checkEmail(check.email)) return responseErrorsRecoveryPassword(res, 4);
-      if (check.email !== user.email) return responseErrorsRecoveryPassword(res, 5);
-    }
+    if (!check.ommiteChecking) {
+      if (user.email) {
+        if (!checkEmail(check.email)) return responseErrorsRecoveryPassword(res, 4);
+        if (check.email !== user.email) return responseErrorsRecoveryPassword(res, 5);
+      }
 
-    if (user.birthday) {
-      if (!checkDate(check.birthday)) return responseErrorsRecoveryPassword(res, 6);
-      if (check.birthday !== user.birthday) return responseErrorsRecoveryPassword(res, 7);
-    }
+      if (user.birthday) {
+        if (!checkDate(check.birthday)) return responseErrorsRecoveryPassword(res, 6);
+        if (check.birthday !== user.birthday) return responseErrorsRecoveryPassword(res, 7);
+      }
 
-    if (action === 'check-params') {
-      ret.msg = 'Por favor, indique su nueva contraseña.';
-      ret.setNewPassword = true;
+      if (action === 'check-params') {
+        ret.msg = 'Por favor, indique su nueva contraseña.';
+        ret.setNewPassword = true;
 
-      return res.json(ret);
+        return res.json(ret);
+      }
     }
 
     const { password } = req.body;
 
     if (!checkPassword(password)) return responseErrorsRecoveryPassword(res, 8);
 
-    user.password = bcrypt.hashSync(password, 10);
+    user.password = bcrypt.hashSync(`${password}`, 10);
     await user.save();
     ret.msg = 'Se ha asignado la nueva contraseña a su cuenta exitosamente.';
     ret.changed = true;

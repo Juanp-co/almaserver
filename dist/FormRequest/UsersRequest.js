@@ -324,18 +324,16 @@ async function validateUpdate(data, _id, admin = false) {
     else {
         ret.lastNames = data.lastNames.trim();
     }
-    if (admin) {
-        // document
-        if (data.document) {
-            if (!data.document || !Validations_1.checkDocument(data.document)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document'));
-            }
-            else if (await UsersActions_1.default(data.document, _id)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
-            }
-            else
-                ret.document = data.document.toLowerCase();
+    // document
+    if (data.document) {
+        if (!Validations_1.checkDocument(data.document)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document'));
         }
+        else if (await UsersActions_1.default(data.document, _id)) {
+            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'document'));
+        }
+        else
+            ret.document = data.document.toUpperCase();
     }
     // email
     if (data.email) {

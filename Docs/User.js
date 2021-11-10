@@ -93,12 +93,13 @@
 
 /**
  * @api {put} /api/user (01) Actualizar datos del perfil.
- * @apiVersion 0.0.34
+ * @apiVersion 0.0.45
  * @apiName registerUser
  * @apiGroup User
  *
  * @apiHeader {String} x-access-token Token de la sesión.
  *
+ * @apiParam {String} document Número de documento (Ejm: CC123456789).
  * @apiParam {String} phone Número de teléfono.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
@@ -120,6 +121,7 @@
  *
  * @apiExample {JSON} Example JSON Request
  * {
+    "document": "CC123456789",
     "email": "user3@example.com",
     "phone": "573161234567",
     "names": "Anthony alejandro",
@@ -189,7 +191,8 @@
 		"email": "user3@example.com",
 		"names": "ANTHONY ALEJANDRO",
 		"lastNames": "VELASQUEZ RODRIGUEZ",
-		"phone": "573161234567"
+		"phone": "573161234567",
+		"document": "CC123456789"
 	}
 }
  *

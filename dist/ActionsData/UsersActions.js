@@ -329,8 +329,8 @@ exports.responseUsersAdmin = responseUsersAdmin;
 function responseErrorsRecoveryPassword(res, option) {
     const ret = [
         { status: 404, msg: 'Disculpe, pero no se encontro la acción a realizar.' },
-        { status: 422, msg: 'Disculpe, pero debe indicar un número de documento válido.' },
-        { status: 404, msg: 'Disculpe, pero el número de documento indicado no existe o no se encuentra disponible.' },
+        { status: 422, msg: 'Disculpe, pero debe indicar un número de teléfono válido.' },
+        { status: 404, msg: 'Disculpe, pero el número de teléfono indicado no existe o no se encuentra disponible.' },
         { status: 422, msg: 'Disculpe, pero no se recibieron los datos a validar.' },
         { status: 422, msg: 'Disculpe, pero debe indicar un correo electrónico válido.' },
         { status: 422, msg: 'Disculpe, pero el correo electrónico indicado no coincide con el de su cuenta.' },

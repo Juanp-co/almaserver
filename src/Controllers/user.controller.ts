@@ -65,8 +65,9 @@ export async function update(req: Request, res: Response): Promise<Response> {
     user.phone = validate.data.phone || user.phone;
     user.names = validate.data.names || user.names;
     user.lastNames = validate.data.lastNames || user.lastNames;
-    user.email = validate.data.email;
-    user.birthday = validate.data.birthday;
+    user.document = validate.data.document || null;
+    user.email = validate.data.email || null;
+    user.birthday = validate.data.birthday || null;
     user.position = validate.data.position !== null ? validate.data.position : (user.position || null);
     user.gender = validate.data.gender !== null ? validate.data.gender : user.gender;
     user.civilStatus = validate.data.civilStatus !== null ? validate.data.civilStatus : user.civilStatus;
