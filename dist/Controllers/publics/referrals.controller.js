@@ -66,7 +66,7 @@ async function saveReferral(req, res) {
         if (validate.errors.length > 0)
             return GlobalFunctions_1.returnErrorParams(res, validate.errors);
         // set current id to referred
-        if (validate.data.referred)
+        if (!validate.data.referred)
             validate.data.referred = tokenId;
         const user = new Users_1.default(validate.data);
         const password = 'alma1234'; // default password
