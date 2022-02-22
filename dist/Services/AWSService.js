@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteFile = exports.uploadFilePdf = void 0;
 const aws_sdk_1 = __importDefault(require("aws-sdk"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
-GlobalFunctions_1.loadEnvironmentVars();
+(0, GlobalFunctions_1.loadEnvironmentVars)();
 aws_sdk_1.default.config.update({
     accessKeyId: process.env.AWS_ID,
     secretAccessKey: process.env.AWS_KEY,
@@ -28,7 +28,7 @@ async function uploadFile(fileName, base64) {
         return new Promise((response, reject) => {
             s3.putObject(params, (err, resp) => {
                 if (err) {
-                    GlobalFunctions_1.showConsoleError(`${pathFile}/uploadFile`, err);
+                    (0, GlobalFunctions_1.showConsoleError)(`${pathFile}/uploadFile`, err);
                     reject(err);
                 }
                 else {
@@ -54,7 +54,7 @@ async function uploadFilePdf(fileName, base64) {
     return new Promise((response, reject) => {
         s3.putObject(data, (err, resp) => {
             if (err) {
-                GlobalFunctions_1.showConsoleError(`${pathFile}/uploadFilePdf`, err);
+                (0, GlobalFunctions_1.showConsoleError)(`${pathFile}/uploadFilePdf`, err);
                 reject(err);
             }
             else {
@@ -75,7 +75,7 @@ async function deleteFile(urlFile = null) {
         return new Promise((response, reject) => {
             s3.putObject(data, (err, resp) => {
                 if (err) {
-                    GlobalFunctions_1.showConsoleError(`${pathFile}/deleteFile`, err);
+                    (0, GlobalFunctions_1.showConsoleError)(`${pathFile}/deleteFile`, err);
                     reject(err);
                 }
                 else {

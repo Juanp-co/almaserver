@@ -19,5 +19,5 @@ const SettingsSchema = new mongoose_1.Schema({
 }, { id: false });
 LogosAndBannersSchema.set('toJSON', { getters: true });
 SettingsSchema.set('toJSON', { getters: true });
-const Settings = mongoose_1.model('settings', SettingsSchema);
+const Settings = (0, mongoose_1.model)('settings', SettingsSchema);
 exports.default = Settings;

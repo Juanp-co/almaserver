@@ -49,7 +49,7 @@ function returnErrorId(res) {
 // =================================================================================================
 async function getGroups(req, res) {
     try {
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
         const { word } = req.query;
         const query = {};
         if (word) {
@@ -86,7 +86,7 @@ async function getGroups(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getGroups`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getGroups`);
     }
 }
 exports.default = getGroups;
@@ -112,7 +112,7 @@ async function getGroupsCounters(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getGroupsCounters`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getGroupsCounters`);
     }
 }
 exports.getGroupsCounters = getGroupsCounters;
@@ -120,17 +120,17 @@ async function showGroup(req, res) {
     try {
         const { _id } = req.params;
         const ret = {};
-        if (!Validations_1.checkObjectId(_id))
+        if (!(0, Validations_1.checkObjectId)(_id))
             return returnErrorId(res);
         const group = await Groups_1.default.findOne({ _id }).exec();
         if (!group)
             return return404(res);
-        const user = await UsersActions_1.getNamesUsersList([group.userid]);
+        const user = await (0, UsersActions_1.getNamesUsersList)([group.userid]);
         ret._id = group._id;
         ret.user = user[0] || null;
         ret.name = group.name;
         ret.code = group.code;
-        ret.members = await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(group.members || []));
+        ret.members = await (0, UsersActions_1.getNamesUsersList)(lodash_1.default.uniq(group.members || []));
         ret.created_at = group.created_at;
         ret.updated_at = group.updated_at;
         return res.json({
@@ -139,16 +139,16 @@ async function showGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showGroup`);
     }
 }
 exports.showGroup = showGroup;
 async function saveGroup(req, res) {
     try {
         const { tokenId } = req.body;
-        const validate = GroupsRequest_1.default(req.body);
+        const validate = (0, GroupsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         // check if exist code
         if (validate.data.code) {
             const check = await Groups_1.default.find({ code: validate.data.code }).countDocuments().exec();
@@ -169,18 +169,18 @@ async function saveGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveGroup`);
     }
 }
 exports.saveGroup = saveGroup;
 async function updateGroup(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
+        if (!(0, Validations_1.checkObjectId)(_id))
             return returnErrorId(res);
-        const validate = GroupsRequest_1.default(req.body);
+        const validate = (0, GroupsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const group = await Groups_1.default.findOne({ _id }, { members: 0, __v: 0, userid: 0 }).exec();
         if (!group)
             return return404(res);
@@ -199,7 +199,7 @@ async function updateGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateGroup`);
     }
 }
 exports.updateGroup = updateGroup;
@@ -208,16 +208,16 @@ async function addOrRemoveMembersGroup(req, res) {
         const { _id, action } = req.params;
         let notInserts = [];
         let notInsertsIds = [];
-        if (!Validations_1.checkObjectId(_id))
+        if (!(0, Validations_1.checkObjectId)(_id))
             return returnErrorId(res);
         if (['add', 'remove'].indexOf(action) === -1) {
             return res.status(422).json({
                 msg: 'Disculpe, pero no se logró determinar la acción a realizar.',
             });
         }
-        const validate = GroupsRequest_1.validateIdsMembers(req.body);
+        const validate = (0, GroupsRequest_1.validateIdsMembers)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const group = await Groups_1.default.findOne({ _id }, { members: 1 }).exec();
         if (!group)
             return return404(res);
@@ -231,14 +231,14 @@ async function addOrRemoveMembersGroup(req, res) {
                 });
                 notInsertsIds = lodash_1.default.uniq(notInsertsIds);
                 // get users data was that not inserted
-                notInserts = await UsersActions_1.getNamesUsersList(notInsertsIds);
+                notInserts = await (0, UsersActions_1.getNamesUsersList)(notInsertsIds);
                 // update the members ids to insert
                 validate.data.members = lodash_1.default.difference(validate.data.members, notInsertsIds);
             }
             group.members = lodash_1.default.uniq(validate.data.members.concat(group.members));
             await group.save();
             // update group value in users
-            await UsersActions_1.updateGroupIdInUsers(group.members, _id);
+            await (0, UsersActions_1.updateGroupIdInUsers)(group.members, _id);
         }
         else {
             let membersToRemoveOfGroup = [];
@@ -253,7 +253,7 @@ async function addOrRemoveMembersGroup(req, res) {
             await group.save();
             if (membersToRemoveOfGroup.length > 0) {
                 // update group value in users
-                await UsersActions_1.updateGroupIdInUsers(membersToRemoveOfGroup);
+                await (0, UsersActions_1.updateGroupIdInUsers)(membersToRemoveOfGroup);
             }
         }
         if (notInserts.length > 0) {
@@ -267,7 +267,7 @@ async function addOrRemoveMembersGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/addOrRemoveMembersGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/addOrRemoveMembersGroup`);
     }
 }
 exports.addOrRemoveMembersGroup = addOrRemoveMembersGroup;
@@ -275,8 +275,8 @@ async function findNewMembers(req, res) {
     try {
         const { _id } = req.params;
         const { tokenId } = req.body;
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        if (!Validations_1.checkObjectId(_id))
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
+        if (!(0, Validations_1.checkObjectId)(_id))
             return returnErrorId(res);
         const group = await Groups_1.default.findOne({ _id }, { members: 1 })
             .skip(skip)
@@ -285,7 +285,7 @@ async function findNewMembers(req, res) {
             .exec();
         if (!group)
             return return404(res);
-        const query = UsersActions_1.checkFindValueSearchForGroups({
+        const query = (0, UsersActions_1.checkFindValueSearchForGroups)({
             _id: { $nin: [tokenId, ...group.members] },
             roles: { $nin: [0] },
             group: { $in: [null, undefined, ''] },
@@ -307,26 +307,26 @@ async function findNewMembers(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/addOrRemoveMembersGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/addOrRemoveMembersGroup`);
     }
 }
 exports.findNewMembers = findNewMembers;
 async function deleteGroup(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
+        if (!(0, Validations_1.checkObjectId)(_id))
             return returnErrorId(res);
         const group = await Groups_1.default.findOne({ _id }, { members: 1 }).exec();
         if (!group)
             return return404(res);
-        await UsersActions_1.updateGroupIdInUsers(group.members || []);
+        await (0, UsersActions_1.updateGroupIdInUsers)(group.members || []);
         await group.delete();
         return res.json({
             msg: 'Se ha eliminado el grupo exitosamente.'
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/deleteGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteGroup`);
     }
 }
 exports.deleteGroup = deleteGroup;

@@ -31,11 +31,11 @@ if (logsFile && logsFile !== 'false') {
     // If needed setup LOGS_FILE=true, logs all access and errors to files.
     accessLogs = path_1.default.join(__dirname, '..', 'logs');
     if (!fs_1.default.existsSync(accessLogs)) {
-        console.log(`${moment_timezone_1.default().toISOString()} - Notice: logs folder doesn't exist, creating: ${accessLogs} dir.`);
+        console.log(`${(0, moment_timezone_1.default)().toISOString()} - Notice: logs folder doesn't exist, creating: ${accessLogs} dir.`);
         fs_1.default.mkdirSync(accessLogs, { mode: 0o774 });
     }
     else
-        console.log(`${moment_timezone_1.default().toISOString()} - Notice: ${accessLogs} folder already exist.`);
+        console.log(`${(0, moment_timezone_1.default)().toISOString()} - Notice: ${accessLogs} folder already exist.`);
     errorsLogs = path_1.default.join(accessLogs, 'error.log');
     accessLogs = path_1.default.join(accessLogs, 'access.log');
     // create write streams to access/error logs.
@@ -58,7 +58,7 @@ app_1.default.use(`/api/admin/users`, UsersAdminRouter_1.default);
 app_1.default.use(`/api/user`, UserRouter_1.default);
 // server
 async function main() {
-    await database_1.default();
+    await (0, database_1.default)();
     await app_1.default.listen(app_1.default.get('port'));
     console.log(`===============================================`);
     console.log(`Server on port: ${app_1.default.get('port')}`);

@@ -74,7 +74,7 @@ async function getCoursesList({ query, skip, sort, limit, infoUser, isPublic, pr
         let totalUsers = 0;
         if (infoUser) {
             const listIds = lodash_1.default.uniq(lodash_1.default.map(courses, 'userid'));
-            users = await UsersActions_1.getNamesUsersList(listIds);
+            users = await (0, UsersActions_1.getNamesUsersList)(listIds);
             totalUsers = users.length;
         }
         courses.forEach(c => {
@@ -146,7 +146,7 @@ async function getCourseDetails({ query, infoUser, isPublic, projection }) {
             delete ret.updated_at;
         }
         if (infoUser) {
-            const users = await UsersActions_1.getNamesUsersList([course.userid]);
+            const users = await (0, UsersActions_1.getNamesUsersList)([course.userid]);
             if (users.length > 0)
                 ret.user = users[0] || null;
             else

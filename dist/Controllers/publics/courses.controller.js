@@ -33,13 +33,13 @@ const path = 'Controllers/publics/courses.controller';
 async function getCourses(req, res) {
     try {
         const { tokenRoles, tokenId } = req.body;
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
         const { title } = req.query;
         const query = { toRoles: { $in: tokenRoles } || [], enable: { $eq: true } };
         const ret = [];
         if (title)
             query.title = { $regex: new RegExp(`${title}`, 'i') };
-        const courses = await CoursesActions_1.default({
+        const courses = await (0, CoursesActions_1.default)({
             query,
             limit,
             skip,
@@ -68,7 +68,7 @@ async function getCourses(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getCourses`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getCourses`);
     }
 }
 exports.default = getCourses;
@@ -77,18 +77,18 @@ async function showCourse(req, res) {
     try {
         const { slug } = req.params;
         const { tokenId, tokenRoles } = req.body;
-        if (!Validations_1.checkSlug(slug))
-            return CoursesActions_1.returnNotFound(res, 'slug');
-        const course = await CoursesActions_1.getCourseDetails({
+        if (!(0, Validations_1.checkSlug)(slug))
+            return (0, CoursesActions_1.returnNotFound)(res, 'slug');
+        const course = await (0, CoursesActions_1.getCourseDetails)({
             query: { slug, toRoles: { $in: tokenRoles } },
             isPublic: true,
         });
         if (!course)
-            return CoursesActions_1.returnNotFound(res, '404Course');
+            return (0, CoursesActions_1.returnNotFound)(res, '404Course');
         if (!course.enable)
-            return CoursesActions_1.returnNotFound(res, '404Course');
+            return (0, CoursesActions_1.returnNotFound)(res, '404Course');
         // check and get data user course user
-        let dataCourseUser = await CoursesActions_1.getCoursesDataUser({
+        let dataCourseUser = await (0, CoursesActions_1.getCoursesDataUser)({
             query: {
                 userid: tokenId,
                 'courses.courseId': course._id.toString()
@@ -96,7 +96,7 @@ async function showCourse(req, res) {
         });
         // if data not found, create register and find the courses in the list.
         if (!dataCourseUser) {
-            const data = await CoursesActions_1.addCoursesToUser(tokenId);
+            const data = await (0, CoursesActions_1.addCoursesToUser)(tokenId);
             if (data) {
                 const index = data.courses.findIndex(c => c.courseId === course._id.toString());
                 if (index > -1) {
@@ -106,11 +106,11 @@ async function showCourse(req, res) {
                     };
                 }
                 else
-                    return CoursesActions_1.returnNotFound(res, '404Course');
+                    return (0, CoursesActions_1.returnNotFound)(res, '404Course');
             }
         }
         delete course.enable;
-        const ret = await CoursesActions_1.getModelReturnCourseOrTheme({ data: course });
+        const ret = await (0, CoursesActions_1.getModelReturnCourseOrTheme)({ data: course });
         if (ret) {
             if (ret.temary) {
                 for (const t of ret.temary) {
@@ -127,7 +127,7 @@ async function showCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showCourse`);
     }
 }
 exports.showCourse = showCourse;
@@ -136,36 +136,36 @@ async function updateHistoricalCourseContent(req, res) {
         const { slug, _id, action } = req.params;
         const { tokenId } = req.body;
         if (!/[12]{1}/.test(`${action}`))
-            return CoursesActions_1.returnNotFound(res, 'errorAction');
-        if (!Validations_1.checkSlug(slug))
-            return CoursesActions_1.returnNotFound(res, 'slug');
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
-        const course = await CoursesActions_1.getCourseDetails({
+            return (0, CoursesActions_1.returnNotFound)(res, 'errorAction');
+        if (!(0, Validations_1.checkSlug)(slug))
+            return (0, CoursesActions_1.returnNotFound)(res, 'slug');
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnNotFound)(res, 'errorThemeId');
+        const course = await (0, CoursesActions_1.getCourseDetails)({
             query: { slug, 'temary._id': _id },
             isPublic: true,
             projection: { 'temary.$': 1, enable: 1 }
         });
         if (!course)
-            return CoursesActions_1.returnNotFound(res, '404Course');
+            return (0, CoursesActions_1.returnNotFound)(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.findOne({ userid: tokenId, 'courses.courseId': course._id.toString() }, { 'courses': 1 }).exec();
         if (!myCourse)
-            return CoursesActions_1.returnNotFound(res, '404CourseUser');
+            return (0, CoursesActions_1.returnNotFound)(res, '404CourseUser');
         if (!myCourse && !course.enable)
-            return CoursesActions_1.returnNotFound(res, '404Course');
+            return (0, CoursesActions_1.returnNotFound)(res, '404Course');
         // get theme
         if ((!course.temary) || (course.temary && course.temary.length === 0)) {
-            return CoursesActions_1.returnNotFound(res, '404Theme');
+            return (0, CoursesActions_1.returnNotFound)(res, '404Theme');
         }
         const i = myCourse.courses.findIndex(c => c.courseId === course._id.toString());
         if (i === -1)
-            return CoursesActions_1.returnNotFound(res, '404CourseUser');
+            return (0, CoursesActions_1.returnNotFound)(res, '404CourseUser');
         // set the new theme in viewing
         const index = myCourse.courses[i].temary.findIndex(t => t.temaryId === _id);
         if (index > -1) {
             myCourse.courses[i].temary[index].view = action === '1' ? 1 : 2;
-            myCourse.courses[i].temary[index].date = GlobalFunctions_1.setDate();
+            myCourse.courses[i].temary[index].date = (0, GlobalFunctions_1.setDate)();
             // check if all content was viewed
             if (action === '2') {
                 let acc = 0;
@@ -173,7 +173,7 @@ async function updateHistoricalCourseContent(req, res) {
                 if (myCourse.courses[i].temary.length === acc)
                     myCourse.courses[i].approved = true;
             }
-            myCourse.courses[i].temary[index].date = GlobalFunctions_1.setDate();
+            myCourse.courses[i].temary[index].date = (0, GlobalFunctions_1.setDate)();
             await myCourse.save();
         }
         return res.json({
@@ -182,7 +182,7 @@ async function updateHistoricalCourseContent(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showCourseTheme`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showCourseTheme`);
     }
 }
 exports.updateHistoricalCourseContent = updateHistoricalCourseContent;
@@ -192,34 +192,34 @@ async function evaluateQuiz(req, res) {
         const { tokenId } = req.body;
         let points = 0; // points to test
         let pointsIgnored = 0; // points to test
-        if (!Validations_1.checkSlug(slug))
-            return CoursesActions_1.returnNotFound(res, 'slug');
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnNotFound(res, 'errorThemeId');
-        const validate = CoursesRequest_1.validateTestData(req.body.data || []);
+        if (!(0, Validations_1.checkSlug)(slug))
+            return (0, CoursesActions_1.returnNotFound)(res, 'slug');
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnNotFound)(res, 'errorThemeId');
+        const validate = (0, CoursesRequest_1.validateTestData)(req.body.data || []);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const course = await Courses_1.default.findOne({ slug, 'temary._id': _id }, { 'temary.$': 1, enable: 1 }).exec();
         if (!course)
-            return CoursesActions_1.returnNotFound(res, '404Course');
+            return (0, CoursesActions_1.returnNotFound)(res, '404Course');
         if (!course.enable)
-            return CoursesActions_1.returnNotFound(res, '404Course');
+            return (0, CoursesActions_1.returnNotFound)(res, '404Course');
         // check if the course belonging to user
         const myCourse = await CoursesUsers_1.default.findOne({ userid: tokenId, 'courses.courseId': course._id, 'courses.temary.temaryId': _id }, { 'courses': 1 }).exec();
         if (!myCourse)
-            return CoursesActions_1.returnNotFound(res, '404CourseUser');
+            return (0, CoursesActions_1.returnNotFound)(res, '404CourseUser');
         const i = myCourse.courses.findIndex(c => c.courseId === course._id.toString());
         // check if course is approved
         if (i === -1)
-            return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');
+            return (0, CoursesActions_1.returnNotFound)(res, 'wasRealizedAllTest');
         if (myCourse.courses[i].approved)
-            return CoursesActions_1.returnNotFound(res, 'wasRealizedAllTest');
+            return (0, CoursesActions_1.returnNotFound)(res, 'wasRealizedAllTest');
         // check if exists temary in myCourse data
         const index = myCourse.courses[i].temary.findIndex(t => t.temaryId === _id);
         if (index === -1)
-            return CoursesActions_1.returnNotFound(res, '404GetDataTemaryUser');
+            return (0, CoursesActions_1.returnNotFound)(res, '404GetDataTemaryUser');
         if (myCourse.courses[i].temary[index].view === 2)
-            return CoursesActions_1.returnNotFound(res, 'wasRealizedTest');
+            return (0, CoursesActions_1.returnNotFound)(res, 'wasRealizedTest');
         // validate answer test
         validate.data.forEach(a => {
             var _a, _b;
@@ -227,9 +227,9 @@ async function evaluateQuiz(req, res) {
             const question = (_b = (_a = course.temary[0]) === null || _a === void 0 ? void 0 : _a.quiz) === null || _b === void 0 ? void 0 : _b.find(q => q._id.toString() === a.questionId);
             if (question) {
                 if (!question.require && a.answer)
-                    points += CoursesActions_1.setPointToTest(question, a);
+                    points += (0, CoursesActions_1.setPointToTest)(question, a);
                 else if (question.require)
-                    points += CoursesActions_1.setPointToTest(question, a);
+                    points += (0, CoursesActions_1.setPointToTest)(question, a);
                 else
                     pointsIgnored++;
             }
@@ -242,7 +242,7 @@ async function evaluateQuiz(req, res) {
             'Disculpe, pero no logró cumplir con el promédio mínimo para la aprobación del examen.';
         // update data course user
         myCourse.courses[i].temary[index].view = approved ? 2 : 0;
-        myCourse.courses[i].temary[index].date = GlobalFunctions_1.setDate();
+        myCourse.courses[i].temary[index].date = (0, GlobalFunctions_1.setDate)();
         // check if approved all themes
         const listApproved = myCourse.courses[i].temary.map(t => t.view);
         const filter = listApproved.filter(v => v === 2);
@@ -256,7 +256,7 @@ async function evaluateQuiz(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/evaluateTest`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/evaluateTest`);
     }
 }
 exports.evaluateQuiz = evaluateQuiz;

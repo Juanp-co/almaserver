@@ -46,14 +46,14 @@ async function get(req, res) {
         const user = await Users_1.default.findOne({ _id: tokenId }, { __v: 0, password: 0, referred: 0 }).exec();
         // logout
         if (!user)
-            return TokenActions_1.forceLogout(res, `${req.query.token}`);
+            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
         return res.json({
             msg: 'Datos de la sesión',
             data: user
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/get`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/get`);
     }
 }
 exports.get = get;
@@ -68,10 +68,10 @@ async function update(req, res) {
         }).exec();
         // logout
         if (!user)
-            return TokenActions_1.forceLogout(res, `${req.query.token}`);
-        const validate = await UsersRequest_1.validateUpdate(req.body, tokenId);
+            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+        const validate = await (0, UsersRequest_1.validateUpdate)(req.body, tokenId);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         user.phone = validate.data.phone || user.phone;
         user.names = validate.data.names || user.names;
         user.lastNames = validate.data.lastNames || user.lastNames;
@@ -99,7 +99,7 @@ async function update(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/update`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/update`);
     }
 }
 exports.update = update;
@@ -112,22 +112,22 @@ async function updatePicture(req, res) {
         }).exec();
         // logout
         if (!user)
-            return TokenActions_1.forceLogout(res, `${req.query.token}`);
-        const validate = await UsersRequest_1.validateUpdatePictureProfile(req.body);
+            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+        const validate = await (0, UsersRequest_1.validateUpdatePictureProfile)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         if (user.picture !== validate.data.picture) {
             const s3 = process.env.AWS_S3_BUCKET || null;
             if (!s3)
-                return EventsActions_1.return404Or422(res, 2);
+                return (0, EventsActions_1.return404Or422)(res, 2);
             if ((_a = user.picture) === null || _a === void 0 ? void 0 : _a.indexOf(`${s3}`))
-                await AWSService_1.deleteFile(user.picture);
-            if (Validations_1.isBase64(validate.data.picture)) {
-                const newUrl = `alma/users/${tokenId}/picture-${tokenId}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
-                await AWSService_1.default(newUrl, validate.data.picture);
+                await (0, AWSService_1.deleteFile)(user.picture);
+            if ((0, Validations_1.isBase64)(validate.data.picture)) {
+                const newUrl = `alma/users/${tokenId}/picture-${tokenId}-${(0, moment_timezone_1.default)().tz('America/Bogota').unix()}`;
+                await (0, AWSService_1.default)(newUrl, validate.data.picture);
                 user.picture = `${s3}/${newUrl}.jpg`;
             }
-            else if (Validations_1.checkUrl(validate.data.picture)) {
+            else if ((0, Validations_1.checkUrl)(validate.data.picture)) {
                 user.picture = validate.data.picture;
             }
             else
@@ -140,7 +140,7 @@ async function updatePicture(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updatePicture`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updatePicture`);
     }
 }
 exports.updatePicture = updatePicture;
@@ -150,10 +150,10 @@ async function changePassword(req, res) {
         const user = await Users_1.default.findOne({ _id: tokenId }, { password: 1 }).exec();
         // logout
         if (!user)
-            return TokenActions_1.forceLogout(res, `${req.query.token}`);
-        const validate = await UsersRequest_1.validatePasswords(req.body);
+            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+        const validate = await (0, UsersRequest_1.validatePasswords)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         if (!bcrypt_1.default.compareSync(validate.data.password, `${user.password}`)) {
             return res.status(422).json({
                 msg: 'Disculpe, pero la contraseña actual es incorrecta.'
@@ -166,7 +166,7 @@ async function changePassword(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/changePassword`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/changePassword`);
     }
 }
 exports.changePassword = changePassword;
@@ -177,7 +177,7 @@ async function getCourses(req, res) {
     try {
         const { tokenId } = req.body;
         const courses = [];
-        if (!Validations_1.checkObjectId(tokenId)) {
+        if (!(0, Validations_1.checkObjectId)(tokenId)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
@@ -207,7 +207,7 @@ async function getCourses(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getCourses`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getCourses`);
     }
 }
 exports.getCourses = getCourses;
@@ -215,7 +215,7 @@ async function getGroup(req, res) {
     try {
         const { tokenId } = req.body;
         let group = null;
-        if (!Validations_1.checkObjectId(tokenId)) {
+        if (!(0, Validations_1.checkObjectId)(tokenId)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
@@ -233,7 +233,7 @@ async function getGroup(req, res) {
                     _id: data._id,
                     name: data.name,
                     code: data.code,
-                    members: await UsersActions_1.getNamesUsersList(lodash_1.default.uniq(data.members || [])),
+                    members: await (0, UsersActions_1.getNamesUsersList)(lodash_1.default.uniq(data.members || [])),
                     created_at: data.created_at,
                     updated_at: data.updated_at,
                 };
@@ -245,7 +245,7 @@ async function getGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getGroup`);
     }
 }
 exports.getGroup = getGroup;
@@ -253,12 +253,12 @@ async function getMemberGroup(req, res) {
     try {
         const { memberId } = req.params;
         const { tokenId } = req.body;
-        if (!Validations_1.checkObjectId(tokenId)) {
+        if (!(0, Validations_1.checkObjectId)(tokenId)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
         }
-        if (!Validations_1.checkObjectId(memberId)) {
+        if (!(0, Validations_1.checkObjectId)(memberId)) {
             return res.status(422).json({
                 msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
             });
@@ -285,7 +285,7 @@ async function getMemberGroup(req, res) {
                 msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.'
             });
         }
-        const ret = await UsersActions_1.getInfoUserReferred(memberId);
+        const ret = await (0, UsersActions_1.getInfoUserReferred)(memberId);
         if (!ret.member) {
             return res.status(404).json({
                 msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
@@ -297,7 +297,7 @@ async function getMemberGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getMemberGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getMemberGroup`);
     }
 }
 exports.getMemberGroup = getMemberGroup;
@@ -308,7 +308,7 @@ async function getReports(req, res) {
     var _a, _b;
     try {
         const { tokenId } = req.body;
-        if (!Validations_1.checkObjectId(tokenId)) {
+        if (!(0, Validations_1.checkObjectId)(tokenId)) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
             });
@@ -353,14 +353,14 @@ async function getReports(req, res) {
         let users = [];
         let listsMembersDetails = []; // generate a new array data
         let listIdsPending = []; // generate a new array data
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query['courses.created_at'] = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            queryReferrals.updated_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            query2.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            if (Validations_1.checkDate(endDate)) {
-                query['courses.created_at'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
-                queryReferrals.updated_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
-                query2.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        if (initDate && (0, Validations_1.checkDate)(initDate)) {
+            query['courses.created_at'] = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            queryReferrals.updated_at = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            query2.date = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            if ((0, Validations_1.checkDate)(endDate)) {
+                query['courses.created_at'].$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
+                queryReferrals.updated_at.$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
+                query2.date.$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
             }
         }
         const myCourses = await CoursesUsers_1.default.findOne({ userid: tokenId, ...query }, { courses: 1 }).exec();
@@ -416,7 +416,7 @@ async function getReports(req, res) {
             const index = members.findIndex(m => m._id.toString() === v.userid);
             // check last visit and add or remove id from list
             if (index > -1) {
-                if (moment_timezone_1.default().diff(moment_timezone_1.default(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') > 0) {
+                if ((0, moment_timezone_1.default)().diff((0, moment_timezone_1.default)(`${visits[index].date}`, 'YYYY-MM-DD', true), 'months') > 0) {
                     if (!listIdsPending.includes(members[index]._id.toString()))
                         listIdsPending.push(members[index]._id.toString());
                     else
@@ -442,12 +442,12 @@ async function getReports(req, res) {
                     }
                 });
                 for (const vtc of visitsFilterToCheck) {
-                    if (moment_timezone_1.default().diff(moment_timezone_1.default(`${vtc.date}`, 'YYYY-MM-DD', true), 'months') > 0)
+                    if ((0, moment_timezone_1.default)().diff((0, moment_timezone_1.default)(`${vtc.date}`, 'YYYY-MM-DD', true), 'months') > 0)
                         if (!membersIds.includes(vtc.userid))
                             membersIds.push(vtc.userid);
                 }
             }
-            ret.visits.membersPendingVisits = await UsersActions_1.getNamesUsersList(membersIds) || [];
+            ret.visits.membersPendingVisits = await (0, UsersActions_1.getNamesUsersList)(membersIds) || [];
             ret.visits.data[0].qty = ret.visits.membersPendingVisits.length;
         }
         ret.typeVisits.qty = ((ret.typeVisits.data[0].qty || 0) + (ret.typeVisits.data[1].qty || 0)) || 0;
@@ -457,7 +457,7 @@ async function getReports(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReports`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getReports`);
     }
 }
 exports.getReports = getReports;

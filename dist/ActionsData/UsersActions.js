@@ -126,7 +126,7 @@ async function getUserData(_id, projection = null) {
             user.totals.totalsCourses = await CoursesUsers_1.default.find({ userid: _id }).countDocuments().exec();
             const referrals = await Referrals_1.default.findOne({ _id }, { members: 1 }).exec();
             if (referrals) {
-                user.totals.totalsReferrals = await ReferralsActions_1.getTotalsReferrals(referrals.members);
+                user.totals.totalsReferrals = await (0, ReferralsActions_1.getTotalsReferrals)(referrals.members);
             }
         }
     }
@@ -177,7 +177,7 @@ async function getInfoUserReferred(_id) {
         if (referrals) {
             // get data referrals and get totals subreferrals
             ret.referrals = await getNamesUsersList(referrals.members);
-            ret.totalReferrals += await ReferralsActions_1.getTotalsReferrals(referrals.members);
+            ret.totalReferrals += await (0, ReferralsActions_1.getTotalsReferrals)(referrals.members);
             for (const [index, value] of ret.referrals.entries()) {
                 const refMembers = await Referrals_1.default.findOne({ _id: value._id }).exec();
                 ret.referrals[index] = {
@@ -192,7 +192,7 @@ async function getInfoUserReferred(_id) {
             ret.totalCourses = coursesU.courses.length;
             // get data courses
             const listIds = ret.totalCourses > 0 ? coursesU.courses.map(c => c.courseId) : [];
-            const courses = listIds.length > 0 ? await CoursesActions_1.getCoursesSimpleList(listIds) : [];
+            const courses = listIds.length > 0 ? await (0, CoursesActions_1.getCoursesSimpleList)(listIds) : [];
             for (const course of courses) {
                 const index = coursesU.courses.findIndex(c => c.courseId === course._id.toString());
                 ret.courses.push({
@@ -255,14 +255,14 @@ function checkFindValueSearch(params = {}, tokenId = null) {
             if (ids.length > 0) {
                 const list = tokenId ? [tokenId] : [];
                 ids.forEach((id) => {
-                    if (Validations_1.checkObjectId(id))
+                    if ((0, Validations_1.checkObjectId)(id))
                         list.push(id);
                 });
                 query._id = { $nin: list };
             }
         }
         if (params.search) {
-            if (Validations_1.checkNameOrLastName(params.search)) {
+            if ((0, Validations_1.checkNameOrLastName)(params.search)) {
                 const pattern = params.search ? params.search.toString().trim().replace(' ', '|') : null;
                 if (pattern) {
                     query.$or = [
@@ -288,7 +288,7 @@ exports.checkFindValueSearch = checkFindValueSearch;
 function checkFindValueSearchForGroups(query = {}, params = {}) {
     if (params) {
         if (params.search) {
-            if (Validations_1.checkNameOrLastName(params.search)) {
+            if ((0, Validations_1.checkNameOrLastName)(params.search)) {
                 const pattern = params.search ? params.search.toString().trim().replace(' ', '|') : null;
                 if (pattern) {
                     query.$or = [

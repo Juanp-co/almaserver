@@ -101,18 +101,18 @@ async function getReports(req, res) {
                 },
             },
         };
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query.created_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            if (Validations_1.checkDate(endDate))
-                query.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        if (initDate && (0, Validations_1.checkDate)(initDate)) {
+            query.created_at = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            if ((0, Validations_1.checkDate)(endDate))
+                query.created_at.$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
         }
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query2.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            if (Validations_1.checkDate(endDate))
-                query2.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        if (initDate && (0, Validations_1.checkDate)(initDate)) {
+            query2.date = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            if ((0, Validations_1.checkDate)(endDate))
+                query2.date.$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
         }
-        if (!UsersActions_1.checkRoleToActions(tokenRoles))
-            return UsersActions_1.responseUsersAdmin(res, 3);
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
         const consolidates = await Visits_1.default.find(query2).countDocuments().exec();
         const courses = await Courses_1.default.find(query, { enable: 1 }).exec();
         const events = await Events_1.default.find(query, { date: 1 }).exec();
@@ -120,14 +120,14 @@ async function getReports(req, res) {
         const users = await Users_1.default.find(query, { gender: 1, roles: 1, birthday: 1, group: 1, referred: 1, position: 1, consolidated: 1 }).exec();
         if (users.length > 0) {
             ret.users.qty = users.length;
-            const today = moment_timezone_1.default().tz('America/Bogota').startOf('d');
+            const today = (0, moment_timezone_1.default)().tz('America/Bogota').startOf('d');
             users.forEach(u => {
                 if (u.gender !== null && u.gender !== undefined && u.gender !== 2)
                     ret.users.gender.data[u.gender].qty += 1;
                 else
                     ret.users.gender.data[2].qty += 1;
                 if (u.birthday) {
-                    const age = today.diff(moment_timezone_1.default(u.birthday), 'y');
+                    const age = today.diff((0, moment_timezone_1.default)(u.birthday), 'y');
                     if (age < 15)
                         ret.users.ages.data[0].qty += 1;
                     else if (age > 15 && age <= 20)
@@ -167,10 +167,10 @@ async function getReports(req, res) {
         }
         if (events.length > 0) {
             ret.events.qty = events.length;
-            const date = moment_timezone_1.default().tz('America/Bogota').startOf('d');
+            const date = (0, moment_timezone_1.default)().tz('America/Bogota').startOf('d');
             // check what is finished
             events.forEach(ev => {
-                if (date.isBefore(moment_timezone_1.default(ev.date).tz('America/Bogota')))
+                if (date.isBefore((0, moment_timezone_1.default)(ev.date).tz('America/Bogota')))
                     ret.events.data[0].qty += 1;
                 else
                     ret.events.data[1].qty += 1;
@@ -194,7 +194,7 @@ async function getReports(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReports`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getReports`);
     }
 }
 exports.default = getReports;
@@ -211,13 +211,13 @@ async function getFamiliesGroupsReports(req, res) {
             query1.subSector = parseInt(`${subSector}`, 10);
         if (/[0-9]{1,3}/.test(`${number}`))
             query1.number = parseInt(`${number}`, 10);
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query2['report.date'] = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            if (Validations_1.checkDate(endDate))
-                query2['report.date'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        if (initDate && (0, Validations_1.checkDate)(initDate)) {
+            query2['report.date'] = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            if ((0, Validations_1.checkDate)(endDate))
+                query2['report.date'].$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
         }
-        if (!UsersActions_1.checkRoleToActions(tokenRoles))
-            return UsersActions_1.responseUsersAdmin(res, 3);
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
         // get all families groups
         const familiesGroups = await FamiliesGroups_1.default.find(query1, { number: 1, sector: 1, subSector: 1, created_at: 1, })
             .sort({ sector: 1, subSector: 1, number: 1 })
@@ -320,7 +320,7 @@ async function getFamiliesGroupsReports(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getFamiliesGroupsReports`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getFamiliesGroupsReports`);
     }
 }
 exports.getFamiliesGroupsReports = getFamiliesGroupsReports;

@@ -22,14 +22,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../../middleware");
 const settings_admin_controller_1 = __importStar(require("../../Controllers/admin/settings.admin.controller"));
-const router = express_1.Router();
+const router = (0, express_1.Router)();
 router.route('/')
     .get(middleware_1.validateAdmin, settings_admin_controller_1.default)
     .put(middleware_1.validateAdmin, settings_admin_controller_1.updateSettingsUrls);
-router.post('/banners', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.addLogoOrBannerSetting(req, res, 'banners'));
-router.delete('/banners/:_id', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.removeLogoOrBannerSettings(req, res, 'banners'));
-router.put('/banners/:_id/:action', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.changeStatusLogoOrBannerSetting(req, res, 'banners'));
-router.post('/logos', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.addLogoOrBannerSetting(req, res, 'logos'));
-router.delete('/logos/:_id', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.removeLogoOrBannerSettings(req, res, 'logos'));
-router.put('/logos/:_id/:action', middleware_1.validateAdmin, (req, res) => settings_admin_controller_1.changeStatusLogoOrBannerSetting(req, res, 'logos'));
+router.post('/banners', middleware_1.validateAdmin, (req, res) => (0, settings_admin_controller_1.addLogoOrBannerSetting)(req, res, 'banners'));
+router.delete('/banners/:_id', middleware_1.validateAdmin, (req, res) => (0, settings_admin_controller_1.removeLogoOrBannerSettings)(req, res, 'banners'));
+router.put('/banners/:_id/:action', middleware_1.validateAdmin, (req, res) => (0, settings_admin_controller_1.changeStatusLogoOrBannerSetting)(req, res, 'banners'));
+router.post('/logos', middleware_1.validateAdmin, (req, res) => (0, settings_admin_controller_1.addLogoOrBannerSetting)(req, res, 'logos'));
+router.delete('/logos/:_id', middleware_1.validateAdmin, (req, res) => (0, settings_admin_controller_1.removeLogoOrBannerSettings)(req, res, 'logos'));
+router.put('/logos/:_id/:action', middleware_1.validateAdmin, (req, res) => (0, settings_admin_controller_1.changeStatusLogoOrBannerSetting)(req, res, 'logos'));
 exports.default = router;

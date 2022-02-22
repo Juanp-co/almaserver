@@ -31,8 +31,8 @@ async function getModelDataListDevotionals(list = [], simpleUser = true) {
         let listUsers = [];
         if (listIds.length > 0) {
             listUsers = simpleUser ?
-                await UsersActions_1.getUsersSimpleList(listIds)
-                : await UsersActions_1.getNamesUsersList(listIds);
+                await (0, UsersActions_1.getUsersSimpleList)(listIds)
+                : await (0, UsersActions_1.getNamesUsersList)(listIds);
         }
         if (listUsers.length > 0) {
             list.forEach(l => {
@@ -58,13 +58,13 @@ function getQueryParamsList({ endDate, initDate, search }) {
     if (search)
         query.title = { $regex: new RegExp(`${search}`, 'i') };
     if (initDate) {
-        const check1 = moment_timezone_1.default(initDate, 'YYYY-MM-DD', true);
+        const check1 = (0, moment_timezone_1.default)(initDate, 'YYYY-MM-DD', true);
         if (check1.isValid()) {
             query.created_at = { $gte: check1.startOf('d').unix() };
         }
     }
     if (endDate) {
-        const check2 = moment_timezone_1.default(endDate, 'YYYY-MM-DD', true);
+        const check2 = (0, moment_timezone_1.default)(endDate, 'YYYY-MM-DD', true);
         if (check2.isValid()) {
             if (!query.created_at)
                 query.create_at = { $lte: check2.endOf('d').unix() };

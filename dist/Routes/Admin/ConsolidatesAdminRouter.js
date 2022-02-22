@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../../middleware");
 const consolidated_admin_controller_1 = __importStar(require("../../Controllers/admin/consolidated.admin.controller"));
-const router = express_1.Router();
+const router = (0, express_1.Router)();
 router.get('/', middleware_1.validateAdmin, consolidated_admin_controller_1.default);
 router.post('/report', middleware_1.validateAdmin, consolidated_admin_controller_1.saveConsolidateVisit);
 router.get('/members', middleware_1.validateAdmin, consolidated_admin_controller_1.getConsolidatesMembers);

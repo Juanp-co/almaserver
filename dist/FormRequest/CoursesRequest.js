@@ -15,28 +15,28 @@ function validateSimpleRegister(data) {
     };
     const errors = [];
     // title
-    if (!data.title || !Validations_1.checkTitlesOrDescriptions(data.title)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un título válido para el curso.', 'title'));
+    if (!data.title || !(0, Validations_1.checkTitlesOrDescriptions)(data.title)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar un título válido para el curso.', 'title'));
     }
     else {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
     }
     // description
-    if (!data.description || !Validations_1.checkTitlesOrDescriptions(data.description)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una descripción válida para el curso.', 'description'));
+    if (!data.description || !(0, Validations_1.checkTitlesOrDescriptions)(data.description)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar una descripción válida para el curso.', 'description'));
     }
     else {
         ret.description = data.description;
     }
     // level
     if ([1, 2, 3, 4, 5].indexOf(data.level || -1) === -1) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero seleccionar el nivel para el curso.', 'level'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero seleccionar el nivel para el curso.', 'level'));
     }
     else
         ret.level = data.level;
     // toRoles
     if (!data.toRoles || typeof data.toRoles !== 'object' || (data.toRoles && data.toRoles.length === 0)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero los roles a los que va digido el curso.', 'toRoles'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero los roles a los que va digido el curso.', 'toRoles'));
     }
     else {
         ret.toRoles = data.toRoles;
@@ -55,42 +55,42 @@ function validateInfoUpdate(data) {
     };
     const errors = [];
     // title
-    if (!data.title || !Validations_1.checkTitlesOrDescriptions(data.title)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un título válido para el curso.', 'title'));
+    if (!data.title || !(0, Validations_1.checkTitlesOrDescriptions)(data.title)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar un título válido para el curso.', 'title'));
     }
     else {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
     }
     // description
-    if (!data.description || !Validations_1.checkTitlesOrDescriptions(data.description)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una descripción válida para el curso.', 'description'));
+    if (!data.description || !(0, Validations_1.checkTitlesOrDescriptions)(data.description)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar una descripción válida para el curso.', 'description'));
     }
     else {
         ret.description = data.description;
     }
     // speaker
-    if (!data.speaker || !Validations_1.checkNameOrLastName(data.speaker)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar el nombre del ponenete.', 'speaker'));
+    if (!data.speaker || !(0, Validations_1.checkNameOrLastName)(data.speaker)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar el nombre del ponenete.', 'speaker'));
     }
     else {
         ret.speaker = data.speaker ? data.speaker.toString().trim().toUpperCase() : data.speaker;
     }
     // speakerPosition
-    if (!data.speakerPosition || !Validations_1.checkTitlesOrDescriptions(data.speakerPosition)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar el cargo del ponente.', 'speakerPosition'));
+    if (!data.speakerPosition || !(0, Validations_1.checkTitlesOrDescriptions)(data.speakerPosition)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar el cargo del ponente.', 'speakerPosition'));
     }
     else {
         ret.speakerPosition = data.speakerPosition ? data.speakerPosition.toString().trim().toUpperCase() : data.speakerPosition;
     }
     // level
     if ([1, 2, 3, 4, 5].indexOf(data.level || -1) === -1) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero seleccionar el nivel para el curso.', 'level'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero seleccionar el nivel para el curso.', 'level'));
     }
     else
         ret.level = data.level;
     // toRoles
     if (!data.toRoles || typeof data.toRoles !== 'object' || (data.toRoles && data.toRoles.length === 0)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar los roles a los que va digido el curso.', 'toRoles'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar los roles a los que va digido el curso.', 'toRoles'));
     }
     else {
         ret.toRoles = data.toRoles;
@@ -107,8 +107,8 @@ function validateContentThemeUpdate(data) {
     };
     const errors = [];
     // title
-    if (!data.title || !Validations_1.checkTitlesOrDescriptions(data.title)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un título válido para el contenido.', 'title'));
+    if (!data.title || !(0, Validations_1.checkTitlesOrDescriptions)(data.title)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar un título válido para el contenido.', 'title'));
     }
     else {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
@@ -118,7 +118,7 @@ function validateContentThemeUpdate(data) {
         ret.description = data.description;
     if (data.quiz !== undefined && data.quiz !== null) {
         if (data.quiz.length === 0) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el contenido del QUIZ.', 'quiz'));
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar el contenido del QUIZ.', 'quiz'));
         }
         else {
             ret.quiz = [];
@@ -136,14 +136,14 @@ function validateContentThemeUpdate(data) {
                 if (q._id)
                     model._id = q._id;
                 // title
-                if (!Validations_1.checkTitlesOrDescriptions(q.title)) {
-                    errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un título válido para el pregunta.', 'title'));
+                if (!(0, Validations_1.checkTitlesOrDescriptions)(q.title)) {
+                    errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar un título válido para el pregunta.', 'title'));
                 }
                 else
                     model.title = q.title ? q.title.toString().trim().toUpperCase() : q.title;
                 // inputType
                 if (!q.inputType || (q.inputType && ['radio', 'checkbox', 'text', 'textarea'].indexOf(`${q.inputType}`) === -1)) {
-                    errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar un tipo de campo válido para la pregunta.', 'inputType'));
+                    errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe seleccionar un tipo de campo válido para la pregunta.', 'inputType'));
                 }
                 else
                     model.inputType = q.inputType;
@@ -151,16 +151,16 @@ function validateContentThemeUpdate(data) {
                 if (q.inputType && ['radio', 'checkbox'].indexOf(`${q.inputType}`) > -1) {
                     // values
                     if (!q.values || typeof q.values !== 'object') {
-                        errors.push(GlobalFunctions_1.setError('Disculpe, pero las respuestas indicadas no son correctas.', 'values'));
+                        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero las respuestas indicadas no son correctas.', 'values'));
                     }
                     else if (q.values && q.values.length === 0) {
-                        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar las opciones de respuestas para la pregunta.', 'values'));
+                        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar las opciones de respuestas para la pregunta.', 'values'));
                     }
                     else
                         model.values = q.values;
                     // correctAnswer
-                    if (!Validations_1.checkIfValueIsNumber(`${q.correctAnswer}`)) {
-                        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la respuesta correcta.', 'correctAnswer'));
+                    if (!(0, Validations_1.checkIfValueIsNumber)(`${q.correctAnswer}`)) {
+                        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar la respuesta correcta.', 'correctAnswer'));
                     }
                     else
                         model.correctAnswer = q.correctAnswer;
@@ -183,8 +183,8 @@ function validateContentThemeUpdate(data) {
     }
     // urlVideo
     if (data.urlVideo) {
-        if (!Validations_1.checkYoutubeUrl(data.urlVideo)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero la URL del vídeo solo debe prevenir de youtube.', 'urlVideo'));
+        if (!(0, Validations_1.checkYoutubeUrl)(data.urlVideo)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la URL del vídeo solo debe prevenir de youtube.', 'urlVideo'));
         }
         else
             ret.urlVideo = data.urlVideo;
@@ -205,7 +205,7 @@ function validateTestData(data) {
         const totalItems = data ? data.length : 0;
         for (let i = 0; i < totalItems; i++) {
             let stop = false;
-            if (!Validations_1.checkObjectId(data[i].questionId)) {
+            if (!(0, Validations_1.checkObjectId)(data[i].questionId)) {
                 errors.push({
                     msg: 'Disculpe, pero una de las preguntas de la prueba es incorrecta.',
                     input: 'questionId'

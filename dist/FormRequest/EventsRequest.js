@@ -18,43 +18,43 @@ function validateRegister(data) {
     };
     const errors = [];
     // title
-    if (!data.title || !Validations_1.checkTitlesOrDescriptions(data.title)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un título para el evento.', 'title'));
+    if (!data.title || !(0, Validations_1.checkTitlesOrDescriptions)(data.title)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar un título para el evento.', 'title'));
     }
     else {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
     }
     // description
     if (!data.description || (data.description && data.description.length < 5)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una descripción para el evento.', 'description'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar una descripción para el evento.', 'description'));
     }
     else {
         ret.description = data.description ? data.description.toString().trim() : data.description;
     }
     // date
-    if (!data.date || !Validations_1.checkDate(data.date)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la fecha para el evento.', 'date'));
+    if (!data.date || !(0, Validations_1.checkDate)(data.date)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar la fecha para el evento.', 'date'));
     }
     else {
-        ret.date = moment_timezone_1.default(data.date).unix();
+        ret.date = (0, moment_timezone_1.default)(data.date).unix();
     }
     // initHour
-    if (!data.initHour || !Validations_1.checkHour(data.initHour)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar la hora de inicio para el evento.', 'initHour'));
+    if (!data.initHour || !(0, Validations_1.checkHour)(data.initHour)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar la hora de inicio para el evento.', 'initHour'));
     }
     else {
         ret.initHour = data.initHour ? data.initHour.toString().trim() : data.initHour;
     }
     // endHour
-    if (!data.endHour || !Validations_1.checkHour(data.endHour)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar la hora de finalización del evento.', 'endHour'));
+    if (!data.endHour || !(0, Validations_1.checkHour)(data.endHour)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar la hora de finalización del evento.', 'endHour'));
     }
     else {
         ret.endHour = data.endHour ? data.endHour.toString().trim() : data.endHour;
     }
     // toRoles
     if (!data.toRoles || typeof data.toRoles !== 'object' || data.toRoles.length === 0) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar a quienes va dirigido el evento.', 'toRoles'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe seleccionar a quienes va dirigido el evento.', 'toRoles'));
     }
     else {
         ret.toRoles = data.toRoles;

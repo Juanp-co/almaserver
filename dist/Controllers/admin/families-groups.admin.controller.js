@@ -34,8 +34,8 @@ const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGr
 const path = 'Controllers/admin/families-groups.admin.controller';
 async function getFamiliesGroups(req, res) {
     try {
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const query = FamiliesGroupsActions_1.getQueryParamsList(req.query);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
+        const query = (0, FamiliesGroupsActions_1.getQueryParamsList)(req.query);
         const groups = await FamiliesGroups_1.default.find(query, { number: 1, sector: 1, subSector: 1, created_at: 1, })
             .skip(skip)
             .limit(limit)
@@ -47,13 +47,13 @@ async function getFamiliesGroups(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getFamiliesGroups`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getFamiliesGroups`);
     }
 }
 exports.default = getFamiliesGroups;
 async function getFamiliesGroupsCounters(req, res) {
     try {
-        const query = FamiliesGroupsActions_1.getQueryParamsList(req.query);
+        const query = (0, FamiliesGroupsActions_1.getQueryParamsList)(req.query);
         const totals = await FamiliesGroups_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: 'Total de grupos familiares',
@@ -61,35 +61,35 @@ async function getFamiliesGroupsCounters(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getFamiliesGroups`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getFamiliesGroups`);
     }
 }
 exports.getFamiliesGroupsCounters = getFamiliesGroupsCounters;
 async function showFamilyGroup(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return FamiliesGroupsActions_1.returnErrorId(res);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, FamiliesGroupsActions_1.returnErrorId)(res);
         const group = await FamiliesGroups_1.default.findOne({ _id }).exec();
         if (!group)
-            return FamiliesGroupsActions_1.return404(res);
+            return (0, FamiliesGroupsActions_1.return404)(res);
         return res.json({
             msg: 'Grupo Familiar',
-            group: await FamiliesGroupsActions_1.default(group)
+            group: await (0, FamiliesGroupsActions_1.default)(group)
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showFamilyGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showFamilyGroup`);
     }
 }
 exports.showFamilyGroup = showFamilyGroup;
 async function saveFamilyGroup(req, res) {
     try {
-        const validate = FamiliesGroupsRequest_1.default(req.body);
+        const validate = (0, FamiliesGroupsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         // check if exist number in sector and subSector
-        if ((await FamiliesGroupsActions_1.checkIfExistsGroup({
+        if ((await (0, FamiliesGroupsActions_1.checkIfExistsGroup)({
             sector: validate.data.sector,
             subSector: validate.data.subSector,
             number: validate.data.number,
@@ -102,28 +102,28 @@ async function saveFamilyGroup(req, res) {
         await group.save();
         return res.json({
             msg: 'Se ha creado el nuevo grupo exitosamente.',
-            group: await FamiliesGroupsActions_1.default(group)
+            group: await (0, FamiliesGroupsActions_1.default)(group)
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveFamilyGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveFamilyGroup`);
     }
 }
 exports.saveFamilyGroup = saveFamilyGroup;
 async function updateFamilyGroup(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return FamiliesGroupsActions_1.returnErrorId(res);
-        const validate = FamiliesGroupsRequest_1.default(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, FamiliesGroupsActions_1.returnErrorId)(res);
+        const validate = (0, FamiliesGroupsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const group = await FamiliesGroups_1.default.findOne({ _id }, { __v: 0, members: 0, created_at: 0 }).exec();
         if (!group)
-            return FamiliesGroupsActions_1.return404(res);
+            return (0, FamiliesGroupsActions_1.return404)(res);
         if (validate.data.number !== group.number) {
             // check if exist number in sector and subSector
-            if ((await FamiliesGroupsActions_1.checkIfExistsGroup({
+            if ((await (0, FamiliesGroupsActions_1.checkIfExistsGroup)({
                 sector: validate.data.sector,
                 subSector: validate.data.subSector,
                 number: validate.data.number,
@@ -146,29 +146,29 @@ async function updateFamilyGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateFamilyGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateFamilyGroup`);
     }
 }
 exports.updateFamilyGroup = updateFamilyGroup;
 async function updateMembersFamilyGroup(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return FamiliesGroupsActions_1.returnErrorId(res);
-        const validate = FamiliesGroupsRequest_1.validateUpdateMembersForm(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, FamiliesGroupsActions_1.returnErrorId)(res);
+        const validate = (0, FamiliesGroupsRequest_1.validateUpdateMembersForm)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const group = await FamiliesGroups_1.default.findOne({ _id }, { members: 1 }).exec();
         if (!group)
-            return FamiliesGroupsActions_1.return404(res);
+            return (0, FamiliesGroupsActions_1.return404)(res);
         // check if the members of the group was changed
-        if (FamiliesGroupsActions_1.checkIfMembersWasChanged(group.members, validate.data.members) > 0) {
+        if ((0, FamiliesGroupsActions_1.checkIfMembersWasChanged)(group.members, validate.data.members) > 0) {
             const leaderIds = {
                 old: group.members.leaderId,
                 newLeader: validate.data.members.leaderId,
             };
             // remove previous members
-            await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(group.members), group._id.toString(), true);
+            await (0, UsersActions_1.setFamilyGroupIdValueUsers)((0, FamiliesGroupsActions_1.getUsersIdsList)(group.members), group._id.toString(), true);
             // update new members
             group.members.leaderId = validate.data.members.leaderId;
             group.members.assistantsIds = lodash_1.default.uniq(validate.data.members.assistantsIds);
@@ -176,31 +176,31 @@ async function updateMembersFamilyGroup(req, res) {
             group.members.hostId = validate.data.members.hostId;
             group.members.masterId = validate.data.members.masterId;
             await group.save();
-            await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(group.members), group._id.toString());
+            await (0, UsersActions_1.setFamilyGroupIdValueUsers)((0, FamiliesGroupsActions_1.getUsersIdsList)(group.members), group._id.toString());
             // check if group leader have the rol
             if (leaderIds.old)
-                await UsersActions_1.checkLeaderUserRole(leaderIds.old, true);
+                await (0, UsersActions_1.checkLeaderUserRole)(leaderIds.old, true);
             if (leaderIds.newLeader)
-                await UsersActions_1.checkLeaderUserRole(leaderIds.newLeader);
+                await (0, UsersActions_1.checkLeaderUserRole)(leaderIds.newLeader);
         }
         return res.json({
             msg: 'Grupo Familiar',
-            members: await FamiliesGroupsActions_1.getModelFamiliesGroupsMembersDetails(group.members)
+            members: await (0, FamiliesGroupsActions_1.getModelFamiliesGroupsMembersDetails)(group.members)
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateMembersFamilyGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateMembersFamilyGroup`);
     }
 }
 exports.updateMembersFamilyGroup = updateMembersFamilyGroup;
 async function deleteFamilyGroup(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return FamiliesGroupsActions_1.returnErrorId(res);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, FamiliesGroupsActions_1.returnErrorId)(res);
         const group = await FamiliesGroups_1.default.findOne({ _id }).exec();
         if (!group)
-            return FamiliesGroupsActions_1.return404(res);
+            return (0, FamiliesGroupsActions_1.return404)(res);
         // check if exists reports
         const exist = await FamiliesGroupsReports_1.default.find({ familyGroupId: _id }).countDocuments().exec();
         if (exist > 0) {
@@ -209,7 +209,7 @@ async function deleteFamilyGroup(req, res) {
             });
         }
         // remove the 'familyGroupId' from users
-        await UsersActions_1.setFamilyGroupIdValueUsers(FamiliesGroupsActions_1.getUsersIdsList(group.members), group._id.toString(), true);
+        await (0, UsersActions_1.setFamilyGroupIdValueUsers)((0, FamiliesGroupsActions_1.getUsersIdsList)(group.members), group._id.toString(), true);
         // delete
         await group.delete();
         return res.json({
@@ -217,7 +217,7 @@ async function deleteFamilyGroup(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/deleteFamilyGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteFamilyGroup`);
     }
 }
 exports.deleteFamilyGroup = deleteFamilyGroup;

@@ -15,8 +15,8 @@ function validateRegister(data) {
     };
     const errors = [];
     // group name
-    if (!Validations_1.checkTitlesOrDescriptions(data.name)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un nombre correcto para el grupo.', 'name'));
+    if (!(0, Validations_1.checkTitlesOrDescriptions)(data.name)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar un nombre correcto para el grupo.', 'name'));
     }
     else
         ret.name = data.name.trim();
@@ -32,20 +32,20 @@ function validateIdsMembers(data) {
     };
     const errors = [];
     if (!data.members) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n).', 'members'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n).', 'members'));
     }
     else if (data.members && typeof data.members !== 'object') {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero los datos enviados son incorrectos.', 'members'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero los datos enviados son incorrectos.', 'members'));
     }
     else {
         const listIds = lodash_1.default.uniq(data.members);
         const totals = listIds.length || 0;
         if (totals > 0) {
             for (let i = 0; i < totals; i++) {
-                if (Validations_1.checkObjectId(listIds[i]))
+                if ((0, Validations_1.checkObjectId)(listIds[i]))
                     ret.members.push(listIds[i]);
                 else {
-                    errors.push(GlobalFunctions_1.setError('Disculpe, pero alguno de los miembros seleccionados son incorrectos.', 'members'));
+                    errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero alguno de los miembros seleccionados son incorrectos.', 'members'));
                     break;
                 }
             }

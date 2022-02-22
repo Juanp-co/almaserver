@@ -27,12 +27,12 @@ async function getConsolidates(req, res) {
         };
         if (input && input === 'date')
             sort.created_at = value && value === '1' ? 1 : -1;
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            query2.created_at = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            if (Validations_1.checkDate(endDate)) {
-                query.date.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
-                query2.created_at.$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        if (initDate && (0, Validations_1.checkDate)(initDate)) {
+            query.date = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            query2.created_at = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            if ((0, Validations_1.checkDate)(endDate)) {
+                query.date.$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
+                query2.created_at.$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
             }
         }
         const members = await Users_1.default.find({ referred: { $ne: null }, ...query }).exec();
@@ -65,7 +65,7 @@ async function getConsolidates(req, res) {
                 // add to list for the next check
                 if (v.userid && !listToCheck.includes(v.userid))
                     listToCheck.push(v.userid);
-                if (moment_timezone_1.default().diff(moment_timezone_1.default(`${v.date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
+                if ((0, moment_timezone_1.default)().diff((0, moment_timezone_1.default)(`${v.date}`, 'YYYY-MM-DD', true), 'months') >= 1) {
                     if (v.userid && !listIdsPending.includes(v.userid))
                         listIdsPending.push(v.userid);
                 }
@@ -100,16 +100,16 @@ async function getConsolidates(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getConsolidates`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getConsolidates`);
     }
 }
 exports.default = getConsolidates;
 async function saveConsolidateVisit(req, res) {
     try {
         const { tokenId } = req.body;
-        const validate = ConsolidatesFormRequest_1.default(req.body);
+        const validate = (0, ConsolidatesFormRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const visit = new Visits_1.default({
             referred: validate.data.visitor || tokenId,
             userid: validate.data.userId,
@@ -121,7 +121,7 @@ async function saveConsolidateVisit(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveVisit`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveVisit`);
     }
 }
 exports.saveConsolidateVisit = saveConsolidateVisit;
@@ -138,7 +138,7 @@ async function getConsolidatesMembers(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getConsolidatesMembers`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getConsolidatesMembers`);
     }
 }
 exports.getConsolidatesMembers = getConsolidatesMembers;

@@ -13,7 +13,7 @@ async function getReferralsData(listIds) {
         const refsData = await Referrals_1.default.find({ _id: { $in: listIds } }).exec();
         if (refsData.length > 0) {
             const usersIds = lodash_1.default.map(refsData, '_id');
-            const users = await UsersActions_1.getNamesUsersList(usersIds);
+            const users = await (0, UsersActions_1.getNamesUsersList)(usersIds);
             if (users.length > 0) {
                 users.forEach((u) => {
                     const ref = lodash_1.default.find(refsData, r => r._id.toString() === u._id.toString());

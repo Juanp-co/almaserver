@@ -13,8 +13,8 @@ const DevotionalsSchema = new mongoose_1.Schema({
 }, { id: false });
 DevotionalsSchema.set('toJSON', { getters: true });
 DevotionalsSchema.pre('save', function (next) {
-    this.updated_at = GlobalFunctions_1.setDate();
+    this.updated_at = (0, GlobalFunctions_1.setDate)();
     next();
 });
-const Devotionals = mongoose_1.model('devotionals', DevotionalsSchema);
+const Devotionals = (0, mongoose_1.model)('devotionals', DevotionalsSchema);
 exports.default = Devotionals;

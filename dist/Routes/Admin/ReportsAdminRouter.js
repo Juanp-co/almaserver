@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../../middleware");
 const reports_admin_controller_1 = __importStar(require("../../Controllers/admin/reports.admin.controller"));
-const router = express_1.Router();
+const router = (0, express_1.Router)();
 /*
   Reports
 */

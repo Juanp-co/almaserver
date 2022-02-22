@@ -20,8 +20,8 @@ const path = 'Controllers/admin/users.admin.controller';
 async function getUsers(req, res) {
     try {
         const { tokenId } = req.body;
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const query = UsersActions_1.checkFindValueSearch(req.query, tokenId);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
+        const query = (0, UsersActions_1.checkFindValueSearch)(req.query, tokenId);
         const users = await Users_1.default.find(query, {
             names: 1,
             lastNames: 1,
@@ -42,14 +42,14 @@ async function getUsers(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getUsers`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getUsers`);
     }
 }
 exports.default = getUsers;
 async function getUsersCounters(req, res) {
     try {
         const { tokenId } = req.body;
-        const query = UsersActions_1.checkFindValueSearch(req.query, tokenId);
+        const query = (0, UsersActions_1.checkFindValueSearch)(req.query, tokenId);
         const totals = await Users_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: `Total miembros.`,
@@ -57,7 +57,7 @@ async function getUsersCounters(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getUsersCounters`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getUsersCounters`);
     }
 }
 exports.getUsersCounters = getUsersCounters;
@@ -96,18 +96,18 @@ async function downLoadData(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getUsersCounters`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getUsersCounters`);
     }
 }
 exports.downLoadData = downLoadData;
 async function saveUser(req, res) {
     try {
         const { tokenRoles } = req.body;
-        if (!UsersActions_1.checkRoleToActions(tokenRoles))
-            return UsersActions_1.responseUsersAdmin(res, 3);
-        const validate = await UsersRequest_1.validateFormMemberRegisterAdmin(req.body);
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
+        const validate = await (0, UsersRequest_1.validateFormMemberRegisterAdmin)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const user = new Users_1.default(validate.data);
         const password = 'alma1234'; // default password
         user.password = bcrypt_1.default.hashSync(password, 10);
@@ -123,32 +123,32 @@ async function saveUser(req, res) {
             }
         }
         // save currents courses
-        await CoursesActions_1.addCoursesToUser(user._id.toString());
+        await (0, CoursesActions_1.addCoursesToUser)(user._id.toString());
         return res.status(201).json({
             msg: `Se ha registrado el nuevo miembro exitosamente.`,
             password
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveUser`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveUser`);
     }
 }
 exports.saveUser = saveUser;
 async function showUser(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return UsersActions_1.responseUsersAdmin(res, 0);
-        const user = await UsersActions_1.getUserData(_id);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 0);
+        const user = await (0, UsersActions_1.getUserData)(_id);
         if (!user)
-            return UsersActions_1.responseUsersAdmin(res, 1);
+            return (0, UsersActions_1.responseUsersAdmin)(res, 1);
         return res.json({
             msg: `Detalles del miembro.`,
             user
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showUser`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showUser`);
     }
 }
 exports.showUser = showUser;
@@ -156,16 +156,16 @@ async function updateUser(req, res) {
     try {
         const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(tokenRoles))
-            return UsersActions_1.responseUsersAdmin(res, 3);
-        if (!Validations_1.checkObjectId(_id))
-            return UsersActions_1.responseUsersAdmin(res, 0);
-        const validate = await UsersRequest_1.validateUpdate(req.body, _id, true);
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 0);
+        const validate = await (0, UsersRequest_1.validateUpdate)(req.body, _id, true);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const user = await Users_1.default.findOne({ _id }, { __v: 0, password: 0, referred: 0 }).exec();
         if (!user)
-            return UsersActions_1.responseUsersAdmin(res, 1);
+            return (0, UsersActions_1.responseUsersAdmin)(res, 1);
         user.phone = validate.data.phone || user.phone;
         user.document = validate.data.document || user.document;
         user.email = validate.data.email || user.email;
@@ -193,34 +193,34 @@ async function updateUser(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateUser`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateUser`);
     }
 }
 exports.updateUser = updateUser;
 async function changeRoleUser(req, res) {
     try {
         const { tokenRoles } = req.body;
-        if (!GlobalFunctions_1.checkIfExistsRoleInList(tokenRoles, [0, 1]))
-            return UsersActions_1.responseUsersAdmin(res, 3);
+        if (!(0, GlobalFunctions_1.checkIfExistsRoleInList)(tokenRoles, [0, 1]))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return UsersActions_1.responseUsersAdmin(res, 0);
-        const validate = UsersRequest_1.validateRolesToUpdateForm(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 0);
+        const validate = (0, UsersRequest_1.validateRolesToUpdateForm)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const user = await Users_1.default.findOne({ _id }, { roles: 1 }).exec();
         if (!user)
-            return UsersActions_1.responseUsersAdmin(res, 1);
+            return (0, UsersActions_1.responseUsersAdmin)(res, 1);
         user.roles = validate.data.roles;
         await user.save();
         // disconnect user
-        await TokenActions_1.disableTokenDBForUserId([_id]);
+        await (0, TokenActions_1.disableTokenDBForUserId)([_id]);
         return res.json({
             msg: `Se asignado el nuevo rol al miembro exitosamente.`
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/changeRoleUser`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/changeRoleUser`);
     }
 }
 exports.changeRoleUser = changeRoleUser;
@@ -228,18 +228,18 @@ async function deleteUser(req, res) {
     try {
         const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(tokenRoles))
-            return UsersActions_1.responseUsersAdmin(res, 3);
-        if (!Validations_1.checkObjectId(_id))
-            return UsersActions_1.responseUsersAdmin(res, 0);
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 0);
         const user = await Users_1.default.findOne({ _id }, { __v: 0 }).exec();
         if (!user)
-            return UsersActions_1.responseUsersAdmin(res, 1);
+            return (0, UsersActions_1.responseUsersAdmin)(res, 1);
         // checking if the user to delete is admin and if the session user also admin
-        const check1 = GlobalFunctions_1.checkIfExistsRoleInList(user.roles, [0]);
-        const check2 = GlobalFunctions_1.checkIfExistsRoleInList(tokenRoles, [0]);
+        const check1 = (0, GlobalFunctions_1.checkIfExistsRoleInList)(user.roles, [0]);
+        const check2 = (0, GlobalFunctions_1.checkIfExistsRoleInList)(tokenRoles, [0]);
         if (check1 && !check2)
-            return UsersActions_1.responseUsersAdmin(res, 3);
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
         // delete all data
         const groups = await Groups_1.default.find({ members: _id }).exec();
         const referrals = await Referrals_1.default.find({ members: _id }).exec();
@@ -259,14 +259,14 @@ async function deleteUser(req, res) {
         }
         await CoursesUsers_1.default.deleteMany({ userid: _id }).exec();
         await Referrals_1.default.deleteMany({ _id }).exec();
-        await TokenActions_1.disableTokenDBForUserId([_id]);
+        await (0, TokenActions_1.disableTokenDBForUserId)([_id]);
         await user.delete();
         return res.json({
             msg: `Se ha eliminado el miembro exitosamente.`
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/deleteUser`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteUser`);
     }
 }
 exports.deleteUser = deleteUser;
@@ -274,20 +274,20 @@ async function getCoursesUser(req, res) {
     try {
         const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(tokenRoles))
-            return UsersActions_1.responseUsersAdmin(res, 3);
-        if (!Validations_1.checkObjectId(_id))
-            return UsersActions_1.responseUsersAdmin(res, 0);
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 0);
         const user = await Users_1.default.findOne({ _id }, { __v: 0 }).exec();
         if (!user)
-            return UsersActions_1.responseUsersAdmin(res, 1);
+            return (0, UsersActions_1.responseUsersAdmin)(res, 1);
         // get all referrals
         const ret = [];
         let courses = [];
         const coursesData = await CoursesUsers_1.default.findOne({ userid: _id }, { 'courses.courseId': 1, 'courses.approved': 1 }).exec();
         if (coursesData) {
             const listIdsCourses = coursesData.courses.length > 0 ? coursesData.courses.map(cd => cd.courseId) : [];
-            courses = await CoursesActions_1.getCoursesSimpleList(listIdsCourses || []);
+            courses = await (0, CoursesActions_1.getCoursesSimpleList)(listIdsCourses || []);
             if (courses.length > 0) {
                 for (const c of coursesData.courses) {
                     const index = courses.findIndex(co => co._id.toString() === c.courseId);
@@ -311,7 +311,7 @@ async function getCoursesUser(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getCoursesUser`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getCoursesUser`);
     }
 }
 exports.getCoursesUser = getCoursesUser;
@@ -319,13 +319,13 @@ async function getReferralsUser(req, res) {
     try {
         const { tokenRoles } = req.body;
         const { _id } = req.params;
-        if (!UsersActions_1.checkRoleToActions(tokenRoles))
-            return UsersActions_1.responseUsersAdmin(res, 3);
-        if (!Validations_1.checkObjectId(_id))
-            return UsersActions_1.responseUsersAdmin(res, 0);
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 0);
         const user = await Users_1.default.findOne({ _id }, { __v: 0 }).exec();
         if (!user)
-            return UsersActions_1.responseUsersAdmin(res, 1);
+            return (0, UsersActions_1.responseUsersAdmin)(res, 1);
         // get all referrals
         const ret = [];
         let referred = await Referrals_1.default.findOne({ _id }).exec();
@@ -334,7 +334,7 @@ async function getReferralsUser(req, res) {
             await referred.save();
         }
         if (referred.members.length > 0) {
-            const referrals = await UsersActions_1.getNamesUsersList(referred.members);
+            const referrals = await (0, UsersActions_1.getNamesUsersList)(referred.members);
             if (referrals.length > 0) {
                 const refMembers = await Referrals_1.default.find({ _id: { $in: referred.members } }).exec();
                 const existRefsMembers = refMembers.length > 0;
@@ -358,7 +358,7 @@ async function getReferralsUser(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReferralsUser`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getReferralsUser`);
     }
 }
 exports.getReferralsUser = getReferralsUser;

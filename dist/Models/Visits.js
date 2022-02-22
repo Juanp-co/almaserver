@@ -11,5 +11,5 @@ const VisitsSchema = new mongoose_1.Schema({
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
 VisitsSchema.set('toJSON', { getters: true });
-const Visits = mongoose_1.model('visits', VisitsSchema);
+const Visits = (0, mongoose_1.model)('visits', VisitsSchema);
 exports.default = Visits;

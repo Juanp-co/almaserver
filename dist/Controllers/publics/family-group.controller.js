@@ -38,7 +38,7 @@ async function getFamiliesGroups(req, res) {
         let ret = [];
         const user = await Users_1.default.findOne({ _id: tokenId }, { familyGroupId: 1 }).exec();
         if (!user)
-            return FamiliesGroupsActions_1.returnFamilyGroup404(res);
+            return (0, FamiliesGroupsActions_1.returnFamilyGroup404)(res);
         if (user.familyGroupId && user.familyGroupId.length > 0) {
             const groups = await FamiliesGroups_1.default.find({ _id: { $in: user.familyGroupId } }, { number: 1, sector: 1, subSector: 1, direction: 1, members: 1, location: 1, created_at: 1, })
                 .sort({ sector: 1, subSector: 1, number: 1 })
@@ -65,7 +65,7 @@ async function getFamiliesGroups(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReports`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getReports`);
     }
 }
 exports.default = getFamiliesGroups;
@@ -105,7 +105,7 @@ async function getFamiliesGroupsPublic(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReports`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getReports`);
     }
 }
 exports.getFamiliesGroupsPublic = getFamiliesGroupsPublic;
@@ -113,20 +113,20 @@ async function showFamilyGroup(req, res) {
     try {
         const { _id } = req.params;
         const { tokenId } = req.body;
-        if (!Validations_1.checkObjectId(_id))
-            return FamiliesGroupsActions_1.returnErrorId(res);
-        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(tokenId, _id)))
-            return FamiliesGroupsActions_1.returnFamilyGroup404(res);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, FamiliesGroupsActions_1.returnErrorId)(res);
+        if (!(await (0, FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup)(tokenId, _id)))
+            return (0, FamiliesGroupsActions_1.returnFamilyGroup404)(res);
         const group = await FamiliesGroups_1.default.findOne({ _id }).exec();
         if (!group)
-            return FamiliesGroupsActions_1.return404(res);
+            return (0, FamiliesGroupsActions_1.return404)(res);
         return res.json({
             msg: 'Grupo Familiar',
-            group: await FamiliesGroupsActions_1.default(group)
+            group: await (0, FamiliesGroupsActions_1.default)(group)
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReports`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getReports`);
     }
 }
 exports.showFamilyGroup = showFamilyGroup;
@@ -134,13 +134,13 @@ async function saveFamilyGroupReport(req, res) {
     try {
         const { _id } = req.params;
         const { tokenId } = req.body;
-        if (!Validations_1.checkObjectId(_id))
-            return FamiliesGroupsActions_1.returnErrorId(res);
-        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(tokenId, _id)))
-            return FamiliesGroupsActions_1.returnFamilyGroup404(res);
-        const validate = FamiliesGroupsReportsRequest_1.default(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, FamiliesGroupsActions_1.returnErrorId)(res);
+        if (!(await (0, FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup)(tokenId, _id)))
+            return (0, FamiliesGroupsActions_1.returnFamilyGroup404)(res);
+        const validate = (0, FamiliesGroupsReportsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const r = new FamiliesGroupsReports_1.default({
             familyGroupId: _id,
             userid: tokenId,
@@ -153,7 +153,7 @@ async function saveFamilyGroupReport(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveReport`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveReport`);
     }
 }
 exports.saveFamilyGroupReport = saveFamilyGroupReport;
@@ -161,25 +161,25 @@ async function reportsFamilyGroup(req, res) {
     try {
         const { _id } = req.params;
         const { tokenId } = req.body;
-        if (!Validations_1.checkObjectId(_id))
-            return FamiliesGroupsActions_1.returnErrorId(res);
-        if (!(await FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup(tokenId, _id)))
-            return FamiliesGroupsActions_1.returnFamilyGroup404(res);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, FamiliesGroupsActions_1.returnErrorId)(res);
+        if (!(await (0, FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup)(tokenId, _id)))
+            return (0, FamiliesGroupsActions_1.returnFamilyGroup404)(res);
         const { initDate, endDate } = req.query;
         const query = {};
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query['report.date'] = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
-            if (Validations_1.checkDate(endDate))
-                query['report.date'].$lt = moment_timezone_1.default(`${endDate}`).endOf('d').unix();
+        if (initDate && (0, Validations_1.checkDate)(initDate)) {
+            query['report.date'] = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
+            if ((0, Validations_1.checkDate)(endDate))
+                query['report.date'].$lt = (0, moment_timezone_1.default)(`${endDate}`).endOf('d').unix();
         }
-        const data = await FamiliesGroupsActions_1.getReportsFamilyGroup(query);
+        const data = await (0, FamiliesGroupsActions_1.getReportsFamilyGroup)(query);
         return res.json({
             msg: 'Reporte del grupo familiar',
             data
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/reportsFamilyGroup`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/reportsFamilyGroup`);
     }
 }
 exports.reportsFamilyGroup = reportsFamilyGroup;

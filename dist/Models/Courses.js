@@ -50,12 +50,12 @@ const CoursesSchema = new mongoose_1.Schema({
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
 CoursesSchema.pre('save', function (next) {
-    this.updated_at = GlobalFunctions_1.setDate();
+    this.updated_at = (0, GlobalFunctions_1.setDate)();
     next();
 });
 QuizSchema.set('toJSON', { getters: true });
 TemarySchema.set('toJSON', { getters: true });
 CoursesSchema.set('toJSON', { getters: true });
 CoursesSchema.index({ slug: 1, level: 1 });
-const Courses = mongoose_1.model('course', CoursesSchema);
+const Courses = (0, mongoose_1.model)('course', CoursesSchema);
 exports.default = Courses;

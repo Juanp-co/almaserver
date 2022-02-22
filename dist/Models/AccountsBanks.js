@@ -14,5 +14,5 @@ const AccountBankSchema = new mongoose_1.Schema({
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
 AccountBankSchema.set('toJSON', { getters: true });
-const AccountsBanks = mongoose_1.model('accounts_banks', AccountBankSchema);
+const AccountsBanks = (0, mongoose_1.model)('accounts_banks', AccountBankSchema);
 exports.default = AccountsBanks;

@@ -36,63 +36,63 @@ async function getEvents(req, res) {
     try {
         const { tokenId } = req.body;
         const { initDate, endDate } = req.query;
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
         const query = {};
         if (!req.body.superadmin)
             query.userid = tokenId;
-        if (Validations_1.checkDate(initDate)) {
-            query.date = { $gte: moment_timezone_1.default(`${initDate}`, 'YYYY-MM-DD', true).startOf('d').unix() };
+        if ((0, Validations_1.checkDate)(initDate)) {
+            query.date = { $gte: (0, moment_timezone_1.default)(`${initDate}`, 'YYYY-MM-DD', true).startOf('d').unix() };
         }
         return res.json({
             msg: `Eventos.`,
-            events: await EventsActions_1.default({ skip, limit, sort, endDate, query })
+            events: await (0, EventsActions_1.default)({ skip, limit, sort, endDate, query })
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getEvents`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getEvents`);
     }
 }
 exports.default = getEvents;
 async function showEvent(req, res) {
     try {
         const { _id, tokenId } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res, 0);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, EventsActions_1.return404Or422)(res, 0);
         const query = { _id };
         if (!req.body.superadmin)
             query.userid = tokenId;
-        const event = await EventsActions_1.getDetailsEvent({ query });
+        const event = await (0, EventsActions_1.getDetailsEvent)({ query });
         if (!event)
-            return EventsActions_1.return404Or422(res, 1);
+            return (0, EventsActions_1.return404Or422)(res, 1);
         return res.json({
             msg: `Evento.`,
             event
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showEvent`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showEvent`);
     }
 }
 exports.showEvent = showEvent;
 async function saveEvent(req, res) {
     try {
         const { tokenId } = req.body;
-        const validate = EventsRequest_1.default(req.body);
+        const validate = (0, EventsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const event = new Events_1.default(validate.data);
         event.userid = tokenId;
-        const user = await UsersActions_1.getNamesUsersList([tokenId]);
+        const user = await (0, UsersActions_1.getNamesUsersList)([tokenId]);
         if (validate.data.picture) {
             const s3 = process.env.AWS_S3_BUCKET || null;
             if (!s3)
-                return EventsActions_1.return404Or422(res, 2);
-            if (Validations_1.isBase64(validate.data.picture)) {
-                const newUrl = `alma/events/event-${event._id.toString()}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
-                await AWSService_1.default(newUrl, validate.data.picture);
+                return (0, EventsActions_1.return404Or422)(res, 2);
+            if ((0, Validations_1.isBase64)(validate.data.picture)) {
+                const newUrl = `alma/events/event-${event._id.toString()}-${(0, moment_timezone_1.default)().tz('America/Bogota').unix()}`;
+                await (0, AWSService_1.default)(newUrl, validate.data.picture);
                 event.picture = `${s3}/${newUrl}.jpg`;
             }
-            else if (Validations_1.checkUrl(validate.data.picture)) {
+            else if ((0, Validations_1.checkUrl)(validate.data.picture)) {
                 event.picture = validate.data.picture;
             }
         }
@@ -113,7 +113,7 @@ async function saveEvent(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveEvent`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveEvent`);
     }
 }
 exports.saveEvent = saveEvent;
@@ -121,17 +121,17 @@ async function updateEvent(req, res) {
     try {
         const { _id } = req.params;
         const { tokenId } = req.body;
-        if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res, 0);
-        const validate = EventsRequest_1.default(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, EventsActions_1.return404Or422)(res, 0);
+        const validate = (0, EventsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const query = { _id };
         if (!req.body.superadmin)
             query.userid = tokenId;
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (!event)
-            return EventsActions_1.return404Or422(res, 1);
+            return (0, EventsActions_1.return404Or422)(res, 1);
         event.title = validate.data.title;
         event.description = validate.data.description;
         event.date = validate.data.date;
@@ -141,15 +141,15 @@ async function updateEvent(req, res) {
         if (event.picture !== validate.data.picture) {
             const s3 = process.env.AWS_S3_BUCKET || null;
             if (!s3)
-                return EventsActions_1.return404Or422(res, 2);
+                return (0, EventsActions_1.return404Or422)(res, 2);
             if (event.picture !== null && event.picture.indexOf(`${s3}`))
-                await AWSService_1.deleteFile(event.picture);
-            if (Validations_1.isBase64(validate.data.picture)) {
-                const newUrl = `alma/events/event-${_id}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
-                await AWSService_1.default(newUrl, validate.data.picture);
+                await (0, AWSService_1.deleteFile)(event.picture);
+            if ((0, Validations_1.isBase64)(validate.data.picture)) {
+                const newUrl = `alma/events/event-${_id}-${(0, moment_timezone_1.default)().tz('America/Bogota').unix()}`;
+                await (0, AWSService_1.default)(newUrl, validate.data.picture);
                 event.picture = `${s3}/${newUrl}.jpg`;
             }
-            else if (Validations_1.checkUrl(validate.data.picture)) {
+            else if ((0, Validations_1.checkUrl)(validate.data.picture)) {
                 event.picture = validate.data.picture;
             }
             else
@@ -171,7 +171,7 @@ async function updateEvent(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateEvent`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateEvent`);
     }
 }
 exports.updateEvent = updateEvent;
@@ -179,26 +179,26 @@ async function deleteEvent(req, res) {
     try {
         const { _id } = req.params;
         const { tokenId } = req.body;
-        if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res, 0);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, EventsActions_1.return404Or422)(res, 0);
         const query = { _id };
         if (!req.body.superadmin)
             query.userid = tokenId;
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (!event)
-            return EventsActions_1.return404Or422(res, 1);
+            return (0, EventsActions_1.return404Or422)(res, 1);
         const s3 = process.env.AWS_S3_BUCKET || null;
         if (!s3)
-            return EventsActions_1.return404Or422(res, 2);
+            return (0, EventsActions_1.return404Or422)(res, 2);
         if (event.picture !== null && event.picture.indexOf(`${s3}`))
-            await AWSService_1.deleteFile(event.picture);
+            await (0, AWSService_1.deleteFile)(event.picture);
         await event.delete();
         return res.json({
             msg: `Se ha eliminado el evento exitosamente.`,
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/deleteEvent`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteEvent`);
     }
 }
 exports.deleteEvent = deleteEvent;
@@ -208,18 +208,18 @@ exports.deleteEvent = deleteEvent;
 async function getPublicEvents(req, res) {
     try {
         const { initDate, endDate } = req.query;
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
         const query = {};
-        if (initDate && Validations_1.checkDate(initDate)) {
-            query.date = { $gte: moment_timezone_1.default(`${initDate}`).startOf('d').unix() };
+        if (initDate && (0, Validations_1.checkDate)(initDate)) {
+            query.date = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
         }
         return res.json({
             msg: `Eventos.`,
-            events: await EventsActions_1.default({ skip, limit, sort, endDate, query })
+            events: await (0, EventsActions_1.default)({ skip, limit, sort, endDate, query })
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getEvents`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getEvents`);
     }
 }
 exports.getPublicEvents = getPublicEvents;
@@ -227,18 +227,18 @@ async function showPublicEvent(req, res) {
     try {
         const { _id } = req.params;
         const query = { _id };
-        if (!Validations_1.checkObjectId(_id))
-            return EventsActions_1.return404Or422(res, 0);
-        const event = await EventsActions_1.getDetailsEvent({ query });
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, EventsActions_1.return404Or422)(res, 0);
+        const event = await (0, EventsActions_1.getDetailsEvent)({ query });
         if (!event)
-            return EventsActions_1.return404Or422(res, 1);
+            return (0, EventsActions_1.return404Or422)(res, 1);
         return res.json({
             msg: `Evento.`,
             event
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showEvent`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showEvent`);
     }
 }
 exports.showPublicEvent = showPublicEvent;

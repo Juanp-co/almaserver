@@ -46,7 +46,7 @@ async function getSettings(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getSettings`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getSettings`);
     }
 }
 exports.default = getSettings;
@@ -60,8 +60,8 @@ async function updateSettingsUrls(req, res) {
             youtube: 1,
         }).exec();
         if (!settings)
-            return SettingsActions_1.return404Or422Settings(res, 0);
-        const validate = SettingsRequest_1.default(req.body);
+            return (0, SettingsActions_1.return404Or422Settings)(res, 0);
+        const validate = (0, SettingsRequest_1.default)(req.body);
         if (validate.errors.length > 0) {
             return res.status(422).json({
                 msg: `¡Error en los parámetros!`,
@@ -80,7 +80,7 @@ async function updateSettingsUrls(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getSettings`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getSettings`);
     }
 }
 exports.updateSettingsUrls = updateSettingsUrls;
@@ -90,17 +90,17 @@ async function addLogoOrBannerSetting(req, res, type) {
         const projection = type === 'logos' ? { logos: 1 } : { banners: 1 };
         const settings = await Settings_1.default.findOne({}, projection).exec();
         if (!settings)
-            return SettingsActions_1.return404Or422Settings(res, 0);
-        const validate = SettingsRequest_1.validateUpdateLogosOrBannersSettings(req.body);
+            return (0, SettingsActions_1.return404Or422Settings)(res, 0);
+        const validate = (0, SettingsRequest_1.validateUpdateLogosOrBannersSettings)(req.body);
         if (validate.errors.length > 0) {
             return res.status(422).json({
                 msg: `¡Error en los parámetros!`,
                 errors: validate.errors || []
             });
         }
-        const url = await SettingsActions_1.uploadLogoOrBanner(validate.data.picture, type === 'logos');
+        const url = await (0, SettingsActions_1.uploadLogoOrBanner)(validate.data.picture, type === 'logos');
         if (!url)
-            return SettingsActions_1.return404Or422Settings(res, 1);
+            return (0, SettingsActions_1.return404Or422Settings)(res, 1);
         validate.data.picture = url;
         if (validate.data.active) {
             for (const [index, _] of settings[type].entries()) {
@@ -115,7 +115,7 @@ async function addLogoOrBannerSetting(req, res, type) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/addLogoOrBannerSetting`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/addLogoOrBannerSetting`);
     }
 }
 exports.addLogoOrBannerSetting = addLogoOrBannerSetting;
@@ -125,15 +125,15 @@ async function changeStatusLogoOrBannerSetting(req, res, type) {
         const projection = type === 'logos' ? { logos: 1 } : { banners: 1 };
         const { _id, action } = req.params;
         if (!['active', 'disable'].includes(action))
-            return SettingsActions_1.return404Or422Settings(res, 3);
-        if (!Validations_1.checkObjectId(_id))
-            return SettingsActions_1.return404Or422Settings(res, type === 'logos' ? 2 : 5);
+            return (0, SettingsActions_1.return404Or422Settings)(res, 3);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, SettingsActions_1.return404Or422Settings)(res, type === 'logos' ? 2 : 5);
         const settings = await Settings_1.default.findOne({}, projection).exec();
         if (!settings)
-            return SettingsActions_1.return404Or422Settings(res, 0);
+            return (0, SettingsActions_1.return404Or422Settings)(res, 0);
         const indexId = (_a = settings[type]) === null || _a === void 0 ? void 0 : _a.findIndex((l) => l._id.toString() === _id);
         if (indexId === -1)
-            return SettingsActions_1.return404Or422Settings(res, type === 'logos' ? 4 : 6);
+            return (0, SettingsActions_1.return404Or422Settings)(res, type === 'logos' ? 4 : 6);
         for (const [index, _] of settings[type].entries()) {
             if (index !== indexId)
                 settings[type][index].active = false;
@@ -147,7 +147,7 @@ async function changeStatusLogoOrBannerSetting(req, res, type) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/changeStatusLogoOrBannerSetting`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/changeStatusLogoOrBannerSetting`);
     }
 }
 exports.changeStatusLogoOrBannerSetting = changeStatusLogoOrBannerSetting;
@@ -156,16 +156,16 @@ async function removeLogoOrBannerSettings(req, res, type) {
     try {
         const projection = type === 'logos' ? { logos: 1 } : { banners: 1 };
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return SettingsActions_1.return404Or422Settings(res, type === 'logos' ? 2 : 5);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, SettingsActions_1.return404Or422Settings)(res, type === 'logos' ? 2 : 5);
         const settings = await Settings_1.default.findOne({}, projection).exec();
         if (!settings)
-            return SettingsActions_1.return404Or422Settings(res, 0);
+            return (0, SettingsActions_1.return404Or422Settings)(res, 0);
         const index = (_a = settings[type]) === null || _a === void 0 ? void 0 : _a.findIndex((l) => l._id.toString() === _id);
         if (index === -1)
-            return SettingsActions_1.return404Or422Settings(res, type === 'logos' ? 4 : 6);
+            return (0, SettingsActions_1.return404Or422Settings)(res, type === 'logos' ? 4 : 6);
         // delete picture of s3
-        AWSService_1.deleteFile(settings[type][index].picture);
+        (0, AWSService_1.deleteFile)(settings[type][index].picture);
         settings[type].pull({ _id });
         await settings.save();
         return res.json({
@@ -173,7 +173,7 @@ async function removeLogoOrBannerSettings(req, res, type) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/removeLogoOrBannerSettings`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/removeLogoOrBannerSettings`);
     }
 }
 exports.removeLogoOrBannerSettings = removeLogoOrBannerSettings;
