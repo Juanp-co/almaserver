@@ -33,8 +33,8 @@ const AWSService_1 = __importStar(require("../../Services/AWSService"));
 const path = 'Controllers/events/devotionals.controller';
 async function getDevotionals(req, res) {
     try {
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
-        const query = DevotionalsActions_1.getQueryParamsList(req.query);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
+        const query = (0, DevotionalsActions_1.getQueryParamsList)(req.query);
         const devotionals = await Devotionals_1.default.find(query, { description: 0, urlVideo: 0, __v: 0 })
             .skip(skip)
             .limit(limit)
@@ -42,17 +42,17 @@ async function getDevotionals(req, res) {
             .exec();
         return res.json({
             msg: `Devocionales.`,
-            devotionals: await DevotionalsActions_1.getModelDataListDevotionals(devotionals)
+            devotionals: await (0, DevotionalsActions_1.getModelDataListDevotionals)(devotionals)
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getDevotionals`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getDevotionals`);
     }
 }
 exports.default = getDevotionals;
 async function getTotalsDevotionals(req, res) {
     try {
-        const query = DevotionalsActions_1.getQueryParamsList(req.query);
+        const query = (0, DevotionalsActions_1.getQueryParamsList)(req.query);
         const totals = await Devotionals_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: `Total de devocionales.`,
@@ -60,53 +60,53 @@ async function getTotalsDevotionals(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getTotalsDevotionals`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getTotalsDevotionals`);
     }
 }
 exports.getTotalsDevotionals = getTotalsDevotionals;
 async function showDevotional(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return DevotionalsActions_1.default(res, 1);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, DevotionalsActions_1.default)(res, 1);
         const devotional = await Devotionals_1.default.findOne({ _id }, { __v: 0 }).exec();
         if (!devotional)
-            return DevotionalsActions_1.default(res, 0);
-        const ret = await DevotionalsActions_1.getModelDataListDevotionals([devotional], false);
+            return (0, DevotionalsActions_1.default)(res, 0);
+        const ret = await (0, DevotionalsActions_1.getModelDataListDevotionals)([devotional], false);
         return res.json({
             msg: `Detalles del devocional.`,
             devotional: ret[0] || null
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showDevotional`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showDevotional`);
     }
 }
 exports.showDevotional = showDevotional;
 async function updateDevotional(req, res) {
     try {
         const { _id } = req.params;
-        const validate = DevotionalsRequest_1.default(req.body);
-        if (!Validations_1.checkObjectId(_id))
-            return DevotionalsActions_1.default(res, 1);
+        const validate = (0, DevotionalsRequest_1.default)(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, DevotionalsActions_1.default)(res, 1);
         if (validate.errors.length > 0)
-            return DevotionalsActions_1.default(res, 2, validate.errors);
+            return (0, DevotionalsActions_1.default)(res, 2, validate.errors);
         const devotional = await Devotionals_1.default.findOne({ _id }, { __v: 0 }).exec();
         if (!devotional)
-            return DevotionalsActions_1.default(res, 0);
+            return (0, DevotionalsActions_1.default)(res, 0);
         if (validate.data.picture !== devotional.picture) {
             if (validate.data.picture) {
                 const s3 = process.env.AWS_S3_BUCKET || null;
                 if (!s3)
-                    return DevotionalsActions_1.default(res, 3);
+                    return (0, DevotionalsActions_1.default)(res, 3);
                 if (devotional.picture !== null && devotional.picture.indexOf(`${s3}`))
-                    await AWSService_1.deleteFile(devotional.picture);
-                if (Validations_1.isBase64(validate.data.picture)) {
-                    const newUrl = `alma/devotionals/devotional-${devotional._id.toString()}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
-                    await AWSService_1.default(newUrl, validate.data.picture);
+                    await (0, AWSService_1.deleteFile)(devotional.picture);
+                if ((0, Validations_1.isBase64)(validate.data.picture)) {
+                    const newUrl = `alma/devotionals/devotional-${devotional._id.toString()}-${(0, moment_timezone_1.default)().tz('America/Bogota').unix()}`;
+                    await (0, AWSService_1.default)(newUrl, validate.data.picture);
                     devotional.picture = `${s3}/${newUrl}.jpg`;
                 }
-                else if (Validations_1.checkUrl(validate.data.picture)) {
+                else if ((0, Validations_1.checkUrl)(validate.data.picture)) {
                     devotional.picture = validate.data.picture;
                 }
             }
@@ -123,40 +123,40 @@ async function updateDevotional(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateDevotional`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateDevotional`);
     }
 }
 exports.updateDevotional = updateDevotional;
 async function saveDevotional(req, res) {
     try {
         const { tokenId } = req.body;
-        const validate = DevotionalsRequest_1.default(req.body);
+        const validate = (0, DevotionalsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return DevotionalsActions_1.default(res, 2, validate.errors);
+            return (0, DevotionalsActions_1.default)(res, 2, validate.errors);
         const devotional = new Devotionals_1.default(validate.data);
         devotional.userid = tokenId;
         if (validate.data.picture) {
-            if (Validations_1.isBase64(validate.data.picture)) {
+            if ((0, Validations_1.isBase64)(validate.data.picture)) {
                 const s3 = process.env.AWS_S3_BUCKET || null;
                 if (!s3)
-                    return DevotionalsActions_1.default(res, 3);
-                const newUrl = `alma/devotionals/devotional-${devotional._id.toString()}-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
-                await AWSService_1.default(newUrl, validate.data.picture);
+                    return (0, DevotionalsActions_1.default)(res, 3);
+                const newUrl = `alma/devotionals/devotional-${devotional._id.toString()}-${(0, moment_timezone_1.default)().tz('America/Bogota').unix()}`;
+                await (0, AWSService_1.default)(newUrl, validate.data.picture);
                 devotional.picture = `${s3}/${newUrl}.jpg`;
             }
-            else if (Validations_1.checkUrl(validate.data.picture)) {
+            else if ((0, Validations_1.checkUrl)(validate.data.picture)) {
                 devotional.picture = validate.data.picture;
             }
         }
         await devotional.save();
-        const ret = await DevotionalsActions_1.getModelDataListDevotionals([devotional], false);
+        const ret = await (0, DevotionalsActions_1.getModelDataListDevotionals)([devotional], false);
         return res.json({
             msg: `Se registrado el devocional exitosamente.`,
             devotional: ret[0] || null
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveDevotional`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveDevotional`);
     }
 }
 exports.saveDevotional = saveDevotional;
@@ -164,14 +164,14 @@ async function deleteDevotional(req, res) {
     var _a;
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return DevotionalsActions_1.default(res, 1);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, DevotionalsActions_1.default)(res, 1);
         const devotional = await Devotionals_1.default.findOne({ _id }, { _id: 1, picture: 1 }).exec();
         if (!devotional)
-            return DevotionalsActions_1.default(res, 0);
+            return (0, DevotionalsActions_1.default)(res, 0);
         const s3 = process.env.AWS_S3_BUCKET || null;
         if (devotional.picture && ((_a = devotional.picture) === null || _a === void 0 ? void 0 : _a.indexOf(`${s3}`)) > -1)
-            AWSService_1.deleteFile(devotional.picture);
+            (0, AWSService_1.deleteFile)(devotional.picture);
         // delete
         await devotional.delete();
         return res.json({
@@ -179,7 +179,7 @@ async function deleteDevotional(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/deleteDevotional`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteDevotional`);
     }
 }
 exports.deleteDevotional = deleteDevotional;

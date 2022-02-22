@@ -46,16 +46,16 @@ Actions Users
  */
 async function register(req, res) {
     try {
-        const validate = await UsersRequest_1.default(req.body);
+        const validate = await (0, UsersRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const user = new Users_1.default(validate.data);
         user.password = bcrypt_1.default.hashSync(user.password, 10);
         await user.save();
         // create referrals document
         const referrals = new Referrals_1.default({ _id: user._id });
         await referrals.save();
-        await CoursesActions_1.addCoursesToUser(user._id.toString());
+        await (0, CoursesActions_1.addCoursesToUser)(user._id.toString());
         // check if exist referred and update
         if (user.referred) {
             // find the principal referrals document
@@ -75,15 +75,15 @@ async function register(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/register`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/register`);
     }
 }
 exports.register = register;
 async function login(req, res) {
     try {
-        const validate = UsersRequest_1.validateLogin(req.body);
+        const validate = (0, UsersRequest_1.validateLogin)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const user = await Users_1.default.findOne({ phone: validate.data.phone }, { password: 1, document: 1, roles: 1 }).exec();
         if (!user) {
             return res.status(404).json({
@@ -96,13 +96,13 @@ async function login(req, res) {
             });
         }
         if (validate.data.admin) {
-            if (!GlobalFunctions_1.checkIfExistsRoleInList(user.roles, [0, 1, 2, 3])) {
+            if (!(0, GlobalFunctions_1.checkIfExistsRoleInList)(user.roles, [0, 1, 2, 3])) {
                 return res.status(401).json({
                     msg: `Disculpe, pero no cuenta con privilegios para poder acceder a esta área.`
                 });
             }
         }
-        const token = await TokenActions_1.getAccessToken(req, {
+        const token = await (0, TokenActions_1.getAccessToken)(req, {
             _id: user._id.toString(),
             roles: user.roles
         });
@@ -113,25 +113,25 @@ async function login(req, res) {
         }
         return res.json({
             msg: '¡Inicio de sesión con éxito!',
-            data: await UsersActions_1.getData(user._id.toString(), { __v: 0, password: 0, referred: 0 }),
+            data: await (0, UsersActions_1.getData)(user._id.toString(), { __v: 0, password: 0, referred: 0 }),
             token
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/login`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/login`);
     }
 }
 exports.login = login;
 async function logout(req, res) {
     try {
         const { token } = req.query;
-        await TokenActions_1.disableTokenDB(`${token}`);
+        await (0, TokenActions_1.disableTokenDB)(`${token}`);
         return res.json({
             msg: 'Se ha finalizado la sesión exitosamente.'
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/logout`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/logout`);
     }
 }
 exports.logout = logout;
@@ -144,15 +144,15 @@ async function recoveryPassword(req, res) {
         const { action } = req.params;
         const { phone } = req.body;
         if (actionsList.indexOf(`${action}`) === -1)
-            return UsersActions_1.responseErrorsRecoveryPassword(res, 0);
-        if (!Validations_1.checkPhone(phone))
-            return UsersActions_1.responseErrorsRecoveryPassword(res, 1);
+            return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 0);
+        if (!(0, Validations_1.checkPhone)(phone))
+            return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 1);
         const user = await Users_1.default.findOne({
             phone: `${phone}`.trim(),
             role: { $nin: [0, 1] }
         }, { email: 1, birthday: 1 }).exec();
         if (!user)
-            return UsersActions_1.responseErrorsRecoveryPassword(res, 2);
+            return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 2);
         if (action === 'check-phone') {
             if (!!user.email || !!user.birthday) {
                 ret.msg = 'Por favor, complete los siguientes campos para recuperar su contraseña.';
@@ -170,19 +170,19 @@ async function recoveryPassword(req, res) {
         // validate extra params
         const { check } = req.body;
         if (!check || (check && Object.keys(check).length === 0))
-            return UsersActions_1.responseErrorsRecoveryPassword(res, 3);
+            return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 3);
         if (!check.ommiteChecking) {
             if (user.email) {
-                if (!Validations_1.checkEmail(check.email))
-                    return UsersActions_1.responseErrorsRecoveryPassword(res, 4);
+                if (!(0, Validations_1.checkEmail)(check.email))
+                    return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 4);
                 if (check.email !== user.email)
-                    return UsersActions_1.responseErrorsRecoveryPassword(res, 5);
+                    return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 5);
             }
             if (user.birthday) {
-                if (!Validations_1.checkDate(check.birthday))
-                    return UsersActions_1.responseErrorsRecoveryPassword(res, 6);
+                if (!(0, Validations_1.checkDate)(check.birthday))
+                    return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 6);
                 if (check.birthday !== user.birthday)
-                    return UsersActions_1.responseErrorsRecoveryPassword(res, 7);
+                    return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 7);
             }
             if (action === 'check-params') {
                 ret.msg = 'Por favor, indique su nueva contraseña.';
@@ -191,8 +191,8 @@ async function recoveryPassword(req, res) {
             }
         }
         const { password } = req.body;
-        if (!Validations_1.checkPassword(password))
-            return UsersActions_1.responseErrorsRecoveryPassword(res, 8);
+        if (!(0, Validations_1.checkPassword)(password))
+            return (0, UsersActions_1.responseErrorsRecoveryPassword)(res, 8);
         user.password = bcrypt_1.default.hashSync(`${password}`, 10);
         await user.save();
         ret.msg = 'Se ha asignado la nueva contraseña a su cuenta exitosamente.';
@@ -200,7 +200,7 @@ async function recoveryPassword(req, res) {
         return res.json(ret);
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/logout`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/logout`);
     }
 }
 exports.recoveryPassword = recoveryPassword;
@@ -216,7 +216,7 @@ async function getBanks(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/logout`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/logout`);
     }
 }
 exports.getBanks = getBanks;
@@ -226,8 +226,8 @@ exports.getBanks = getBanks;
 async function getPublicMembers(req, res) {
     try {
         const { tokenId } = req.body;
-        const query = UsersActions_1.checkFindValueSearch(req.query, tokenId);
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const query = (0, UsersActions_1.checkFindValueSearch)(req.query, tokenId);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
         let members = [];
         if (query.phone || query.$or) {
             members = await Users_1.default.find(query, {
@@ -248,7 +248,7 @@ async function getPublicMembers(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getUsers`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getUsers`);
     }
 }
 exports.getPublicMembers = getPublicMembers;
@@ -278,7 +278,7 @@ async function getPublicParams(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getPublicParams`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getPublicParams`);
     }
 }
 exports.getPublicParams = getPublicParams;
@@ -326,7 +326,7 @@ async function getOrganization(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getPublicParams`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getPublicParams`);
     }
 }
 exports.getOrganization = getOrganization;

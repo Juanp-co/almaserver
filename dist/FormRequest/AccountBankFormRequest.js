@@ -10,21 +10,21 @@ function validateSimpleRegister(data) {
     };
     const errors = [];
     // title
-    if (!Validations_1.checkTitlesOrDescriptions(data.title)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un título válido para el banco.', 'title'));
+    if (!(0, Validations_1.checkTitlesOrDescriptions)(data.title)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar un título válido para el banco.', 'title'));
     }
     else {
         ret.title = data.title ? data.title.toString().trim().toUpperCase() : data.title;
     }
     // description
     if (!data.description) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una descripción para el banco.', 'description'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar una descripción para el banco.', 'description'));
     }
     else
         ret.description = data.description;
     // picture
-    if (!data.picture && !Validations_1.checkBase64(`${data.picture}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una imagen para el banco.', 'picture'));
+    if (!data.picture && !(0, Validations_1.checkBase64)(`${data.picture}`)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar una imagen para el banco.', 'picture'));
     }
     else
         ret.picture = data.picture;

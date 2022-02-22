@@ -61,8 +61,8 @@ UserSchema.methods.encrypt = (password) => {
     return password ? bcrypt.hashSync(password, 10) : null;
 };
 UserSchema.pre('save', function (next) {
-    this.updated_at = GlobalFunctions_1.setDate();
+    this.updated_at = (0, GlobalFunctions_1.setDate)();
     next();
 });
 UserSchema.set('toJSON', { getters: true });
-exports.default = mongoose_1.model('User', UserSchema);
+exports.default = (0, mongoose_1.model)('User', UserSchema);

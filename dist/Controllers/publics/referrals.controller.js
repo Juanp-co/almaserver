@@ -28,9 +28,9 @@ async function getReferrals(req, res) {
         };
         const data = await Referrals_1.default.findOne({ _id: tokenId }, { members: 1 }).exec();
         if (data) {
-            ret.referrals = await UsersActions_1.getNamesUsersList(data.members);
+            ret.referrals = await (0, UsersActions_1.getNamesUsersList)(data.members);
             ret.referrals = lodash_1.default.sortBy(ret.referrals, ['names'], ['asc']);
-            ret.totals += await ReferralsActions_1.getTotalsReferrals(data.members);
+            ret.totals += await (0, ReferralsActions_1.getTotalsReferrals)(data.members);
             for (const [index, value] of ret.referrals.entries()) {
                 const refMembers = await Referrals_1.default.findOne({ _id: value._id }).exec();
                 ret.referrals[index] = {
@@ -41,7 +41,7 @@ async function getReferrals(req, res) {
             // get referred data
             const u = await Users_1.default.findOne({ _id: tokenId }, { referred: 1 }).exec();
             if (u && u.referred) {
-                const list = await UsersActions_1.getNamesUsersList([u.referred]);
+                const list = await (0, UsersActions_1.getNamesUsersList)([u.referred]);
                 if (list.length > 0) {
                     ret.referred = list[0] || null;
                 }
@@ -55,16 +55,16 @@ async function getReferrals(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getReferrals`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getReferrals`);
     }
 }
 exports.getReferrals = getReferrals;
 async function saveReferral(req, res) {
     try {
         const { tokenId } = req.body;
-        const validate = await UsersRequest_1.validateFormMemberRegisterFromUser(req.body);
+        const validate = await (0, UsersRequest_1.validateFormMemberRegisterFromUser)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         // set current id to referred
         if (!validate.data.referred)
             validate.data.referred = tokenId;
@@ -75,19 +75,27 @@ async function saveReferral(req, res) {
         const referrals = new Referrals_1.default({ _id: user._id });
         await referrals.save();
         // save currents courses
-        await CoursesActions_1.addCoursesToUser(user._id.toString());
-        // get my referrals
-        const myReferrals = await Referrals_1.default.findOne({ _id: tokenId }).exec();
-        if (myReferrals) {
-            myReferrals.members.push(user._id.toString());
-            await myReferrals.save();
+        await (0, CoursesActions_1.addCoursesToUser)(user._id.toString());
+        // get referrals
+        const _id = user.referred || tokenId;
+        let referreds = await Referrals_1.default.findOne({ _id }).exec();
+        if (referreds) {
+            referreds.members.push(user._id.toString());
+            await referreds.save();
+        }
+        else {
+            referreds = new Referrals_1.default({
+                _id,
+                members: [user.referred]
+            });
+            await referreds.save();
         }
         return res.status(201).json({
             msg: `Se ha registrado el nuevo miebro exitosamente.`,
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveReferral`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveReferral`);
     }
 }
 exports.saveReferral = saveReferral;
@@ -95,12 +103,12 @@ async function getMemberReferred(req, res) {
     try {
         const { _id } = req.params;
         const { tokenId, tokenRoles } = req.body;
-        if (!Validations_1.checkObjectId(_id)) {
+        if (!(0, Validations_1.checkObjectId)(_id)) {
             return res.status(422).json({
                 msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
             });
         }
-        if (!GlobalFunctions_1.checkIfExistsRoleInList(tokenRoles, [0, 1, 2])) {
+        if (!(0, GlobalFunctions_1.checkIfExistsRoleInList)(tokenRoles, [0, 1, 2])) {
             const checkMember = await Referrals_1.default.find({ _id: tokenId, members: _id }).countDocuments().exec();
             const checkMember2 = await Users_1.default.find({ _id: tokenId, referred: _id }).countDocuments().exec();
             if (checkMember === 0 && checkMember2 === 0) {
@@ -109,7 +117,7 @@ async function getMemberReferred(req, res) {
                 });
             }
         }
-        const ret = await UsersActions_1.getInfoUserReferred(_id);
+        const ret = await (0, UsersActions_1.getInfoUserReferred)(_id);
         if (!ret) {
             return res.status(404).json({
                 msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
@@ -121,7 +129,7 @@ async function getMemberReferred(req, res) {
         if (visits.length > 0) {
             const listIds = lodash_1.default.uniq(visits.map(v => v.referred));
             listIds.push(tokenId);
-            const members = await UsersActions_1.getNamesUsersList(listIds) || [];
+            const members = await (0, UsersActions_1.getNamesUsersList)(listIds) || [];
             for (const v of visits) {
                 const consolidator = members.find((md) => md._id.toString() === v.referred) || null;
                 if (consolidator) {
@@ -140,16 +148,16 @@ async function getMemberReferred(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getMemberReferred`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getMemberReferred`);
     }
 }
 exports.getMemberReferred = getMemberReferred;
 async function saveReferralVisit(req, res) {
     try {
         const { tokenId } = req.body;
-        const validate = ConsolidatesFormRequest_1.default(req.body);
+        const validate = (0, ConsolidatesFormRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const consolidate = new Visits_1.default({
             referred: validate.data.visitor || tokenId,
             userid: validate.data.userId,
@@ -161,7 +169,7 @@ async function saveReferralVisit(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveVisit`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveVisit`);
     }
 }
 exports.saveReferralVisit = saveReferralVisit;

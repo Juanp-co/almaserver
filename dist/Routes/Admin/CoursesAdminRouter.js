@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../../middleware");
 const courses_admin_controller_1 = __importStar(require("../../Controllers/admin/courses.admin.controller"));
-const router = express_1.Router();
+const router = (0, express_1.Router)();
 router.route('/')
     .get(middleware_1.validateAdmin, courses_admin_controller_1.default)
     .post(middleware_1.validateAdmin, courses_admin_controller_1.saveCourse);

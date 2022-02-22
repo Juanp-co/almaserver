@@ -29,35 +29,35 @@ function validateDataForm(data) {
     const errors = [];
     // sector
     if (!/[0-9]{1,4}/.test(`${data.sector}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el sector.', 'sector'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar el sector.', 'sector'));
     }
     else
         ret.sector = data.sector;
     // subSector
     if (!/[0-9]{1,4}/.test(`${data.subSector}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el sub-sector.', 'subSector'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar el sub-sector.', 'subSector'));
     }
     else
         ret.subSector = data.subSector;
     // number
     if (!/[0-9]{1,4}/.test(`${data.number}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el número del grupo.', 'number'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar el número del grupo.', 'number'));
     }
     else
         ret.number = data.number;
     // direction
-    if (!Validations_1.checkTitlesOrDescriptions(data.direction)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una dirección.', 'direction'));
+    if (!(0, Validations_1.checkTitlesOrDescriptions)(data.direction)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar una dirección.', 'direction'));
     }
     else
         ret.direction = ((_a = data.direction) === null || _a === void 0 ? void 0 : _a.toString().trim()) || null;
     // location
     if (data.location) {
         if (((_b = data.location.coordinates) === null || _b === void 0 ? void 0 : _b.length) !== 2) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero la ubicación seleccionada en el mapa es incorrecta.', 'location'));
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la ubicación seleccionada en el mapa es incorrecta.', 'location'));
         }
         else if (!checkCoordsNumbersType(data.location.coordinates)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero las coordenadas de la ubicación seleccionada en el mapa son incorrectas.', 'location'));
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero las coordenadas de la ubicación seleccionada en el mapa son incorrectas.', 'location'));
         }
         else {
             ret.location.type = data.location.type || 'Point';
@@ -80,15 +80,15 @@ function validateUpdateMembersForm(data) {
     const errors = [];
     // members
     if (!data.members) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero no se recibió la información a actualizar.', 'members'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero no se recibió la información a actualizar.', 'members'));
     }
     else {
         const { members } = data;
         for (const [index, value] of membersList.entries()) {
             if (value !== 'assistantsIds') {
                 if (members[`${value}`]) {
-                    if (!Validations_1.checkObjectId(data.members[value])) {
-                        errors.push(GlobalFunctions_1.setError(`Disculpe, pero el miembro seleccionado como ${membersMsgList[index] || 'líder'} es incorrecto.`, value));
+                    if (!(0, Validations_1.checkObjectId)(data.members[value])) {
+                        errors.push((0, GlobalFunctions_1.setError)(`Disculpe, pero el miembro seleccionado como ${membersMsgList[index] || 'líder'} es incorrecto.`, value));
                     }
                     else
                         ret.members[value] = members[value];
@@ -97,8 +97,8 @@ function validateUpdateMembersForm(data) {
             else {
                 const { length } = (members === null || members === void 0 ? void 0 : members.assistantsIds) || [];
                 for (let i = 0; i < length; i++) {
-                    if (!Validations_1.checkObjectId(members.assistantsIds[i])) {
-                        errors.push(GlobalFunctions_1.setError(`Disculpe, pero uno de los miembros seleccionados como asistentes es incorrecto.`, 'assistantsIds'));
+                    if (!(0, Validations_1.checkObjectId)(members.assistantsIds[i])) {
+                        errors.push((0, GlobalFunctions_1.setError)(`Disculpe, pero uno de los miembros seleccionados como asistentes es incorrecto.`, 'assistantsIds'));
                         break;
                     }
                     else

@@ -33,15 +33,15 @@ const fs_1 = require("fs");
   Console logs
  */
 function showConsoleError(pathFile, error) {
-    console.error(`${moment_timezone_1.default().toISOString()} - Error: ${pathFile}`);
+    console.error(`${(0, moment_timezone_1.default)().toISOString()} - Error: ${pathFile}`);
     console.error(error);
 }
 exports.showConsoleError = showConsoleError;
 function showConsoleLog(type, msg) {
     if (type === 0)
-        console.error(`${moment_timezone_1.default().toISOString()} - ${msg}`);
+        console.error(`${(0, moment_timezone_1.default)().toISOString()} - ${msg}`);
     else
-        console.log(`${moment_timezone_1.default().toISOString()} - ${msg}`);
+        console.log(`${(0, moment_timezone_1.default)().toISOString()} - ${msg}`);
 }
 exports.showConsoleLog = showConsoleLog;
 /*
@@ -112,7 +112,7 @@ function toUpperValue(value) {
 }
 exports.toUpperValue = toUpperValue;
 function setDate() {
-    return moment_timezone_1.default().tz('America/Bogota').unix();
+    return (0, moment_timezone_1.default)().tz('America/Bogota').unix();
 }
 exports.setDate = setDate;
 function getDate(timestamp) {
@@ -140,8 +140,8 @@ exports.generatePassword = generatePassword;
 function calculateAge(birthday) {
     const minAge = 16;
     if (birthday) {
-        const a = moment_timezone_1.default().tz('America/Bogota');
-        const b = moment_timezone_1.default(birthday).format('YYYY-MM-DD');
+        const a = (0, moment_timezone_1.default)().tz('America/Bogota');
+        const b = (0, moment_timezone_1.default)(birthday).format('YYYY-MM-DD');
         return a.diff(b, 'year') >= minAge;
     }
     return false;
@@ -210,7 +210,7 @@ async function checkAndUploadPicture(picture, pathFolder = '') {
     // to convert base64 format into random filename
     const base64Data = picture.replace(/^data:([A-Za-z-+/]+);base64,/, '');
     // set path
-    const pathFile = `${pathRoute}/${moment_timezone_1.default().unix()}.${extFile}`;
+    const pathFile = `${pathRoute}/${(0, moment_timezone_1.default)().unix()}.${extFile}`;
     // write
     await fs.writeFileSync(`./${pathFile}`, base64Data, { encoding: 'base64' });
     return pathFile;
@@ -219,7 +219,7 @@ exports.checkAndUploadPicture = checkAndUploadPicture;
 function deleteImages(pathFile) {
     try {
         if (pathFile)
-            fs_1.unlinkSync(pathFile);
+            (0, fs_1.unlinkSync)(pathFile);
     }
     catch (e) {
         showConsoleError('src/Functions/GlobalFunctions/deleteImage', e);
@@ -227,7 +227,7 @@ function deleteImages(pathFile) {
 }
 exports.deleteImages = deleteImages;
 function createSlug(value) {
-    return value ? slug_1.default(value) : null;
+    return value ? (0, slug_1.default)(value) : null;
 }
 exports.createSlug = createSlug;
 function checkIfExistsRoleInList(roles, toCompare) {

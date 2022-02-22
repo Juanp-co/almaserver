@@ -35,41 +35,41 @@ async function validateSimpleRegister(data, admin) {
     };
     const errors = [];
     // phone
-    if (!Validations_1.checkPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
+    if (!(0, Validations_1.checkPhone)(data.phone)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
     }
-    else if (await UsersActions_1.checkIfExistPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
+    else if (await (0, UsersActions_1.checkIfExistPhone)(data.phone)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
     }
     else
         ret.phone = data.phone;
     // password
     if (!admin) {
-        if (!data.password || !Validations_1.checkPassword(data.password)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
+        if (!data.password || !(0, Validations_1.checkPassword)(data.password)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asignar una contraseña. Esta debe contener ' +
                 'letras (a-Z, A-Z), números (0-9) y debe contener al menos 6 caracteres.', 'password'));
         }
         else
             ret.password = data.password;
     }
     // names
-    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+    if (!data.names || !(0, Validations_1.checkNameOrLastName)(data.names)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
     }
     else
         ret.names = data.names.toUpperCase();
     // lastNames
-    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
+    if (!data.lastNames || !(0, Validations_1.checkNameOrLastName)(data.lastNames)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
     }
     else
         ret.lastNames = data.lastNames.toUpperCase();
     // referred
-    if (data.referred && Validations_1.checkDocument(data.referred)) {
-        ret.referred = await UsersActions_1.getIdUserFromDocument(data.referred.toUpperCase());
+    if (data.referred && (0, Validations_1.checkDocument)(data.referred)) {
+        ret.referred = await (0, UsersActions_1.getIdUserFromDocument)(data.referred.toUpperCase());
     }
     if (admin) {
-        ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
+        ret.roles = (0, GlobalFunctions_1.checkIfExistsRoleInList)(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
     }
     return { data: ret, errors };
 }
@@ -97,64 +97,64 @@ async function validateFormMemberRegisterAdmin(data) {
     };
     const errors = [];
     // phone
-    if (!Validations_1.checkPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
+    if (!(0, Validations_1.checkPhone)(data.phone)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
     }
-    else if (await UsersActions_1.checkIfExistPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
+    else if (await (0, UsersActions_1.checkIfExistPhone)(data.phone)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
     }
     else
         ret.phone = data.phone;
     // names
-    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro.', 'names'));
+    if (!data.names || !(0, Validations_1.checkNameOrLastName)(data.names)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar el nombre nombre del miembro.', 'names'));
     }
     else
         ret.names = data.names.toUpperCase();
     // lastNames
-    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el apellido del miembro.', 'lastNames'));
+    if (!data.lastNames || !(0, Validations_1.checkNameOrLastName)(data.lastNames)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar el apellido del miembro.', 'lastNames'));
     }
     else
         ret.lastNames = data.lastNames.toUpperCase();
     // email
     if (data.email) {
-        if (!Validations_1.checkEmail(data.email)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        if (!(0, Validations_1.checkEmail)(data.email)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
         }
         else
             ret.email = data.email.toLowerCase();
     }
     // birthday
     if (data.birthday) {
-        if (!Validations_1.checkDate(data.birthday)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+        if (!(0, Validations_1.checkDate)(data.birthday)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
         }
         else
             ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
     }
     // locality
-    if (Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.locality}`))
         ret.locality = data.locality || null;
     // direction
-    if (Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.direction}`))
         ret.direction = data.direction || null;
     // petition
-    if (Validations_1.checkTitlesOrDescriptions(`${data.petition}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.petition}`))
         ret.petition = data.petition || null;
     // civilStatus
-    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.civilStatus}`))
         ret.civilStatus = data.civilStatus;
     // gender
-    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.gender}`))
         ret.gender = data.gender;
     // attendGroup
     if (data.attendGroup) {
         ret.attendGroup = true;
         // familyGroupId
         if (data.groupId) {
-            if (!Validations_1.checkObjectId(`${data.groupId}`)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
+            if (!(0, Validations_1.checkObjectId)(`${data.groupId}`)) {
+                errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
             }
             else
                 ret.familyGroupId.push(data.groupId);
@@ -165,15 +165,15 @@ async function validateFormMemberRegisterAdmin(data) {
         ret.consolidated = data.consolidated || false;
         // referred
         if (data.referred) {
-            if (!Validations_1.checkObjectId(`${data.referred}`)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
+            if (!(0, Validations_1.checkObjectId)(`${data.referred}`)) {
+                errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
             }
             else
                 ret.referred = data.referred;
         }
     }
     // role
-    ret.roles = GlobalFunctions_1.checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
+    ret.roles = (0, GlobalFunctions_1.checkIfExistsRoleInList)(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
     return { data: ret, errors };
 }
 exports.validateFormMemberRegisterAdmin = validateFormMemberRegisterAdmin;
@@ -200,64 +200,64 @@ async function validateFormMemberRegisterFromUser(data) {
     };
     const errors = [];
     // phone
-    if (!Validations_1.checkPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
+    if (!(0, Validations_1.checkPhone)(data.phone)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar un número de teléfono.', 'phone'));
     }
-    else if (await UsersActions_1.checkIfExistPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
+    else if (await (0, UsersActions_1.checkIfExistPhone)(data.phone)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'email'));
     }
     else
         ret.phone = data.phone;
     // names
-    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
+    if (!data.names || !(0, Validations_1.checkNameOrLastName)(data.names)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar su(s) nombre(s).', 'names'));
     }
     else
         ret.names = data.names.toUpperCase();
     // lastNames
-    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
+    if (!data.lastNames || !(0, Validations_1.checkNameOrLastName)(data.lastNames)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar su(s) apellido(s).', 'lastNames'));
     }
     else
         ret.lastNames = data.lastNames.toUpperCase();
     // email
     if (data.email) {
-        if (!Validations_1.checkEmail(data.email)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        if (!(0, Validations_1.checkEmail)(data.email)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
         }
         else
             ret.email = data.email.toLowerCase();
     }
     // birthday
     if (data.birthday) {
-        if (!Validations_1.checkDate(data.birthday)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+        if (!(0, Validations_1.checkDate)(data.birthday)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
         }
         else
             ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
     }
     // locality
-    if (Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.locality}`))
         ret.locality = data.locality || null;
     // direction
-    if (Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.direction}`))
         ret.direction = data.direction || null;
     // petition
-    if (Validations_1.checkTitlesOrDescriptions(`${data.petition}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.petition}`))
         ret.petition = data.petition || null;
     // gender
-    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.gender}`))
         ret.gender = data.gender;
     // civilStatus
-    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.civilStatus}`))
         ret.civilStatus = data.civilStatus;
     // attendGroup
     if (data.attendGroup) {
         ret.attendGroup = true;
         // familyGroupId
         if (data.groupId) {
-            if (!Validations_1.checkObjectId(`${data.groupId}`)) {
-                errors.push(GlobalFunctions_1.setError('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
+            if (!(0, Validations_1.checkObjectId)(`${data.groupId}`)) {
+                errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el grupo seleccionado es incorrecto.', 'groupId'));
             }
             else
                 ret.familyGroupId.push(data.groupId);
@@ -267,8 +267,8 @@ async function validateFormMemberRegisterFromUser(data) {
     ret.consolidated = data.consolidated || false;
     // referred
     if (data.referred) {
-        if (!Validations_1.checkObjectId(`${data.referred}`)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
+        if (!(0, Validations_1.checkObjectId)(`${data.referred}`)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
         }
         else
             ret.referred = data.referred;
@@ -302,85 +302,85 @@ async function validateUpdate(data, _id, admin = false) {
     };
     const errors = [];
     // phone
-    if (!Validations_1.checkPhone(data.phone)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9).', 'phone'));
+    if (!(0, Validations_1.checkPhone)(data.phone)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar un número de teléfono. Sólo se permiten números (0-9).', 'phone'));
     }
-    else if (await UsersActions_1.checkIfExistPhone(data.phone, _id)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'phone'));
+    else if (await (0, UsersActions_1.checkIfExistPhone)(data.phone, _id)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el número de teléfono indicado ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'phone'));
     }
     else
         ret.phone = data.phone;
     // names
-    if (!data.names || !Validations_1.checkNameOrLastName(data.names)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el nombre.', 'names'));
+    if (!data.names || !(0, Validations_1.checkNameOrLastName)(data.names)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar el nombre.', 'names'));
     }
     else {
         ret.names = data.names.trim();
     }
     // lastNames
-    if (!data.lastNames || !Validations_1.checkNameOrLastName(data.lastNames)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el apellido.', 'lastNames'));
+    if (!data.lastNames || !(0, Validations_1.checkNameOrLastName)(data.lastNames)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar el apellido.', 'lastNames'));
     }
     else {
         ret.lastNames = data.lastNames.trim();
     }
     // document
     if (data.document) {
-        if (!Validations_1.checkDocument(data.document)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document'));
+        if (!(0, Validations_1.checkDocument)(data.document)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe asegurarse de indicar el número de documento.', 'document'));
         }
-        else if (await UsersActions_1.default(data.document, _id)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'document'));
+        else if (await (0, UsersActions_1.default)(data.document, _id)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el número de documento ya se encuentra asignado a otro miembro. Verifíquelo e intente nuevamente.', 'document'));
         }
         else
             ret.document = data.document.toUpperCase();
     }
     // email
     if (data.email) {
-        if (!Validations_1.checkEmail(data.email)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
+        if (!(0, Validations_1.checkEmail)(data.email)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el correo electrónico indicado es incorrecto.', 'email'));
         }
         else
             ret.email = data.email.toLowerCase();
     }
     // birthday
     if (data.birthday) {
-        if (!Validations_1.checkDate(`${data.birthday}`)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
+        if (!(0, Validations_1.checkDate)(`${data.birthday}`)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
         }
         else {
             ret.birthday = ((_a = data.birthday) === null || _a === void 0 ? void 0 : _a.trim().toUpperCase()) || null;
         }
     }
     // educationLevel
-    if (Validations_1.checkIfValueIsNumber(`${data.educationLevel}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.educationLevel}`))
         ret.educationLevel = data.educationLevel;
     // profession
-    if (Validations_1.checkIfValueIsNumber(`${data.profession}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.profession}`))
         ret.profession = data.profession;
     // bloodType
-    if (Validations_1.checkIfValueIsNumber(`${data.bloodType}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.bloodType}`))
         ret.bloodType = data.bloodType;
     // gender
-    if (Validations_1.checkIfValueIsNumber(`${data.gender}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.gender}`))
         ret.gender = data.gender;
     // civilStatus
-    if (Validations_1.checkIfValueIsNumber(`${data.civilStatus}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.civilStatus}`))
         ret.civilStatus = data.civilStatus;
     // department
-    if (Validations_1.checkIfValueIsNumber(`${data.department}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.department}`))
         ret.department = data.department;
     // city
-    if (Validations_1.checkIfValueIsNumber(`${data.city}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.city}`))
         ret.city = data.city;
     // locality
-    if (Validations_1.checkTitlesOrDescriptions(`${data.locality}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.locality}`))
         ret.locality = data.locality || null;
     // direction
-    if (Validations_1.checkTitlesOrDescriptions(`${data.direction}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.direction}`))
         ret.direction = data.direction || null;
     // position
-    if (Validations_1.checkTitlesOrDescriptions(`${data.position}`))
+    if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.position}`))
         ret.position = data.position || null;
     // baptized
     if (data.baptized)
@@ -392,7 +392,7 @@ async function validateUpdate(data, _id, admin = false) {
     if (data.company) {
         ret.company = true;
         // companyType
-        if (Validations_1.checkIfValueIsNumber(`${data.companyType}`))
+        if ((0, Validations_1.checkIfValueIsNumber)(`${data.companyType}`))
             ret.companyType = data.companyType;
     }
     return { data: ret, errors };
@@ -406,14 +406,14 @@ function validateLogin(data) {
     };
     const errors = [];
     // phone
-    if (!Validations_1.checkPhone(`${data.phone}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su número de teléfono.', 'phone'));
+    if (!(0, Validations_1.checkPhone)(`${data.phone}`)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar su número de teléfono.', 'phone'));
     }
     else
         ret.phone = data.phone;
     // password
     if (!data.password || (data.password && data.password.length < 4)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su contraseña correctamente.', 'password'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar su contraseña correctamente.', 'password'));
     }
     else
         ret.password = data.password;
@@ -430,13 +430,13 @@ async function validatePasswords(data) {
     const errors = [];
     // password
     if (!data.password) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar su contraseña actual.', 'password'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar su contraseña actual.', 'password'));
     }
     else
         ret.password = data.password.trim();
     // newPassword
-    if (!data.newPassword || !Validations_1.checkPassword(data.newPassword)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero la nueva contraseña debe contener ' +
+    if (!data.newPassword || !(0, Validations_1.checkPassword)(data.newPassword)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la nueva contraseña debe contener ' +
             'letras (a-Z, A-Z), números (0-9) y al menos 6 caracteres.', 'newPassword'));
     }
     else
@@ -451,10 +451,10 @@ function validateRolesToUpdateForm(request) {
     const errors = [];
     const { roles } = request;
     if (!roles) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero no se recibió la información a actualizar.', 'roles'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero no se recibió la información a actualizar.', 'roles'));
     }
-    else if (!GlobalFunctions_1.checkIfExistsRoleInList(roles, [0, 1, 2, 3, 4])) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero alguno de los roles indicados es incorrecto.', 'roles'));
+    else if (!(0, GlobalFunctions_1.checkIfExistsRoleInList)(roles, [0, 1, 2, 3, 4])) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero alguno de los roles indicados es incorrecto.', 'roles'));
     }
     else
         data.roles = roles;
@@ -468,8 +468,8 @@ function validateUpdatePictureProfile(data) {
     const errors = [];
     if (data.picture) {
         // document
-        if (!Validations_1.isBase64(data.picture) && !Validations_1.checkUrl(data.picture)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero la imagen imagen para su perfil es incorrecta.', 'picture'));
+        if (!(0, Validations_1.isBase64)(data.picture) && !(0, Validations_1.checkUrl)(data.picture)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la imagen imagen para su perfil es incorrecta.', 'picture'));
         }
         else
             ret.picture = `${data.picture}`;

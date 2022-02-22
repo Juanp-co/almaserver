@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const moment_1 = __importDefault(require("moment"));
 const mongoose_1 = require("mongoose");
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
-const convertDateToTimestamp = (value) => value ? moment_1.default(value).tz('America/Bogota').unix() : null;
+const convertDateToTimestamp = (value) => value ? (0, moment_1.default)(value).tz('America/Bogota').unix() : null;
 const ReportGroupSchema = new mongoose_1.Schema({
     brethren: { type: Number, default: 0 },
     friends: { type: Number, default: 0 },
@@ -35,10 +35,10 @@ const FamiliesGroupsReportsSchema = new mongoose_1.Schema({
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
 FamiliesGroupsReportsSchema.pre('save', function (next) {
-    this.updated_at = GlobalFunctions_1.setDate();
+    this.updated_at = (0, GlobalFunctions_1.setDate)();
     next();
 });
 ReportGroupSchema.set('toJSON', { getters: true });
 FamiliesGroupsReportsSchema.set('toJSON', { getters: true });
-const FamiliesGroupsReports = mongoose_1.model('families_groups_reports', FamiliesGroupsReportsSchema);
+const FamiliesGroupsReports = (0, mongoose_1.model)('families_groups_reports', FamiliesGroupsReportsSchema);
 exports.default = FamiliesGroupsReports;

@@ -24,7 +24,7 @@ const middleware_1 = require("../middleware");
 const user_controller_1 = require("../Controllers/user.controller");
 const referrals_controller_1 = require("../Controllers/publics/referrals.controller");
 const family_group_controller_1 = __importStar(require("../Controllers/publics/family-group.controller"));
-const router = express_1.Router();
+const router = (0, express_1.Router)();
 // ===================================================================================
 /* Profile */
 router.route('/').get(middleware_1.validateUser, user_controller_1.get).put(middleware_1.validateUser, user_controller_1.update);

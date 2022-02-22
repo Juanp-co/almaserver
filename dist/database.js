@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const mongoose_1 = require("mongoose");
 const GlobalFunctions_1 = require("./Functions/GlobalFunctions");
-GlobalFunctions_1.loadEnvironmentVars();
+(0, GlobalFunctions_1.loadEnvironmentVars)();
 async function startConnection() {
     try {
         const mongoOptions = {
@@ -39,11 +39,11 @@ async function startConnection() {
                 dbAuthString = `${dbUser}:${dbPwd}@`;
             pathDb = `mongodb://${dbAuthString}${encodeURIComponent(dbHost)}:${encodeURIComponent(dbPort)}/${encodeURIComponent(dbName)}`;
         }
-        await mongoose_1.connect(pathDb, mongoOptions);
-        GlobalFunctions_1.showConsoleLog(1, 'Database is connected.');
+        await (0, mongoose_1.connect)(pathDb, mongoOptions);
+        (0, GlobalFunctions_1.showConsoleLog)(1, 'Database is connected.');
     }
     catch (e) {
-        GlobalFunctions_1.showConsoleError('./database', e);
+        (0, GlobalFunctions_1.showConsoleError)('./database', e);
         process.exit(500);
     }
 }

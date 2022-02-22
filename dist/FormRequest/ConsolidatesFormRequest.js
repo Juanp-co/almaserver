@@ -17,33 +17,33 @@ function validateSimpleRegister(data) {
     const errors = [];
     const types = ['Visita', 'Llamada'];
     // userId
-    if (!Validations_1.checkObjectId(data.userId)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado para la visita es incorrecto.', 'userId'));
+    if (!(0, Validations_1.checkObjectId)(data.userId)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el miembro seleccionado para la visita es incorrecto.', 'userId'));
     }
     else
         ret.userId = data.userId;
     // date
-    if (!Validations_1.checkDate(data.date)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar una fecha para la visita.', 'date'));
+    if (!(0, Validations_1.checkDate)(data.date)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar una fecha para la visita.', 'date'));
     }
     else
-        ret.date = moment_timezone_1.default(data.date, 'YYYY-MM-DD', true).startOf('d').unix();
+        ret.date = (0, moment_timezone_1.default)(data.date, 'YYYY-MM-DD', true).startOf('d').unix();
     // date
     if (!types[`${data.action || 0}`]) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el tipo de acción realizada.', 'action'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar el tipo de acción realizada.', 'action'));
     }
     else
         ret.action = types[data.action || 0];
     // observation
     if (!data.observation) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero indicar un observación válida.', 'observation'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero indicar un observación válida.', 'observation'));
     }
     else
         ret.observation = data.observation;
     // userId
     if (data.visitor) {
-        if (!Validations_1.checkObjectId(data.visitor)) {
-            errors.push(GlobalFunctions_1.setError('Disculpe, pero el miembro seleccionado como visitador es incorrecto.', 'visitor'));
+        if (!(0, Validations_1.checkObjectId)(data.visitor)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el miembro seleccionado como visitador es incorrecto.', 'visitor'));
         }
         else
             ret.visitor = data.visitor;

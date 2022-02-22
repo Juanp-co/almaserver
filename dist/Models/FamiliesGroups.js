@@ -24,10 +24,10 @@ const FamiliesGroupsSchema = new mongoose_1.Schema({
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
 FamiliesGroupsSchema.pre('save', function (next) {
-    this.updated_at = GlobalFunctions_1.setDate();
+    this.updated_at = (0, GlobalFunctions_1.setDate)();
     next();
 });
 MembersGroupSchema.set('toJSON', { getters: true });
 FamiliesGroupsSchema.set('toJSON', { getters: true });
-const FamiliesGroups = mongoose_1.model('families_groups', FamiliesGroupsSchema);
+const FamiliesGroups = (0, mongoose_1.model)('families_groups', FamiliesGroupsSchema);
 exports.default = FamiliesGroups;

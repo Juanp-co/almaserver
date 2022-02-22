@@ -24,9 +24,9 @@ const EventSchema = new mongoose_1.Schema({
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
 EventSchema.pre('save', function (next) {
-    this.updated_at = GlobalFunctions_1.setDate();
+    this.updated_at = (0, GlobalFunctions_1.setDate)();
     next();
 });
 EventSchema.set('toJSON', { getters: true });
-const Events = mongoose_1.model('event', EventSchema);
+const Events = (0, mongoose_1.model)('event', EventSchema);
 exports.default = Events;

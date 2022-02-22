@@ -54,7 +54,7 @@ async function getModelFamiliesGroupsDetails(data) {
         return null;
     // getNamesUsersList
     const listIds = getUsersIdsList(data.members);
-    const members = await UsersActions_1.getNamesUsersList(listIds);
+    const members = await (0, UsersActions_1.getNamesUsersList)(listIds);
     const ret = {};
     ret._id = data._id;
     // ret.name = data.name;
@@ -73,7 +73,7 @@ async function getModelFamiliesGroupsMembersDetails(data) {
     if (!data)
         return null;
     const listIds = getUsersIdsList(data); // getNamesUsersList
-    const members = await UsersActions_1.getNamesUsersList(listIds || []);
+    const members = await (0, UsersActions_1.getNamesUsersList)(listIds || []);
     return setDataMembersGroup(members, data);
 }
 exports.getModelFamiliesGroupsMembersDetails = getModelFamiliesGroupsMembersDetails;

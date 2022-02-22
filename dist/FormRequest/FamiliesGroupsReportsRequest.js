@@ -27,7 +27,7 @@ function validateFormData(data) {
     const errors = [];
     // brethren
     if (!/[0-9]{1,4}/.test(`${data.brethren}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el número de hermanos.', 'brethren'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar el número de hermanos.', 'brethren'));
     }
     else {
         ret.brethren = data.brethren;
@@ -35,7 +35,7 @@ function validateFormData(data) {
     }
     // friends
     if (!/[0-9]{1,4}/.test(`${data.friends}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar el número de amigos.', 'friends'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar el número de amigos.', 'friends'));
     }
     else {
         ret.friends = data.friends;
@@ -43,7 +43,7 @@ function validateFormData(data) {
     }
     // christianChildren
     if (!/[0-9]{1,4}/.test(`${data.christianChildren}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar indicar el número de niños cristianos.', 'christianChildren'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar indicar el número de niños cristianos.', 'christianChildren'));
     }
     else {
         ret.christianChildren = data.christianChildren;
@@ -51,42 +51,42 @@ function validateFormData(data) {
     }
     // christianChildrenFriends
     if (!/[0-9]{1,4}/.test(`${data.christianChildrenFriends}`)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar indicar el número de amigos de los niños cristianos.', 'christianChildrenFriends'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar indicar el número de amigos de los niños cristianos.', 'christianChildrenFriends'));
     }
     else {
         ret.christianChildrenFriends = data.christianChildrenFriends;
         ret.total += data.christianChildrenFriends;
     }
     // number
-    if (Validations_1.checkIfValueIsNumber(`${data.scheduledVisits}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.scheduledVisits}`))
         ret.scheduledVisits = data.scheduledVisits;
-    if (Validations_1.checkIfValueIsNumber(`${data.discipleshipVisits}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.discipleshipVisits}`))
         ret.discipleshipVisits = data.discipleshipVisits;
-    if (Validations_1.checkIfValueIsNumber(`${data.offering}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.offering}`))
         ret.offering = data.offering;
-    if (Validations_1.checkIfValueIsNumber(`${data.churchAttendance}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.churchAttendance}`))
         ret.churchAttendance = data.churchAttendance;
-    if (Validations_1.checkIfValueIsNumber(`${data.churchAttendanceChildren}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.churchAttendanceChildren}`))
         ret.churchAttendanceChildren = data.churchAttendanceChildren;
-    if (Validations_1.checkIfValueIsNumber(`${data.conversions}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.conversions}`))
         ret.conversions = data.conversions;
-    if (Validations_1.checkIfValueIsNumber(`${data.reconciliations}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.reconciliations}`))
         ret.reconciliations = data.reconciliations;
-    if (Validations_1.checkIfValueIsNumber(`${data.conversionsChildren}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.conversionsChildren}`))
         ret.conversionsChildren = data.conversionsChildren;
-    if (Validations_1.checkIfValueIsNumber(`${data.brethrenPlanning}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.brethrenPlanning}`))
         ret.brethrenPlanning = data.brethrenPlanning;
-    if (Validations_1.checkIfValueIsNumber(`${data.bibleReading}`))
+    if ((0, Validations_1.checkIfValueIsNumber)(`${data.bibleReading}`))
         ret.bibleReading = data.bibleReading;
     // observations
-    if (!Validations_1.checkTitlesOrDescriptions(data.observations)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar una dirección.', 'observations'));
+    if (!(0, Validations_1.checkTitlesOrDescriptions)(data.observations)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar una dirección.', 'observations'));
     }
     else
         ret.observations = ((_a = data.observations) === null || _a === void 0 ? void 0 : _a.toString().trim()) || null;
     // date
-    if (!Validations_1.checkDateAndHour(data.date)) {
-        errors.push(GlobalFunctions_1.setError('Disculpe, pero debe indicar la fecha y hora del reporte.', 'date'));
+    if (!(0, Validations_1.checkDateAndHour)(data.date)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar la fecha y hora del reporte.', 'date'));
     }
     else
         ret.date = data.date;

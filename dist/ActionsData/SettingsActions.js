@@ -11,8 +11,8 @@ async function uploadLogoOrBanner(base64 = null, logo = false) {
     const s3 = process.env.AWS_S3_BUCKET || null;
     if (!s3)
         return ret;
-    const newUrl = `alma/settings/${logo ? 'logos' : 'banners'}/picture-${moment_timezone_1.default().tz('America/Bogota').unix()}`;
-    await AWSService_1.default(newUrl, base64);
+    const newUrl = `alma/settings/${logo ? 'logos' : 'banners'}/picture-${(0, moment_timezone_1.default)().tz('America/Bogota').unix()}`;
+    await (0, AWSService_1.default)(newUrl, base64);
     ret = `${s3}/${newUrl}.jpg`;
     return ret;
 }

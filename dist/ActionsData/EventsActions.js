@@ -19,8 +19,8 @@ async function getEventsList({ query, skip, sort, limit, endDate }) {
     if (events.length > 0) {
         let end = 0;
         let list = [];
-        if (endDate && Validations_1.checkDate(endDate))
-            end = moment_timezone_1.default(`${endDate}`, 'YYYY-MM-DD', true).endOf('d').unix();
+        if (endDate && (0, Validations_1.checkDate)(endDate))
+            end = (0, moment_timezone_1.default)(`${endDate}`, 'YYYY-MM-DD', true).endOf('d').unix();
         if (end !== 0) {
             events.forEach((e) => {
                 if (e.toObject({ getters: false }).date <= end)
@@ -30,7 +30,7 @@ async function getEventsList({ query, skip, sort, limit, endDate }) {
         else
             list = events;
         const listIds = lodash_1.default.uniq(lodash_1.default.map(events, 'userid'));
-        const users = await UsersActions_1.getNamesUsersList(listIds);
+        const users = await (0, UsersActions_1.getNamesUsersList)(listIds);
         if (users.length > 0) {
             list.forEach(e => {
                 const user = users.find((v) => v._id.toString() === e.userid);
@@ -65,7 +65,7 @@ async function getDetailsEvent({ query }) {
             toRoles: event.toRoles,
             picture: event.picture,
         };
-        const users = await UsersActions_1.getNamesUsersList([event.userid]);
+        const users = await (0, UsersActions_1.getNamesUsersList)([event.userid]);
         if (users.length > 0)
             ret.user = users[0] || null;
         return ret;

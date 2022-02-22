@@ -34,7 +34,7 @@ const path = 'Controllers/admin/courses.admin.controller';
 // =====================================================================================================================
 async function getCourses(req, res) {
     try {
-        const { limit, skip, sort } = GlobalFunctions_1.getLimitSkipSortSearch(req.query);
+        const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
         const projection = { _id: 1, title: 1, description: 1, enable: 1, level: 1 };
         const courses = await Courses_1.default.find({}, projection)
             .skip(skip)
@@ -47,25 +47,25 @@ async function getCourses(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/getCourses`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getCourses`);
     }
 }
 exports.default = getCourses;
 async function showCourse(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnErrorId(res);
-        const course = await CoursesActions_1.getCourseDetails({
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnErrorId)(res);
+        const course = await (0, CoursesActions_1.getCourseDetails)({
             query: { _id },
             infoUser: true,
             projection: { __v: 0 }
         });
         if (!course)
-            return CoursesActions_1.return404(res);
+            return (0, CoursesActions_1.return404)(res);
         return res.json({
             msg: 'Curso',
-            course: await CoursesActions_1.getModelReturnCourseOrTheme({
+            course: await (0, CoursesActions_1.getModelReturnCourseOrTheme)({
                 data: course,
                 admin: true,
                 counters: true
@@ -73,21 +73,21 @@ async function showCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/showCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/showCourse`);
     }
 }
 exports.showCourse = showCourse;
 async function saveCourse(req, res) {
     try {
         const { tokenId } = req.body;
-        const validate = CoursesRequest_1.default(req.body);
+        const validate = (0, CoursesRequest_1.default)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         // set slug value
         if (!validate.data.slug)
-            validate.data.slug = GlobalFunctions_1.createSlug(validate.data.title);
+            validate.data.slug = (0, GlobalFunctions_1.createSlug)(validate.data.title);
         // get qty registered
-        const slugQty = await CoursesActions_1.checkIfExistSlug(`${validate.data.slug}`);
+        const slugQty = await (0, CoursesActions_1.checkIfExistSlug)(`${validate.data.slug}`);
         // check if exist slug
         if (slugQty > 0)
             validate.data.slug = `${validate.data.slug}-${slugQty + 1}`;
@@ -101,18 +101,18 @@ async function saveCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/saveCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/saveCourse`);
     }
 }
 exports.saveCourse = saveCourse;
 async function updateInfoCourse(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnErrorId(res);
-        const validate = CoursesRequest_1.validateInfoUpdate(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnErrorId)(res);
+        const validate = (0, CoursesRequest_1.validateInfoUpdate)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const course = await Courses_1.default.findOne({ _id }, {
             title: 1,
             code: 1,
@@ -123,16 +123,16 @@ async function updateInfoCourse(req, res) {
             speakerPosition: 1,
         }).exec();
         if (!course)
-            return CoursesActions_1.return404(res);
+            return (0, CoursesActions_1.return404)(res);
         if (course.enable)
-            return CoursesActions_1.returnCantEdit(res, 0);
-        if (await (CoursesActions_1.checkIfUsersOwnCourse(course._id.toString())))
-            return CoursesActions_1.returnCantEdit(res, 1);
+            return (0, CoursesActions_1.returnCantEdit)(res, 0);
+        if (await ((0, CoursesActions_1.checkIfUsersOwnCourse)(course._id.toString())))
+            return (0, CoursesActions_1.returnCantEdit)(res, 1);
         if (course.title !== validate.data.title) {
             // set slug value
-            let slug = GlobalFunctions_1.createSlug(validate.data.title);
+            let slug = (0, GlobalFunctions_1.createSlug)(validate.data.title);
             // get qty registered
-            const slugQty = await CoursesActions_1.checkIfExistSlug(`${slug}`);
+            const slugQty = await (0, CoursesActions_1.checkIfExistSlug)(`${slug}`);
             // check if exist slug
             if (slugQty > 0)
                 slug = `${slug}-${slugQty + 1}`;
@@ -152,21 +152,21 @@ async function updateInfoCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateInfoCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateInfoCourse`);
     }
 }
 exports.updateInfoCourse = updateInfoCourse;
 async function enableCourse(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnErrorId(res);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnErrorId)(res);
         const course = await Courses_1.default.findOne({ _id }).exec();
         if (!course)
-            return CoursesActions_1.return404(res);
+            return (0, CoursesActions_1.return404)(res);
         if (!course.enable) {
             // validate all data
-            const validated = CoursesActions_1.validateToPublish(course);
+            const validated = (0, CoursesActions_1.validateToPublish)(course);
             if (validated)
                 return res.status(422).json({ msg: validated });
             course.enable = true;
@@ -236,18 +236,18 @@ async function enableCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/enableCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/enableCourse`);
     }
 }
 exports.enableCourse = enableCourse;
 async function deleteCourse(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnErrorId(res);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnErrorId)(res);
         const course = await Courses_1.default.findOne({ _id }).exec();
         if (!course)
-            return CoursesActions_1.return404(res);
+            return (0, CoursesActions_1.return404)(res);
         await course.delete();
         const coursesUsers = await CoursesUsers_1.default.find({ 'courses.courseId': _id }).exec();
         if (coursesUsers.length > 0) {
@@ -261,7 +261,7 @@ async function deleteCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/deleteCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteCourse`);
     }
 }
 exports.deleteCourse = deleteCourse;
@@ -271,18 +271,18 @@ exports.deleteCourse = deleteCourse;
 async function addThemeCourse(req, res) {
     try {
         const { _id } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnErrorId(res);
-        const validate = CoursesRequest_1.validateContentThemeUpdate(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnErrorId)(res);
+        const validate = (0, CoursesRequest_1.validateContentThemeUpdate)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const course = await Courses_1.default.findOne({ _id }, { enable: 1, temary: 1 }).exec();
         if (!course)
-            return CoursesActions_1.return404(res);
+            return (0, CoursesActions_1.return404)(res);
         if (course.enable)
-            return CoursesActions_1.returnCantEdit(res, 0);
-        if (await (CoursesActions_1.checkIfUsersOwnCourse(course._id.toString())))
-            return CoursesActions_1.returnCantEdit(res, 1);
+            return (0, CoursesActions_1.returnCantEdit)(res, 0);
+        if (await ((0, CoursesActions_1.checkIfUsersOwnCourse)(course._id.toString())))
+            return (0, CoursesActions_1.returnCantEdit)(res, 1);
         course.temary.push({
             title: validate.data.title,
             description: validate.data.description,
@@ -296,28 +296,28 @@ async function addThemeCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/addThemeCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/addThemeCourse`);
     }
 }
 exports.addThemeCourse = addThemeCourse;
 async function updateThemeCourse(req, res) {
     try {
         const { _id, themeId } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnErrorId(res);
-        if (!Validations_1.checkObjectId(themeId))
-            return CoursesActions_1.returnErrorId(res, 1);
-        const validate = CoursesRequest_1.validateContentThemeUpdate(req.body);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnErrorId)(res);
+        if (!(0, Validations_1.checkObjectId)(themeId))
+            return (0, CoursesActions_1.returnErrorId)(res, 1);
+        const validate = (0, CoursesRequest_1.validateContentThemeUpdate)(req.body);
         if (validate.errors.length > 0)
-            return GlobalFunctions_1.returnErrorParams(res, validate.errors);
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         const course = await Courses_1.default.findOne({ _id, 'temary._id': themeId }, { enable: 1, temary: 1 }).exec();
         if (!course)
-            return CoursesActions_1.return404(res);
+            return (0, CoursesActions_1.return404)(res);
         if (course.enable)
-            return CoursesActions_1.returnCantEdit(res, 0);
+            return (0, CoursesActions_1.returnCantEdit)(res, 0);
         const index = course.temary.findIndex(t => t._id.toString() === themeId);
         if (index === -1)
-            return CoursesActions_1.return404(res, 1);
+            return (0, CoursesActions_1.return404)(res, 1);
         course.temary[index].title = validate.data.title;
         course.temary[index].description = validate.data.description;
         course.temary[index].urlVideo = validate.data.urlVideo;
@@ -334,25 +334,25 @@ async function updateThemeCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/updateThemeCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updateThemeCourse`);
     }
 }
 exports.updateThemeCourse = updateThemeCourse;
 async function deleteThemeCourse(req, res) {
     try {
         const { _id, themeId } = req.params;
-        if (!Validations_1.checkObjectId(_id))
-            return CoursesActions_1.returnErrorId(res);
-        if (!Validations_1.checkObjectId(themeId))
-            return CoursesActions_1.returnErrorId(res, 1);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, CoursesActions_1.returnErrorId)(res);
+        if (!(0, Validations_1.checkObjectId)(themeId))
+            return (0, CoursesActions_1.returnErrorId)(res, 1);
         const course = await Courses_1.default.findOne({ _id, 'temary._id': themeId }, { enable: 1, temary: 1 }).exec();
         if (!course)
-            return CoursesActions_1.return404(res);
+            return (0, CoursesActions_1.return404)(res);
         if (course.enable)
-            return CoursesActions_1.returnCantEdit(res, 0);
+            return (0, CoursesActions_1.returnCantEdit)(res, 0);
         const index = course.temary.findIndex(t => t._id.toString() === themeId);
         if (index === -1)
-            return CoursesActions_1.return404(res, 1);
+            return (0, CoursesActions_1.return404)(res, 1);
         course.temary = course.temary.filter(t => t._id.toString() !== themeId);
         await course.save();
         return res.json({
@@ -360,7 +360,7 @@ async function deleteThemeCourse(req, res) {
         });
     }
     catch (error) {
-        return GlobalFunctions_1.returnError(res, error, `${path}/deleteThemeCourse`);
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteThemeCourse`);
     }
 }
 exports.deleteThemeCourse = deleteThemeCourse;

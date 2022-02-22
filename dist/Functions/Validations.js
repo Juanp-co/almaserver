@@ -55,13 +55,13 @@ function checkDate(value) {
     // validate date (YYYY-MM-DD)
     if (!value)
         return false;
-    const isValid = moment_1.default(`${value}`, 'YYYY-MM-DD', true).isValid();
+    const isValid = (0, moment_1.default)(`${value}`, 'YYYY-MM-DD', true).isValid();
     return isValid;
 }
 exports.checkDate = checkDate;
 function checkDateAndHour(value) {
     // validate date (YYYY-MM-DD HH:mm)
-    return value && moment_1.default(`${value}`).isValid();
+    return value && (0, moment_1.default)(`${value}`).isValid();
 }
 exports.checkDateAndHour = checkDateAndHour;
 function checkHour(value) {

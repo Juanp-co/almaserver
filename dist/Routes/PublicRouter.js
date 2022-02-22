@@ -26,7 +26,7 @@ const events_controller_1 = require("../Controllers/events/events.controller");
 const public_controller_1 = require("../Controllers/publics/public.controller");
 const family_group_controller_1 = require("../Controllers/publics/family-group.controller");
 const devotionals_controller_1 = require("../Controllers/publics/devotionals.controller");
-const router = express_1.Router();
+const router = (0, express_1.Router)();
 // ===================================================================================
 /* Test api */
 router.get(`/`, public_controller_1.helloWorld);

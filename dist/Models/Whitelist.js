@@ -11,9 +11,9 @@ const WhitelistSchema = new mongoose_1.Schema({
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });
 WhitelistSchema.pre('save', function (next) {
-    this.updated_at = GlobalFunctions_1.setDate();
+    this.updated_at = (0, GlobalFunctions_1.setDate)();
     next();
 });
 WhitelistSchema.set('toJSON', { getters: true });
-const Whitelist = mongoose_1.model('Whitelist', WhitelistSchema);
+const Whitelist = (0, mongoose_1.model)('Whitelist', WhitelistSchema);
 exports.default = Whitelist;

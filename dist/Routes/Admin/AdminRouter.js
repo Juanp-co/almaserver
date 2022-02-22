@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../../middleware");
-const router = express_1.Router();
+const router = (0, express_1.Router)();
 const getResponse = (req, res) => {
     return res.json({
         msg: 'Admin paths'

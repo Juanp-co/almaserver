@@ -84,11 +84,19 @@ export async function saveReferral(req: Request, res: Response): Promise<Respons
     // save currents courses
     await addCoursesToUser(user._id.toString());
 
-    // get my referrals
-    const myReferrals = await Referrals.findOne({ _id: tokenId }).exec();
-    if (myReferrals) {
-      myReferrals.members.push(user._id.toString());
-      await myReferrals.save();
+    // get referrals
+    const _id = user.referred || tokenId;
+    let referreds = await Referrals.findOne({ _id }).exec();
+    if (referreds) {
+      referreds.members.push(user._id.toString());
+      await referreds.save();
+    }
+    else {
+      referreds = new Referrals({
+        _id,
+        members: [user.referred]
+      });
+      await referreds.save();
     }
 
     return res.status(201).json({

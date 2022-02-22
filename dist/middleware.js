@@ -15,7 +15,7 @@ function responseErrorSession(res) {
     });
 }
 function responseErrorCatchSessionToken(res, e) {
-    GlobalFunctions_1.showConsoleError(path, e);
+    (0, GlobalFunctions_1.showConsoleError)(path, e);
     return res.status(500).json({
         msg: 'Disculpe, pero ha ocurrido un error interno al momento de verificar las sesión.'
     });
@@ -24,7 +24,7 @@ async function validateUser(req, res, next) {
     try {
         const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;
         const check = jsonwebtoken_1.default.verify(token, req.app.get('secretKey'));
-        const session = await TokenActions_1.checkTokenDB(token);
+        const session = await (0, TokenActions_1.checkTokenDB)(token);
         if (!session)
             return responseErrorSession(res);
         req.body.tokenId = `${check._id}`;
@@ -41,7 +41,7 @@ async function validatePublic(req, res, next) {
     try {
         const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;
         const check = jsonwebtoken_1.default.verify(token, req.app.get('secretKey'));
-        const session = await TokenActions_1.checkTokenDB(token);
+        const session = await (0, TokenActions_1.checkTokenDB)(token);
         if (session) {
             req.body.tokenId = check._id;
             req.body.tokenRoles = check.roles;
@@ -58,16 +58,16 @@ async function validateAdmin(req, res, next) {
     try {
         const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;
         const check = jsonwebtoken_1.default.verify(token, req.app.get('secretKey'));
-        const session = await TokenActions_1.checkTokenDB(token);
+        const session = await (0, TokenActions_1.checkTokenDB)(token);
         if (!session)
             return responseErrorSession(res);
-        if (!GlobalFunctions_1.checkIfExistsRoleInList(check.roles, [0, 1, 2, 3])) {
+        if (!(0, GlobalFunctions_1.checkIfExistsRoleInList)(check.roles, [0, 1, 2, 3])) {
             return res.status(401).json({
                 msg: 'Disculpe, pero no cuenta con privilegios para realizar esta acción.',
                 redirect: true
             });
         }
-        req.body.superadmin = GlobalFunctions_1.checkIfExistsRoleInList(check.roles, [0]);
+        req.body.superadmin = (0, GlobalFunctions_1.checkIfExistsRoleInList)(check.roles, [0]);
         req.body.tokenId = check._id;
         req.body.tokenRoles = check.roles;
         req.query.token = token;

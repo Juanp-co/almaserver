@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const GlobalFunctions_1 = require("./Functions/GlobalFunctions");
-GlobalFunctions_1.loadEnvironmentVars();
+(0, GlobalFunctions_1.loadEnvironmentVars)();
 const HOST_MAIL = process.env.HOST_MAIL || '';
 const PORT_MAIL = process.env.PORT_MAIL || '';
 const USER_AUTH_MAIL = process.env.USER_AUTH_MAIL || '';
