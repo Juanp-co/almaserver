@@ -2,24 +2,24 @@ import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import moment from 'moment-timezone';
-import { getInfoUserReferred, getNamesUsersList } from '../ActionsData/UsersActions';
-import { returnError, returnErrorParams } from '../Functions/GlobalFunctions';
-import { forceLogout } from '../Functions/TokenActions';
+import { getInfoUserReferred, getNamesUsersList } from '../../ActionsData/UsersActions';
+import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import { forceLogout } from '../../Functions/TokenActions';
 import {
   validatePasswords,
   validateUpdate, validateUpdatePictureProfile
-} from '../FormRequest/UsersRequest';
-import { checkDate, checkObjectId, checkUrl, isBase64 } from '../Functions/Validations';
-import Courses from '../Models/Courses';
-import CoursesUsers from '../Models/CoursesUsers';
-import Groups from '../Models/Groups';
-import Referrals from '../Models/Referrals';
-import Users from '../Models/Users';
-import Visits from '../Models/Visits';
-import uploadFile, { deleteFile } from '../Services/AWSService';
-import { return404Or422 } from '../ActionsData/EventsActions';
+} from '../../FormRequest/UsersRequest';
+import { checkDate, checkObjectId, checkUrl, isBase64 } from '../../Functions/Validations';
+import Courses from '../../Models/Courses';
+import CoursesUsers from '../../Models/CoursesUsers';
+import Groups from '../../Models/Groups';
+import Referrals from '../../Models/Referrals';
+import Users from '../../Models/Users';
+import Visits from '../../Models/Visits';
+import uploadFile, { deleteFile } from '../../Services/AWSService';
+import { return404Or422 } from '../../ActionsData/EventsActions';
 
-const path = 'Controllers/user.controller';
+const path = 'Controllers/User/user.controller';
 
 export async function get(req: Request, res: Response): Promise<Response> {
   try {
@@ -219,114 +219,6 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getCourses`);
-  }
-}
-
-export async function getGroup(req: Request, res: Response): Promise<Response> {
-  try {
-    const { tokenId } = req.body;
-    let group: any = null;
-
-    if (!checkObjectId(tokenId)) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    const user = await Users.findOne({ _id: tokenId }, { group: 1 }).exec();
-
-    if (!user) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    if (user.group) {
-      const data = await Groups.findOne({ _id: user.group }).exec();
-
-      if (data) {
-        group = {
-          _id: data._id,
-          name: data.name,
-          code: data.code,
-          members: await getNamesUsersList(
-            _.uniq(data.members || [])
-          ),
-          created_at: data.created_at,
-          updated_at: data.updated_at,
-        }
-      }
-
-    }
-
-    return res.json({
-      msg: 'Mi grupo familiar',
-      group
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getGroup`);
-  }
-}
-
-export async function getMemberGroup(req: Request, res: Response): Promise<Response> {
-  try {
-    const { memberId } = req.params;
-    const { tokenId } = req.body;
-
-    if (!checkObjectId(tokenId)) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    if (!checkObjectId(memberId)) {
-      return res.status(422).json({
-        msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
-      });
-    }
-
-    const user = await Users.findOne({ _id: tokenId }, { group: 1 }).exec();
-
-    if (!user) {
-      return res.status(401).json({
-        msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-      });
-    }
-
-    if (!user.group) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero usted no pertenece a ningún grupo familiar.'
-      });
-    }
-
-    const data = await Groups.findOne({ _id: user.group }, { members: 1 }).exec();
-
-    if (!data) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero el grupo familiar no existe.'
-      });
-    }
-
-    if (!data.members.includes(memberId)) {
-      return res.status(403).json({
-        msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.'
-      });
-    }
-
-    const ret = await getInfoUserReferred(memberId);
-
-    if (!ret.member) {
-      return res.status(404).json({
-        msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
-      });
-    }
-
-    return res.json({
-      msg: `Miembro.`,
-      data: ret
-    });
-  } catch (error: any) {
-    return returnError(res, error, `${path}/getMemberGroup`);
   }
 }
 

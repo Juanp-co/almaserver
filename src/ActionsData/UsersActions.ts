@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Response } from 'express';
 import { checkNameOrLastName, checkObjectId } from '../Functions/Validations';
 import IUser, { IUserData, IUserReferralInfo, IUserReferralSimpleData, IUserSimpleInfo } from '../Interfaces/IUser';
@@ -6,6 +7,7 @@ import Referrals from '../Models/Referrals';
 import CoursesUsers from '../Models/CoursesUsers';
 import { getTotalsReferrals } from './ReferralsActions';
 import { getCoursesSimpleList } from './CoursesActions';
+import Groups from '../Models/Groups';
 
 export default async function checkIfExistDocument(document?: string, _id?: string | null): Promise<boolean> {
   return document ?
@@ -84,10 +86,7 @@ export async function getUsersSimpleList(listIds: string[]): Promise<any[] | any
 
 export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null) {
   if (listIds.length > 0) {
-    await Users.updateMany(
-      { _id: { $in: listIds } },
-      { $set: { group: _id } }
-    ).exec();
+    await Users.updateMany({ _id: { $in: listIds } }, { $set: { group: _id } }).exec();
   }
 }
 
@@ -169,6 +168,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
     totalCourses: 0,
     totalReferrals: 0,
     courses: [],
+    group: null,
     referrals: [],
   } as IUserReferralInfo;
 
@@ -190,11 +190,31 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         direction: 1,
         birthday: 1,
         picture: 1,
+        group: 1,
         roles: 1,
       }
     ).exec() as IUserReferralSimpleData;
 
     if (!ret.member) return ret;
+
+
+    if (ret.member.group) {
+      const group = await Groups.findOne({ _id: ret.member.group }, { __v: 0 }).exec();
+
+      if (group) {
+        ret.group = {
+          _id: group._id,
+          name: group.name,
+          code: group.code,
+          members: await getNamesUsersList(
+            _.uniq(group.members || [])
+          ),
+          created_at: group.created_at,
+          updated_at: group.updated_at,
+        }
+      }
+
+    }
 
     // get totals members referrals
     const referrals = await Referrals.findOne({ _id: ret.member._id }).exec();

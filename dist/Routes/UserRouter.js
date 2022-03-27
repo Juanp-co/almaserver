@@ -21,9 +21,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const middleware_1 = require("../middleware");
-const user_controller_1 = require("../Controllers/user.controller");
 const referrals_controller_1 = require("../Controllers/publics/referrals.controller");
 const family_group_controller_1 = __importStar(require("../Controllers/publics/family-group.controller"));
+const user_controller_1 = require("../Controllers/User/user.controller");
+const group_controller_1 = require("../Controllers/User/group.controller");
 const router = (0, express_1.Router)();
 // ===================================================================================
 /* Profile */
@@ -41,8 +42,18 @@ router.route(`/families-groups/:_id/reports`)
 /*
   Group
  */
-router.get('/group', middleware_1.validateUser, user_controller_1.getGroup);
-router.get('/group/:memberId', middleware_1.validateUser, user_controller_1.getMemberGroup);
+router.route('/group')
+    .get(middleware_1.validateUser, group_controller_1.getGroup)
+    .post(middleware_1.validateUser, group_controller_1.saveGroup);
+router.get('/group/invitations', middleware_1.validateUser, group_controller_1.getGroupInvitations);
+router.get('/group/invitations/totals', middleware_1.validateUser, group_controller_1.getGroupInvitationsTotals);
+router.route('/group/invitations/:_id')
+    .delete(middleware_1.validateUser, group_controller_1.rejectGroupInvitations)
+    .put(middleware_1.validateUser, group_controller_1.approveGroupInvitations);
+router.get('/group/person/:memberId', middleware_1.validateUser, group_controller_1.getMemberGroup);
+router.put('/group/:_id', middleware_1.validateUser, group_controller_1.updateGroup);
+router.put('/group/:_id/members/:action', middleware_1.validateUser, group_controller_1.addOrRemoveMembersGroup);
+/* Profile picture */
 router.put('/picture', middleware_1.validateUser, user_controller_1.updatePicture);
 /*
   Referrals

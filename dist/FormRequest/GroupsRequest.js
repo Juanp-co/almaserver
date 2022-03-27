@@ -32,7 +32,7 @@ function validateIdsMembers(data) {
     };
     const errors = [];
     if (!data.members) {
-        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n).', 'members'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero los datos enviados son incorrectos.', 'members'));
     }
     else if (data.members && typeof data.members !== 'object') {
         errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero los datos enviados son incorrectos.', 'members'));

@@ -22,7 +22,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOrganization = exports.getPublicParams = exports.getPublicMembers = exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+exports.getOrganization = exports.getPublicParams = exports.getPublicMembers = exports.getGroupDetails = exports.getBanks = exports.recoveryPassword = exports.logout = exports.login = exports.register = exports.helloWorld = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
@@ -34,11 +35,10 @@ const AccountsBanks_1 = __importDefault(require("../../Models/AccountsBanks"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Settings_1 = __importDefault(require("../../Models/Settings"));
 const Users_1 = __importDefault(require("../../Models/Users"));
+const Groups_1 = __importDefault(require("../../Models/Groups"));
 const path = 'Controllers/publics/public.controller';
 function helloWorld(req, res) {
-    return res.json({
-        msg: `Welcome to ALMA API REST.`
-    });
+    return res.json({ msg: `Welcome to ALMA API REST.` });
 }
 exports.helloWorld = helloWorld;
 /*
@@ -221,6 +221,34 @@ async function getBanks(req, res) {
 }
 exports.getBanks = getBanks;
 /*
+  BANKS
+ */
+async function getGroupDetails(req, res) {
+    try {
+        const { _id } = req.params;
+        let ret = null;
+        const group = await Groups_1.default.findOne({ _id }, { __v: 0 }).exec();
+        if (group) {
+            ret = {
+                _id: group._id,
+                name: group.name,
+                code: group.code,
+                members: await (0, UsersActions_1.getNamesUsersList)(lodash_1.default.uniq(group.members || [])),
+                created_at: group.created_at,
+                updated_at: group.updated_at,
+            };
+        }
+        return res.json({
+            msg: 'Grupo familiar',
+            group: ret
+        });
+    }
+    catch (error) {
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/logout`);
+    }
+}
+exports.getGroupDetails = getGroupDetails;
+/*
   MEMBERS
  */
 async function getPublicMembers(req, res) {
@@ -283,7 +311,7 @@ async function getPublicParams(req, res) {
 }
 exports.getPublicParams = getPublicParams;
 /*
-  Params
+  Organizations
  */
 async function getOrganization(req, res) {
     try {
@@ -297,7 +325,7 @@ async function getOrganization(req, res) {
             lvls: {},
             users: []
         };
-        const users = await Users_1.default.find({}, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1, roles: 1 }).exec();
+        const users = await Users_1.default.find({}, { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1, roles: 1 }).sort({ names: 1 }).exec();
         if (users.length > 0) {
             users.forEach(u => {
                 var _a;

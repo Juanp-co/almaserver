@@ -7,7 +7,7 @@ const GroupsSchema = new Schema(
     code: { type: String, require: true, set: toUpperValue, unique: true },
     name: { type: String, require: true, set: toUpperValue },
     members: { type: [String], default: [] },
-    userid: { type: String, require: true }, // userid creator
+    userid: { type: String, default: null }, // userid owner
     created_at: { type: Number, default: setDate, get: getDate },
     updated_at: { type: Number, default: setDate, get: getDate }
   },

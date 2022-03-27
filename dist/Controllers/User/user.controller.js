@@ -22,24 +22,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReports = exports.getMemberGroup = exports.getGroup = exports.getCourses = exports.changePassword = exports.updatePicture = exports.update = exports.get = void 0;
+exports.getReports = exports.getCourses = exports.changePassword = exports.updatePicture = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
-const UsersActions_1 = require("../ActionsData/UsersActions");
-const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
-const TokenActions_1 = require("../Functions/TokenActions");
-const UsersRequest_1 = require("../FormRequest/UsersRequest");
-const Validations_1 = require("../Functions/Validations");
-const Courses_1 = __importDefault(require("../Models/Courses"));
-const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
-const Groups_1 = __importDefault(require("../Models/Groups"));
-const Referrals_1 = __importDefault(require("../Models/Referrals"));
-const Users_1 = __importDefault(require("../Models/Users"));
-const Visits_1 = __importDefault(require("../Models/Visits"));
-const AWSService_1 = __importStar(require("../Services/AWSService"));
-const EventsActions_1 = require("../ActionsData/EventsActions");
-const path = 'Controllers/user.controller';
+const UsersActions_1 = require("../../ActionsData/UsersActions");
+const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
+const TokenActions_1 = require("../../Functions/TokenActions");
+const UsersRequest_1 = require("../../FormRequest/UsersRequest");
+const Validations_1 = require("../../Functions/Validations");
+const Courses_1 = __importDefault(require("../../Models/Courses"));
+const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
+const Referrals_1 = __importDefault(require("../../Models/Referrals"));
+const Users_1 = __importDefault(require("../../Models/Users"));
+const Visits_1 = __importDefault(require("../../Models/Visits"));
+const AWSService_1 = __importStar(require("../../Services/AWSService"));
+const EventsActions_1 = require("../../ActionsData/EventsActions");
+const path = 'Controllers/User/user.controller';
 async function get(req, res) {
     try {
         const { tokenId } = req.body;
@@ -211,96 +210,6 @@ async function getCourses(req, res) {
     }
 }
 exports.getCourses = getCourses;
-async function getGroup(req, res) {
-    try {
-        const { tokenId } = req.body;
-        let group = null;
-        if (!(0, Validations_1.checkObjectId)(tokenId)) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        const user = await Users_1.default.findOne({ _id: tokenId }, { group: 1 }).exec();
-        if (!user) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        if (user.group) {
-            const data = await Groups_1.default.findOne({ _id: user.group }).exec();
-            if (data) {
-                group = {
-                    _id: data._id,
-                    name: data.name,
-                    code: data.code,
-                    members: await (0, UsersActions_1.getNamesUsersList)(lodash_1.default.uniq(data.members || [])),
-                    created_at: data.created_at,
-                    updated_at: data.updated_at,
-                };
-            }
-        }
-        return res.json({
-            msg: 'Mi grupo familiar',
-            group
-        });
-    }
-    catch (error) {
-        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getGroup`);
-    }
-}
-exports.getGroup = getGroup;
-async function getMemberGroup(req, res) {
-    try {
-        const { memberId } = req.params;
-        const { tokenId } = req.body;
-        if (!(0, Validations_1.checkObjectId)(tokenId)) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        if (!(0, Validations_1.checkObjectId)(memberId)) {
-            return res.status(422).json({
-                msg: 'Disculpe, pero el miembro seleccionado es incorrecto.'
-            });
-        }
-        const user = await Users_1.default.findOne({ _id: tokenId }, { group: 1 }).exec();
-        if (!user) {
-            return res.status(401).json({
-                msg: 'Disculpe, pero no se logró encontrar los datos de su sesión.'
-            });
-        }
-        if (!user.group) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero usted no pertenece a ningún grupo familiar.'
-            });
-        }
-        const data = await Groups_1.default.findOne({ _id: user.group }, { members: 1 }).exec();
-        if (!data) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero el grupo familiar no existe.'
-            });
-        }
-        if (!data.members.includes(memberId)) {
-            return res.status(403).json({
-                msg: 'Disculpe, pero el miembro seleccionado no pertenece a su grupo familiar.'
-            });
-        }
-        const ret = await (0, UsersActions_1.getInfoUserReferred)(memberId);
-        if (!ret.member) {
-            return res.status(404).json({
-                msg: 'Disculpe, pero no se logró encontrar la información solicitada.'
-            });
-        }
-        return res.json({
-            msg: `Miembro.`,
-            data: ret
-        });
-    }
-    catch (error) {
-        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/getMemberGroup`);
-    }
-}
-exports.getMemberGroup = getMemberGroup;
 /*
   REPORTS
  */

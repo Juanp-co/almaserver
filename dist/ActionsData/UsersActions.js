@@ -4,12 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearchForGroups = exports.checkFindValueSearch = exports.checkLeaderUserRole = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const Validations_1 = require("../Functions/Validations");
 const Users_1 = __importDefault(require("../Models/Users"));
 const Referrals_1 = __importDefault(require("../Models/Referrals"));
 const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const ReferralsActions_1 = require("./ReferralsActions");
 const CoursesActions_1 = require("./CoursesActions");
+const Groups_1 = __importDefault(require("../Models/Groups"));
 async function checkIfExistDocument(document, _id) {
     return document ?
         (await Users_1.default.find({ document, _id: { $ne: _id } })
@@ -148,6 +150,7 @@ async function getInfoUserReferred(_id) {
         totalCourses: 0,
         totalReferrals: 0,
         courses: [],
+        group: null,
         referrals: [],
     };
     if (_id) {
@@ -168,10 +171,24 @@ async function getInfoUserReferred(_id) {
             direction: 1,
             birthday: 1,
             picture: 1,
+            group: 1,
             roles: 1,
         }).exec();
         if (!ret.member)
             return ret;
+        if (ret.member.group) {
+            const group = await Groups_1.default.findOne({ _id: ret.member.group }, { __v: 0 }).exec();
+            if (group) {
+                ret.group = {
+                    _id: group._id,
+                    name: group.name,
+                    code: group.code,
+                    members: await getNamesUsersList(lodash_1.default.uniq(group.members || [])),
+                    created_at: group.created_at,
+                    updated_at: group.updated_at,
+                };
+            }
+        }
         // get totals members referrals
         const referrals = await Referrals_1.default.findOne({ _id: ret.member._id }).exec();
         if (referrals) {

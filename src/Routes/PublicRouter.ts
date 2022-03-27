@@ -12,7 +12,7 @@ import {
   updateEvent
 } from '../Controllers/events/events.controller';
 import {
-  getBanks, getOrganization, getPublicMembers, getPublicParams,
+  getBanks, getGroupDetails, getOrganization, getPublicMembers, getPublicParams,
   helloWorld,
   login,
   logout, recoveryPassword,
@@ -70,6 +70,11 @@ router.route(`/events/:_id`)
   .get(showPublicEvent)
   .put(validateUser, updateEvent)
   .delete(validateUser, deleteEvent);
+
+/*
+  Families Groups
+*/
+router.get(`/group/:_id`, validateUser, getGroupDetails);
 
 /*
   Login, logout

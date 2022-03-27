@@ -6,7 +6,7 @@ const GroupsSchema = new mongoose_1.Schema({
     code: { type: String, require: true, set: GlobalFunctions_1.toUpperValue, unique: true },
     name: { type: String, require: true, set: GlobalFunctions_1.toUpperValue },
     members: { type: [String], default: [] },
-    userid: { type: String, require: true },
+    userid: { type: String, default: null },
     created_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate },
     updated_at: { type: Number, default: GlobalFunctions_1.setDate, get: GlobalFunctions_1.getDate }
 }, { id: false });

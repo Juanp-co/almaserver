@@ -161,10 +161,10 @@ async function saveGroup(req, res) {
             validate.data.code = `group-${totalGroups}`;
         }
         const group = new Groups_1.default(validate.data);
-        group.userid = tokenId;
+        // group.userid = tokenId;
         await group.save();
         return res.status(201).json({
-            msg: 'Se ha creado el grupo exitosamente.',
+            msg: 'Se ha creado exitosamente.',
             group
         });
     }
@@ -194,7 +194,7 @@ async function updateGroup(req, res) {
         }
         await group.save();
         return res.status(201).json({
-            msg: 'Se ha creado el grupo exitosamente.',
+            msg: 'Se ha actualizado exitosamente.',
             group
         });
     }
@@ -218,7 +218,7 @@ async function addOrRemoveMembersGroup(req, res) {
         const validate = (0, GroupsRequest_1.validateIdsMembers)(req.body);
         if (validate.errors.length > 0)
             return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
-        const group = await Groups_1.default.findOne({ _id }, { members: 1 }).exec();
+        const group = await Groups_1.default.findOne({ _id }, { members: 1, userid: 1 }).exec();
         if (!group)
             return return404(res);
         if (action === 'add') {
@@ -236,25 +236,26 @@ async function addOrRemoveMembersGroup(req, res) {
                 validate.data.members = lodash_1.default.difference(validate.data.members, notInsertsIds);
             }
             group.members = lodash_1.default.uniq(validate.data.members.concat(group.members));
+            if (!group.userid)
+                group.userid = group.members[0];
             await group.save();
             // update group value in users
             await (0, UsersActions_1.updateGroupIdInUsers)(group.members, _id);
         }
         else {
-            let membersToRemoveOfGroup = [];
-            if (validate.data.members.length === 0) {
-                membersToRemoveOfGroup = group.members;
+            if (validate.data.members.length === 0)
                 group.members = [];
-            }
             else {
-                membersToRemoveOfGroup = lodash_1.default.difference(group.members, validate.data.members);
-                group.members = group.members.filter(m => !validate.data.members.includes(m));
+                group.members = group.members.filter((m) => !validate.data.members.includes(m));
+                await (0, UsersActions_1.updateGroupIdInUsers)(validate.data.members);
+            }
+            if (validate.data.members.includes(group.userid)) {
+                if (group.members.length > 0)
+                    group.userid = group.members[0];
+                else
+                    group.userid = null;
             }
             await group.save();
-            if (membersToRemoveOfGroup.length > 0) {
-                // update group value in users
-                await (0, UsersActions_1.updateGroupIdInUsers)(membersToRemoveOfGroup);
-            }
         }
         if (notInserts.length > 0) {
             return res.status(201).json({
