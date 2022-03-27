@@ -283,7 +283,7 @@
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
-    "msg": "Se ha creado el grupo exitosamente.",
+    "msg": "Se ha actualizado el grupo exitosamente.",
     "group": {
         "_id": "6018e503e02a45115407e82f",
         "name": "FAMILIA VELASQUEZ RODRIGUEZ",

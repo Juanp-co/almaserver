@@ -35,7 +35,7 @@ export function validateIdsMembers(data: IGroupsMembersIdsForm) : { data: IGroup
 
   if (!data.members) {
     errors.push(
-      setError('Disculpe, pero debe seleccionar que miembro(s) se agregará(n) o eliminará(n).', 'members')
+      setError('Disculpe, pero los datos enviados son incorrectos.', 'members')
     );
   }
   else if (data.members && typeof data.members !== 'object') {

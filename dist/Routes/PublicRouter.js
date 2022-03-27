@@ -61,6 +61,10 @@ router.route(`/events/:_id`)
     .put(middleware_1.validateUser, events_controller_1.updateEvent)
     .delete(middleware_1.validateUser, events_controller_1.deleteEvent);
 /*
+  Families Groups
+*/
+router.get(`/group/:_id`, middleware_1.validateUser, public_controller_1.getGroupDetails);
+/*
   Login, logout
 */
 router.post(`/login`, public_controller_1.login);

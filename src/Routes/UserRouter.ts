@@ -1,11 +1,6 @@
 import { Router } from 'express';
 import { validateUser } from '../middleware';
 import {
-  changePassword,
-  get, getCourses, getGroup, getMemberGroup, getReports,
-  update, updatePicture
-} from '../Controllers/user.controller';
-import {
   getMemberReferred,
   getReferrals,
   saveReferral,
@@ -16,6 +11,22 @@ import getFamiliesGroups, {
   saveFamilyGroupReport,
   showFamilyGroup
 } from '../Controllers/publics/family-group.controller';
+import {
+  changePassword,
+  get, getCourses, getReports,
+  update, updatePicture
+} from '../Controllers/User/user.controller';
+import {
+  addOrRemoveMembersGroup,
+  approveGroupInvitations,
+  getGroup,
+  getMemberGroup,
+  getGroupInvitations,
+  getGroupInvitationsTotals,
+  rejectGroupInvitations,
+  saveGroup,
+  updateGroup
+} from '../Controllers/User/group.controller';
 
 const router = Router();
 
@@ -40,8 +51,19 @@ router.route(`/families-groups/:_id/reports`)
 /*
   Group
  */
-router.get('/group', validateUser, getGroup);
-router.get('/group/:memberId', validateUser, getMemberGroup);
+router.route('/group')
+  .get(validateUser, getGroup)
+  .post(validateUser, saveGroup);
+router.get('/group/invitations', validateUser, getGroupInvitations);
+router.get('/group/invitations/totals', validateUser, getGroupInvitationsTotals);
+router.route('/group/invitations/:_id')
+  .delete(validateUser, rejectGroupInvitations)
+  .put(validateUser, approveGroupInvitations);
+router.get('/group/person/:memberId', validateUser, getMemberGroup);
+router.put('/group/:_id', validateUser, updateGroup);
+router.put('/group/:_id/members/:action', validateUser, addOrRemoveMembersGroup);
+
+/* Profile picture */
 
 router.put('/picture', validateUser, updatePicture);
 

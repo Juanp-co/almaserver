@@ -1052,58 +1052,58 @@ define({ "api": [
             "description": "<p>Listado de miembros.</p>"
           }
         ],
-        "members Object[]": [
+        "members Object or members Object[]": [
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la foto de perfil.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "position",
@@ -10333,58 +10333,58 @@ define({ "api": [
             "description": "<p>Cargo o posición del miembro.</p>"
           }
         ],
-        "members Object[]": [
+        "members Object or members Object[]": [
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la foto de perfil.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "position",
@@ -11032,7 +11032,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"_id\": \"6018e503e02a45115407e82f\",\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"created_at\": \"2021-02-02 00:37:07\",\n        \"updated_at\": \"2021-02-02 02:16:16\"\n    }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el grupo exitosamente.\",\n    \"group\": {\n        \"_id\": \"6018e503e02a45115407e82f\",\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"created_at\": \"2021-02-02 00:37:07\",\n        \"updated_at\": \"2021-02-02 02:16:16\"\n    }\n}",
           "type": "JSON"
         }
       ]
@@ -16507,10 +16507,446 @@ define({ "api": [
     }
   },
   {
+    "type": "put",
+    "url": "/api/user/group/:_id/members/add",
+    "title": "(04) Agregar miembros al grupo.",
+    "version": "0.0.46",
+    "name": "addMemberFamilyUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String[]",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de IDs de los miembros a agregar al grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"members\": [\n        \"5fcf0821fc917d476c1cf3e3\"\n    ]\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Solicitudes enviadas exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Can't add",
+          "content": "HTTP/1.1 403 Forbidden\n{\n  \"msg\": \"Disculpe, pero no puede realizar esta acción.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero los datos enviados son incorrectos.\"\n    },\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero los miembros seleccionados son incorrectos.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup"
+  },
+  {
+    "type": "put",
+    "url": "/api/user/group/invitations/_id",
+    "title": "(08) Aceptar invitación de un grupo.",
+    "version": "0.0.46",
+    "name": "approveInvitationsUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la invitación</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ],
+        "members Object or members Object[]": [
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha aceptado la invitación exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Invitation not found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"msg\": \"Disculpe, pero el grupo indicado en la invitación no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid invitation _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero la invitación seleccionada es incorrecta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invitation not found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"msg\": \"Disculpe, pero la invitación seleccionada no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup"
+  },
+  {
+    "type": "delete",
+    "url": "/api/user/group/:_id",
+    "title": "(03) Eliminar un grupo.",
+    "version": "0.0.46",
+    "name": "deleteFamilyUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha eliminado el grupo exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Can't delete",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no puede realizar esta acción.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup"
+  },
+  {
     "type": "get",
-    "url": "/api/user/group/:memberId",
-    "title": "(01) Obtener datos de un miembro del grupo familiar.",
-    "version": "0.0.36",
+    "url": "/api/user/group/person/:memberId",
+    "title": "(09) Obtener datos de un miembro del grupo familiar.",
+    "version": "0.0.46",
     "name": "getDataMemberUserGroup",
     "group": "UserGroup",
     "header": {
@@ -16915,8 +17351,8 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/user/group",
-    "title": "(00) Obtener datos del grupo familiar.",
-    "version": "0.0.36",
+    "title": "(01) Obtener datos del grupo familiar.",
+    "version": "0.0.46",
     "name": "getFamilyUserGroup",
     "group": "UserGroup",
     "header": {
@@ -16974,6 +17410,13 @@ define({ "api": [
           },
           {
             "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del creador del grupo.</p>"
+          },
+          {
+            "group": "group Object",
             "type": "Object[]",
             "optional": false,
             "field": "members",
@@ -16994,58 +17437,58 @@ define({ "api": [
             "description": "<p>Fecha de la última actualización del grupo.</p>"
           }
         ],
-        "members Object[]": [
+        "members Object or members Object[]": [
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la foto de perfil.</p>"
           },
           {
-            "group": "members Object[]",
+            "group": "members Object or members Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "position",
@@ -17056,7 +17499,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"members\": [\n      {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Mi grupo familiar\",\n\t\"group\": {\n\t\t\"_id\": \"6018e503e02a45115407e82f\",\n\t\t\"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n\t\t\"code\": \"AAA-001\",\n\t\t\"userid\": \"5fcf0821fc917d476c1cf3e3\",\n\t\t\"members\": [\n      {\n        \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n        \"names\": \"PEDRO JOSÉ\",\n        \"lastNames\": \"PÉREZ RODRIGUEZ\",\n        \"document\": \"CC12345678\",\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n        \"position\": null\n      },\n\t\t\t.\n\t\t\t.\n\t\t\t.\n\t\t],\n\t\t\"created_at\": \"2021-02-02 00:37:07\",\n\t\t\"updated_at\": \"2021-02-02 02:45:50\"\n\t}\n}",
           "type": "JSON"
         },
         {
@@ -17116,6 +17559,1024 @@ define({ "api": [
         }
       ]
     }
+  },
+  {
+    "type": "get",
+    "url": "/api/user/group/invitations/totals",
+    "title": "(07) Obtener invitaciones de grupos.",
+    "version": "0.0.46",
+    "name": "invitationsUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "invitations",
+            "description": "<p>Listado de invitaciones.</p>"
+          }
+        ],
+        "invitations Object[]": [
+          {
+            "group": "invitations Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la invitación.</p>"
+          },
+          {
+            "group": "invitations Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Datos del grupo.</p>"
+          },
+          {
+            "group": "invitations Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "member",
+            "description": "<p>Datos del miembro que envió la solicitud.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "Number",
+            "optional": false,
+            "field": "totalMembers",
+            "description": "<p>Total de miembros del grupo.</p>"
+          }
+        ],
+        "members Object or members Object[]": [
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Invitaciones\",\n  \"invitations\": [\n    {\n      \"_id\": \"623fa770c51b0f2f74de4559\",\n      \"group\": {\n        \"_id\": \"623ed5890572e33ef0fbb2b3\",\n        \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n        \"code\": \"AAA-001\",\n        \"totalMembers\": 1\n      },\n      \"member\": {\n        \"_id\": \"617a09bd2b0b95656950e9c3\",\n        \"names\": \"USUARIO\",\n        \"lastNames\": \"PRUEBA\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"3161234567\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/617a09bd2b0b95656950e9c3/picture-617a09bd2b0b95656950e9c3-1635521638.jpg\",\n        \"position\": null\n      }\n    }\n  ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/api/user/group/invitations/_id",
+    "title": "(08) Rechazar invitación de un grupo.",
+    "version": "0.0.46",
+    "name": "rejectInvitationsUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la invitación</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ],
+        "members Object or members Object[]": [
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "members Object or members Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha rechazado la invitación exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid invitation _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero la invitación seleccionada es incorrecta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invitation not found",
+          "content": "HTTP/1.1 404 Not Found\n{\n    \"msg\": \"Disculpe, pero la invitación seleccionada no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/user/group/:_id/members/remove",
+    "title": "(05) Remover miembros del grupo.",
+    "version": "0.0.46",
+    "name": "removeMembersFamilyUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String[]",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de IDs de los miembros a remover del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"members\": [\n        \"5fcf0821fc917d476c1cf3e3\"\n    ]\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se ha actualizado el listado de miembros exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Can't add",
+          "content": "HTTP/1.1 403 Forbidden\n{\n  \"msg\": \"Disculpe, pero no puede realizar esta acción.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error data",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero los datos enviados son incorrectos.\"\n    },\n    {\n      \"input\": \"members\",\n      \"msg\": \"Disculpe, pero los miembros seleccionados son incorrectos.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/group",
+    "title": "(00) Crear grupo familiar.",
+    "version": "0.0.46",
+    "name": "saveFamilyUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (persona).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo (opcional).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"name\": \"Familia Rodriguez\",\n    \"code\": \"ROD-001\"\n}",
+        "type": "JSON"
+      },
+      {
+        "title": "Example JSON Request without code",
+        "content": "{\n    \"name\": \"Familia Rodriguez\",\n    \"code\": null\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Detalles del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "Object[]",
+            "optional": false,
+            "field": "members",
+            "description": "<p>Listado de miembros (vacío).</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del contenido del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del miembro que creó el grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha creado el núcleo familiar exitosamente.\",\n    \"group\": {\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"ROD-001\",\n        \"members\": [],\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success with auto-code",
+          "content": "HTTP/1.1 201 Created\n{\n    \"msg\": \"Se ha creado el grupo exitosamente.\",\n    \"group\": {\n        \"_id\": \"6018fbe959529c4068b62af5\",\n        \"name\": \"FAMILIA RODRIGUEZ\",\n        \"code\": \"GROUP-1\",\n        \"members\": [],\n        \"created_at\": \"2021-02-02 02:14:49\",\n        \"updated_at\": \"2021-02-02 02:14:49\",\n        \"userid\": \"5fcf0821fc917d476c1cf3e2\"\n    }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"name\",\n      \"msg\": \"Disculpe, pero debe indicar un nombre para el grupo.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "The code exists",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero el código indicado ya se encuentra asignado a otro grupo.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/group/invitations/totals",
+    "title": "(06) Obtener total de invitaciones de grupos.",
+    "version": "0.0.46",
+    "name": "totalsInvitationsUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "totals",
+            "description": "<p>Total de invitaciones.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Total de invitaciones\",\n  \"totals\": 1\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/user/group/:_id",
+    "title": "(02) Actualizar un grupo familiar.",
+    "version": "0.0.46",
+    "name": "updateFamilyUserGroup",
+    "group": "UserGroup",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"name\": \"Familia Velasquez Rodriguez\",\n    \"code\": \"AAA-001\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "group",
+            "description": "<p>Detalles del grupo.</p>"
+          }
+        ],
+        "group Object": [
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "code",
+            "description": "<p>Código del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "userid",
+            "description": "<p>ID del creador del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de registro del grupo.</p>"
+          },
+          {
+            "group": "group Object",
+            "type": "String",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de la última actualización del grupo.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado el núcleo familiar exitosamente.\",\n  \"group\": {\n    \"_id\": \"6018e503e02a45115407e82f\",\n    \"name\": \"FAMILIA VELASQUEZ RODRIGUEZ\",\n    \"userid\": \"5fcf0821fc917d476c1cf3e3\",\n    \"code\": \"AAA-001\",\n    \"created_at\": \"2021-02-02 00:37:07\",\n    \"updated_at\": \"2021-02-02 02:16:16\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Can't edit",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero no puede realizar esta acción.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "The code exists",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el código indicado ya se encuentra asignado a otro grupo.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"name\",\n      \"msg\": \"Disculpe, pero debe indicar un nombre para el grupo.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el grupo seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserGroup.js",
+    "groupTitle": "UserGroup"
   },
   {
     "type": "get",

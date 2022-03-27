@@ -167,6 +167,7 @@ export interface IUserReferralSimpleData {
   picture: IUser['picture'];
   locality: IUser['locality'];
   direction: IUser['direction'];
+  group: IUser['group'];
 }
 
 export interface IUserReferralInfo {
@@ -175,6 +176,7 @@ export interface IUserReferralInfo {
   totalReferrals: number;
   courses: ICourseSimpleList[];
   referrals: IUserSimpleInfo[];
+  group?: any;
   visits?: any[];
 }
 

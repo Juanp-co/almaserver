@@ -1,7 +1,13 @@
+import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { addCoursesToUser } from '../../ActionsData/CoursesActions';
-import { checkFindValueSearch, getData, responseErrorsRecoveryPassword } from '../../ActionsData/UsersActions';
+import {
+  checkFindValueSearch,
+  getData,
+  getNamesUsersList,
+  responseErrorsRecoveryPassword
+} from '../../ActionsData/UsersActions';
 import validateSimpleRegister, { validateLogin } from '../../FormRequest/UsersRequest';
 import {
   checkIfExistsRoleInList,
@@ -21,13 +27,12 @@ import AccountsBanks from '../../Models/AccountsBanks';
 import Referrals from '../../Models/Referrals';
 import Settings from '../../Models/Settings';
 import Users from '../../Models/Users';
+import Groups from '../../Models/Groups';
 
 const path = 'Controllers/publics/public.controller';
 
 export function helloWorld(req: Request, res: Response): Response {
-  return res.json({
-    msg: `Welcome to ALMA API REST.`
-  });
+  return res.json({ msg: `Welcome to ALMA API REST.` });
 }
 
 /*
@@ -235,6 +240,39 @@ export async function getBanks(req: Request, res: Response): Promise<Response> {
 }
 
 /*
+  BANKS
+ */
+export async function getGroupDetails(req: Request, res: Response): Promise<Response> {
+  try {
+    const { _id } = req.params;
+
+    let ret: any = null;
+
+    const group = await Groups.findOne({ _id }, { __v: 0 }).exec();
+
+    if (group) {
+      ret = {
+        _id: group._id,
+        name: group.name,
+        code: group.code,
+        members: await getNamesUsersList(
+          _.uniq(group.members || [])
+        ),
+        created_at: group.created_at,
+        updated_at: group.updated_at,
+      }
+    }
+
+    return res.json({
+      msg: 'Grupo familiar',
+      group: ret
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/logout`);
+  }
+}
+
+/*
   MEMBERS
  */
 
@@ -303,7 +341,7 @@ export async function getPublicParams(req: Request, res: Response): Promise<Resp
 }
 
 /*
-  Params
+  Organizations
  */
 export async function getOrganization(req: Request, res: Response): Promise<Response> {
   try {
@@ -321,7 +359,7 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
     const users = await Users.find(
       {},
       { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1, roles: 1 }
-    ).exec();
+    ).sort({ names: 1 }).exec();
 
     if (users.length > 0) {
       users.forEach(u => {

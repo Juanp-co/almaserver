@@ -1,10 +1,5 @@
-import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
-import { addCoursesToUser } from '../../ActionsData/CoursesActions';
-import { getLimitSkipSortSearch, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
-import { validateFormMemberRegisterFromUser } from '../../FormRequest/UsersRequest';
-import Referrals from '../../Models/Referrals';
-import Users from '../../Models/Users';
+import { getLimitSkipSortSearch, returnError } from '../../Functions/GlobalFunctions';
 import { getModelDataListDevotionals, getQueryParamsList } from '../../ActionsData/DevotionalsActions';
 import Devotionals from '../../Models/Devotionals';
 import returnDevotionalResponse from '../../ActionsData/DevotionalsActions';
@@ -35,16 +30,10 @@ export async function getDevotionalsPublic(req: Request, res: Response): Promise
 export async function getTotalsDevotionalsPublic(req: Request, res: Response): Promise<Response> {
   try {
     const query = getQueryParamsList(req.query);
-
-    const totals = await Devotionals.find(query)
-      .countDocuments()
-      .exec();
-
+    const totals = await Devotionals.find(query).countDocuments().exec();
     return res.json({
       msg: `Devocionales.`,
-      data: {
-        totals
-      }
+      data: { totals }
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getDevotionals`);

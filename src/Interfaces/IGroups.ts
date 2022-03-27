@@ -5,7 +5,7 @@ export interface IGroups extends Document {
   name: string;
   code: string | null;
   members: string[];
-  userid: string;
+  userid: string|null;
   created_at: string | number;
   updated_at: string | number;
 }
@@ -14,6 +14,21 @@ export interface IGroupsForm {
   name: IGroups['name'];
   code: IGroups['code'] | null;
   members: IGroups['members'];
+}
+
+export interface IGroupsInvitationsList {
+  _id?: any;
+  userid: string | null;
+  groupId: string | null;
+  created_at?: string | number;
+  updated_at?: string | number;
+}
+
+export interface IGroupsInvitations {
+  _id: any;
+  list: IGroupsInvitationsList[];
+  created_at: string | number;
+  updated_at: string | number;
 }
 
 export interface IGroupsMembersIdsForm {

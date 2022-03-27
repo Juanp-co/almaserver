@@ -13,7 +13,6 @@ import FamiliesGroups from '../../Models/FamiliesGroups';
 import Users from '../../Models/Users';
 import { IFamiliesGroupsList } from '../../Interfaces/IFamiliesGroups';
 
-
 const path = 'Controllers/publics/family-group.controller';
 
 export default async function getFamiliesGroups(req: Request, res: Response): Promise<Response> {

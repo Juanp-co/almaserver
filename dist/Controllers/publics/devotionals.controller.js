@@ -32,14 +32,10 @@ exports.getDevotionalsPublic = getDevotionalsPublic;
 async function getTotalsDevotionalsPublic(req, res) {
     try {
         const query = (0, DevotionalsActions_1.getQueryParamsList)(req.query);
-        const totals = await Devotionals_1.default.find(query)
-            .countDocuments()
-            .exec();
+        const totals = await Devotionals_1.default.find(query).countDocuments().exec();
         return res.json({
             msg: `Devocionales.`,
-            data: {
-                totals
-            }
+            data: { totals }
         });
     }
     catch (error) {
