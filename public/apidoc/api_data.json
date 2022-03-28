@@ -15471,7 +15471,7 @@
   {
     "type": "post",
     "url": "/api/user/families-groups/:_id/reports",
-    "title": "(03) Crear reporte a un grupo familiar.",
+    "title": "(04) Crear reporte a un grupo familiar.",
     "version": "0.0.28",
     "name": "createReportsGroupUserFamiliesGroups",
     "group": "UserFamiliesGroups",
@@ -15865,7 +15865,7 @@
   {
     "type": "get",
     "url": "/api/user/families-groups/:_id",
-    "title": "(01) Obtener detalles de un grupo familiar.",
+    "title": "(02) Obtener detalles de un grupo familiar.",
     "version": "0.0.28",
     "name": "getDetailsGroupUserFamiliesGroups",
     "group": "UserFamiliesGroups",
@@ -16153,7 +16153,7 @@
   {
     "type": "get",
     "url": "/api/user/families-groups/:_id/reports",
-    "title": "(02) Obtener reportes de un grupo familiar.",
+    "title": "(03) Obtener reportes de un grupo familiar.",
     "version": "0.0.28",
     "name": "getReportsGroupUserFamiliesGroups",
     "group": "UserFamiliesGroups",
@@ -16596,6 +16596,122 @@
         }
       ]
     }
+  },
+  {
+    "type": "put",
+    "url": "/api/user/families-groups",
+    "title": "(01) Unirse a un grupo familiar.",
+    "version": "0.0.28",
+    "name": "getUserFamiliesGroups",
+    "group": "UserFamiliesGroups",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "familyGroupId",
+            "description": "<p>ID del grupo al que se unirá.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"familyGroupId\": \"6063385c98fc731c04777829\",\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha unido al grupo familiar exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parametros!\",\n  \"errors\": [\n    {\n      \"input\": \"familyGroupId\",\n      \"msg\": \"Disculpe, pero el grupo familiar seleccionado es incorrecto.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/FamiliesGroups.js",
+    "groupTitle": "UserFamiliesGroups"
   },
   {
     "type": "put",

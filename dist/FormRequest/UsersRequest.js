@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUpdatePictureProfile = exports.validateRolesToUpdateForm = exports.validatePasswords = exports.validateLogin = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
+exports.validateUpdatePictureProfile = exports.validateRolesToUpdateForm = exports.validatePasswords = exports.validateLogin = exports.validateUpdateFamilyGroup = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
 const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
@@ -398,6 +398,17 @@ async function validateUpdate(data, _id, admin = false) {
     return { data: ret, errors };
 }
 exports.validateUpdate = validateUpdate;
+function validateUpdateFamilyGroup(data) {
+    const ret = { familyGroupId: undefined };
+    const errors = [];
+    if (!(0, Validations_1.checkObjectId)(data.familyGroupId)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero el grupo familiar seleccionado es incorrecto.', 'familyGroupId'));
+    }
+    else
+        ret.familyGroupId = data.familyGroupId;
+    return { data: ret, errors };
+}
+exports.validateUpdateFamilyGroup = validateUpdateFamilyGroup;
 function validateLogin(data) {
     const ret = {
         phone: null,

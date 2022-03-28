@@ -14,7 +14,7 @@ import getFamiliesGroups, {
 import {
   changePassword,
   get, getCourses, getReports,
-  update, updatePicture
+  update, updateFamiliesGroups, updatePicture
 } from '../Controllers/User/user.controller';
 import {
   addOrRemoveMembersGroup,
@@ -42,7 +42,9 @@ router.get('/courses', validateUser, getCourses);
   Families Group
 */
 
-router.get(`/families-groups`, validateUser, getFamiliesGroups);
+router.route(`/families-groups`)
+  .get(validateUser, getFamiliesGroups)
+  .put(validateUser, updateFamiliesGroups);
 router.get(`/families-groups/:_id`, validateUser, showFamilyGroup);
 router.route(`/families-groups/:_id/reports`)
   .get(validateUser, reportsFamilyGroup)

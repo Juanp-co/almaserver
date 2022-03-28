@@ -71,7 +71,7 @@ async function getFamiliesGroups(req, res) {
 exports.default = getFamiliesGroups;
 async function getFamiliesGroupsPublic(req, res) {
     try {
-        const { sector, subSector, number } = req.query;
+        const { sector, subSector, number, ignoreIds } = req.query;
         const { tokenId } = req.body;
         const query = {};
         const ret = [];
@@ -81,6 +81,16 @@ async function getFamiliesGroupsPublic(req, res) {
             query.subSector = Number.parseInt(`${subSector}`, 10);
         if (/[0-9]{1,3}/.test(`${number}`))
             query.number = Number.parseInt(`${number}`, 10);
+        if (ignoreIds) {
+            const list = `${ignoreIds}`.split(',') || [];
+            if (list.length > 0) {
+                const ignores = [];
+                list.forEach((l) => { if ((0, Validations_1.checkObjectId)(l))
+                    ignores.push(l); });
+                if (ignores.length > 0)
+                    query._id = { $nin: ignores };
+            }
+        }
         const familiesGroups = await FamiliesGroups_1.default.find(query, { number: 1, sector: 1, subSector: 1, direction: 1, location: 1, members: 1 })
             .sort({ sector: 1, subSector: 1, number: 1 })
             .exec();

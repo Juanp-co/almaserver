@@ -1,3 +1,4 @@
+import { isArray } from 'util';
 import checkIfExistDocument, {
   checkIfExistPhone,
   getIdUserFromDocument
@@ -433,6 +434,20 @@ export async function validateUpdate(data: IUserModelUpdate, _id: string, admin 
     // companyType
     if (checkIfValueIsNumber(`${data.companyType}`)) ret.companyType = data.companyType;
   }
+
+  return { data: ret, errors };
+}
+
+export function validateUpdateFamilyGroup(data: any): { data: any; errors: any[] } {
+  const ret: any = { familyGroupId: undefined };
+  const errors: any = [];
+
+  if (!checkObjectId(data.familyGroupId)) {
+    errors.push(
+      setError('Disculpe, pero el grupo familiar seleccionado es incorrecto.', 'familyGroupId')
+    );
+  }
+  else ret.familyGroupId = data.familyGroupId;
 
   return { data: ret, errors };
 }
