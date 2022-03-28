@@ -7,7 +7,9 @@ import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions'
 import { forceLogout } from '../../Functions/TokenActions';
 import {
   validatePasswords,
-  validateUpdate, validateUpdatePictureProfile
+  validateUpdate,
+  validateUpdateFamilyGroup,
+  validateUpdatePictureProfile
 } from '../../FormRequest/UsersRequest';
 import { checkDate, checkObjectId, checkUrl, isBase64 } from '../../Functions/Validations';
 import Courses from '../../Models/Courses';
@@ -88,6 +90,32 @@ export async function update(req: Request, res: Response): Promise<Response> {
     return res.json({
       msg: 'Se ha actualizado la información exitosamente.',
       data: user
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/update`);
+  }
+}
+
+export async function updateFamiliesGroups(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenId } = req.body;
+
+    const validate = validateUpdateFamilyGroup(req.body);
+
+    if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
+
+    const user = await Users.findOne({ _id: tokenId }, { attentGroup: 1, familyGroupId: 1 }).exec();
+
+    // logout
+    if (!user) return forceLogout(res, `${req.query.token}`);
+
+    if (!user.attendGroup) user.attendGroup = true;
+    user.familyGroupId.push(validate.data.familyGroupId);
+
+    await user.save();
+
+    return res.json({
+      msg: 'Se ha unido al grupo familiar exitosamente.'
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/update`);

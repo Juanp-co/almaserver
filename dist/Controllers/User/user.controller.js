@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReports = exports.getCourses = exports.changePassword = exports.updatePicture = exports.update = exports.get = void 0;
+exports.getReports = exports.getCourses = exports.changePassword = exports.updatePicture = exports.updateFamiliesGroups = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
@@ -102,6 +102,29 @@ async function update(req, res) {
     }
 }
 exports.update = update;
+async function updateFamiliesGroups(req, res) {
+    try {
+        const { tokenId } = req.body;
+        const validate = (0, UsersRequest_1.validateUpdateFamilyGroup)(req.body);
+        if (validate.errors.length > 0)
+            return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
+        const user = await Users_1.default.findOne({ _id: tokenId }, { attentGroup: 1, familyGroupId: 1 }).exec();
+        // logout
+        if (!user)
+            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+        if (!user.attendGroup)
+            user.attendGroup = true;
+        user.familyGroupId.push(validate.data.familyGroupId);
+        await user.save();
+        return res.json({
+            msg: 'Se ha unido al grupo familiar exitosamente.'
+        });
+    }
+    catch (error) {
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/update`);
+    }
+}
+exports.updateFamiliesGroups = updateFamiliesGroups;
 async function updatePicture(req, res) {
     var _a;
     try {

@@ -34,7 +34,9 @@ router.get('/courses', middleware_1.validateUser, user_controller_1.getCourses);
 /*
   Families Group
 */
-router.get(`/families-groups`, middleware_1.validateUser, family_group_controller_1.default);
+router.route(`/families-groups`)
+    .get(middleware_1.validateUser, family_group_controller_1.default)
+    .put(middleware_1.validateUser, user_controller_1.updateFamiliesGroups);
 router.get(`/families-groups/:_id`, middleware_1.validateUser, family_group_controller_1.showFamilyGroup);
 router.route(`/families-groups/:_id/reports`)
     .get(middleware_1.validateUser, family_group_controller_1.reportsFamilyGroup)

@@ -60,7 +60,7 @@ export default async function getFamiliesGroups(req: Request, res: Response): Pr
 
 export async function getFamiliesGroupsPublic(req: Request, res: Response): Promise<Response> {
   try {
-    const { sector, subSector, number } = req.query;
+    const { sector, subSector, number, ignoreIds } = req.query;
     const { tokenId } = req.body;
     const query: any = {};
     const ret: IFamiliesGroupsList[] = [];
@@ -68,6 +68,15 @@ export async function getFamiliesGroupsPublic(req: Request, res: Response): Prom
     if (/[0-9]{1,3}/.test(`${sector}`)) query.sector = Number.parseInt(`${sector}`, 10);
     if (/[0-9]{1,3}/.test(`${subSector}`)) query.subSector = Number.parseInt(`${subSector}`, 10);
     if (/[0-9]{1,3}/.test(`${number}`)) query.number = Number.parseInt(`${number}`, 10);
+    if (ignoreIds) {
+      const list: any[] = `${ignoreIds}`.split(',') || [];
+
+      if (list.length > 0) {
+        const ignores: any = [];
+        list.forEach((l: any) => { if (checkObjectId(l)) ignores.push(l); });
+        if (ignores.length > 0) query._id = { $nin: ignores };
+      }
+    }
 
     const familiesGroups: IFamiliesGroupsList[] = await FamiliesGroups.find(
       query,

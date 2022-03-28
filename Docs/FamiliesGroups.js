@@ -62,7 +62,49 @@
  */
 
 /**
- * @api {get} /api/user/families-groups/:_id (01) Obtener detalles de un grupo familiar.
+ * @api {put} /api/user/families-groups (01) Unirse a un grupo familiar.
+ * @apiVersion 0.0.28
+ * @apiName getUserFamiliesGroups
+ * @apiGroup UserFamiliesGroups
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam {String} familyGroupId ID del grupo al que se unirá.
+ *
+ * @apiExample {JSON} Example JSON Request
+ * {
+  "familyGroupId": "6063385c98fc731c04777829",
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Se ha unido al grupo familiar exitosamente."
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiErrorExample {JSON} Validation fields
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "¡Error en los parametros!",
+  "errors": [
+    {
+      "input": "familyGroupId",
+      "msg": "Disculpe, pero el grupo familiar seleccionado es incorrecto."
+    }
+  ]
+}
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {get} /api/user/families-groups/:_id (02) Obtener detalles de un grupo familiar.
  * @apiVersion 0.0.28
  * @apiName getDetailsGroupUserFamiliesGroups
  * @apiGroup UserFamiliesGroups
@@ -168,7 +210,7 @@
  */
 
 /**
- * @api {get} /api/user/families-groups/:_id/reports (02) Obtener reportes de un grupo familiar.
+ * @api {get} /api/user/families-groups/:_id/reports (03) Obtener reportes de un grupo familiar.
  * @apiVersion 0.0.28
  * @apiName getReportsGroupUserFamiliesGroups
  * @apiGroup UserFamiliesGroups
@@ -281,7 +323,7 @@
  */
 
 /**
- * @api {post} /api/user/families-groups/:_id/reports (03) Crear reporte a un grupo familiar.
+ * @api {post} /api/user/families-groups/:_id/reports (04) Crear reporte a un grupo familiar.
  * @apiVersion 0.0.28
  * @apiName createReportsGroupUserFamiliesGroups
  * @apiGroup UserFamiliesGroups
