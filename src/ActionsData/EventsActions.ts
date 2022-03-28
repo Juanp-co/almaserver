@@ -24,7 +24,7 @@ export default async function getEventsList({ query, skip, sort, limit, endDate 
 
     if (end !== 0) {
       events.forEach((e: any) => {
-        if (e.toObject( { getters: false }).date <= end) list.push(e);
+        if (e.toObject( { getters: false }).dateEnd <= end) list.push(e);
       });
     }
     else list = events;
@@ -39,6 +39,7 @@ export default async function getEventsList({ query, skip, sort, limit, endDate 
           _id: e._id,
           title: e.title,
           date: e.date,
+          dateEnd: e.dateEnd,
           initHour: e.initHour,
           endHour: e.endHour,
           toRoles: e.toRoles,
@@ -65,6 +66,7 @@ export async function getDetailsEvent({ query } : any) : Promise<IEventsList | n
       title: event.title,
       description: event.description,
       date: event.date,
+      dateEnd: event.dateEnd,
       initHour: event.initHour,
       endHour: event.endHour,
       toRoles: event.toRoles,

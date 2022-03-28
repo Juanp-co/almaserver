@@ -17,6 +17,7 @@ const EventSchema = new mongoose_1.Schema({
     toRoles: { type: [Number], require: true },
     description: { type: String, require: true },
     date: { type: Number, require: true, get: getDateEvent },
+    dateEnd: { type: Number, default: null, get: getDateEvent },
     initHour: { type: String, require: true },
     endHour: { type: String, require: true },
     picture: { type: String, default: null },

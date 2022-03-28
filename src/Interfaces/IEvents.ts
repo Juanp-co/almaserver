@@ -6,6 +6,7 @@ export default interface IEvents extends Document {
   title: string | null;
   description: string | null;
   date: string | number | null;
+  dateEnd: string | number | null;
   initHour: string | number | null;
   endHour: string | number | null;
   toRoles: number[];
@@ -18,6 +19,7 @@ export interface IEventsRegisterOrUpdate {
   title: IEvents['title'];
   description: IEvents['description'];
   date: IEvents['date'];
+  dateEnd: IEvents['dateEnd'];
   initHour: IEvents['initHour'];
   endHour: IEvents['endHour'];
   toRoles: IEvents['toRoles'];
@@ -29,6 +31,7 @@ export interface IEventsList {
   title: IEvents['title'];
   // description?: IEvents['description'];
   date: IEvents['date'];
+  dateEnd: IEvents['dateEnd'];
   initHour: IEvents['initHour'];
   endHour: IEvents['endHour'];
   toRoles: IEvents['toRoles'];
