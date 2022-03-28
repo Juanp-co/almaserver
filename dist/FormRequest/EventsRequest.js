@@ -11,6 +11,7 @@ function validateRegister(data) {
         title: null,
         description: null,
         date: null,
+        dateEnd: null,
         initHour: null,
         endHour: null,
         toRoles: [],
@@ -33,10 +34,17 @@ function validateRegister(data) {
     }
     // date
     if (!data.date || !(0, Validations_1.checkDate)(data.date)) {
-        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar la fecha para el evento.', 'date'));
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar la fecha inicial para el evento.', 'date'));
     }
     else {
         ret.date = (0, moment_timezone_1.default)(data.date).unix();
+    }
+    // date
+    if (!data.dateEnd || !(0, Validations_1.checkDate)(data.dateEnd)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero debe indicar la fecha final para el evento.', 'date'));
+    }
+    else {
+        ret.dateEnd = (0, moment_timezone_1.default)(data.dateEnd).unix();
     }
     // initHour
     if (!data.initHour || !(0, Validations_1.checkHour)(data.initHour)) {
@@ -60,8 +68,12 @@ function validateRegister(data) {
         ret.toRoles = data.toRoles;
     }
     // picture
-    if (data.picture)
-        ret.picture = data.picture;
+    if (data.picture && !(0, Validations_1.isBase64)(data.picture)) {
+        errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la imagen para el evento es incorrecta.', 'picture'));
+    }
+    else {
+        ret.picture = data.picture || null;
+    }
     return { data: ret, errors };
 }
 exports.default = validateRegister;

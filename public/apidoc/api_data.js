@@ -5904,7 +5904,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/admin/events",
     "title": "(01) Crear nuevo evento.",
-    "version": "0.0.35",
+    "version": "0.0.47",
     "name": "createEventsAdmin",
     "group": "EventsAdmin",
     "header": {
@@ -5965,7 +5965,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha inicial del evento.</p>"
+          },
+          {
+            "group": "event Object",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "event Object",
@@ -6000,7 +6007,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha creado el evento exitosamente.\",\n\t\"event\": {\n\t\t\"_id\": \"603007b13b9d883c78abb864\",\n\t\t\"title\": \"REUNIÓN DE UNIFICACIÓN FAMILIAR\",\n\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\"date\": \"2021-03-01\",\n\t\t\"initHour\": \"00:00\",\n\t\t\"endHour\": \"23:59\",\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\"\n\t}\n}",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se ha creado el evento exitosamente.\",\n\t\"event\": {\n\t\t\"_id\": \"603007b13b9d883c78abb864\",\n\t\t\"title\": \"REUNIÓN DE UNIFICACIÓN FAMILIAR\",\n\t\t\"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\"date\": \"2021-03-01\",\n\t\t\"dateEnd\": \"2021-03-01\",\n\t\t\"initHour\": \"00:00\",\n\t\t\"endHour\": \"23:59\",\n\t\t\"toRoles\": [\n\t\t\t5\n\t\t],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -6036,7 +6043,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha (Formato YYYY-MM-DD).</p>"
+            "description": "<p>Fecha de inicio (Formato YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final (Formato YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
@@ -6065,7 +6079,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
+        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"dateEnd\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
         "type": "JSON"
       },
       {
@@ -6246,7 +6260,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/events/:_id",
     "title": "(02) Obtener detalles de un evento.",
-    "version": "0.0.36",
+    "version": "0.0.47",
     "name": "detailsEventsAdmin",
     "group": "EventsAdmin",
     "header": {
@@ -6300,7 +6314,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha (Formato YYYY-MM-DD).</p>"
+            "description": "<p>Fecha de inicio (Formato YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final (Formato YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
@@ -6371,7 +6392,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha inicial del evento.</p>"
+          },
+          {
+            "group": "event Object",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "event Object",
@@ -6471,7 +6499,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"5fe00cf5e2c9942e5c866453\",\n    \"title\": \"EVENTO 1\",\n    \"description\": \"Para todos los roles\",\n    \"date\": \"2021-03-03\",\n    \"initHour\": \"00:00\",\n    \"endHour\": \"23:00\",\n    \"toRoles\": [\n      0,\n      1,\n      2,\n      3,\n      4\n    ],\n    \"picture\": null,\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"5fe00cf5e2c9942e5c866453\",\n    \"title\": \"EVENTO 1\",\n    \"description\": \"Para todos los roles\",\n    \"date\": \"2021-03-03\",\n    \"dateEnd\": \"2021-03-03\",\n    \"initHour\": \"00:00\",\n    \"endHour\": \"23:00\",\n    \"toRoles\": [\n      0,\n      1,\n      2,\n      3,\n      4\n    ],\n    \"picture\": null,\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -6481,7 +6509,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
+        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"dateEnd\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
         "type": "JSON"
       },
       {
@@ -6553,7 +6581,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/admin/events",
     "title": "(00) Obtener listado de eventos registrados.",
-    "version": "0.0.36",
+    "version": "0.0.47",
     "name": "getEventsAdmin",
     "group": "EventsAdmin",
     "header": {
@@ -6641,7 +6669,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha inicial del evento.</p>"
+          },
+          {
+            "group": "events Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "events Object[]",
@@ -6741,7 +6776,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"PRUEBA DESDE ADMIN\",\n      \"date\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"PRUEBA DESDE ADMIN\",\n      \"date\": \"2021-09-15\",\n      \"dateEnd\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -6806,7 +6841,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/admin/events/:_id",
     "title": "(03) Actualizar un evento.",
-    "version": "0.0.35",
+    "version": "0.0.47",
     "name": "updateEventsAdmin",
     "group": "EventsAdmin",
     "header": {
@@ -6860,7 +6895,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha (Formato YYYY-MM-DD).</p>"
+            "description": "<p>Fecha de inicio (Formato YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final (Formato YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
@@ -6931,7 +6973,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha inicial del evento.</p>"
+          },
+          {
+            "group": "event Object",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "event Object",
@@ -6966,7 +7015,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado el evento exitosamente.\",\n  \"event\": {\n    \"_id\": \"611924490ec7059a63f7a805\",\n    \"title\": \"PRUEBA 1 PARA REGISTRO DESDE APP\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n    \"date\": \"2021-08-31\",\n    \"initHour\": \"09:00\",\n    \"endHour\": \"12:59\",\n    \"toRoles\": [\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611924490ec7059a63f7a805-1629037641.jpg\"\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha actualizado el evento exitosamente.\",\n  \"event\": {\n    \"_id\": \"611924490ec7059a63f7a805\",\n    \"title\": \"PRUEBA 1 PARA REGISTRO DESDE APP\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n    \"date\": \"2021-08-31\",\n    \"dateEnd\": \"2021-08-31\",\n    \"initHour\": \"09:00\",\n    \"endHour\": \"12:59\",\n    \"toRoles\": [\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611924490ec7059a63f7a805-1629037641.jpg\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -6976,7 +7025,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
+        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"dateEnd\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
         "type": "JSON"
       },
       {
@@ -7053,7 +7102,7 @@ define({ "api": [
     "type": "post",
     "url": "/api/events",
     "title": "(01) Crear nuevo evento.",
-    "version": "0.0.35",
+    "version": "0.0.47",
     "name": "createEvents",
     "group": "Events",
     "header": {
@@ -7114,7 +7163,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha inicial del evento.</p>"
+          },
+          {
+            "group": "event Object",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "event Object",
@@ -7207,7 +7263,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 201 Created\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"PRUEBA DESDE ADMIN\",\n    \"description\": \"<P>PRAESENT SAPIEN MASSA, CONVALLIS A PELLENTESQUE NEC, ...</P>\",\n    \"date\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
+          "content": "HTTP/1.1 201 Created\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"PRUEBA DESDE ADMIN\",\n    \"description\": \"<P>PRAESENT SAPIEN MASSA, CONVALLIS A PELLENTESQUE NEC, ...</P>\",\n    \"date\": \"2021-09-15\",\n    \"dateEnd\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -7243,7 +7299,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha (Formato YYYY-MM-DD).</p>"
+            "description": "<p>Fecha de inicio (Formato YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final (Formato YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
@@ -7272,7 +7335,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
+        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"dateEnd\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
         "type": "JSON"
       },
       {
@@ -7444,7 +7507,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/events/:_id",
     "title": "(02) Obtener detalles de un evento.",
-    "version": "0.0.36",
+    "version": "0.0.47",
     "name": "detailsEvents",
     "group": "Events",
     "header": {
@@ -7518,7 +7581,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha inicial del evento.</p>"
+          },
+          {
+            "group": "event Object",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "event Object",
@@ -7618,7 +7688,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"EVENTO 01\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n    \"date\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Evento.\",\n  \"event\": {\n    \"_id\": \"611a39d47636c51470deed92\",\n    \"title\": \"EVENTO 01\",\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n    \"date\": \"2021-09-15\",\n    \"dateEnd\": \"2021-09-15\",\n    \"initHour\": \"08:00\",\n    \"endHour\": \"11:30\",\n    \"toRoles\": [\n      2,\n      3,\n      4\n    ],\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n    \"user\": {\n      \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"31612345678\",\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n      \"position\": null\n    }\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -7688,7 +7758,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/events",
     "title": "(00) Obtener listado de eventos públicos.",
-    "version": "0.0.36",
+    "version": "0.0.47",
     "name": "getEvents",
     "group": "Events",
     "header": {
@@ -7776,7 +7846,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha incial del evento.</p>"
+          },
+          {
+            "group": "events Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "events Object[]",
@@ -7876,7 +7953,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"EVENTO\",\n      \"date\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Eventos.\",\n  \"events\": [\n    {\n      \"_id\": \"611a39d47636c51470deed92\",\n      \"title\": \"EVENTO\",\n      \"date\": \"2021-09-15\",\n      \"dateEnd\": \"2021-09-15\",\n      \"initHour\": \"08:00\",\n      \"endHour\": \"11:30\",\n      \"toRoles\": [\n        2,\n        3,\n        4\n      ],\n      \"picture\": \"https://delii.s3.amazonaws.com/alma/events/event-611a39d47636c51470deed92-1629109103.jpg\",\n      \"user\": {\n        \"_id\": \"5fcf0821fc917d476c1cf3e2\",\n        \"names\": \"ANTHONY\",\n        \"lastNames\": \"ADMINISTRADOR\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"31612345678\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n        \"position\": null\n      }\n    },\n    .\n    .\n    .\n  ]\n}",
           "type": "JSON"
         },
         {
@@ -7936,7 +8013,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/events/:_id",
     "title": "(03) Actualizar un evento.",
-    "version": "0.0.35",
+    "version": "0.0.47",
     "name": "updateEvents",
     "group": "Events",
     "description": "<p>Solo el miembro que registró el evento podrá editarlo (salvo el administrador). Si cualquier otro usuario intenta editar el evento, la respuestá será un 404.</p>",
@@ -7991,7 +8068,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha (Formato YYYY-MM-DD).</p>"
+            "description": "<p>Fecha de inicio (Formato YYYY-MM-DD).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final (Formato YYYY-MM-DD).</p>"
           },
           {
             "group": "Parameter",
@@ -8062,7 +8146,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>Fecha del evento.</p>"
+            "description": "<p>Fecha inicial del evento.</p>"
+          },
+          {
+            "group": "events Object",
+            "type": "String",
+            "optional": false,
+            "field": "dateEnd",
+            "description": "<p>Fecha final del evento.</p>"
           },
           {
             "group": "events Object",
@@ -8100,7 +8191,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
+        "content": "{\n  \"title\": \"EVENTO 01\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....\",\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/...\",\n  \"date\": \"2021-09-15\",\n  \"dateEnd\": \"2021-09-15\",\n  \"initHour\": \"08:00\",\n  \"endHour\": \"11:30\",\n  \"toRoles\": [\n    2,\n    3,\n    4\n  ]\n}",
         "type": "JSON"
       },
       {

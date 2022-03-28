@@ -104,6 +104,7 @@ async function saveEvent(req, res) {
                 title: event.title,
                 description: event.description,
                 date: event.date,
+                dateEnd: event.dateEnd,
                 initHour: event.initHour,
                 endHour: event.endHour,
                 toRoles: event.toRoles,
@@ -135,6 +136,7 @@ async function updateEvent(req, res) {
         event.title = validate.data.title;
         event.description = validate.data.description;
         event.date = validate.data.date;
+        event.dateEnd = validate.data.dateEnd;
         event.initHour = validate.data.initHour;
         event.endHour = validate.data.endHour;
         event.toRoles = validate.data.toRoles;
@@ -163,6 +165,7 @@ async function updateEvent(req, res) {
                 title: event.title,
                 description: event.description,
                 date: event.date,
+                dateEnd: event.dateEnd,
                 initHour: event.initHour,
                 endHour: event.endHour,
                 toRoles: event.toRoles,

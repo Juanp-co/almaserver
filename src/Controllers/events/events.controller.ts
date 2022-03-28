@@ -90,6 +90,7 @@ export async function saveEvent(req: Request, res: Response): Promise<Response> 
         title: event.title,
         description: event.description,
         date: event.date,
+        dateEnd: event.dateEnd,
         initHour: event.initHour,
         endHour: event.endHour,
         toRoles: event.toRoles,
@@ -122,6 +123,7 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
     event.title = validate.data.title;
     event.description = validate.data.description;
     event.date = validate.data.date;
+    event.dateEnd = validate.data.dateEnd;
     event.initHour = validate.data.initHour;
     event.endHour = validate.data.endHour;
     event.toRoles = validate.data.toRoles;
@@ -152,6 +154,7 @@ export async function updateEvent(req: Request, res: Response): Promise<Response
         title: event.title,
         description: event.description,
         date: event.date,
+        dateEnd: event.dateEnd,
         initHour: event.initHour,
         endHour: event.endHour,
         toRoles: event.toRoles,

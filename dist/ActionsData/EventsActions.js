@@ -23,7 +23,7 @@ async function getEventsList({ query, skip, sort, limit, endDate }) {
             end = (0, moment_timezone_1.default)(`${endDate}`, 'YYYY-MM-DD', true).endOf('d').unix();
         if (end !== 0) {
             events.forEach((e) => {
-                if (e.toObject({ getters: false }).date <= end)
+                if (e.toObject({ getters: false }).dateEnd <= end)
                     list.push(e);
             });
         }
@@ -38,6 +38,7 @@ async function getEventsList({ query, skip, sort, limit, endDate }) {
                     _id: e._id,
                     title: e.title,
                     date: e.date,
+                    dateEnd: e.dateEnd,
                     initHour: e.initHour,
                     endHour: e.endHour,
                     toRoles: e.toRoles,
@@ -60,6 +61,7 @@ async function getDetailsEvent({ query }) {
             title: event.title,
             description: event.description,
             date: event.date,
+            dateEnd: event.dateEnd,
             initHour: event.initHour,
             endHour: event.endHour,
             toRoles: event.toRoles,

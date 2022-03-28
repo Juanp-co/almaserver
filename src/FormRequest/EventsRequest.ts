@@ -11,6 +11,7 @@ export default function validateRegister(
     title: null,
     description: null,
     date: null,
+    dateEnd: null,
     initHour: null,
     endHour: null,
     toRoles: [],
@@ -39,10 +40,19 @@ export default function validateRegister(
   // date
   if (!data.date || !checkDate(data.date)) {
     errors.push(
-      setError('Disculpe, pero debe indicar la fecha para el evento.', 'date')
+      setError('Disculpe, pero debe indicar la fecha inicial para el evento.', 'date')
     );
   } else {
     ret.date = moment(data.date).unix();
+  }
+
+  // date
+  if (!data.dateEnd || !checkDate(data.dateEnd)) {
+    errors.push(
+      setError('Disculpe, pero debe indicar la fecha final para el evento.', 'date')
+    );
+  } else {
+    ret.dateEnd = moment(data.dateEnd).unix();
   }
 
   // initHour
@@ -73,7 +83,14 @@ export default function validateRegister(
   }
 
   // picture
-  if (data.picture) ret.picture = data.picture;
+  if (data.picture && !isBase64(data.picture)) {
+    errors.push(
+      setError('Disculpe, pero la imagen para el evento es incorrecta.', 'picture')
+    );
+  }
+  else {
+    ret.picture = data.picture || null;
+  }
 
   return { data: ret, errors };
 }

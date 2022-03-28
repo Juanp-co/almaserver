@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/events (00) Obtener listado de eventos públicos.
- * @apiVersion 0.0.36
+ * @apiVersion 0.0.47
  * @apiName getEvents
  * @apiGroup Events
  *
@@ -16,7 +16,8 @@
  *
  * @apiSuccess (events Object[]) {String} _id ID del evento.
  * @apiSuccess (events Object[]) {String} title Título para el evento.
- * @apiSuccess (events Object[]) {String} date Fecha del evento.
+ * @apiSuccess (events Object[]) {String} date Fecha incial del evento.
+ * @apiSuccess (events Object[]) {String} dateEnd Fecha final del evento.
  * @apiSuccess (events Object[]) {String} initDate Hora de inicio del evento.
  * @apiSuccess (events Object[]) {String} endDate Hora de finalización del evento.
  * @apiSuccess (events Object[]) {Number[]} toRoles Roles a los que va dirigido.
@@ -34,6 +35,7 @@
       "_id": "611a39d47636c51470deed92",
       "title": "EVENTO",
       "date": "2021-09-15",
+      "dateEnd": "2021-09-15",
       "initHour": "08:00",
       "endHour": "11:30",
       "toRoles": [
@@ -73,7 +75,7 @@
 
 /**
  * @api {post} /api/events (01) Crear nuevo evento.
- * @apiVersion 0.0.35
+ * @apiVersion 0.0.47
  * @apiName createEvents
  * @apiGroup Events
  *
@@ -87,7 +89,8 @@
  * @apiSuccess (event Object) {String} _id ID del evento.
  * @apiSuccess (event Object) {String} title Título para el evento.
  * @apiSuccess (event Object) {String} description Descripción del evento.
- * @apiSuccess (event Object) {String} date Fecha del evento.
+ * @apiSuccess (event Object) {String} date Fecha inicial del evento.
+ * @apiSuccess (event Object) {String} dateEnd Fecha final del evento.
  * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (event Object) {Number[]} toRoles Roles a los que va dirigido.
@@ -104,6 +107,7 @@
     "title": "PRUEBA DESDE ADMIN",
     "description": "<P>PRAESENT SAPIEN MASSA, CONVALLIS A PELLENTESQUE NEC, ...</P>",
     "date": "2021-09-15",
+    "dateEnd": "2021-09-15",
     "initHour": "08:00",
     "endHour": "11:30",
     "toRoles": [
@@ -135,7 +139,7 @@
 
 /**
  * @api {get} /api/events/:_id (02) Obtener detalles de un evento.
- * @apiVersion 0.0.36
+ * @apiVersion 0.0.47
  * @apiName detailsEvents
  * @apiGroup Events
  *
@@ -149,7 +153,8 @@
  * @apiSuccess (event Object) {String} _id ID del evento.
  * @apiSuccess (event Object) {String} title Título para el evento.
  * @apiSuccess (event Object) {String} description Descripción del evento.
- * @apiSuccess (event Object) {String} date Fecha del evento.
+ * @apiSuccess (event Object) {String} date Fecha inicial del evento.
+ * @apiSuccess (event Object) {String} dateEnd Fecha final del evento.
  * @apiSuccess (event Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (event Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (event Object) {Number[]} toRoles Roles a los que va dirigido.
@@ -168,6 +173,7 @@
     "title": "EVENTO 01",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ....",
     "date": "2021-09-15",
+    "dateEnd": "2021-09-15",
     "initHour": "08:00",
     "endHour": "11:30",
     "toRoles": [
@@ -201,7 +207,7 @@
 
 /**
  * @api {put} /api/events/:_id (03) Actualizar un evento.
- * @apiVersion 0.0.35
+ * @apiVersion 0.0.47
  * @apiName updateEvents
  * @apiGroup Events
  * @apiDescription Solo el miembro que registró el evento podrá editarlo (salvo el administrador).
@@ -219,7 +225,8 @@
  * @apiSuccess (events Object) {String} _id ID del evento.
  * @apiSuccess (events Object) {String} title Título para el evento.
  * @apiSuccess (events Object) {String} description Descripción del evento.
- * @apiSuccess (events Object) {String} date Fecha del evento.
+ * @apiSuccess (events Object) {String} date Fecha inicial del evento.
+ * @apiSuccess (events Object) {String} dateEnd Fecha final del evento.
  * @apiSuccess (events Object) {String} initDate Hora de inicio del evento.
  * @apiSuccess (events Object) {String} endDate Hora de finalización del evento.
  * @apiSuccess (events Object) {Number[]} toRoles Roles a los que va dirigido.
