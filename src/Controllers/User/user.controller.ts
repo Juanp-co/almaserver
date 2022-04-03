@@ -292,7 +292,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
         qty: 0,
       },
       typeVisits: {
-        title: 'Tipos de Visitas',
+        title: 'Tipos de visitas',
         data: [
           { label: 'Presencial', qty: 0 },
           { label: 'Telefónica', qty: 0 }
@@ -306,17 +306,17 @@ export async function getReports(req: Request, res: Response): Promise<Response>
     let listIdsPending: any = []; // generate a new array data
 
     if (initDate && checkDate(initDate)) {
-      query['courses.created_at'] = { $gte: moment(`${initDate}`).startOf('d').unix() };
+      // query['courses.created_at'] = { $gte: moment(`${initDate}`).startOf('d').unix() };
       queryReferrals.updated_at = { $gte: moment(`${initDate}`).startOf('d').unix() };
       query2.date = { $gte: moment(`${initDate}`).startOf('d').unix() };
       if (checkDate(endDate)) {
-        query['courses.created_at'].$lt = moment(`${endDate}`).endOf('d').unix();
+        // query['courses.created_at'].$lt = moment(`${endDate}`).endOf('d').unix();
         queryReferrals.updated_at.$lt = moment(`${endDate}`).endOf('d').unix();
         query2.date.$lt = moment(`${endDate}`).endOf('d').unix();
       }
     }
 
-    const myCourses = await CoursesUsers.findOne({ userid: tokenId, ...query }, { courses: 1 }).exec();
+    const myCourses = await CoursesUsers.findOne({ userid: tokenId }, { courses: 1 }).exec();
     const myReferrals = await Referrals.findOne({ _id: tokenId, ...queryReferrals }, { members: 1 }).exec();
     const visits = await Visits.find({ referred: tokenId, ...query2 }, { date: 1, userid: 1, action: 1 }).exec();
 
@@ -335,33 +335,16 @@ export async function getReports(req: Request, res: Response): Promise<Response>
 
       if (members.length > 0) {
         ret.visits.data[1].qty = visits.length;
-        let limit = 0;
-
         for (const m of members) {
-          const data: any = {
-            label: null,
-            qty: null
-          };
-
           // get names and lastNames
-          const dataUser = users.find(u => u._id.toString() === m._id.toString());
+          const index = users.findIndex(u => u._id.toString() === m._id.toString());
 
-          if (dataUser) {
-            data.label = `${dataUser.names} ${dataUser.lastNames}`;
-            data.qty = m.members.length;
-            listsMembersDetails.push(data);
-            limit += 1;
+          if (index > -1) {
+            ret.referrals.data.push({
+              label: `${users[index].names} ${users[index].lastNames}`,
+              qty: m.members?.length || 0
+            });
           }
-
-          if (limit === 3) {
-            ret.referrals.data.push(listsMembersDetails);
-            listsMembersDetails = [];
-            limit = 0;
-          }
-        }
-
-        if (listsMembersDetails.length > 0) {
-          ret.referrals.data = listsMembersDetails;
         }
       }
     }
