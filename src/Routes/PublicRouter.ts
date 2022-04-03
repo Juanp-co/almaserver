@@ -12,7 +12,7 @@ import {
   updateEvent
 } from '../Controllers/events/events.controller';
 import {
-  getBanks, getGroupDetails, getOrganization, getPublicMembers, getPublicParams,
+  getBanks, getBithdays, getGroupDetails, getOrganization, getPublicMembers, getPublicParams,
   helloWorld,
   login,
   logout, recoveryPassword,
@@ -36,6 +36,10 @@ router.get(`/`, helloWorld);
 /* banks */
 
 router.get(`/banks`, validateUser, getBanks);
+
+/* birthdays */
+
+router.get(`/birthdays`, getBithdays);
 
 /*
   Courses
