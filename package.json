@@ -5,16 +5,15 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "NODE_ENV=production node ./dist/index.js ",
-    "dev": "npm run lint && NODE_ENV=development nodemon ./src/index.ts",
-    "build": "npm run lint && npm run clean && tsc -p ./",
-    "precommit": "npm run docs && npm run build",
-    "lint": "tsc --noEmit && eslint src/**/*.ts --quiet --fix --ignore-pattern \"node_modules/\"",
+    "dev": "NODE_ENV=development nodemon",
+    "build": "npm run lint && tsc -p ./ && npm run clean",
+    "precommit": "npm run build && npm run docs",
+    "lint": "eslint src/**/*.ts --quiet --fix --ignore-pattern \"node_modules/\" && tsc --noEmit",
     "docs": "apidoc -i ./Docs -o public/apidoc/",
     "clean": "rimraf dist",
     "migrations": "npx ts-node Migrations/DevMigration.ts",
     "migrations-prod": "NODE_ENV=production npx ts-node Migrations/DevMigration.ts",
-    "fix-users-roles": "NODE_ENV=development npx ts-node Scripts/FixUsersRoles.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "fix-users-roles": "NODE_ENV=development npx ts-node Scripts/FixUsersRoles.ts"
   },
   "repository": {
     "type": "git",
@@ -67,6 +66,7 @@
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
     "ts-node": "^9.1.1",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.1.3"
   },
   "optionalDependencies": {

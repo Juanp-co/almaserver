@@ -37,8 +37,8 @@ export default function validateFormData(data: IFamiliesGroupsReportsForm) : { d
     );
   }
   else {
-    ret.brethren = data.brethren;
-    ret.total += data.brethren;
+    ret.brethren = parseInt(`${data.brethren}`, 10);
+    ret.total += ret.brethren;
   }
 
   // friends
@@ -48,8 +48,8 @@ export default function validateFormData(data: IFamiliesGroupsReportsForm) : { d
     );
   }
   else {
-    ret.friends = data.friends;
-    ret.total += data.friends;
+    ret.friends = parseInt(`${data.friends}`, 10);
+    ret.total += ret.friends;
   }
 
   // christianChildren
@@ -59,19 +59,22 @@ export default function validateFormData(data: IFamiliesGroupsReportsForm) : { d
     );
   }
   else {
-    ret.christianChildren = data.christianChildren;
-    ret.total += data.christianChildren;
+    ret.christianChildren = parseInt(`${data.christianChildren}`, 10);
+    ret.total += ret.christianChildren;
   }
 
   // christianChildrenFriends
   if (!/[0-9]{1,4}/.test(`${data.christianChildrenFriends}`)) {
     errors.push(
-      setError('Disculpe, pero debe indicar indicar el número de amigos de los niños cristianos.', 'christianChildrenFriends')
+      setError(
+        'Disculpe, pero debe indicar indicar el número de amigos de los niños cristianos.',
+        'christianChildrenFriends'
+      )
     );
   }
   else {
-    ret.christianChildrenFriends = data.christianChildrenFriends;
-    ret.total += data.christianChildrenFriends;
+    ret.christianChildrenFriends = parseInt(`${data.christianChildrenFriends}`, 10);
+    ret.total += ret.christianChildrenFriends;
   }
 
   // number
@@ -89,7 +92,7 @@ export default function validateFormData(data: IFamiliesGroupsReportsForm) : { d
   // observations
   if (!checkTitlesOrDescriptions(data.observations)) {
     errors.push(
-      setError('Disculpe, pero debe indicar una dirección.', 'observations')
+      setError('Disculpe, pero debe indicar una observación para el reporte.', 'observations')
     );
   }
   else ret.observations = data.observations?.toString().trim() || null;

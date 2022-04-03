@@ -12,7 +12,7 @@
     "Docs",
     "*.log"
   ],
-  "exec": "ts-node",
+  "exec": "ts-node-dev --respawn --transpile-only ./src/index.ts",
   "execMap": {
     "rb": "ruby",
     "pde": "processing --sketch={{pwd}} --run"
