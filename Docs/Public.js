@@ -719,11 +719,11 @@
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object[]} groups Listado de grupos familiares asociados al usuario.
  *
- * @apiSuccess (groups Object[]) {Number} _id ID del miembro.
- * @apiSuccess (groups Object[]) {Number} sector Nombres.
- * @apiSuccess (groups Object[]) {Number} subSector Apellidos.
- * @apiSuccess (groups Object[]) {Number} number Número de documento.
- * @apiSuccess (groups Object[]) {Object} location Datos de la localización.
+ * @apiSuccess (groups Object[]) {Number} _id ID del group familiar.
+ * @apiSuccess (groups Object[]) {Number} sector Número del sector.
+ * @apiSuccess (groups Object[]) {Number} subSector Número del sub-sector.
+ * @apiSuccess (groups Object[]) {Number} number Número del grupo.
+ * @apiSuccess (groups Object[]) {Object} location Ubicación del grupo.
  * @apiSuccess (groups Object[]) {Boolean} isLeader Indica si el miembro es líder.
  * @apiSuccess (groups Object[]) {String} created_at Fecha de creación del grupo.
  *
@@ -767,6 +767,64 @@
  * @apiUse GlobalParamsErrors
  *
  * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {get} /api/birthdays (13) Obtener todos los miembros con su fecha de nacimiento.
+ * @apiVersion 0.0.49
+ * @apiName birthdaysPublic
+ * @apiGroup Public
+ *
+ * @apiDescription Se obtienen los datos de todos los usuarios con su fecha de nacimiento. La manipulación de los datos
+ * para indicar sus fecha de cumpleaños deberá ser realizada por quien consume el servicio.
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} birthdayList Listado de miembros.
+ *
+ * @apiSuccess (birthdayList Object[]) {String} _id ID del miembro.
+ * @apiSuccess (birthdayList Object[]) {String} names Nombres.
+ * @apiSuccess (birthdayList Object[]) {String} lastNames Apellidos.
+ * @apiSuccess (birthdayList Object[]) {String} phone Teléfono.
+ * @apiSuccess (birthdayList Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (birthdayList Object[]) {Number} gender Género.
+ * @apiSuccess (birthdayList Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (birthdayList Object[]) {String|Null} position Cargos dentro de la organización.
+ * @apiSuccess (birthdayList Object[]) {String} birthday Fecha de nacimiento.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Datos de cumpleaños",
+  "birthdayList": [
+    {
+      "_id": "62150f82a582520458cc89f0",
+      "names": "ADRIANA",
+      "lastNames": "CIFUENTES",
+      "phone": "3136320063",
+      "document": null
+      "gender": 1,
+      "picture": null,
+      "position": null,
+      "birthday": "1970-11-02",
+    },
+    .
+    .
+    .
+  ]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Datos de cumpleaños",
+	"birthdayList": []
+}
+ *
+ * @apiUse GlobalParamsErrors
  *
  * @apiUse GlobalErrorSystem
  */

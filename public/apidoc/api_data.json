@@ -11201,6 +11201,170 @@
   },
   {
     "type": "get",
+    "url": "/api/birthdays",
+    "title": "(13) Obtener todos los miembros con su fecha de nacimiento.",
+    "version": "0.0.49",
+    "name": "birthdaysPublic",
+    "group": "Public",
+    "description": "<p>Se obtienen los datos de todos los usuarios con su fecha de nacimiento. La manipulación de los datos para indicar sus fecha de cumpleaños deberá ser realizada por quien consume el servicio.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "birthdayList",
+            "description": "<p>Listado de miembros.</p>"
+          }
+        ],
+        "birthdayList Object[]": [
+          {
+            "group": "birthdayList Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombres.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>Género.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargos dentro de la organización.</p>"
+          },
+          {
+            "group": "birthdayList Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "birthday",
+            "description": "<p>Fecha de nacimiento.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Datos de cumpleaños\",\n  \"birthdayList\": [\n    {\n      \"_id\": \"62150f82a582520458cc89f0\",\n      \"names\": \"ADRIANA\",\n      \"lastNames\": \"CIFUENTES\",\n      \"phone\": \"3136320063\",\n      \"document\": null\n      \"gender\": 1,\n      \"picture\": null,\n      \"position\": null,\n      \"birthday\": \"1970-11-02\",\n    },\n    .\n    .\n    .\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Datos de cumpleaños\",\n\t\"birthdayList\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/events/:_id",
     "title": "(04) Obtener detalles de un evento público.",
     "version": "0.0.36",
@@ -11480,35 +11644,35 @@
             "type": "Number",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del miembro.</p>"
+            "description": "<p>ID del group familiar.</p>"
           },
           {
             "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "sector",
-            "description": "<p>Nombres.</p>"
+            "description": "<p>Número del sector.</p>"
           },
           {
             "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "subSector",
-            "description": "<p>Apellidos.</p>"
+            "description": "<p>Número del sub-sector.</p>"
           },
           {
             "group": "groups Object[]",
             "type": "Number",
             "optional": false,
             "field": "number",
-            "description": "<p>Número de documento.</p>"
+            "description": "<p>Número del grupo.</p>"
           },
           {
             "group": "groups Object[]",
             "type": "Object",
             "optional": false,
             "field": "location",
-            "description": "<p>Datos de la localización.</p>"
+            "description": "<p>Ubicación del grupo.</p>"
           },
           {
             "group": "groups Object[]",

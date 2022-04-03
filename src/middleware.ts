@@ -22,10 +22,11 @@ function responseErrorCatchSessionToken(res: Response, e: any): Response {
 
 export async function validateUser(req: Request, res: Response, next: any): Promise<any> {
   try {
-    const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;
-    const check = jwt.verify(token, req.app.get('secretKey')) as IUserToToken;
+    const token = req.headers['x-access-token'] || req.headers.Authorization || null;
+    if (!token) return responseErrorSession(res);
 
-    const session = await checkTokenDB(token);
+    const check = jwt.verify(`${token}`, req.app.get('secretKey')) as IUserToToken;
+    const session = await checkTokenDB(`${token}`);
 
     if (!session) return responseErrorSession(res);
 
@@ -41,10 +42,11 @@ export async function validateUser(req: Request, res: Response, next: any): Prom
 
 export async function validatePublic(req: Request, res: Response, next: any): Promise<any> {
   try {
-    const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;
-    const check = jwt.verify(token, req.app.get('secretKey')) as IUserToToken;
+    const token = req.headers['x-access-token'] || req.headers.Authorization || null;
+    if (!token) return responseErrorSession(res);
 
-    const session = await checkTokenDB(token);
+    const check = jwt.verify(`${token}`, req.app.get('secretKey')) as IUserToToken;
+    const session = await checkTokenDB(`${token}`);
 
     if (session) {
       req.body.tokenId = check._id;
@@ -60,10 +62,11 @@ export async function validatePublic(req: Request, res: Response, next: any): Pr
 
 export async function validateAdmin(req: Request, res: Response, next: any): Promise<any> {
   try {
-    const token = `${req.headers['x-access-token'] || req.headers.Authorization}`;
-    const check = jwt.verify(token, req.app.get('secretKey')) as IUserToToken;
+    const token = req.headers['x-access-token'] || req.headers.Authorization || null;
+    if (!token) return responseErrorSession(res);
 
-    const session = await checkTokenDB(token);
+    const check = jwt.verify(`${token}`, req.app.get('secretKey')) as IUserToToken;
+    const session = await checkTokenDB(`${token}`);
 
     if (!session) return responseErrorSession(res);
 

@@ -240,7 +240,38 @@ export async function getBanks(req: Request, res: Response): Promise<Response> {
 }
 
 /*
-  BANKS
+  BIRTHDAYS
+ */
+export async function getBithdays(req: Request, res: Response): Promise<Response> {
+  try {
+    const birthdayList: any = await Users.find(
+      { birthday: { $ne: null } },
+      {
+        _id: 1,
+        names: 1,
+        lastNames: 1,
+        document: 1,
+        gender: 1,
+        birthday: 1,
+        phone: 1,
+        picture: 1,
+        position: 1,
+      }
+    )
+      .sort({ names: 1 })
+      .exec();
+
+    return res.json({
+      msg: `Datos de cumpleaños`,
+      birthdayList
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getBithdays`);
+  }
+}
+
+/*
+  GROUP DETAILS
  */
 export async function getGroupDetails(req: Request, res: Response): Promise<Response> {
   try {
