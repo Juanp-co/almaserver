@@ -12,7 +12,7 @@ import {
   updateEvent
 } from '../Controllers/events/events.controller';
 import {
-  getBanks, getBithdays, getGroupDetails, getOrganization, getPublicMembers, getPublicParams,
+  getBanks, getBirthdays, getChurches, getGroupDetails, getOrganization, getPublicMembers, getPublicParams,
   helloWorld,
   login,
   logout, recoveryPassword,
@@ -30,20 +30,18 @@ const router = Router();
 // ===================================================================================
 
 /* Test api */
-
 router.get(`/`, helloWorld);
 
-/* banks */
-
+/* Banks */
 router.get(`/banks`, validateUser, getBanks);
 
-/* birthdays */
+/* Birthdays */
+router.get(`/birthdays`, getBirthdays);
 
-router.get(`/birthdays`, getBithdays);
+/* Churches */
+router.get(`/churches`, getChurches);
 
-/*
-  Courses
-*/
+/* Courses */
 // list and counters
 router.get(`/courses`, validateUser, getCourses);
 router.get(`/courses/:slug`, validateUser, showCourse);
@@ -65,7 +63,6 @@ router.get(`/families-groups`, validateUser, getFamiliesGroupsPublic);
 /*
   Events
 */
-
 router.route(`/events`)
   .get(getPublicEvents)
   .post(validateUser, saveEvent);

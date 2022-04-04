@@ -1,4 +1,3 @@
-import { isArray } from 'util';
 import checkIfExistDocument, {
   checkIfExistPhone,
   getIdUserFromDocument
@@ -101,6 +100,7 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
     roles: [4],
     referred: null,
     consolidated: false,
+    church: null
   };
   const errors: any = [];
 
@@ -145,6 +145,15 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
     if (!checkDate(data.birthday)) {
       errors.push(setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
     } else ret.birthday = data.birthday?.trim().toUpperCase() || null;
+  }
+
+  // church
+  if (data.church) {
+    if (!checkObjectId(`${data.church}`)) {
+      errors.push(setError('Disculpe, pero la iglesia seleccionada es incorrecta.', 'church'));
+    } else {
+      ret.church = data.church;
+    }
   }
 
   // locality
@@ -213,6 +222,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     roles: [4],
     referred: null,
     consolidated: false,
+    church: null
   };
   const errors: any = [];
 
@@ -257,6 +267,15 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     if (!checkDate(data.birthday)) {
       errors.push(setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
     } else ret.birthday = data.birthday?.trim().toUpperCase() || null;
+  }
+
+  // church
+  if (data.church) {
+    if (!checkObjectId(`${data.church}`)) {
+      errors.push(setError('Disculpe, pero la iglesia seleccionada es incorrecta.', 'church'));
+    } else {
+      ret.church = data.church;
+    }
   }
 
   // locality
@@ -323,6 +342,7 @@ export async function validateUpdate(data: IUserModelUpdate, _id: string, admin 
     city: null,
     locality: null,
     direction: null,
+    church: null,
   } as IUser;
   const errors: any = [];
 
@@ -388,6 +408,15 @@ export async function validateUpdate(data: IUserModelUpdate, _id: string, admin 
       errors.push(setError('Disculpe, pero la fecha de cumpleaños indicada es incorrecta.', 'birthday'));
     } else {
       ret.birthday = data.birthday?.trim().toUpperCase() || null;
+    }
+  }
+
+  // church
+  if (data.church) {
+    if (!checkObjectId(`${data.church}`)) {
+      errors.push(setError('Disculpe, pero la iglesia seleccionada es incorrecta.', 'church'));
+    } else {
+      ret.church = data.church;
     }
   }
 

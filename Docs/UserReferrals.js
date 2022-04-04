@@ -203,6 +203,7 @@
  * @apiSuccess (member Object) {String} names Nombres.
  * @apiSuccess (member Object) {String} lastNames Apellidos.
  * @apiSuccess (member Object) {Number[]} roles Listado de roles.
+ * @apiSuccess (member Object) {String} chuch ID de la iglesia a que asiste.
  *
  * @apiSuccess (courses Object[]) {String} _id ID del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
@@ -248,7 +249,8 @@
       "phone": "573151234568",
       "names": "ANTHONY",
       "lastNames": "VELÁSQUEZ",
-      "roles": [ 3, 4 ]
+      "roles": [ 3, 4 ],
+      "church": "624a357644f15f3ce8200c2f"
     },
     "totalCourses": 9,
     "totalReferrals": 6,

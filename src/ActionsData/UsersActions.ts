@@ -192,6 +192,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         picture: 1,
         group: 1,
         roles: 1,
+        church: 1,
       }
     ).exec() as IUserReferralSimpleData;
 
@@ -213,7 +214,6 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
           updated_at: group.updated_at,
         }
       }
-
     }
 
     // get totals members referrals

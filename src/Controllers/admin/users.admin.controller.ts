@@ -47,6 +47,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
         roles: 1,
         created_at: 1,
         picture: 1,
+        church: 1,
       })
       .skip(skip)
       .limit(limit)
@@ -82,7 +83,6 @@ export async function downLoadData(req: Request, res: Response): Promise<Respons
   try {
     const members = await Users.find(
       {},
-
       {
         phone: 1,
         document: 1,
@@ -108,6 +108,7 @@ export async function downLoadData(req: Request, res: Response): Promise<Respons
         city: 1,
         locality: 1,
         direction: 1,
+        church: 1,
         created_at: 1,
       },
     ).exec();
@@ -219,6 +220,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     user.locality = validate.data.locality || user.locality;
     user.direction = validate.data.direction || user.direction;
     user.meetingNew = validate.data.meetingNew;
+    user.church = validate.data.church || user.church;
 
     await user.save();
 
