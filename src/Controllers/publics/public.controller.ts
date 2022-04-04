@@ -28,6 +28,7 @@ import Referrals from '../../Models/Referrals';
 import Settings from '../../Models/Settings';
 import Users from '../../Models/Users';
 import Groups from '../../Models/Groups';
+import Churches from '../../Models/Churches';
 
 const path = 'Controllers/publics/public.controller';
 
@@ -242,7 +243,7 @@ export async function getBanks(req: Request, res: Response): Promise<Response> {
 /*
   BIRTHDAYS
  */
-export async function getBithdays(req: Request, res: Response): Promise<Response> {
+export async function getBirthdays(req: Request, res: Response): Promise<Response> {
   try {
     const birthdayList: any = await Users.find(
       { birthday: { $ne: null } },
@@ -266,7 +267,23 @@ export async function getBithdays(req: Request, res: Response): Promise<Response
       birthdayList
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/getBithdays`);
+    return returnError(res, error, `${path}/getBirthdays`);
+  }
+}
+
+/*
+  CHURCHES
+ */
+export async function getChurches(req: Request, res: Response): Promise<Response> {
+  try {
+    const churches: any = await Churches.find({}, { name: 1, }).sort({ name: 1 }).exec();
+
+    return res.json({
+      msg: `Listado de iglesias`,
+      churches
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getChurches`);
   }
 }
 
@@ -376,51 +393,60 @@ export async function getPublicParams(req: Request, res: Response): Promise<Resp
  */
 export async function getOrganization(req: Request, res: Response): Promise<Response> {
   try {
-    const lvls: any = {
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-    };
-    const ret: any = {
-      lvls: {},
-      users: []
-    };
+    const ret: any[] = [];
+
+    const churches = await Churches.find({}, { userid: 0, created_at: 0, updated_at: 0, __v: 0 }).exec();
 
     const users = await Users.find(
       {},
-      { names: 1, lastNames: 1, document: 1, gender: 1, phone: 1, position: 1, picture: 1, roles: 1 }
+      { names: 1, lastNames: 1, church: 1, gender: 1, picture: 1, roles: 1 }
     ).sort({ names: 1 }).exec();
 
-    if (users.length > 0) {
-      users.forEach(u => {
-        const model = {
-          _id: u._id || null,
-          fullname: `${u.names || ''} ${u.lastNames || ''} `,
-          gender: u.gender || null,
-          picture: u.picture || null,
+    if (churches.length > 0) {
+      churches.forEach(c => {
+        const lvls: any = {
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+        };
+        const m: any = {
+          church: c,
+          lvls: {},
+          users: [],
         };
 
-        ret.users.push(model);
+        const userList = users.filter((u) => u.church === c._id.toString());
 
-        u.roles?.forEach(r => {
-          if (r !== 0) lvls[r].push(u._id);
-        });
-      })
+        if (userList.length > 0) {
+          userList.forEach(u => {
+            m.users.push({
+              _id: u._id || null,
+              fullname: `${u.names || ''} ${u.lastNames || ''}`,
+              gender: u.gender || null,
+              picture: u.picture || null,
+              church: u.church || null,
+            });
+
+            u.roles?.forEach(r => {
+              if (r !== 0) lvls[r].push(u._id);
+            });
+          });
+        }
+        m.lvls.pastors = lvls[1];
+        m.lvls.supervisors = lvls[2];
+        m.lvls.leaders = lvls[3];
+        m.lvls.peoples = lvls[4];
+
+        ret.push(m);
+      });
     }
 
-    ret.lvls = {
-      pastors: lvls[1],
-      supervisors: lvls[2],
-      leaders: lvls[3],
-      peoples: lvls[4],
-    };
-
     return res.json({
-      msg: `Parámetros`,
+      msg: `Organización`,
       data: ret
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/getPublicParams`);
+    return returnError(res, error, `${path}/getOrganization`);
   }
 }

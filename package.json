@@ -1,6 +1,6 @@
 {
   "name": "almaserver",
-  "version": "0.0.49",
+  "version": "0.0.50",
   "description": "API to ALMA App.",
   "main": "./dist/index.js",
   "scripts": {
@@ -12,6 +12,8 @@
     "docs": "apidoc -i ./Docs -o public/apidoc/",
     "clean": "rimraf dist",
     "migrations": "npx ts-node Migrations/DevMigration.ts",
+    "migrations-churches": "NODE_ENV=development npx ts-node Migrations/MigrationChurches.ts",
+    "migrations-churches-prod": "NODE_ENV=production npx ts-node Migrations/MigrationChurches.ts",
     "migrations-prod": "NODE_ENV=production npx ts-node Migrations/DevMigration.ts",
     "fix-users-roles": "NODE_ENV=development npx ts-node Scripts/FixUsersRoles.ts"
   },

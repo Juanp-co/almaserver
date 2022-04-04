@@ -5,6 +5,7 @@ import App from './app';
 import startConnection from './database';
 import AdminRouter from './Routes/Admin/AdminRouter';
 import BanksAdminRouter from './Routes/Admin/BanksAdminRouter';
+import ChurchesAdminRouter from './Routes/Admin/ChurchesAdminRouter';
 import ConsolidatesAdminRouter from './Routes/Admin/ConsolidatesAdminRouter';
 import CoursesAdminRouter from './Routes/Admin/CoursesAdminRouter';
 import DevotionalsAdminRouter from './Routes/Admin/DevotionalsAdminRouter';
@@ -46,6 +47,7 @@ if (logsFile && logsFile !== 'false') {
 App.use(`/api`, PublicRouter);
 App.use(`/api/admin/`, AdminRouter);
 App.use(`/api/admin/banks`, BanksAdminRouter);
+App.use(`/api/admin/churches`, ChurchesAdminRouter);
 App.use(`/api/admin/consolidates`, ConsolidatesAdminRouter);
 App.use(`/api/admin/courses`, CoursesAdminRouter);
 App.use(`/api/admin/devotionals`, DevotionalsAdminRouter);

@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/user (00) Obtener datos de la sesión.
- * @apiVersion 0.0.34
+ * @apiVersion 0.0.50
  * @apiName getDataSessionUser
  * @apiGroup User
  *
@@ -40,6 +40,7 @@
  * @apiSuccess (data Object) {String|Null} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
+ * @apiSuccess (data Object) {String|Null} church ID de la iglesia a la que pertenece.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -80,7 +81,8 @@
     "phone": "3161234567",
     "document": "CC12345678",
     "names": "PEDRO JOSÉ",
-    "lastNames": "PÉREZ RODRIGUEZ"
+    "lastNames": "PÉREZ RODRIGUEZ",
+    "church": "624a357644f15f3ce8200c2f"
   }
 }
  *
@@ -93,7 +95,7 @@
 
 /**
  * @api {put} /api/user (01) Actualizar datos del perfil.
- * @apiVersion 0.0.45
+ * @apiVersion 0.0.50
  * @apiName registerUser
  * @apiGroup User
  *
@@ -118,6 +120,7 @@
  * @apiParam {Number|Null} city ID (index array)de la ciudad.
  * @apiParam {String|Null} locality Nombredel barrio o vereda.
  * @apiParam {String|Null} direction Dirección.
+ * @apiParam {String|Null} church ID de la iglesia a la que pertenece.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -139,7 +142,8 @@
     "department": 19,
     "city": 18,
     "locality": "URB. NUEVO MUNDO",
-    "direction": "URB. NUEVO MUNDO #66"
+    "direction": "URB. NUEVO MUNDO #66",
+    "church": "624a357644f15f3ce8200c2f"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -165,6 +169,7 @@
  * @apiSuccess (data Object) {String} document Número de documento.
  * @apiSuccess (data Object) {String} names Nombres.
  * @apiSuccess (data Object) {String} lastNames Apellidos.
+ * @apiSuccess (data Object) {String} church ID de la iglesia a la que pertenece.
  *
  * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
  *
@@ -192,7 +197,8 @@
 		"names": "ANTHONY ALEJANDRO",
 		"lastNames": "VELASQUEZ RODRIGUEZ",
 		"phone": "573161234567",
-		"document": "CC123456789"
+		"document": "CC123456789",
+		"church": "624a357644f15f3ce8200c2f"
 	}
 }
  *

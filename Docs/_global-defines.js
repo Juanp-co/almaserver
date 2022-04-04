@@ -47,6 +47,24 @@
 }
  */
 
+// Churches
+
+/**
+ * @apiDefine ChurchesErrorIdOrNotFound
+ *
+ * @apiErrorExample {JSON} Not found
+ * HTTP/1.1 404 Not found
+ * {
+  "msg": "Disculpe, pero la iglesia seleccionada no existe o no se encuentra disponible."
+}
+ *
+ * @apiErrorExample {JSON} Invalid _id
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+  "msg": "Disculpe, pero la iglesia seleccionada es incorrecta."
+}
+ */
+
 // courses
 
 /**

@@ -36,6 +36,7 @@ export default interface IUser extends Document {
   locality: string | null;
   direction: string | null;
   picture: string | null;
+  church?: string | null;
   created_at?: number | null;
   updated_at?: number | null;
 }
@@ -68,6 +69,7 @@ export interface IUserData {
   locality: IUser['locality'];
   direction: IUser['direction'];
   picture: IUser['picture'];
+  church?: IUser['church'];
   totals: IUserTotalsCoursesAndReferrals;
   created_at?: IUser['created_at'];
   updated_at?: IUser['updated_at'];
@@ -100,6 +102,7 @@ export interface IUserSimpleRegisterConsolidate {
   familyGroupId: IUser['familyGroupId'];
   roles: number[] | null;
   referred: string | null;
+  church?: IUser['church'];
   consolidated: boolean,
 }
 
@@ -124,6 +127,7 @@ export interface IUserModelUpdate {
   city: IUser['city'];
   locality: IUser['locality'];
   direction: IUser['direction'];
+  church: IUser['church'];
 }
 
 export interface IUserModelUpdateRoles {
@@ -150,6 +154,7 @@ export interface IUserSimpleInfo {
   picture?: IUser['picture'];
   referred?: IUserSimpleInfo | null;
   position?: IUser['position'] | null;
+  church?: IUser['church'];
   totalsReferrals?: number;
 }
 
@@ -168,6 +173,7 @@ export interface IUserReferralSimpleData {
   locality: IUser['locality'];
   direction: IUser['direction'];
   group: IUser['group'];
+  church?: IUser['church'];
 }
 
 export interface IUserReferralInfo {

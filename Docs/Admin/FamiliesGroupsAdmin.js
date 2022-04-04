@@ -56,7 +56,7 @@
  * @apiSuccess (members Object) {Object|Null} host Datos del anfitrión.
  * @apiSuccess (members Object) {Object|Null} helper Datos del asistente.
  * @apiSuccess (members Object) {Object|Null} master Datos del maestro.
- * @apiSuccess (members Object) {Object[]} assistants Listado de asistentes..
+ * @apiSuccess (members Object) {Object[]} assistants Listado de asistentes.
  *
  * @apiSuccess (location Object) {String} type Tipo de coordenada.
  * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación del grupo.

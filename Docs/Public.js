@@ -828,3 +828,158 @@
  *
  * @apiUse GlobalErrorSystem
  */
+
+/**
+ * @api {get} /api/churches (15) Obtener listado de iglesias registradas.
+ * @apiVersion 0.0.50
+ * @apiName churchesPublic
+ * @apiGroup Public
+ *
+ * @apiDescription El siguiente servicio es para obtener el nombre y el ID de las iglesias registradas.
+ * La respuesta del servicio puede ser utilizada para los formularios donde aplique asignar el ID de la iglesia
+ * a un miembro registrado.
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} churches Listado de iglesias.
+ *
+ * @apiSuccess (churches Object[]) {String} _id ID de la iglesia.
+ * @apiSuccess (churches Object[]) {String} name Nombre de la iglesia.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Listado de iglesias",
+  "churches": [
+    {
+      "_id": "624a357644f15f3ce8200c2f",
+      "name": "ASAMBLEA DE DIOS - PRINCIPAL"
+    },
+    .
+    .
+    .
+  ]
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalErrorSystem
+ */
+
+
+/**
+ * @api {get} /api/organization (15) Obtener estructura de organización de todas las iglesias.
+ * @apiVersion 0.0.50
+ * @apiName organizationPublic
+ * @apiGroup Public
+ *
+ * @apiDescription El siguiente servicio retorna la estructuración organizacional de las iglesias registradas.
+ * El objeto 'lvls', almacena los IDs de los miembros relacionados al cargo o rol respectivo.
+ * El listado de objetos 'users', guarda la información de cada uno de los miembros asociados a la iglesia.
+ *
+ * Se maneja de la siguiente forma para que quien consula el servicio pueda hacer la relación respectiva
+ * de los datos en relación al rol asignado.
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} data Listado de iglesias.
+ *
+ * @apiSuccess (data Object[]) {Object} church Datos de la iglesia.
+ * @apiSuccess (data Object[]) {Object} lvls Niveles (estructura en base al rol del usuario).
+ * @apiSuccess (data Object[]) {Object[]} users Datos de los usuarios relacionados a la iglesia.
+ *
+ * @apiSuccess (church Object) {String} _id ID de la iglesia.
+ * @apiSuccess (church Object) {String} name Nombre de la iglesia.
+ * @apiSuccess (church Object) {String|Null} description descripción de la iglesia.
+ * @apiSuccess (church Object) {String|Null} phone1 Teléfono principal.
+ * @apiSuccess (church Object) {String|Null} phone2 Teléfono secundario.
+ * @apiSuccess (church Object) {String|Null} email Correo electrónico.
+ * @apiSuccess (church Object) {String|Null} address Dirección de la iglesia.
+ * @apiSuccess (church Object) {Object} location datos de la ubicación de la iglesia.
+ * @apiSuccess (church Object) {String|Null} picture URL de la foto de la iglesia.
+ *
+ * @apiSuccess (location Object) {String} type Tipo de coordenadas.
+ * @apiSuccess (location Object) {Number[]} coordinates Coordenadas de la ubicación ([ x, y ]).
+ *
+ * @apiSuccess (lvls Object) {String[]} pastors Listado de IDs de los pastores.
+ * @apiSuccess (lvls Object) {String[]} supervisors Listado de IDs de los supervisores.
+ * @apiSuccess (lvls Object) {String[]} leaders Listado de IDs de los líderes.
+ * @apiSuccess (lvls Object) {String[]} peoples Listado de IDs de los miembros comunes.
+ *
+ * @apiSuccess (users Object[]) {String} _id ID del miembro.
+ * @apiSuccess (users Object[]) {String} fullname Nombre completo del usuario.
+ * @apiSuccess (users Object[]) {String} gender Genéro (sexo) del usuario.
+ * @apiSuccess (users Object[]) {String|Null} picture URL de la foto del perfil.
+ * @apiSuccess (users Object[]) {String} church ID de la iglesia a la que pertenece.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Organización",
+  "data": [
+    {
+      "church": {
+        "picture": null,
+        "phone1": null,
+        "phone2": null,
+        "email": null,
+        "address": null,
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            -73.630175,
+            4.134516
+          ]
+        },
+        "_id": "624a357644f15f3ce8200c2f",
+        "name": "ASAMBLEA DE DIOS - PRINCIPAL",
+        "description": "IGLESIA PRINCIPAL"
+      },
+      "lvls": {
+        "pastors": [
+          "6169f99d3acd4c3221ddd728",
+          .
+          .
+          .
+        ],
+        "supervisors": [
+          "61820b3b2b0b95656950f111",
+          .
+          .
+          .
+        ],
+        "leaders": [
+          "619eb85825c4f804de6c7bb0",
+          .
+          .
+          .
+        ],
+        "peoples": [
+          "62150f82a582520458cc89f0",
+          .
+          .
+          .
+        ]
+      },
+      "users": [
+        {
+          "_id": "62150f82a582520458cc89f0",
+          "fullname": "ADRIANA CIFUENTES",
+          "gender": 1,
+          "picture": null,
+          "church": "624a357644f15f3ce8200c2f"
+        },
+        .
+        .
+        .
+      ]
+    }
+  ]
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalErrorSystem
+ */
