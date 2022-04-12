@@ -867,7 +867,6 @@
  * @apiUse GlobalErrorSystem
  */
 
-
 /**
  * @api {get} /api/organization (15) Obtener estructura de organización de todas las iglesias.
  * @apiVersion 0.0.50
@@ -982,4 +981,58 @@
  * @apiUse GlobalParamsErrors
  *
  * @apiUse GlobalErrorSystem
+ */
+
+/**
+ * @api {get} /api/resources (01) Listado de documentos compartidos (público).
+ * @apiVersion 0.0.51
+ * @apiName getDocumentsListPublic
+ * @apiGroup Public
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ * @apiSuccess {Object[]} resources Listado de retorno.
+ *
+ * @apiSuccess (resources Object[]) {String} _id ID del recurso compartido.
+ * @apiSuccess (resources Object[]) {String} title Título del recurso.
+ * @apiSuccess (resources Object[]) {String} urlDoc URL del documento PDF.
+ * @apiSuccess (resources Object[]) {Number[]} roles Listado de roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).
+ * @apiSuccess (resources Object[]) {Number} created_at Fecha de creación del documento.
+ * @apiSuccess (resources Object[]) {Number} updated_at Fecha de actalización del documento.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Mis recursos compartidos",
+  "resources": [
+    {
+      "_id": "6252676c8400314c8c94c0ee",
+      "title": "PRUEBA DOCUMENTO",
+      "urlDoc": "https://delii.s3.amazonaws.com/alma/resources/documento-1649567592.pdf",
+      "roles": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "created_at": 1649567596,
+      "updated_at": 1649567596
+    }
+  ]
+}
+ *
+ * @apiSuccessExample {JSON} Success without data
+ * HTTP/1.1 200 Success
+ * {
+  "msg": "Mis recursos compartidos",
+	"resources": []
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ *
  */

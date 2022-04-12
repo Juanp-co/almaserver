@@ -19,8 +19,9 @@ import { disableTokenDB, getAccessToken } from '../../Functions/TokenActions';
 import {
   checkDate,
   checkEmail,
+  checkObjectId,
   checkPassword,
-  checkPhone
+  checkPhone,
 } from '../../Functions/Validations';
 import { IUserSimpleInfo } from '../../Interfaces/IUser';
 import AccountsBanks from '../../Models/AccountsBanks';
@@ -29,6 +30,8 @@ import Settings from '../../Models/Settings';
 import Users from '../../Models/Users';
 import Groups from '../../Models/Groups';
 import Churches from '../../Models/Churches';
+import { returnResourcesMsgErrors } from '../../ActionsData/ResourcesActions';
+import Resources from '../../Models/Resources';
 
 const path = 'Controllers/publics/public.controller';
 
@@ -36,10 +39,7 @@ export function helloWorld(req: Request, res: Response): Response {
   return res.json({ msg: `Welcome to ALMA API REST.` });
 }
 
-/*
-Actions Users
- */
-
+/* Actions Users */
 export async function register(req: Request, res: Response): Promise<Response> {
   try {
     const validate = await validateSimpleRegister(req.body);
@@ -224,9 +224,7 @@ export async function recoveryPassword(req: Request, res: Response): Promise<Res
   }
 }
 
-/*
-  BANKS
- */
+/* BANKS */
 export async function getBanks(req: Request, res: Response): Promise<Response> {
   try {
     const banks = await AccountsBanks.find({}, { title: 1, description: 1, picture: 1 }).exec();
@@ -240,9 +238,7 @@ export async function getBanks(req: Request, res: Response): Promise<Response> {
   }
 }
 
-/*
-  BIRTHDAYS
- */
+/* BIRTHDAYS */
 export async function getBirthdays(req: Request, res: Response): Promise<Response> {
   try {
     const birthdayList: any = await Users.find(
@@ -271,9 +267,7 @@ export async function getBirthdays(req: Request, res: Response): Promise<Respons
   }
 }
 
-/*
-  CHURCHES
- */
+/* CHURCHES */
 export async function getChurches(req: Request, res: Response): Promise<Response> {
   try {
     const churches: any = await Churches.find({}, { name: 1, }).sort({ name: 1 }).exec();
@@ -287,9 +281,7 @@ export async function getChurches(req: Request, res: Response): Promise<Response
   }
 }
 
-/*
-  GROUP DETAILS
- */
+/* GROUP DETAILS */
 export async function getGroupDetails(req: Request, res: Response): Promise<Response> {
   try {
     const { _id } = req.params;
@@ -320,10 +312,7 @@ export async function getGroupDetails(req: Request, res: Response): Promise<Resp
   }
 }
 
-/*
-  MEMBERS
- */
-
+/* MEMBERS */
 export async function getPublicMembers(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
@@ -356,9 +345,7 @@ export async function getPublicMembers(req: Request, res: Response): Promise<Res
   }
 }
 
-/*
-  Params
- */
+/* Params */
 export async function getPublicParams(req: Request, res: Response): Promise<Response> {
   try {
     let settings = await Settings.findOne().exec();
@@ -388,9 +375,7 @@ export async function getPublicParams(req: Request, res: Response): Promise<Resp
   }
 }
 
-/*
-  Organizations
- */
+/* Organizations */
 export async function getOrganization(req: Request, res: Response): Promise<Response> {
   try {
     const ret: any[] = [];
@@ -448,5 +433,59 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/getOrganization`);
+  }
+}
+
+/* Resources */
+export async function getPublicResources(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenId } = req.body;
+    let group: any = null;
+    const ret: any[] = [];
+
+    if (!checkObjectId(tokenId)) return returnResourcesMsgErrors(res, 0);
+
+    const user = await Users.findOne({ _id: tokenId }, { roles: 1 }).exec();
+
+    if (!user) return returnResourcesMsgErrors(res, 0);
+
+    const resources = await Resources.find({}, { __v: 0 }).exec();
+
+    if (resources.length > 0) {
+      const resourcesList = resources.filter(r => (
+        checkIfExistsRoleInList(user.roles, r.roles) || user._id.toString() === r.userid
+      ));
+
+      if (resourcesList.length > 0) {
+        const listIds = resourcesList.map(r => r.userid);
+
+        if (listIds.length > 0) {
+          const users = await getNamesUsersList(_.uniq(listIds));
+          const positions: any = {};
+          users?.forEach((u: any) => {
+            positions[u._id.toString()] = u;
+          });
+
+          resourcesList.forEach(r => {
+            ret.push({
+              _id: r._id,
+              title: r.title,
+              urlDoc: r.urlDoc,
+              user: positions[r.userid] || null,
+              roles: r.roles,
+              created_at: r.created_at,
+              updated_at: r.updated_at,
+            });
+          });
+        }
+      }
+    }
+
+    return res.json({
+      msg: 'Documentos compartidos',
+      resources: ret
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getPublicResources`);
   }
 }
