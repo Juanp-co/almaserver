@@ -193,6 +193,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         group: 1,
         roles: 1,
         church: 1,
+        consolidator: 1,
       }
     ).exec() as IUserReferralSimpleData;
 
@@ -335,6 +336,11 @@ export function checkFindValueSearch(params: any = {}, tokenId: string|null = nu
 
     if (params.referreds) query.referred = { $ne: null };
     if (params.admins) query.roles = { $eq: 0 };
+
+    if (params.consolidates) {
+      delete query._id;
+      query.consolidated = { $eq: true };
+    }
   }
 
   return query;

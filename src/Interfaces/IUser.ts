@@ -37,6 +37,7 @@ export default interface IUser extends Document {
   direction: string | null;
   picture: string | null;
   church?: string | null;
+  consolidator?: boolean;
   created_at?: number | null;
   updated_at?: number | null;
 }
