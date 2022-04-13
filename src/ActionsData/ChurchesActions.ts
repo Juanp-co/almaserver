@@ -36,7 +36,6 @@ export async function getChurchData(_id: any = null, withUser = false): Promise<
     };
     const user = await getNamesUsersList([church.userid]) || null;
     ret.user = user ? (user[0] || null) : null;
-    console.log('ret', ret);
   }
   else ret = church;
 

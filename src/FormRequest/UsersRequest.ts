@@ -277,6 +277,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
       ret.church = data.church;
     }
   }
+  else ret.church = '624a357644f15f3ce8200c2f';
 
   // locality
   if (checkTitlesOrDescriptions(`${data.locality}`)) ret.locality = data.locality || null;

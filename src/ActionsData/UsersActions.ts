@@ -111,6 +111,8 @@ export async function getUserData(_id: any, projection: any = null): Promise<IUs
         gender: data.gender,
         birthday: data.birthday,
         civilStatus: data.civilStatus,
+        consolidator: data.consolidator,
+        church: data.church,
         educationLevel: data.educationLevel,
         profession: data.profession,
         bloodType: data.bloodType,
