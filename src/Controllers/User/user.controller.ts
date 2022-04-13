@@ -2,6 +2,7 @@ import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import moment from 'moment-timezone';
+import { return404Or422 } from '../../ActionsData/EventsActions';
 import { getInfoUserReferred, getNamesUsersList } from '../../ActionsData/UsersActions';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { forceLogout } from '../../Functions/TokenActions';
@@ -14,12 +15,10 @@ import {
 import { checkDate, checkObjectId, checkUrl, isBase64 } from '../../Functions/Validations';
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
-import Groups from '../../Models/Groups';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 import Visits from '../../Models/Visits';
 import uploadFile, { deleteFile } from '../../Services/AWSService';
-import { return404Or422 } from '../../ActionsData/EventsActions';
 
 const path = 'Controllers/User/user.controller';
 
