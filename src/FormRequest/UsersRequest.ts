@@ -320,7 +320,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
   return { data: ret, errors };
 }
 
-export async function validateUpdate(data: IUserModelUpdate, _id: string, admin = false): Promise<{ data: IUser; errors: any[] }> {
+export async function validateUpdate(data: IUserModelUpdate, _id: string): Promise<{ data: IUser; errors: any[] }> {
   const ret = {
     phone: null,
     email: null,
@@ -572,7 +572,7 @@ export function validateUpdatePictureProfile(data: IUserModelUpdatePicture): { d
     // document
     if (!isBase64(data.picture) && !checkUrl(data.picture)) {
       errors.push(
-        setError('Disculpe, pero la imagen imagen para su perfil es incorrecta.', 'picture')
+        setError('Disculpe, pero la imagen para su perfil es incorrecta.', 'picture')
       );
     }
     else ret.picture = `${data.picture}`;

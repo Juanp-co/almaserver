@@ -17,7 +17,7 @@ import {
   getChurches,
   getGroupDetails,
   getOrganization,
-  getPublicMembers,
+  getPublicMembers, getPublicMembersTotals,
   getPublicParams,
   getPublicResources,
   helloWorld,
@@ -86,6 +86,7 @@ router.delete(`/logout`, validateUser, logout);
 
 /* Families Groups */
 router.get(`/members`, validateUser, getPublicMembers);
+router.get(`/members/counters`, validateUser, getPublicMembersTotals);
 
 router.get(`/organization`, getOrganization);
 

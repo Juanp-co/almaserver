@@ -313,35 +313,47 @@ export async function getGroupDetails(req: Request, res: Response): Promise<Resp
 }
 
 /* MEMBERS */
+export async function getPublicMembersTotals(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenId } = req.body;
+    const query: any = checkFindValueSearch(req.query, tokenId);
+
+    const totals = await Users.find(query).countDocuments().exec();
+
+    return res.json({
+      msg: `Total de miembros.`,
+      totals
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/getPublicMembersTotals`);
+  }
+}
+
 export async function getPublicMembers(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
     const query: any = checkFindValueSearch(req.query, tokenId);
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    let members: IUserSimpleInfo[] = [];
-
-    if (query.phone || query.$or) {
-      members = await Users.find(
-        query,
-        {
-          names: 1,
-          lastNames: 1,
-          gender: 1,
-          phone: 1,
-          picture: 1
-        })
-        .skip(skip)
-        .limit(limit)
-        .sort(sort)
-        .exec() as IUserSimpleInfo[];
-    }
+    let members: IUserSimpleInfo[] = await Users.find(
+      query,
+      {
+        names: 1,
+        lastNames: 1,
+        gender: 1,
+        phone: 1,
+        picture: 1
+      })
+      .skip(skip)
+      .limit(limit)
+      .sort(sort)
+      .exec() as IUserSimpleInfo[];
 
     return res.json({
       msg: `Listado de miembros.`,
       members
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/getUsers`);
+    return returnError(res, error, `${path}/getPublicMembers`);
   }
 }
 

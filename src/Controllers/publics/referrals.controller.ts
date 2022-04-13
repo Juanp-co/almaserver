@@ -65,13 +65,14 @@ export async function getReferrals(req: Request, res: Response): Promise<Respons
 export async function saveReferral(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
+    const { consolidates } = req.query;
 
     const validate = await validateFormMemberRegisterFromUser(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
     // set current id to referred
-    if (!validate.data.referred) validate.data.referred = tokenId;
+    if (!validate.data.referred && !consolidates) validate.data.referred = tokenId;
 
     const user = new Users(validate.data);
     const password = 'alma1234'; // default password
@@ -85,22 +86,25 @@ export async function saveReferral(req: Request, res: Response): Promise<Respons
     await addCoursesToUser(user._id.toString());
 
     // get referrals
-    const _id = user.referred || tokenId;
-    let referreds = await Referrals.findOne({ _id }).exec();
-    if (referreds) {
-      referreds.members.push(user._id.toString());
-      await referreds.save();
-    }
-    else {
-      referreds = new Referrals({
-        _id,
-        members: [user.referred]
-      });
-      await referreds.save();
+    const _id = user.referred || (consolidates === 'true' ? null : tokenId);
+
+    if (_id) {
+      let referreds = await Referrals.findOne({ _id }).exec();
+      if (referreds) {
+        referreds.members.push(user._id.toString());
+        await referreds.save();
+      }
+      else {
+        referreds = new Referrals({
+          _id,
+          members: [user.referred]
+        });
+        await referreds.save();
+      }
     }
 
     return res.status(201).json({
-      msg: `Se ha registrado el nuevo miebro exitosamente.`,
+      msg: `Se ha registrado el nuevo ${consolidates === 'true' ? 'consolidado' : 'miembro'} exitosamente.`,
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/saveReferral`);
