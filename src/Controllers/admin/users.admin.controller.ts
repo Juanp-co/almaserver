@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { addCoursesToUser, getCoursesSimpleList } from '../../ActionsData/CoursesActions';
 import {
   checkFindValueSearch,
   checkRoleToActions, getNamesUsersList,
@@ -24,7 +25,6 @@ import CoursesUsers from '../../Models/CoursesUsers';
 import Groups from '../../Models/Groups';
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
-import { addCoursesToUser, getCoursesSimpleList } from '../../ActionsData/CoursesActions';
 
 const path = 'Controllers/admin/users.admin.controller';
 

@@ -15,7 +15,7 @@ function responseErrorSession(res: Response): Response{
 
 function responseErrorCatchSessionToken(res: Response, e: any): Response {
   showConsoleError(path, e);
-  return res.status(500).json({
+  return res.status(401).json({
     msg: 'Disculpe, pero ha ocurrido un error interno al momento de verificar las sesión.'
   });
 }
