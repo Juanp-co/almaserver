@@ -221,6 +221,7 @@
  * @apiSuccess (data Object) {String} locality Nombrede la localidad.
  * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} picture Dirección.
+ * @apiSuccess (data Object) {String} church ID de la iglesia a la que asiste.
  * @apiSuccess (data Object) {Object} totals Totales de cursos e hijos espirituales.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
@@ -272,6 +273,7 @@
     "locality": "ASDASDASDASDASD",
     "direction": "ASDASDASDASDASDASD",
     "picture": null,
+    "church": "624a357644f15f3ce8200c2f",
     "totals": {
       "totalsCourses": 1,
       "totalsReferrals": 0
@@ -321,6 +323,7 @@
  * @apiParam {String|Null} locality Nombredel sector o localidad.
  * @apiParam {String|Null} direction Dirección.
  * @apiParam {String|Null} position Cargo(s) o posición.
+ * @apiParam {String} church ID de la iglesia a la que asiste.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -343,7 +346,8 @@
     "city": null,
     "locality": "URB. NUEVO MUNDO",
     "direction": "URB. NUEVO MUNDO #66",
-		"position": "PADRE ESPIRITUAL Y LIDER"
+		"position": "PADRE ESPIRITUAL Y LIDER",
+		"church": "624a357644f15f3ce8200c2f"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -373,6 +377,7 @@
  * @apiSuccess (data Object) {String} lastNames Apellidos.
  * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} position Cargo o posición del miembro.
+ * @apiSuccess (data Object) {String} church ID de la iglesia a la que asiste.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
@@ -405,7 +410,8 @@
 		"lastNames": "VELASQUEZ",
 		"created_at": "2021-04-13 21:55:09",
 		"updated_at": "2021-04-13 22:24:50",
-		"document": null
+		"document": null,
+		"church": "624a357644f15f3ce8200c2f"
 	}
 }
  *

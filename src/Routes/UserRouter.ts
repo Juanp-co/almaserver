@@ -27,6 +27,7 @@ import {
   saveGroup,
   updateGroup
 } from '../Controllers/User/group.controller';
+import { deleteResource, getResources, saveResource } from '../Controllers/User/resources.controller';
 
 const router = Router();
 
@@ -82,5 +83,11 @@ router.get('/referrals/:_id', validateUser, getMemberReferred);
   Reports
  */
 router.get('/reports', validateUser, getReports);
+
+/* Reports */
+router.route('/resources')
+  .get(validateUser, getResources)
+  .post(validateUser, saveResource);
+router.delete('/resources/:_id', validateUser, deleteResource);
 
 export default router;

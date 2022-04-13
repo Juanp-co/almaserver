@@ -36,6 +36,8 @@ const UserSchema = new Schema(
     locality: { type: String, default: null, set: toUpperValue },
     direction: { type: String, default: null, set: toUpperValue },
     picture: { type: String, default: null },
+    church: { type: String, default: null },
+    consolidator: { type: Boolean, default: false },
     created_at: { type: Number, default: setDate, get: getDate },
     updated_at: { type: Number, default: setDate, get: getDate }
   },

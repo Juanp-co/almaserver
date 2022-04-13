@@ -1,0 +1,22 @@
+[
+  {
+    "_id" : "624a357644f15f3ce8200c2f",
+    "picture" : null,
+    "phone1" : null,
+    "phone2" : null,
+    "email" : null,
+    "address" : null,
+    "location" : {
+      "type" : "Point",
+      "coordinates" : [
+        -73.630175,
+        4.134516
+      ]
+    },
+    "userid" : "6164f0f06eb4da089c812f4d",
+    "name" : "ASAMBLEA DE DIOS - PRINCIPAL",
+    "description" : "IGLESIA PRINCIPAL",
+    "created_at" : 1649030518,
+    "updated_at" : 1649030556
+  }
+]

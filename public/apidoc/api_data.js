@@ -758,6 +758,1103 @@ define({ "api": [
     "groupTitle": "BanksAdmin"
   },
   {
+    "type": "post",
+    "url": "/api/admin/churches",
+    "title": "(01) Agregar una iglesia.",
+    "version": "0.0.50",
+    "name": "createChurchesAdmin",
+    "group": "ChurchesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "church",
+            "description": "<p>Detalles de la iglesia.</p>"
+          }
+        ],
+        "church Object": [
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone1",
+            "description": "<p>Teléfono principal.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone2",
+            "description": "<p>Teléfono secundario.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de ubicación.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se registrado la iglesia exitosamente.\",\n\t\"church\": {\n    \"_id\": \"624a357644f15f3ce8200c2f\",\n    \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\",\n    \"description\": \"IGLESIA PRINCIPAL\",\n    \"phone1\": \"00000000000\",\n    \"phone2\": \"00000000000\",\n    \"email\": \"church@example.com\",\n    \"address\": \"Str 37, Villavicencio, COL\",\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -73.630175,\n        4.134516\n      ]\n    },\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/churches/church-624a357644f15f3ce8200c2f-1649030518.jpg\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ChurchesAdmin.js",
+    "groupTitle": "ChurchesAdmin",
+    "parameter": {
+      "fields": {
+        "church Object": [
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone1",
+            "description": "<p>Teléfono principal.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone2",
+            "description": "<p>Teléfono secundario.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de ubicación.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 o URL de imagen.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n  \"phone1\": \"00000000000\",\n  \"phone2\": \"00000000000\",\n  \"email\": \"church@example.com\",\n  \"address\": \"Str 37, Villavicencio, COL\",\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [-64.1828984935545, 10.454209446329]\n  },\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/.....\"",
+        "type": "JSON"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"name\",\n      \"msg\": \"Disculpe, pero indicar el nombre para la iglesia.\"\n    },\n    {\n      \"input\": \"description\",\n      \"msg\": \"Disculpe, pero debe indicar una descripción para la iglesia\"\n    },\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, pero la imagen indicada es incorrecta.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero la ubicación seleccionada es incorrecta.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero las coordenadas de la ubicación seleccionada son incorrectas.\"\n    },\n    {\n      \"input\": \"address\",\n      \"msg\": \"Disculpe, pero la dirección indicada es incorrecta.\"\n    },\n    {\n      \"input\": \"phone1\",\n      \"msg\": \"Disculpe, pero el teléfono principal indicado es incorrecto.\"\n    },\n    {\n      \"input\": \"phone2\",\n      \"msg\": \"Disculpe, pero el teléfono secundario indicado es incorrecto.\"\n    },\n    {\n      \"input\": \"email\",\n      \"msg\": \"Disculpe, pero el correo electrónico indicado es incorrecto.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/api/admin/churches/:_id",
+    "title": "(04) Eliminar una iglesia.",
+    "version": "0.0.50",
+    "name": "deleteChurchesAdmin",
+    "group": "ChurchesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha eliminado la iglesia exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ChurchesAdmin.js",
+    "groupTitle": "ChurchesAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero la iglesia seleccionada no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la iglesia seleccionada es incorrecta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/churches/:_id",
+    "title": "(02) Obtener detalles de una iglesia.",
+    "version": "0.0.50",
+    "name": "detailsChurchesAdmin",
+    "group": "ChurchesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "church",
+            "description": "<p>Detalles de la iglesia.</p>"
+          }
+        ],
+        "church Object": [
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "user",
+            "description": "<p>Datos del usuario que creó la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone1",
+            "description": "<p>Teléfono principal.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone2",
+            "description": "<p>Teléfono secundario.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de ubicación.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación.</p>"
+          }
+        ],
+        "user Object": [
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "user Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Detalles iglesia\",\n  \"church\": {\n    \"_id\": \"624a357644f15f3ce8200c2f\",\n    \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\",\n    \"description\": \"IGLESIA PRINCIPAL\",\n    \"picture\": null,\n    \"phone1\": null,\n    \"phone2\": null,\n    \"address\": null,\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -73.630175,\n        4.134516\n      ]\n    },\n    \"user\": {\n      \"_id\": \"6164f0f06eb4da089c812f4d\",\n      \"names\": \"PERFIL\",\n      \"lastNames\": \"ADMINISTRADOR\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"3153268404\",\n      \"picture\": null,\n      \"position\": null\n    }\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ChurchesAdmin.js",
+    "groupTitle": "ChurchesAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero la iglesia seleccionada no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la iglesia seleccionada es incorrecta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/churches",
+    "title": "(00) Obtener listado de iglesias.",
+    "version": "0.0.50",
+    "name": "getChurchesAdmin",
+    "group": "ChurchesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin | pastor | supervisor).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "churches",
+            "description": "<p>Listado iglesias.</p>"
+          }
+        ],
+        "churches Object[]": [
+          {
+            "group": "churches Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone1",
+            "description": "<p>Teléfono principal.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone2",
+            "description": "<p>Teléfono secundario.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de ubicación.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success with data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Listado de iglesias\",\n  \"churches\": [\n    {\n      \"_id\": \"624a357644f15f3ce8200c2f\",\n      \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\",\n      \"description\": \"IGLESIA PRINCIPAL\",\n      \"phone1\": null,\n      \"phone2\": null,\n      \"email\": null,\n      \"address\": null,\n      \"location\": {\n        \"type\": \"Point\",\n        \"coordinates\": [\n          -73.630175,\n          4.134516\n        ]\n      },\n      \"picture\": null\n    },\n    .\n    .\n    .\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Listado de iglesias\",\n\t\"churches\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ChurchesAdmin.js",
+    "groupTitle": "ChurchesAdmin",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/churches/:_id",
+    "title": "(03) Actualizar datos de una iglesia.",
+    "version": "0.0.50",
+    "name": "updateChurchesAdmin",
+    "group": "ChurchesAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin).</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "church",
+            "description": "<p>Detalles de la iglesia.</p>"
+          }
+        ],
+        "church Object": [
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone1",
+            "description": "<p>Teléfono principal.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone2",
+            "description": "<p>Teléfono secundario.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de ubicación.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL imagen.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 201 Created\n{\n\t\"msg\": \"Se actualizado la iglesia exitosamente.\",\n\t\"church\": {\n    \"_id\": \"624a357644f15f3ce8200c2f\",\n    \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\",\n    \"description\": \"IGLESIA PRINCIPAL\",\n    \"phone1\": \"00000000000\",\n    \"phone2\": \"00000000000\",\n    \"email\": \"church@example.com\",\n    \"address\": \"Str 37, Villavicencio, COL\",\n    \"location\": {\n      \"type\": \"Point\",\n      \"coordinates\": [\n        -73.630175,\n        4.134516\n      ]\n    },\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/churches/church-624a357644f15f3ce8200c2f-1649030518.jpg\"\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/ChurchesAdmin.js",
+    "groupTitle": "ChurchesAdmin",
+    "parameter": {
+      "fields": {
+        "church Object": [
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Descripción.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone1",
+            "description": "<p>Teléfono principal.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone2",
+            "description": "<p>Teléfono secundario.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>Datos de ubicación.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>Base64 o URL de imagen.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenada.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n  \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\",\n  \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla porttitor accumsan tincidunt. Sed porttitor lectus nibh. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Sed porttitor lectus nibh. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Nulla quis lorem ut libero malesuada feugiat.\",\n  \"phone1\": \"00000000000\",\n  \"phone2\": \"00000000000\",\n  \"email\": \"church@example.com\",\n  \"address\": \"Str 37, Villavicencio, COL\",\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [-64.1828984935545, 10.454209446329]\n  },\n  \"picture\": \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/.....\"",
+        "type": "JSON"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"name\",\n      \"msg\": \"Disculpe, pero indicar el nombre para la iglesia.\"\n    },\n    {\n      \"input\": \"description\",\n      \"msg\": \"Disculpe, pero debe indicar una descripción para la iglesia\"\n    },\n    {\n      \"input\": \"picture\",\n      \"msg\": \"Disculpe, pero la imagen indicada es incorrecta.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero la ubicación seleccionada es incorrecta.\"\n    },\n    {\n      \"input\": \"location\",\n      \"msg\": \"Disculpe, pero las coordenadas de la ubicación seleccionada son incorrectas.\"\n    },\n    {\n      \"input\": \"address\",\n      \"msg\": \"Disculpe, pero la dirección indicada es incorrecta.\"\n    },\n    {\n      \"input\": \"phone1\",\n      \"msg\": \"Disculpe, pero el teléfono principal indicado es incorrecto.\"\n    },\n    {\n      \"input\": \"phone2\",\n      \"msg\": \"Disculpe, pero el teléfono secundario indicado es incorrecto.\"\n    },\n    {\n      \"input\": \"email\",\n      \"msg\": \"Disculpe, pero el correo electrónico indicado es incorrecto.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero la iglesia seleccionada no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero la iglesia seleccionada es incorrecta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
     "type": "get",
     "url": "/api/admin/consolidates",
     "title": "(00) Obtener reporte de consolidación.",
@@ -8396,7 +9493,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "assistants",
-            "description": "<p>Listado de asistentes..</p>"
+            "description": "<p>Listado de asistentes.</p>"
           }
         ],
         "location Object": [
@@ -8876,7 +9973,7 @@ define({ "api": [
             "type": "Object[]",
             "optional": false,
             "field": "assistants",
-            "description": "<p>Listado de asistentes..</p>"
+            "description": "<p>Listado de asistentes.</p>"
           }
         ],
         "location Object": [
@@ -11365,6 +12462,116 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/api/churches",
+    "title": "(15) Obtener listado de iglesias registradas.",
+    "version": "0.0.50",
+    "name": "churchesPublic",
+    "group": "Public",
+    "description": "<p>El siguiente servicio es para obtener el nombre y el ID de las iglesias registradas. La respuesta del servicio puede ser utilizada para los formularios donde aplique asignar el ID de la iglesia a un miembro registrado.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "churches",
+            "description": "<p>Listado de iglesias.</p>"
+          }
+        ],
+        "churches Object[]": [
+          {
+            "group": "churches Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          },
+          {
+            "group": "churches Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre de la iglesia.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Listado de iglesias\",\n  \"churches\": [\n    {\n      \"_id\": \"624a357644f15f3ce8200c2f\",\n      \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\"\n    },\n    .\n    .\n    .\n  ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
     "url": "/api/events/:_id",
     "title": "(04) Obtener detalles de un evento público.",
     "version": "0.0.36",
@@ -11590,6 +12797,153 @@ define({ "api": [
         {
           "title": "Invalid _id",
           "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el evento seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/resources",
+    "title": "(01) Listado de documentos compartidos (público).",
+    "version": "0.0.51",
+    "name": "getDocumentsListPublic",
+    "group": "Public",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "resources",
+            "description": "<p>Listado de retorno.</p>"
+          }
+        ],
+        "resources Object[]": [
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del recurso compartido.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del recurso.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "urlDoc",
+            "description": "<p>URL del documento PDF.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number[]",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Listado de roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del documento.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de actalización del documento.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Mis recursos compartidos\",\n  \"resources\": [\n    {\n      \"_id\": \"6252676c8400314c8c94c0ee\",\n      \"title\": \"PRUEBA DOCUMENTO\",\n      \"urlDoc\": \"https://delii.s3.amazonaws.com/alma/resources/documento-1649567592.pdf\",\n      \"roles\": [\n        0,\n        1,\n        2,\n        3\n      ],\n      \"created_at\": 1649567596,\n      \"updated_at\": 1649567596\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Mis recursos compartidos\",\n\t\"resources\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
           "type": "JSON"
         },
         {
@@ -13076,6 +14430,271 @@ define({ "api": [
           "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
           "type": "JSON"
         },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "get",
+    "url": "/api/organization",
+    "title": "(15) Obtener estructura de organización de todas las iglesias.",
+    "version": "0.0.50",
+    "name": "organizationPublic",
+    "group": "Public",
+    "description": "<p>El siguiente servicio retorna la estructuración organizacional de las iglesias registradas. El objeto 'lvls', almacena los IDs de los miembros relacionados al cargo o rol respectivo. El listado de objetos 'users', guarda la información de cada uno de los miembros asociados a la iglesia.</p> <p>Se maneja de la siguiente forma para que quien consula el servicio pueda hacer la relación respectiva de los datos en relación al rol asignado.</p>",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Listado de iglesias.</p>"
+          }
+        ],
+        "data Object[]": [
+          {
+            "group": "data Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "church",
+            "description": "<p>Datos de la iglesia.</p>"
+          },
+          {
+            "group": "data Object[]",
+            "type": "Object",
+            "optional": false,
+            "field": "lvls",
+            "description": "<p>Niveles (estructura en base al rol del usuario).</p>"
+          },
+          {
+            "group": "data Object[]",
+            "type": "Object[]",
+            "optional": false,
+            "field": "users",
+            "description": "<p>Datos de los usuarios relacionados a la iglesia.</p>"
+          }
+        ],
+        "church Object": [
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Nombre de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "description",
+            "description": "<p>descripción de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone1",
+            "description": "<p>Teléfono principal.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "phone2",
+            "description": "<p>Teléfono secundario.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Correo electrónico.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Dirección de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "Object",
+            "optional": false,
+            "field": "location",
+            "description": "<p>datos de la ubicación de la iglesia.</p>"
+          },
+          {
+            "group": "church Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de la iglesia.</p>"
+          }
+        ],
+        "location Object": [
+          {
+            "group": "location Object",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>Tipo de coordenadas.</p>"
+          },
+          {
+            "group": "location Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "coordinates",
+            "description": "<p>Coordenadas de la ubicación ([ x, y ]).</p>"
+          }
+        ],
+        "lvls Object": [
+          {
+            "group": "lvls Object",
+            "type": "String[]",
+            "optional": false,
+            "field": "pastors",
+            "description": "<p>Listado de IDs de los pastores.</p>"
+          },
+          {
+            "group": "lvls Object",
+            "type": "String[]",
+            "optional": false,
+            "field": "supervisors",
+            "description": "<p>Listado de IDs de los supervisores.</p>"
+          },
+          {
+            "group": "lvls Object",
+            "type": "String[]",
+            "optional": false,
+            "field": "leaders",
+            "description": "<p>Listado de IDs de los líderes.</p>"
+          },
+          {
+            "group": "lvls Object",
+            "type": "String[]",
+            "optional": false,
+            "field": "peoples",
+            "description": "<p>Listado de IDs de los miembros comunes.</p>"
+          }
+        ],
+        "users Object[]": [
+          {
+            "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "fullname",
+            "description": "<p>Nombre completo del usuario.</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>Genéro (sexo) del usuario.</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto del perfil.</p>"
+          },
+          {
+            "group": "users Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que pertenece.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Organización\",\n  \"data\": [\n    {\n      \"church\": {\n        \"picture\": null,\n        \"phone1\": null,\n        \"phone2\": null,\n        \"email\": null,\n        \"address\": null,\n        \"location\": {\n          \"type\": \"Point\",\n          \"coordinates\": [\n            -73.630175,\n            4.134516\n          ]\n        },\n        \"_id\": \"624a357644f15f3ce8200c2f\",\n        \"name\": \"ASAMBLEA DE DIOS - PRINCIPAL\",\n        \"description\": \"IGLESIA PRINCIPAL\"\n      },\n      \"lvls\": {\n        \"pastors\": [\n          \"6169f99d3acd4c3221ddd728\",\n          .\n          .\n          .\n        ],\n        \"supervisors\": [\n          \"61820b3b2b0b95656950f111\",\n          .\n          .\n          .\n        ],\n        \"leaders\": [\n          \"619eb85825c4f804de6c7bb0\",\n          .\n          .\n          .\n        ],\n        \"peoples\": [\n          \"62150f82a582520458cc89f0\",\n          .\n          .\n          .\n        ]\n      },\n      \"users\": [\n        {\n          \"_id\": \"62150f82a582520458cc89f0\",\n          \"fullname\": \"ADRIANA CIFUENTES\",\n          \"gender\": 1,\n          \"picture\": null,\n          \"church\": \"624a357644f15f3ce8200c2f\"\n        },\n        .\n        .\n        .\n      ]\n    }\n  ]\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Public.js",
+    "groupTitle": "Public",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
         {
           "title": "Error internal server",
           "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
@@ -15631,6 +17250,458 @@ define({ "api": [
     },
     "filename": "Docs/Test.js",
     "groupTitle": "Test"
+  },
+  {
+    "type": "delete",
+    "url": "/api/user/resources/:_id",
+    "title": "(02) Eliminar un documento compartido.",
+    "version": "0.0.51",
+    "name": "deleteUserDocuments",
+    "group": "UserDocuments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del documento compartido.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha eliminado el documento exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n\t\"msg\": \"Disculpe, pero el documento seleccionado es incorrecto..\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Share documento not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el documento seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserDocuments.js",
+    "groupTitle": "UserDocuments"
+  },
+  {
+    "type": "get",
+    "url": "/api/user/resources",
+    "title": "(01) Obtener listado de documentos compartidos.",
+    "version": "0.0.51",
+    "name": "getUserDocuments",
+    "group": "UserDocuments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "resources",
+            "description": "<p>Listado de retorno.</p>"
+          }
+        ],
+        "resources Object[]": [
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del recurso compartido.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del recurso.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "urlDoc",
+            "description": "<p>URL del documento PDF.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number[]",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Listado de roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del documento.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de actalización del documento.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Mis recursos compartidos\",\n  \"resources\": [\n    {\n      \"_id\": \"6252676c8400314c8c94c0ee\",\n      \"title\": \"PRUEBA DOCUMENTO\",\n      \"urlDoc\": \"https://delii.s3.amazonaws.com/alma/resources/documento-1649567592.pdf\",\n      \"roles\": [\n        0,\n        1,\n        2,\n        3\n      ],\n      \"created_at\": 1649567596,\n      \"updated_at\": 1649567596\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Mis recursos compartidos\",\n\t\"resources\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/UserDocuments.js",
+    "groupTitle": "UserDocuments",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
+  },
+  {
+    "type": "post",
+    "url": "/api/user/resources",
+    "title": "(00) Agregar nuevo documento.",
+    "version": "0.0.51",
+    "name": "saveUserDocuments",
+    "group": "UserDocuments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título para el documento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Base64 del documento PDF.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number[]",
+            "optional": false,
+            "field": "rolesList",
+            "description": "<p>Roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request Consolidated",
+        "content": "{\n  \"title\": \"Prueba documento\",\n  \"rolesList\": [0, 1, 2, 3],\n  \"file\": \"data:application/pdf;base64,JVBERi0xLjUNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdG....\",\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "resource",
+            "description": "<p>Datos de retorno.</p>"
+          }
+        ],
+        "resource Object": [
+          {
+            "group": "resource Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del recurso compartido.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del recurso.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlDoc",
+            "description": "<p>URL del documento PDF.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Listado de roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "Number",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del documento.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "Number",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de actalización del documento.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha agregado el nuevo documento exitosamente.\",\n  \"resource\": {\n    \"_id\": \"625551d7f5598629dca06331\",\n    \"title\": \"PRUEBA DOCUMENTO\",\n    \"urlDoc\": \"https://delii.s3.amazonaws.com/alma/resources/documento-1649758676.pdf\",\n    \"roles\": [\n      0,\n      1,\n      2,\n      3\n    ],\n    \"created_at\": 1649758679,\n    \"updated_at\": 1649758679\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"title\",\n      \"msg\": \"Disculpe, pero indicar un título válido.\"\n    },\n    {\n      \"input\": \"file\",\n      \"msg\": \"Disculpe, pero el documento suministrado es incorrecto.\"\n    },\n    {\n      \"input\": \"rolesList\",\n      \"msg\": \"Disculpe, pero uno de los roles seleccionados no está permitido.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/UserDocuments.js",
+    "groupTitle": "UserDocuments"
   },
   {
     "type": "post",
@@ -19163,6 +21234,13 @@ define({ "api": [
             "optional": false,
             "field": "roles",
             "description": "<p>Listado de roles.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String",
+            "optional": false,
+            "field": "chuch",
+            "description": "<p>ID de la iglesia a que asiste.</p>"
           }
         ],
         "courses Object[]": [
@@ -19308,7 +21386,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Miembro.\",\n  \"data\": {\n    \"member\": {\n      \"email\": \"4121490198@example.com\",\n      \"position\": null,\n      \"gender\": null,\n      \"birthday\": null,\n      \"civilStatus\": null,\n      \"consolidated\": false,\n      \"petition\": null,\n      \"department\": null,\n      \"city\": null,\n      \"locality\": null,\n      \"direction\": null,\n      \"picture\": null,\n      \"_id\": \"605e37d154abd33060a689dc\",\n      \"phone\": \"573151234568\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELÁSQUEZ\",\n      \"roles\": [ 3, 4 ]\n    },\n    \"totalCourses\": 9,\n    \"totalReferrals\": 6,\n    \"courses\": [\n      {\n        \"_id\": \"603afb2309bf7a3428ac58f1\",\n        \"slug\": \"nivel-uno-2\",\n        \"title\": \"NIVEL UNO\",\n        \"description\": \"Donec sollicitudin molestie malesuada. ...\",\n        \"level\": 1,\n        \"approved\": false\n      },\n      .\n      .\n      .\n    ],\n    \"referrals\": [\n      {\n        \"_id\": \"607fb9d275581c087c36922c\",\n        \"names\": \"EIMY VALENTINA\",\n        \"lastNames\": \"VELASQUEZ TIRADO\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"3167654321\",\n        \"picture\": null,\n        \"position\": null,\n        \"totalsReferrals\": 0\n      },\n      .\n      .\n      .\n    ],\n    \"visits\": []\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Miembro.\",\n  \"data\": {\n    \"member\": {\n      \"email\": \"4121490198@example.com\",\n      \"position\": null,\n      \"gender\": null,\n      \"birthday\": null,\n      \"civilStatus\": null,\n      \"consolidated\": false,\n      \"petition\": null,\n      \"department\": null,\n      \"city\": null,\n      \"locality\": null,\n      \"direction\": null,\n      \"picture\": null,\n      \"_id\": \"605e37d154abd33060a689dc\",\n      \"phone\": \"573151234568\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELÁSQUEZ\",\n      \"roles\": [ 3, 4 ],\n      \"church\": \"624a357644f15f3ce8200c2f\"\n    },\n    \"totalCourses\": 9,\n    \"totalReferrals\": 6,\n    \"courses\": [\n      {\n        \"_id\": \"603afb2309bf7a3428ac58f1\",\n        \"slug\": \"nivel-uno-2\",\n        \"title\": \"NIVEL UNO\",\n        \"description\": \"Donec sollicitudin molestie malesuada. ...\",\n        \"level\": 1,\n        \"approved\": false\n      },\n      .\n      .\n      .\n    ],\n    \"referrals\": [\n      {\n        \"_id\": \"607fb9d275581c087c36922c\",\n        \"names\": \"EIMY VALENTINA\",\n        \"lastNames\": \"VELASQUEZ TIRADO\",\n        \"document\": null,\n        \"gender\": null,\n        \"phone\": \"3167654321\",\n        \"picture\": null,\n        \"position\": null,\n        \"totalsReferrals\": 0\n      },\n      .\n      .\n      .\n    ],\n    \"visits\": []\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -20296,7 +22374,7 @@ define({ "api": [
     "type": "get",
     "url": "/api/user",
     "title": "(00) Obtener datos de la sesión.",
-    "version": "0.0.34",
+    "version": "0.0.50",
     "name": "getDataSessionUser",
     "group": "User",
     "header": {
@@ -20547,13 +22625,20 @@ define({ "api": [
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que pertenece.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Datos de la sesión\",\n  \"data\": {\n    \"email\": \"pedro@example.com\",\n    \"position\": null,\n    \"gender\": 0,\n    \"birthday\": \"1994-07-07\",\n    \"civilStatus\": 0,\n    \"educationLevel\": 4,\n    \"profession\": 90,\n    \"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"roles\": [\n      4\n    ],\n    \"consolidated\": false,\n    \"group\": \"60330f5102626e2040bd2393\",\n    \"petition\": null,\n    \"attendGroup\": false,\n    \"meetingNew\": false,\n    \"familyGroupId\": [\n      \"6063385c98fc731c04777829\"\n    ],\n    \"department\": 0,\n    \"city\": 0,\n    \"locality\": \"LOCALIDAD INICIAL\",\n    \"direction\": \"CUALQUIER DIRECCIÓN\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n    \"consolidatorId\": \"605fa31b5260482550a9a3bf\",\n    \"created_at\": \"2020-12-07 23:59:12\",\n    \"updated_at\": \"2021-08-18 06:45:28\",\n    \"phone\": \"3161234567\",\n    \"document\": \"CC12345678\",\n    \"names\": \"PEDRO JOSÉ\",\n    \"lastNames\": \"PÉREZ RODRIGUEZ\"\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Datos de la sesión\",\n  \"data\": {\n    \"email\": \"pedro@example.com\",\n    \"position\": null,\n    \"gender\": 0,\n    \"birthday\": \"1994-07-07\",\n    \"civilStatus\": 0,\n    \"educationLevel\": 4,\n    \"profession\": 90,\n    \"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"roles\": [\n      4\n    ],\n    \"consolidated\": false,\n    \"group\": \"60330f5102626e2040bd2393\",\n    \"petition\": null,\n    \"attendGroup\": false,\n    \"meetingNew\": false,\n    \"familyGroupId\": [\n      \"6063385c98fc731c04777829\"\n    ],\n    \"department\": 0,\n    \"city\": 0,\n    \"locality\": \"LOCALIDAD INICIAL\",\n    \"direction\": \"CUALQUIER DIRECCIÓN\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e3/picture-5fcf0821fc917d476c1cf3e3-1629254970.jpg\",\n    \"_id\": \"5fcf0821fc917d476c1cf3e3\",\n    \"consolidatorId\": \"605fa31b5260482550a9a3bf\",\n    \"created_at\": \"2020-12-07 23:59:12\",\n    \"updated_at\": \"2021-08-18 06:45:28\",\n    \"phone\": \"3161234567\",\n    \"document\": \"CC12345678\",\n    \"names\": \"PEDRO JOSÉ\",\n    \"lastNames\": \"PÉREZ RODRIGUEZ\",\n    \"church\": \"624a357644f15f3ce8200c2f\"\n  }\n}",
           "type": "JSON"
         }
       ]
@@ -20895,7 +22980,7 @@ define({ "api": [
     "type": "put",
     "url": "/api/user",
     "title": "(01) Actualizar datos del perfil.",
-    "version": "0.0.45",
+    "version": "0.0.50",
     "name": "registerUser",
     "group": "User",
     "header": {
@@ -21046,6 +23131,13 @@ define({ "api": [
             "optional": false,
             "field": "direction",
             "description": "<p>Dirección.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que pertenece.</p>"
           }
         ]
       }
@@ -21053,7 +23145,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"document\": \"CC123456789\",\n    \"email\": \"user3@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"Velasquez rodriguez\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"meetingNew\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\"\n}",
+        "content": "{\n    \"document\": \"CC123456789\",\n    \"email\": \"user3@example.com\",\n    \"phone\": \"573161234567\",\n    \"names\": \"Anthony alejandro\",\n    \"lastNames\": \"Velasquez rodriguez\",\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": true,\n    \"meetingNew\": true,\n    \"department\": 19,\n    \"city\": 18,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n    \"church\": \"624a357644f15f3ce8200c2f\"\n}",
         "type": "JSON"
       }
     ],
@@ -21215,6 +23307,13 @@ define({ "api": [
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que pertenece.</p>"
           }
         ],
         "securityQuestion Object": [
@@ -21230,7 +23329,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"meetingNew\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"names\": \"ANTHONY ALEJANDRO\",\n\t\t\"lastNames\": \"VELASQUEZ RODRIGUEZ\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"document\": \"CC123456789\"\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha actualizado la información exitosamente.\",\n\t\"data\": {\n\t\t\"gender\": 2,\n\t\t\"birthday\": \"1994-07-07\",\n\t\t\"civilStatus\": 0,\n\t\t\"educationLevel\": 0,\n\t\t\"profession\": 90,\n\t\t\"bloodType\": 7,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": true,\n\t\t\"meetingNew\": true,\n\t\t\"department\": 19,\n\t\t\"city\": 18,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"602f057d8d3e7d073cef3e87\",\n\t\t\"email\": \"user3@example.com\",\n\t\t\"names\": \"ANTHONY ALEJANDRO\",\n\t\t\"lastNames\": \"VELASQUEZ RODRIGUEZ\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"document\": \"CC123456789\",\n\t\t\"church\": \"624a357644f15f3ce8200c2f\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -21608,6 +23707,13 @@ define({ "api": [
             "optional": false,
             "field": "position",
             "description": "<p>Cargo(s) o posición.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que asiste.</p>"
           }
         ]
       }
@@ -21615,7 +23721,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n    \"email\": null,\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n    \"document\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"meetingNew\": false,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\"\n}",
+        "content": "{\n    \"email\": null,\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n    \"document\": null,\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"meetingNew\": false,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"URB. NUEVO MUNDO\",\n    \"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"church\": \"624a357644f15f3ce8200c2f\"\n}",
         "type": "JSON"
       }
     ],
@@ -21805,13 +23911,20 @@ define({ "api": [
             "optional": false,
             "field": "position",
             "description": "<p>Cargo o posición del miembro.</p>"
+          },
+          {
+            "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que asiste.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"email\": null,\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"meetingNew\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"consolidated\": true,\n\t\t\"group\": null,\n\t\t\"familyGroupId\": [],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 22:24:50\",\n\t\t\"document\": null\n\t}\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se han actualizado los datos del miembro exitosamente.\",\n\t\"user\": {\n\t\t\"email\": null,\n\t\t\"position\": \"PADRE ESPIRITUAL Y LIDER\",\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"meetingNew\": false,\n\t\t\"roles\": [ 4 ],\n\t\t\"consolidated\": true,\n\t\t\"group\": null,\n\t\t\"familyGroupId\": [],\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": \"URB. NUEVO MUNDO\",\n\t\t\"direction\": \"URB. NUEVO MUNDO #66\",\n\t\t\"_id\": \"6076598d598ae749a42a0147\",\n\t\t\"phone\": \"573161234567\",\n\t\t\"names\": \"AMBERCITA\",\n\t\t\"lastNames\": \"VELASQUEZ\",\n\t\t\"created_at\": \"2021-04-13 21:55:09\",\n\t\t\"updated_at\": \"2021-04-13 22:24:50\",\n\t\t\"document\": null,\n\t\t\"church\": \"624a357644f15f3ce8200c2f\"\n\t}\n}",
           "type": "JSON"
         }
       ]
@@ -22621,6 +24734,13 @@ define({ "api": [
           },
           {
             "group": "data Object",
+            "type": "String",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que asiste.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Object",
             "optional": false,
             "field": "totals",
@@ -22719,7 +24839,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success",
-          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Detalles del miembro.\",\n  \"user\": {\n    \"_id\": \"609d21bd32ce5839900cb1ff\",\n    \"document\": null,\n    \"email\": \"amber@gmail.com\",\n    \"phone\": \"3161231241\",\n    \"names\": \"AMBER LISSETH\",\n    \"lastNames\": \"VELASQUEZ\",\n    \"position\": null,\n    \"gender\": 1,\n    \"birthday\": \"2020-05-25\",\n    \"civilStatus\": 0,\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"roles\": [\n      4\n    ],\n    \"referred\": {\n      \"_id\": \"6081367a18fdbc37e89aff7d\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELASQUEZ\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"584121480199\",\n      \"picture\": null,\n      \"position\": null\n    },\n    \"petition\": \"ASASD ASD ASDASDA SD\",\n    \"attendGroup\": true,\n    \"consolidated\": true,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"ASDASDASDASDASD\",\n    \"direction\": \"ASDASDASDASDASDASD\",\n    \"picture\": null,\n    \"totals\": {\n      \"totalsCourses\": 1,\n      \"totalsReferrals\": 0\n    },\n    \"created_at\": \"2021-05-13 07:55:25\",\n    \"updated_at\": \"2021-05-13 07:55:25\"\n  }\n}",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Detalles del miembro.\",\n  \"user\": {\n    \"_id\": \"609d21bd32ce5839900cb1ff\",\n    \"document\": null,\n    \"email\": \"amber@gmail.com\",\n    \"phone\": \"3161231241\",\n    \"names\": \"AMBER LISSETH\",\n    \"lastNames\": \"VELASQUEZ\",\n    \"position\": null,\n    \"gender\": 1,\n    \"birthday\": \"2020-05-25\",\n    \"civilStatus\": 0,\n    \"educationLevel\": null,\n    \"profession\": null,\n    \"bloodType\": null,\n    \"company\": false,\n    \"companyType\": null,\n    \"baptized\": false,\n    \"roles\": [\n      4\n    ],\n    \"referred\": {\n      \"_id\": \"6081367a18fdbc37e89aff7d\",\n      \"names\": \"ANTHONY\",\n      \"lastNames\": \"VELASQUEZ\",\n      \"document\": null,\n      \"gender\": null,\n      \"phone\": \"584121480199\",\n      \"picture\": null,\n      \"position\": null\n    },\n    \"petition\": \"ASASD ASD ASDASDA SD\",\n    \"attendGroup\": true,\n    \"consolidated\": true,\n    \"department\": null,\n    \"city\": null,\n    \"locality\": \"ASDASDASDASDASD\",\n    \"direction\": \"ASDASDASDASDASDASD\",\n    \"picture\": null,\n    \"church\": \"624a357644f15f3ce8200c2f\",\n    \"totals\": {\n      \"totalsCourses\": 1,\n      \"totalsReferrals\": 0\n    },\n    \"created_at\": \"2021-05-13 07:55:25\",\n    \"updated_at\": \"2021-05-13 07:55:25\"\n  }\n}",
           "type": "JSON"
         }
       ]

@@ -12,10 +12,18 @@ import {
   updateEvent
 } from '../Controllers/events/events.controller';
 import {
-  getBanks, getBithdays, getGroupDetails, getOrganization, getPublicMembers, getPublicParams,
+  getBanks,
+  getBirthdays,
+  getChurches,
+  getGroupDetails,
+  getOrganization,
+  getPublicMembers, getPublicMembersTotals,
+  getPublicParams,
+  getPublicResources,
   helloWorld,
   login,
-  logout, recoveryPassword,
+  logout,
+  recoveryPassword,
   register
 } from '../Controllers/publics/public.controller';
 import { getFamiliesGroupsPublic } from '../Controllers/publics/family-group.controller';
@@ -30,29 +38,25 @@ const router = Router();
 // ===================================================================================
 
 /* Test api */
-
 router.get(`/`, helloWorld);
 
-/* banks */
-
+/* Banks */
 router.get(`/banks`, validateUser, getBanks);
 
-/* birthdays */
+/* Birthdays */
+router.get(`/birthdays`, getBirthdays);
 
-router.get(`/birthdays`, getBithdays);
+/* Churches */
+router.get(`/churches`, getChurches);
 
-/*
-  Courses
-*/
+/* Courses */
 // list and counters
 router.get(`/courses`, validateUser, getCourses);
 router.get(`/courses/:slug`, validateUser, showCourse);
 router.post(`/courses/:slug/theme/:_id/quiz`, validateUser, evaluateQuiz);
 router.put(`/courses/:slug/theme/:_id/:action`, validateUser, updateHistoricalCourseContent);
 
-/*
-  Families Groups
-*/
+/* Families Groups */
 router.get(`/devotionals`, getDevotionalsPublic);
 router.get(`/devotionals/counters`, getTotalsDevotionalsPublic);
 router.get(`/devotionals/:_id`, showDevotionalPublic);
@@ -62,10 +66,7 @@ router.get(`/devotionals/:_id`, showDevotionalPublic);
 */
 router.get(`/families-groups`, validateUser, getFamiliesGroupsPublic);
 
-/*
-  Events
-*/
-
+/* Events */
 router.route(`/events`)
   .get(getPublicEvents)
   .post(validateUser, saveEvent);
@@ -75,38 +76,31 @@ router.route(`/events/:_id`)
   .put(validateUser, updateEvent)
   .delete(validateUser, deleteEvent);
 
-/*
-  Families Groups
-*/
+/* Families Groups */
 router.get(`/group/:_id`, validateUser, getGroupDetails);
 
-/*
-  Login, logout
-*/
+/* Login, logout */
 
 router.post(`/login`, login);
 router.delete(`/logout`, validateUser, logout);
 
-/*
-  Families Groups
-*/
+/* Families Groups */
 router.get(`/members`, validateUser, getPublicMembers);
-
+router.get(`/members/counters`, validateUser, getPublicMembersTotals);
 
 router.get(`/organization`, getOrganization);
 
 router.get(`/params-app`, getPublicParams);
 
 
-/*
-  Recovery Password
- */
+/* Recovery Password */
 router.post(`/recovery-password/:action`, recoveryPassword);
 router.put(`/recovery-password/:action`, recoveryPassword);
 
-/*
-  Register
- */
+/* Register */
 router.post(`/register`, register);
+
+/* Resources */
+router.get(`/resources`, validateUser, getPublicResources);
 
 export default router;

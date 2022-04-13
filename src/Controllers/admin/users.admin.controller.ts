@@ -47,6 +47,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
         roles: 1,
         created_at: 1,
         picture: 1,
+        church: 1,
       })
       .skip(skip)
       .limit(limit)
@@ -82,14 +83,12 @@ export async function downLoadData(req: Request, res: Response): Promise<Respons
   try {
     const members = await Users.find(
       {},
-
       {
         phone: 1,
         document: 1,
         names: 1,
         lastNames: 1,
         email: 1,
-        // position: 1,
         gender: 1,
         birthday: 1,
         civilStatus: 1,
@@ -108,6 +107,7 @@ export async function downLoadData(req: Request, res: Response): Promise<Respons
         city: 1,
         locality: 1,
         direction: 1,
+        church: 1,
         created_at: 1,
       },
     ).exec();
@@ -188,7 +188,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
 
     if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
 
-    const validate = await validateUpdate(req.body, _id, true);
+    const validate = await validateUpdate(req.body, _id);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
@@ -219,6 +219,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     user.locality = validate.data.locality || user.locality;
     user.direction = validate.data.direction || user.direction;
     user.meetingNew = validate.data.meetingNew;
+    user.church = validate.data.church || user.church;
 
     await user.save();
 
@@ -258,6 +259,30 @@ export async function changeRoleUser(req: Request, res: Response): Promise<Respo
     });
   } catch (error: any) {
     return returnError(res, error, `${path}/changeRoleUser`);
+  }
+}
+
+export async function setAsConsolidatorUser(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenRoles } = req.body;
+
+    if (!checkIfExistsRoleInList(tokenRoles, [0, 1])) return responseUsersAdmin(res, 3);
+
+    const { _id } = req.params;
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
+
+    const user = await Users.findOne({_id}, { consolidator: 1 }).exec();
+
+    if (!user) return responseUsersAdmin(res, 1);
+
+    user.consolidator = !user.consolidator;
+    await user.save();
+
+    return res.json({
+      msg: `Se ha ${user.consolidator ? 'asignado' : 'removido'} al miembro como consolidador especial exitosamente.`
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/setAsConsolidatorUser`);
   }
 }
 
