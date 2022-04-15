@@ -1,6 +1,6 @@
 import moment from 'moment-timezone';
 import { setError } from '../Functions/GlobalFunctions';
-import { checkDate, checkHour, checkTitlesOrDescriptions, isBase64 } from '../Functions/Validations';
+import { checkDate, checkHour, checkTitlesOrDescriptions, checkUrl, isBase64 } from '../Functions/Validations';
 import { IEventsRegisterOrUpdate } from '../Interfaces/IEvents';
 
 export default function validateRegister(
@@ -83,7 +83,7 @@ export default function validateRegister(
   }
 
   // picture
-  if (data.picture && !isBase64(data.picture)) {
+  if (!data.picture || (!checkUrl(data.picture) && !isBase64(data.picture))) {
     errors.push(
       setError('Disculpe, pero la imagen para el evento es incorrecta.', 'picture')
     );
