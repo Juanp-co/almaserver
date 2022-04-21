@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=production node ./dist/index.js ",
     "dev": "NODE_ENV=development nodemon",
-    "build": "npm run lint && tsc -p ./ && npm run clean",
+    "build": "npm run lint && npm run clean && tsc -p ./",
     "precommit": "npm run build && npm run docs",
     "lint": "eslint src/**/*.ts --quiet --fix --ignore-pattern \"node_modules/\" && tsc --noEmit",
     "docs": "apidoc -i ./Docs -o public/apidoc/",
