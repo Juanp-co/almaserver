@@ -14049,7 +14049,7 @@
     "type": "post",
     "url": "/api/login",
     "title": "(01) Iniciar sesión",
-    "version": "0.0.16",
+    "version": "0.0.52",
     "name": "loginPublic",
     "group": "Public",
     "parameter": {
@@ -14238,6 +14238,13 @@
           },
           {
             "group": "data Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que asiste.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "String",
             "optional": false,
             "field": "email",
@@ -14276,7 +14283,7 @@
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"¡Inicio de sesión con éxito!\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"group\": null,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-03-26 13:01:21\",\n\t\t\"updated_at\": \"2021-03-26 13:03:05\",\n\t\t\"_id\": \"605e21d8a4fe940ef4d7d28b\",\n\t\t\"email\": \"3161234567@example.com\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n\t\t\"phone\": \"3161234567\",\n\t\t\"document\": \"CC1490199\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t},\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDVlMjFkOGE0ZmU5NDBlZjRkN2QyOGIiLCJyb2xlIjo1LCJpYXQiOjE2MTY3ODYzMDMsImV4cCI6MTY0ODM0MzkwM30.aWCtwE5ZOY6JtHcaMqRcf0WfmhE5mgVjhwLQuBIK9Uc\"\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"¡Inicio de sesión con éxito!\",\n\t\"data\": {\n\t\t\"gender\": null,\n\t\t\"birthday\": null,\n\t\t\"civilStatus\": null,\n\t\t\"educationLevel\": null,\n\t\t\"profession\": null,\n\t\t\"bloodType\": null,\n\t\t\"company\": false,\n\t\t\"companyType\": null,\n\t\t\"baptized\": false,\n\t\t\"role\": 5,\n\t\t\"group\": null,\n\t\t\"department\": null,\n\t\t\"city\": null,\n\t\t\"locality\": null,\n\t\t\"direction\": null,\n\t\t\"created_at\": \"2021-03-26 13:01:21\",\n\t\t\"updated_at\": \"2021-03-26 13:03:05\",\n\t\t\"_id\": \"605e21d8a4fe940ef4d7d28b\",\n    \"church\": \"624a357644f15f3ce8200c2f\",\n\t\t\"email\": \"3161234567@example.com\",\n    \"picture\": \"https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg\",\n\t\t\"phone\": \"3161234567\",\n\t\t\"document\": \"CC1490199\",\n\t\t\"names\": \"ANTHONY\",\n\t\t\"lastNames\": \"VELÁSQUEZ\"\n\t},\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDVlMjFkOGE0ZmU5NDBlZjRkN2QyOGIiLCJyb2xlIjo1LCJpYXQiOjE2MTY3ODYzMDMsImV4cCI6MTY0ODM0MzkwM30.aWCtwE5ZOY6JtHcaMqRcf0WfmhE5mgVjhwLQuBIK9Uc\"\n}",
           "type": "JSON"
         }
       ]
@@ -15203,7 +15210,7 @@
     "type": "post",
     "url": "/api/register",
     "title": "(00) Registro.",
-    "version": "0.0.32",
+    "version": "0.0.52",
     "name": "registerPublic",
     "group": "Public",
     "parameter": {
@@ -15236,6 +15243,13 @@
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellidos.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que pertenece (si no se envía un valor, se asigna la iglesia principal por defecto).</p>"
           }
         ]
       }
@@ -15243,7 +15257,7 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\"\n}",
+        "content": "{\n\t\"phone\": \"3161234567\",\n\t\"password\": \"password\",\n\t\"names\": \"Anthony\",\n\t\"lastNames\": \"Velásquez\",\n\t\"church\": \"624a357644f15f3ce8200c2f\"\n}",
         "type": "JSON"
       }
     ],
@@ -23710,7 +23724,7 @@
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "church",
             "description": "<p>ID de la iglesia a la que asiste.</p>"
@@ -23914,7 +23928,7 @@
           },
           {
             "group": "data Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "church",
             "description": "<p>ID de la iglesia a la que asiste.</p>"
@@ -24124,7 +24138,7 @@
     "type": "post",
     "url": "/api/admin/users",
     "title": "(02) Crear nuevo miembro.",
-    "version": "0.0.33",
+    "version": "0.0.52",
     "name": "createUsersAdmin",
     "group": "UsersAdmin",
     "parameter": {
@@ -24234,6 +24248,13 @@
             "optional": false,
             "field": "roles",
             "description": "<p>Roles asignar al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String|Null",
+            "optional": false,
+            "field": "church",
+            "description": "<p>ID de la iglesia a la que pertenece (si no se envía un valor, se asigna la iglesia principal por defecto).</p>"
           }
         ]
       }
@@ -24241,7 +24262,7 @@
     "examples": [
       {
         "title": "Example JSON Request",
-        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"email\": \"anthony@example.com\",\n  \"birthday\": \"1994-07-07\",\n  \"civilStatus\": 0,\n  \"gender\": 0,\n  \"locality\": 'Barrio nuevo',\n  \"direction\": 'Dirección cualquiera',\n  \"consolidated\": true,\n  \"referred\": \"605e37d154abd33060a689dc\",\n  \"petition\": \"Por la familia, por salud y por mejora económica.\",\n  \"attendGroup\": true,\n  \"groupId\": \"6063385c98fc731c04777829\",\n  \"roles\": [ 4 ]\n}",
+        "content": "{\n  \"phone\": \"573161234567\",\n  \"names\": \"Anthony alejandro\",\n  \"lastNames\": \"Velasquez rodriguez\",\n  \"email\": \"anthony@example.com\",\n  \"birthday\": \"1994-07-07\",\n  \"civilStatus\": 0,\n  \"gender\": 0,\n  \"locality\": 'Barrio nuevo',\n  \"direction\": 'Dirección cualquiera',\n  \"consolidated\": true,\n  \"referred\": \"605e37d154abd33060a689dc\",\n  \"petition\": \"Por la familia, por salud y por mejora económica.\",\n  \"attendGroup\": true,\n  \"groupId\": \"6063385c98fc731c04777829\",\n  \"roles\": [ 4 ],\n\t\"church\": \"624a357644f15f3ce8200c2f\"\n}",
         "type": "JSON"
       }
     ],
@@ -24734,7 +24755,7 @@
           },
           {
             "group": "data Object",
-            "type": "String",
+            "type": "String|Null",
             "optional": false,
             "field": "church",
             "description": "<p>ID de la iglesia a la que asiste.</p>"

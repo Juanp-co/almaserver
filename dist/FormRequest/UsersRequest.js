@@ -32,6 +32,7 @@ async function validateSimpleRegister(data, admin) {
         roles: [4],
         referred: null,
         consolidated: false,
+        church: '624a357644f15f3ce8200c2f',
     };
     const errors = [];
     // phone
@@ -71,6 +72,15 @@ async function validateSimpleRegister(data, admin) {
     if (admin) {
         ret.roles = (0, GlobalFunctions_1.checkIfExistsRoleInList)(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
     }
+    // church
+    if (data.church) {
+        if (!(0, Validations_1.checkObjectId)(`${data.church}`)) {
+            errors.push((0, GlobalFunctions_1.setError)('Disculpe, pero la iglesia seleccionada es incorrecta.', 'church'));
+        }
+        else {
+            ret.church = data.church;
+        }
+    }
     return { data: ret, errors };
 }
 exports.default = validateSimpleRegister;
@@ -94,7 +104,7 @@ async function validateFormMemberRegisterAdmin(data) {
         roles: [4],
         referred: null,
         consolidated: false,
-        church: null
+        church: '624a357644f15f3ce8200c2f',
     };
     const errors = [];
     // phone
@@ -143,6 +153,8 @@ async function validateFormMemberRegisterAdmin(data) {
             ret.church = data.church;
         }
     }
+    else
+        ret.church = '624a357644f15f3ce8200c2f';
     // locality
     if ((0, Validations_1.checkTitlesOrDescriptions)(`${data.locality}`))
         ret.locality = data.locality || null;
@@ -207,7 +219,7 @@ async function validateFormMemberRegisterFromUser(data) {
         roles: [4],
         referred: null,
         consolidated: false,
-        church: null
+        church: '624a357644f15f3ce8200c2f',
     };
     const errors = [];
     // phone
@@ -321,7 +333,7 @@ async function validateUpdate(data, _id) {
         city: null,
         locality: null,
         direction: null,
-        church: null,
+        church: '624a357644f15f3ce8200c2f',
     };
     const errors = [];
     // phone

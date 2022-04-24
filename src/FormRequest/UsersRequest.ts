@@ -27,6 +27,7 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     roles: [4],
     referred: null,
     consolidated: false,
+    church: '624a357644f15f3ce8200c2f',
   };
   const errors: any = [];
 
@@ -78,6 +79,15 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
   }
 
+  // church
+  if (data.church) {
+    if (!checkObjectId(`${data.church}`)) {
+      errors.push(setError('Disculpe, pero la iglesia seleccionada es incorrecta.', 'church'));
+    } else {
+      ret.church = data.church;
+    }
+  }
+
   return { data: ret, errors };
 }
 
@@ -100,7 +110,7 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
     roles: [4],
     referred: null,
     consolidated: false,
-    church: null
+    church: '624a357644f15f3ce8200c2f',
   };
   const errors: any = [];
 
@@ -155,6 +165,7 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
       ret.church = data.church;
     }
   }
+  else ret.church = '624a357644f15f3ce8200c2f';
 
   // locality
   if (checkTitlesOrDescriptions(`${data.locality}`)) ret.locality = data.locality || null;
@@ -222,7 +233,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     roles: [4],
     referred: null,
     consolidated: false,
-    church: null
+    church: '624a357644f15f3ce8200c2f',
   };
   const errors: any = [];
 
@@ -343,7 +354,7 @@ export async function validateUpdate(data: IUserModelUpdate, _id: string): Promi
     city: null,
     locality: null,
     direction: null,
-    church: null,
+    church: '624a357644f15f3ce8200c2f',
   } as IUser;
   const errors: any = [];
 
