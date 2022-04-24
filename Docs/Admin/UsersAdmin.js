@@ -98,7 +98,7 @@
 
 /**
  * @api {post} /api/admin/users (02) Crear nuevo miembro.
- * @apiVersion 0.0.33
+ * @apiVersion 0.0.52
  * @apiName createUsersAdmin
  * @apiGroup UsersAdmin
  *
@@ -119,6 +119,8 @@
  * @apiParam {boolean} attendGroup Indica si el miembro asiste a un grupo.
  * @apiParam {String|Null} groupId ID del grupo al que asiste el nuevo miembro.
  * @apiParam {Number[]} roles Roles asignar al usuario (0 = admin | 1 = pastor | 2 = supervisor | 3 = Líder | 4 = persona).
+ * @apiParam {String|Null} church ID de la iglesia a la que pertenece
+ * (si no se envía un valor, se asigna la iglesia principal por defecto).
  *
  * @apiExample {JSON} Example JSON Request
  *{
@@ -136,7 +138,8 @@
   "petition": "Por la familia, por salud y por mejora económica.",
   "attendGroup": true,
   "groupId": "6063385c98fc731c04777829",
-  "roles": [ 4 ]
+  "roles": [ 4 ],
+	"church": "624a357644f15f3ce8200c2f"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -221,7 +224,7 @@
  * @apiSuccess (data Object) {String} locality Nombrede la localidad.
  * @apiSuccess (data Object) {String} direction Dirección.
  * @apiSuccess (data Object) {String} picture Dirección.
- * @apiSuccess (data Object) {String} church ID de la iglesia a la que asiste.
+ * @apiSuccess (data Object) {String|Null} church ID de la iglesia a la que asiste.
  * @apiSuccess (data Object) {Object} totals Totales de cursos e hijos espirituales.
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
@@ -323,7 +326,7 @@
  * @apiParam {String|Null} locality Nombredel sector o localidad.
  * @apiParam {String|Null} direction Dirección.
  * @apiParam {String|Null} position Cargo(s) o posición.
- * @apiParam {String} church ID de la iglesia a la que asiste.
+ * @apiParam {String|Null} church ID de la iglesia a la que asiste.
  *
  * @apiExample {JSON} Example JSON Request
  * {
@@ -377,7 +380,7 @@
  * @apiSuccess (data Object) {String} lastNames Apellidos.
  * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} position Cargo o posición del miembro.
- * @apiSuccess (data Object) {String} church ID de la iglesia a la que asiste.
+ * @apiSuccess (data Object) {String|Null} church ID de la iglesia a la que asiste.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success

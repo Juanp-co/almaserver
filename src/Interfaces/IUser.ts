@@ -84,6 +84,7 @@ export interface IUserSimpleRegister {
   roles: number[] | null;
   referred: string | null;
   consolidated: boolean,
+  church?: IUser['church'];
 }
 
 export interface IUserSimpleRegisterConsolidate {

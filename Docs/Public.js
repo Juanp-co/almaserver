@@ -1,6 +1,6 @@
 /**
  * @api {post} /api/register (00) Registro.
- * @apiVersion 0.0.32
+ * @apiVersion 0.0.52
  * @apiName registerPublic
  * @apiGroup Public
  *
@@ -8,13 +8,16 @@
  * @apiParam {String} password Contraseña.
  * @apiParam {String} names Nombres.
  * @apiParam {String} lastNames Apellidos.
+ * @apiParam {String|Null} church ID de la iglesia a la que pertenece
+ * (si no se envía un valor, se asigna la iglesia principal por defecto).
  *
  * @apiExample {JSON} Example JSON Request
  * {
 	"phone": "3161234567",
 	"password": "password",
 	"names": "Anthony",
-	"lastNames": "Velásquez"
+	"lastNames": "Velásquez",
+	"church": "624a357644f15f3ce8200c2f"
 }
  *
  * @apiSuccess {String} msg Mensaje del proceso.
@@ -56,7 +59,7 @@
 
 /**
  * @api {post} /api/login (01) Iniciar sesión
- * @apiVersion 0.0.16
+ * @apiVersion 0.0.52
  * @apiName loginPublic
  * @apiGroup Public
  *
@@ -98,6 +101,7 @@
  * @apiSuccess (data Object) {String} created_at Fecha de registro.
  * @apiSuccess (data Object) {String} updated_at Fecha de la última actualización del perfil.
  * @apiSuccess (data Object) {String} _id ID del miembro.
+ * @apiSuccess (data Object) {String|Null} church ID de la iglesia a la que asiste.
  * @apiSuccess (data Object) {String} email Correo electrónico.
  * @apiSuccess (data Object) {String} phone Número de teléfono.
  * @apiSuccess (data Object) {String} document Número de documento.
@@ -127,6 +131,7 @@
 		"created_at": "2021-03-26 13:01:21",
 		"updated_at": "2021-03-26 13:03:05",
 		"_id": "605e21d8a4fe940ef4d7d28b",
+    "church": "624a357644f15f3ce8200c2f",
 		"email": "3161234567@example.com",
     "picture": "https://delii.s3.amazonaws.com/alma/users/5fcf0821fc917d476c1cf3e2/picture-5fcf0821fc917d476c1cf3e2-1629235616.jpg",
 		"phone": "3161234567",
