@@ -176,7 +176,7 @@ async function reportsFamilyGroup(req, res) {
         if (!(await (0, FamiliesGroupsActions_1.checkIfUsersBelowAtFamilyGroup)(tokenId, _id)))
             return (0, FamiliesGroupsActions_1.returnFamilyGroup404)(res);
         const { initDate, endDate } = req.query;
-        const query = {};
+        const query = { familyGroupId: _id };
         if (initDate && (0, Validations_1.checkDate)(initDate)) {
             query['report.date'] = { $gte: (0, moment_timezone_1.default)(`${initDate}`).startOf('d').unix() };
             if ((0, Validations_1.checkDate)(endDate))
