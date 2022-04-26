@@ -166,7 +166,7 @@ export async function reportsFamilyGroup(req: Request, res: Response): Promise<R
     if (!(await checkIfUsersBelowAtFamilyGroup(tokenId, _id))) return returnFamilyGroup404(res);
 
     const { initDate, endDate } = req.query;
-    const query: any = {};
+    const query: any = { familyGroupId: _id };
 
     if (initDate && checkDate(initDate)) {
       query['report.date'] = { $gte: moment(`${initDate}`).startOf('d').unix() };
