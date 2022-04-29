@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Response } from 'express';
 import { getNamesUsersList } from './UsersActions';
 import {
@@ -129,8 +130,15 @@ export async function getReportsFamilyGroup(query: any) : Promise<IFamiliesGroup
     },
     observations: []
   };
+  let users = [];
 
-  const reports = await FamiliesGroupsReports.find(query, { report: 1 }).exec();
+  const reports = await FamiliesGroupsReports.find(query, { userid: 1, report: 1 }).exec();
+
+  if (reports.length > 0) {
+    const listIds = _.uniq(reports.map(r => r.userid));
+
+    users = await getNamesUsersList(listIds);
+  }
 
   for (const r of reports) {
     ret.report.brethren += r.report.brethren;
@@ -152,6 +160,7 @@ export async function getReportsFamilyGroup(query: any) : Promise<IFamiliesGroup
 
     ret.observations.push({
       observations: r.report.observations,
+      member: users.find((u: any) => u._id.toString() === r.userid) || null,
       date: r.report.date,
     });
   }

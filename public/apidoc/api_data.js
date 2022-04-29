@@ -17267,6 +17267,130 @@ define({ "api": [
   },
   {
     "type": "delete",
+    "url": "/api/admin/resources/:_id",
+    "title": "(02) Eliminar un documento compartido.",
+    "version": "0.0.53",
+    "name": "deleteUserDocuments",
+    "group": "UserDocuments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión admin.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del documento compartido.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha eliminado el documento exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n\t\"msg\": \"Disculpe, pero el documento seleccionado es incorrecto..\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Share documento not found",
+          "content": "HTTP/1.1 404 Not found\n{\n    \"msg\": \"Disculpe, pero el documento seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/AdminDocuments.js",
+    "groupTitle": "UserDocuments"
+  },
+  {
+    "type": "delete",
     "url": "/api/user/resources/:_id",
     "title": "(02) Eliminar un documento compartido.",
     "version": "0.0.51",
@@ -17388,6 +17512,211 @@ define({ "api": [
     },
     "filename": "Docs/UserDocuments.js",
     "groupTitle": "UserDocuments"
+  },
+  {
+    "type": "get",
+    "url": "/api/admin/resources",
+    "title": "(01) Obtener listado de documentos compartidos.",
+    "version": "0.0.53",
+    "name": "getUserDocuments",
+    "group": "UserDocuments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión admin.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "resources",
+            "description": "<p>Listado de retorno.</p>"
+          }
+        ],
+        "resources Object[]": [
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del recurso compartido.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del recurso.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "urlDoc",
+            "description": "<p>URL del documento PDF.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number[]",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Listado de roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "member",
+            "description": "<p>Datos del miembro que subió el documento.</p>"
+          },
+          {
+            "group": "resources Object[]",
+            "type": "Number",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del documento.</p>"
+          }
+        ],
+        "member Object": [
+          {
+            "group": "member Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String",
+            "optional": false,
+            "field": "names",
+            "description": "<p>Nombre(s).</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String",
+            "optional": false,
+            "field": "lastNames",
+            "description": "<p>Apellido(s).</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "document",
+            "description": "<p>Número de documento.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "Number|Null",
+            "optional": false,
+            "field": "gender",
+            "description": "<p>ID (array index) del sexo (género).</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Teléfono del miembro.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "picture",
+            "description": "<p>URL de la foto de perfil.</p>"
+          },
+          {
+            "group": "member Object",
+            "type": "String|Null",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Cargo o posición del miembro.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Recursos compartidos\",\n  \"resources\": [\n    {\n      \"_id\": \"626be204f1ece3236cd165ac\",\n      \"title\": \"PRUEBA\",\n      \"urlDoc\": \"https://delii.s3.amazonaws.com/alma/resources/documento-1651237379.pdf\",\n      \"member\": {\n        \"_id\": \"6164f0f16eb4da089c812f4f\",\n        \"names\": \"MAURICIO\",\n        \"lastNames\": \"PINZÓN CORDERO\",\n        \"document\": \"CC86072025\",\n        \"gender\": null,\n        \"phone\": \"3103255556\",\n        \"picture\": \"https://delii.s3.amazonaws.com/alma/users/6164f0f16eb4da089c812f4f/picture-6164f0f16eb4da089c812f4f-1635230435.jpg\",\n        \"position\": \"PASTOR\"\n      },\n      \"created_at\": 1651237380\n    },\n    .\n    .\n    .\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Success without data",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Mis recursos compartidos\",\n\t\"resources\": []\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "filename": "Docs/Admin/AdminDocuments.js",
+    "groupTitle": "UserDocuments",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ]
+    }
   },
   {
     "type": "get",
@@ -17535,6 +17864,187 @@ define({ "api": [
         }
       ]
     }
+  },
+  {
+    "type": "post",
+    "url": "/api/admin/resources",
+    "title": "(00) Agregar nuevo documento.",
+    "version": "0.0.53",
+    "name": "saveUserDocuments",
+    "group": "UserDocuments",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión admin.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título para el documento.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Base64 del documento PDF.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number[]",
+            "optional": false,
+            "field": "rolesList",
+            "description": "<p>Roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request Consolidated",
+        "content": "{\n  \"title\": \"Prueba documento\",\n  \"rolesList\": [0, 1, 2, 3],\n  \"file\": \"data:application/pdf;base64,JVBERi0xLjUNCiW1tbW1DQoxIDAgb2JqDQo8PC9UeXBlL0NhdG....\",\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "resource",
+            "description": "<p>Datos de retorno.</p>"
+          }
+        ],
+        "resource Object": [
+          {
+            "group": "resource Object",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del recurso compartido.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Título del recurso.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "String",
+            "optional": false,
+            "field": "urlDoc",
+            "description": "<p>URL del documento PDF.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "Number[]",
+            "optional": false,
+            "field": "roles",
+            "description": "<p>Listado de roles a los que va dirigido el documento (0 = admin, 1 = pastores, 2 = supervisores, 3 = líderes).</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "Number",
+            "optional": false,
+            "field": "created_at",
+            "description": "<p>Fecha de creación del documento.</p>"
+          },
+          {
+            "group": "resource Object",
+            "type": "Number",
+            "optional": false,
+            "field": "updated_at",
+            "description": "<p>Fecha de actalización del documento.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n  \"msg\": \"Se ha agregado el nuevo documento exitosamente.\",\n  \"resource\": {\n    \"_id\": \"625551d7f5598629dca06331\",\n    \"title\": \"PRUEBA DOCUMENTO\",\n    \"urlDoc\": \"https://delii.s3.amazonaws.com/alma/resources/documento-1649758676.pdf\",\n    \"roles\": [\n      0,\n      1,\n      2,\n      3\n    ],\n    \"created_at\": 1649758679,\n    \"updated_at\": 1649758679\n  }\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Validation fields",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"¡Error en los parámetros!\",\n  \"errors\": [\n    {\n      \"input\": \"title\",\n      \"msg\": \"Disculpe, pero indicar un título válido.\"\n    },\n    {\n      \"input\": \"file\",\n      \"msg\": \"Disculpe, pero el documento suministrado es incorrecto.\"\n    },\n    {\n      \"input\": \"rolesList\",\n      \"msg\": \"Disculpe, pero uno de los roles seleccionados no está permitido.\"\n    }\n  ]\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/AdminDocuments.js",
+    "groupTitle": "UserDocuments"
   },
   {
     "type": "post",

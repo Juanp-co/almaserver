@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Request, Response } from 'express';
-import { checkRoleToActions, responseUsersAdmin } from '../../ActionsData/UsersActions';
+import { checkRoleToActions, getNamesUsersList, responseUsersAdmin } from '../../ActionsData/UsersActions';
 import { returnError } from '../../Functions/GlobalFunctions';
 import { checkDate } from '../../Functions/Validations';
 import { IFamiliesGroupsDetailsToReport } from '../../Interfaces/IFamiliesGroups';
@@ -239,9 +239,12 @@ export async function getFamiliesGroupsReports(req: Request, res: Response) : Pr
       query2.familyGroupId = { $in: listIds };
 
       // get reports
-      const reports = await FamiliesGroupsReports.find(query2, { familyGroupId: 1, report: 1 }).exec();
+      const reports = await FamiliesGroupsReports.find(query2, { userid: 1, familyGroupId: 1, report: 1 }).exec();
 
       if (reports.length > 0) {
+
+        const usersIds = _.uniq(reports.map(r => r.userid));
+        const users = await getNamesUsersList(usersIds);
 
         for (const value of listIds) {
           const group = familiesGroups.find(fg => fg._id.toString() === value) as IFamiliesGroupsDetailsToReport;
@@ -293,6 +296,7 @@ export async function getFamiliesGroupsReports(req: Request, res: Response) : Pr
 
                 data.observations.push({
                   observations: fr.report.observations,
+                  member: users.find((u: any) => u._id.toString() === fr.userid) || null,
                   date: fr.report.date,
                 });
               }

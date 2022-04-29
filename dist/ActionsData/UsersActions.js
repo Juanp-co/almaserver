@@ -177,6 +177,7 @@ async function getInfoUserReferred(_id) {
             roles: 1,
             church: 1,
             consolidator: 1,
+            created_at: 1,
         }).exec();
         if (!ret.member)
             return ret;

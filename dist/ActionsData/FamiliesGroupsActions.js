@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.returnFamilyGroup404 = exports.return404 = exports.returnErrorId = exports.getReportsFamilyGroup = exports.checkIfUsersBelowAtFamilyGroup = exports.getQueryParamsList = exports.checkIfExistsGroup = exports.checkIfMembersWasChanged = exports.getModelFamiliesGroupsMembersDetails = exports.setDataMembersGroup = exports.getUsersIdsList = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const UsersActions_1 = require("./UsersActions");
 const FamiliesGroups_1 = __importDefault(require("../Models/FamiliesGroups"));
 const FamiliesGroupsReports_1 = __importDefault(require("../Models/FamiliesGroupsReports"));
@@ -138,7 +139,12 @@ async function getReportsFamilyGroup(query) {
         },
         observations: []
     };
-    const reports = await FamiliesGroupsReports_1.default.find(query, { report: 1 }).exec();
+    let users = [];
+    const reports = await FamiliesGroupsReports_1.default.find(query, { userid: 1, report: 1 }).exec();
+    if (reports.length > 0) {
+        const listIds = lodash_1.default.uniq(reports.map(r => r.userid));
+        users = await (0, UsersActions_1.getNamesUsersList)(listIds);
+    }
     for (const r of reports) {
         ret.report.brethren += r.report.brethren;
         ret.report.friends += r.report.friends;
@@ -158,6 +164,7 @@ async function getReportsFamilyGroup(query) {
         ret.report.consolidated += r.report.consolidated;
         ret.observations.push({
             observations: r.report.observations,
+            member: users.find((u) => u._id.toString() === r.userid) || null,
             date: r.report.date,
         });
     }

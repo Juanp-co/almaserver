@@ -226,8 +226,10 @@ async function getFamiliesGroupsReports(req, res) {
             const listIds = familiesGroups.map(fg => fg._id.toString());
             query2.familyGroupId = { $in: listIds };
             // get reports
-            const reports = await FamiliesGroupsReports_1.default.find(query2, { familyGroupId: 1, report: 1 }).exec();
+            const reports = await FamiliesGroupsReports_1.default.find(query2, { userid: 1, familyGroupId: 1, report: 1 }).exec();
             if (reports.length > 0) {
+                const usersIds = lodash_1.default.uniq(reports.map(r => r.userid));
+                const users = await (0, UsersActions_1.getNamesUsersList)(usersIds);
                 for (const value of listIds) {
                     const group = familiesGroups.find(fg => fg._id.toString() === value);
                     if (group) {
@@ -274,6 +276,7 @@ async function getFamiliesGroupsReports(req, res) {
                                 data.report.consolidated += fr.report.consolidated;
                                 data.observations.push({
                                     observations: fr.report.observations,
+                                    member: users.find((u) => u._id.toString() === fr.userid) || null,
                                     date: fr.report.date,
                                 });
                             }
