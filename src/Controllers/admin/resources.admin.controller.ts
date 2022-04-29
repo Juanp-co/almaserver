@@ -2,34 +2,52 @@ import _ from 'lodash';
 import { Request, Response } from 'express';
 import moment from 'moment-timezone';
 import { returnResourcesMsgErrors } from '../../ActionsData/ResourcesActions';
-import { getNamesUsersList } from '../../ActionsData/UsersActions';
+import { getNamesUsersList, responseUsersAdmin } from '../../ActionsData/UsersActions';
 import { validateResourceForm } from '../../FormRequest/ResourcesRequest';
-import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import { checkIfExistsRoleInList, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';
 import Resources from '../../Models/Resources';
 import Users from '../../Models/Users';
 import { deleteFile, uploadFilePdf } from '../../Services/AWSService';
 
-const path = 'Controllers/User/resources.controller';
+const path = 'Controllers/admin/resources.admin.controller';
 
-export async function getResources(req: Request, res: Response): Promise<Response> {
+export async function getResourcesAdmin(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
+    const ret: any[] = [];
 
     if (!checkObjectId(tokenId)) return returnResourcesMsgErrors(res, 0);
 
-    const resources = await Resources.find({ userid: tokenId }, { userid: 0, __v: 0 }).exec();
+    const resources = await Resources.find({}, { __v: 0 }).exec();
+
+    if (resources.length > 0) {
+      const usersIds = _.uniq(resources.map(r => r.userid));
+      const users = await getNamesUsersList(usersIds);
+
+      resources.forEach(r => {
+        ret.push({
+          _id: r._id,
+          title: r.title,
+          urlDoc: r.urlDoc,
+          roles: r.roles,
+          member: users.find((u: any) => u._id.toString() === r.userid) || null,
+          created_at: r.created_at,
+        })
+      })
+    }
+
 
     return res.json({
-      msg: 'Mis recursos compartidos',
-      resources
+      msg: 'Recursos compartidos',
+      resources: ret
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/getResources`);
+    return returnError(res, error, `${path}/getResourcesAdmin`);
   }
 }
 
-export async function saveResource(req: Request, res: Response) : Promise<Response> {
+export async function saveResourceAdmin(req: Request, res: Response) : Promise<Response> {
   try {
     const { tokenId } = req.body;
     const validate = validateResourceForm(req.body);
@@ -64,23 +82,22 @@ export async function saveResource(req: Request, res: Response) : Promise<Respon
       resource
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/saveResource`);
+    return returnError(res, error, `${path}/saveResourceAdmin`);
   }
 }
 
-export async function deleteResource(req: Request, res: Response) : Promise<Response> {
+export async function deleteResourceAdmin(req: Request, res: Response) : Promise<Response> {
   try {
-    const { tokenId } = req.body;
+    const { tokenId, tokenRoles } = req.body;
     const { _id } = req.params;
 
-    if (!checkObjectId(tokenId)) return returnResourcesMsgErrors(res, 0);
     if (!checkObjectId(_id)) return returnResourcesMsgErrors(res, 3);
 
     const resource = await Resources.findOne({ _id }, { __v: 0 }).exec();
 
     if (!resource) return returnResourcesMsgErrors(res, 4);
 
-    if (resource.userid !== tokenId) return returnResourcesMsgErrors(res, 1)
+    if (resource.userid !== tokenId && !checkIfExistsRoleInList(tokenRoles, [0, 1])) return returnResourcesMsgErrors(res, 1)
 
     if (resource.urlDoc) await deleteFile(resource.urlDoc);
 
@@ -90,12 +107,12 @@ export async function deleteResource(req: Request, res: Response) : Promise<Resp
       msg: 'Se ha eliminado el documento exitosamente.'
     });
   } catch (error: any) {
-    return returnError(res, error, `${path}/deleteResource`);
+    return returnError(res, error, `${path}/deleteResourceAdmin`);
   }
 }
 
 export default {
-  deleteResource,
-  getResources,
-  saveResource
+  deleteResourceAdmin,
+  getResourcesAdmin,
+  saveResourceAdmin
 }

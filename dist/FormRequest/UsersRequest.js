@@ -18,8 +18,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateUpdatePictureProfile = exports.validateRolesToUpdateForm = exports.validatePasswords = exports.validateLogin = exports.validateUpdateFamilyGroup = exports.validateUpdate = exports.validateFormMemberRegisterFromUser = exports.validateFormMemberRegisterAdmin = void 0;
+const moment_timezone_1 = __importDefault(require("moment-timezone"));
 const UsersActions_1 = __importStar(require("../ActionsData/UsersActions"));
 const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const Validations_1 = require("../Functions/Validations");
@@ -33,6 +37,7 @@ async function validateSimpleRegister(data, admin) {
         referred: null,
         consolidated: false,
         church: '624a357644f15f3ce8200c2f',
+        created_at: null
     };
     const errors = [];
     // phone
@@ -81,6 +86,12 @@ async function validateSimpleRegister(data, admin) {
             ret.church = data.church;
         }
     }
+    // created_at
+    if (data.created_at) {
+        const date = (0, moment_timezone_1.default)(data.created_at, 'YYYY-MM-DD', true);
+        if (date.isValid())
+            ret.created_at = date.unix();
+    }
     return { data: ret, errors };
 }
 exports.default = validateSimpleRegister;
@@ -105,6 +116,7 @@ async function validateFormMemberRegisterAdmin(data) {
         referred: null,
         consolidated: false,
         church: '624a357644f15f3ce8200c2f',
+        created_at: null
     };
     const errors = [];
     // phone
@@ -194,6 +206,12 @@ async function validateFormMemberRegisterAdmin(data) {
                 ret.referred = data.referred;
         }
     }
+    // created_at
+    if (data.created_at) {
+        const date = (0, moment_timezone_1.default)(data.created_at, 'YYYY-MM-DD', true);
+        if (date.isValid())
+            ret.created_at = date.unix();
+    }
     // role
     ret.roles = (0, GlobalFunctions_1.checkIfExistsRoleInList)(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
     return { data: ret, errors };
@@ -220,6 +238,7 @@ async function validateFormMemberRegisterFromUser(data) {
         referred: null,
         consolidated: false,
         church: '624a357644f15f3ce8200c2f',
+        created_at: null
     };
     const errors = [];
     // phone
@@ -306,6 +325,12 @@ async function validateFormMemberRegisterFromUser(data) {
         }
         else
             ret.referred = data.referred;
+    }
+    // created_at
+    if (data.created_at) {
+        const date = (0, moment_timezone_1.default)(data.created_at, 'YYYY-MM-DD', true);
+        if (date.isValid())
+            ret.created_at = date.unix();
     }
     return { data: ret, errors };
 }

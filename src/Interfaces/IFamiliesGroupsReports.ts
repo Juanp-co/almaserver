@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
 import { IFamiliesGroupsDetailsToReport } from './IFamiliesGroups';
+import { IUserSimpleInfo } from './IUser';
 
 export interface IFamiliesGroupsReportData {
   brethren: number;
@@ -43,6 +44,7 @@ export interface IFamiliesGroupsReportsCounters {
 
 export interface IFamiliesGroupsReportsObservations {
   observations: string;
+  member: IUserSimpleInfo|null;
   date: number|string;
 }
 

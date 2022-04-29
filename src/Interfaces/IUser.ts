@@ -85,6 +85,7 @@ export interface IUserSimpleRegister {
   referred: string | null;
   consolidated: boolean,
   church?: IUser['church'];
+  created_at?: IUser['created_at'];
 }
 
 export interface IUserSimpleRegisterConsolidate {
@@ -106,6 +107,7 @@ export interface IUserSimpleRegisterConsolidate {
   referred: string | null;
   church?: IUser['church'];
   consolidated: boolean,
+  created_at?: IUser['created_at'];
 }
 
 export interface IUserModelUpdate {

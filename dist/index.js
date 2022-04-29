@@ -17,6 +17,7 @@ const DevotionalsAdminRouter_1 = __importDefault(require("./Routes/Admin/Devotio
 const EventsAdminRouter_1 = __importDefault(require("./Routes/Admin/EventsAdminRouter"));
 const FamiliesGroupsAdminRouter_1 = __importDefault(require("./Routes/Admin/FamiliesGroupsAdminRouter"));
 const GroupsAdminRouter_1 = __importDefault(require("./Routes/Admin/GroupsAdminRouter"));
+const ResourcesAdminRouter_1 = __importDefault(require("./Routes/Admin/ResourcesAdminRouter"));
 const ReportsAdminRouter_1 = __importDefault(require("./Routes/Admin/ReportsAdminRouter"));
 const SettingsAdminRouter_1 = __importDefault(require("./Routes/Admin/SettingsAdminRouter"));
 const UsersAdminRouter_1 = __importDefault(require("./Routes/Admin/UsersAdminRouter"));
@@ -55,6 +56,7 @@ app_1.default.use(`/api/admin/events`, EventsAdminRouter_1.default);
 app_1.default.use(`/api/admin/families-groups`, FamiliesGroupsAdminRouter_1.default);
 app_1.default.use(`/api/admin/groups`, GroupsAdminRouter_1.default);
 app_1.default.use(`/api/admin/reports`, ReportsAdminRouter_1.default);
+app_1.default.use(`/api/admin/resources`, ResourcesAdminRouter_1.default);
 app_1.default.use(`/api/admin/settings`, SettingsAdminRouter_1.default);
 app_1.default.use(`/api/admin/users`, UsersAdminRouter_1.default);
 app_1.default.use(`/api/user`, UserRouter_1.default);

@@ -1,3 +1,4 @@
+import moment from 'moment-timezone';
 import checkIfExistDocument, {
   checkIfExistPhone,
   getIdUserFromDocument
@@ -28,6 +29,7 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     referred: null,
     consolidated: false,
     church: '624a357644f15f3ce8200c2f',
+    created_at: null
   };
   const errors: any = [];
 
@@ -88,6 +90,13 @@ export default async function validateSimpleRegister(data: IUserSimpleRegister, 
     }
   }
 
+  // created_at
+  if (data.created_at) {
+    const date = moment(data.created_at, 'YYYY-MM-DD', true);
+
+    if (date.isValid()) ret.created_at = date.unix();
+  }
+
   return { data: ret, errors };
 }
 
@@ -111,6 +120,7 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
     referred: null,
     consolidated: false,
     church: '624a357644f15f3ce8200c2f',
+    created_at: null
   };
   const errors: any = [];
 
@@ -208,6 +218,13 @@ export async function validateFormMemberRegisterAdmin(data: IUserSimpleRegisterC
     }
   }
 
+  // created_at
+  if (data.created_at) {
+    const date = moment(data.created_at, 'YYYY-MM-DD', true);
+
+    if (date.isValid()) ret.created_at = date.unix();
+  }
+
   // role
   ret.roles = checkIfExistsRoleInList(data.roles, [0, 1, 2, 3, 4]) ? data.roles : [4];
 
@@ -234,6 +251,7 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
     referred: null,
     consolidated: false,
     church: '624a357644f15f3ce8200c2f',
+    created_at: null
   };
   const errors: any = [];
 
@@ -327,6 +345,13 @@ export async function validateFormMemberRegisterFromUser(data: IUserSimpleRegist
       errors.push(setError('Disculpe, pero el miembro seleccionado es incorrecto.', 'referred'));
     }
     else ret.referred = data.referred;
+  }
+
+  // created_at
+  if (data.created_at) {
+    const date = moment(data.created_at, 'YYYY-MM-DD', true);
+
+    if (date.isValid()) ret.created_at = date.unix();
   }
 
   return { data: ret, errors };

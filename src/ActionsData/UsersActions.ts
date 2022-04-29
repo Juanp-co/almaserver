@@ -196,6 +196,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
         roles: 1,
         church: 1,
         consolidator: 1,
+        created_at: 1,
       }
     ).exec() as IUserReferralSimpleData;
 
