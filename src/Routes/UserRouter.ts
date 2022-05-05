@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { validateUser } from '../middleware';
 import {
   getMemberReferred,
-  getReferrals,
+  getReferrals, removeReferral,
   saveReferral,
   saveReferralVisit
 } from '../Controllers/publics/referrals.controller';
@@ -77,7 +77,9 @@ router.route('/referrals')
   .get(validateUser, getReferrals)
   .post(validateUser, saveReferral);
 router.post('/referrals/visit', validateUser, saveReferralVisit);
-router.get('/referrals/:_id', validateUser, getMemberReferred);
+router.route('/referrals/:_id')
+  .get(validateUser, getMemberReferred)
+  .delete(validateUser, removeReferral);
 
 /*
   Reports

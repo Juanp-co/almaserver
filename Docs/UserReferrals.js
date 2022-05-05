@@ -380,3 +380,28 @@
  *
  * @apiUse GlobalErrorSystem
  */
+
+/**
+ * @api {delete} /api/user/referrals/:_id (04) Remover un hijo espiritual.
+ * @apiVersion 0.0.54
+ * @apiName removeUserReferrals
+ * @apiGroup UserReferrals
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam (Path params) {String} _id ID del miembro a remover.
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Se ha removido el hijo espiritual exitosamente."
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse GlobalErrorSystem
+ */

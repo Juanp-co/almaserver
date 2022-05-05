@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveReferralVisit = exports.getMemberReferred = exports.saveReferral = exports.getReferrals = void 0;
+exports.removeReferral = exports.saveReferralVisit = exports.getMemberReferred = exports.saveReferral = exports.getReferrals = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
@@ -16,6 +16,7 @@ const UsersRequest_1 = require("../../FormRequest/UsersRequest");
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
 const Visits_1 = __importDefault(require("../../Models/Visits"));
+const TokenActions_1 = require("../../Functions/TokenActions");
 const path = 'Controllers/publics/referrals.controller';
 async function getReferrals(req, res) {
     try {
@@ -176,3 +177,27 @@ async function saveReferralVisit(req, res) {
     }
 }
 exports.saveReferralVisit = saveReferralVisit;
+async function removeReferral(req, res) {
+    try {
+        const { tokenId } = req.body;
+        const { _id } = req.params;
+        const referrals = await Referrals_1.default.findOne({ _id: tokenId }).exec();
+        // logout
+        if (!referrals)
+            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+        referrals.members = referrals.members.filter(m => m !== _id);
+        const user = await Users_1.default.findOne({ _id }, { referred: 1 }).exec();
+        if (user) {
+            user.referred = null;
+            await user.save();
+        }
+        await referrals.save();
+        return res.status(200).json({
+            msg: `Se ha removido el hijo espiritual exitosamente.`,
+        });
+    }
+    catch (error) {
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/removeReferral`);
+    }
+}
+exports.removeReferral = removeReferral;

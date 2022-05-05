@@ -11,6 +11,7 @@ import { validateFormMemberRegisterFromUser } from '../../FormRequest/UsersReque
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
 import Visits from '../../Models/Visits';
+import { forceLogout } from '../../Functions/TokenActions';
 
 const path = 'Controllers/publics/referrals.controller';
 
@@ -194,5 +195,34 @@ export async function saveReferralVisit(req: Request, res: Response): Promise<Re
 
   } catch (error: any) {
     return returnError(res, error, `${path}/saveVisit`);
+  }
+}
+
+export async function removeReferral(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenId } = req.body;
+    const { _id } = req.params;
+
+    const referrals = await Referrals.findOne({ _id: tokenId }).exec();
+
+    // logout
+    if (!referrals) return forceLogout(res, `${req.query.token}`);
+
+    referrals.members = referrals.members.filter(m => m !== _id);
+
+    const user = await Users.findOne({ _id }, { referred: 1 }).exec();
+
+    if (user) {
+      user.referred = null;
+      await user.save();
+    }
+
+    await referrals.save();
+
+    return res.status(200).json({
+      msg: `Se ha removido el hijo espiritual exitosamente.`,
+    });
+  } catch (error: any) {
+    return returnError(res, error, `${path}/removeReferral`);
   }
 }

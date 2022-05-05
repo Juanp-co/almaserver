@@ -65,7 +65,9 @@ router.route('/referrals')
     .get(middleware_1.validateUser, referrals_controller_1.getReferrals)
     .post(middleware_1.validateUser, referrals_controller_1.saveReferral);
 router.post('/referrals/visit', middleware_1.validateUser, referrals_controller_1.saveReferralVisit);
-router.get('/referrals/:_id', middleware_1.validateUser, referrals_controller_1.getMemberReferred);
+router.route('/referrals/:_id')
+    .get(middleware_1.validateUser, referrals_controller_1.getMemberReferred)
+    .delete(middleware_1.validateUser, referrals_controller_1.removeReferral);
 /*
   Reports
  */
