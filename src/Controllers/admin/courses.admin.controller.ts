@@ -24,7 +24,7 @@ const path = 'Controllers/admin/courses.admin.controller';
 export default async function getCourses(req: Request, res: Response) : Promise<Response>{
   try {
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const projection: any = { _id: 1, title: 1, description: 1, enable: 1, level: 1 };
+    const projection: any = { _id: 1, title: 1, description: 1, enable: 1, level: 1, slug: 1 };
 
     const courses = await Courses.find({}, projection)
       .skip(skip)
@@ -44,11 +44,15 @@ export default async function getCourses(req: Request, res: Response) : Promise<
 export async function showCourse(req: Request, res: Response) : Promise<Response>{
   try {
     const { _id } = req.params;
+    const { slug } = req.query;
+    const query: any = {};
 
-    if (!checkObjectId(_id)) return returnErrorId(res);
+    if (slug === 'true') query.slug = _id;
+    else if (!checkObjectId(_id)) return returnErrorId(res);
+    else query._id = _id;
 
     const course = await getCourseDetails({
-      query: { _id },
+      query,
       infoUser: true,
       projection: { __v: 0 }
     });

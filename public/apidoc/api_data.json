@@ -3140,7 +3140,7 @@
     "type": "get",
     "url": "/api/admin/courses/:_id",
     "title": "(01) Obtener detalles de un curso.",
-    "version": "0.0.27",
+    "version": "0.0.55",
     "name": "detailsCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -3158,13 +3158,22 @@
     },
     "parameter": {
       "fields": {
+        "Query params": [
+          {
+            "group": "Query params",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Indica que el valor de '_id' será un 'slug'.</p>"
+          }
+        ],
         "Path params": [
           {
             "group": "Path params",
             "type": "String",
             "optional": false,
             "field": "_id",
-            "description": "<p>ID del curso.</p>"
+            "description": "<p>ID o slug del curso del curso.</p>"
           }
         ]
       }
@@ -3718,7 +3727,7 @@
     "type": "get",
     "url": "/api/admin/courses",
     "title": "(00) Obtener listado de cursos.",
-    "version": "0.0.28",
+    "version": "0.0.55",
     "name": "getCoursesAdmin",
     "group": "CoursesAdmin",
     "header": {
@@ -3807,13 +3816,20 @@
             "optional": false,
             "field": "description",
             "description": "<p>Descripción del curso.</p>"
+          },
+          {
+            "group": "courses Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug del curso.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success with data",
-          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Cursos.\",\n\t\"courses\": [\n\t\t{\n\t\t\t\"enable\": true,\n\t\t\t\"_id\": \"603afb2309bf7a3428ac58f1\",\n\t\t\t\"level\": 1,\n\t\t\t\"title\": \"Nivel uno\",\n\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Cursos.\",\n\t\"courses\": [\n\t\t{\n\t\t\t\"enable\": true,\n\t\t\t\"_id\": \"603afb2309bf7a3428ac58f1\",\n\t\t\t\"level\": 1,\n\t\t\t\"title\": \"Nivel uno\",\n\t\t\t\"description\": \"Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\\n\\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\\n\\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.\",\n\t\t\t\"slug\": \"nivel-uno\"\n\t\t},\n\t\t.\n\t\t.\n\t\t.\n\t]\n}",
           "type": "JSON"
         },
         {

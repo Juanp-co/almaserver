@@ -283,7 +283,7 @@ async function getReports(req, res) {
         };
         let members = [];
         let users = [];
-        let listsMembersDetails = []; // generate a new array data
+        const listsMembersDetails = []; // generate a new array data
         let listIdsPending = []; // generate a new array data
         if (initDate && (0, Validations_1.checkDate)(initDate)) {
             // query['courses.created_at'] = { $gte: moment(`${initDate}`).startOf('d').unix() };

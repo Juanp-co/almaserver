@@ -1,6 +1,6 @@
 /**
  * @api {get} /api/admin/courses (00) Obtener listado de cursos.
- * @apiVersion 0.0.28
+ * @apiVersion 0.0.55
  * @apiName getCoursesAdmin
  * @apiGroup CoursesAdmin
  *
@@ -17,6 +17,7 @@
  * @apiSuccess (courses Object[]) {Number} level Nivel del curso.
  * @apiSuccess (courses Object[]) {String} title Título del curso.
  * @apiSuccess (courses Object[]) {String} description Descripción del curso.
+ * @apiSuccess (courses Object[]) {String} slug Slug del curso.
  *
  * @apiSuccessExample {JSON} Success with data
  * HTTP/1.1 200 Success
@@ -28,7 +29,8 @@
 			"_id": "603afb2309bf7a3428ac58f1",
 			"level": 1,
 			"title": "Nivel uno",
-			"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat."
+			"description": "Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus.\n\nCurabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Proin eget tortor risus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\nQuisque velit nisi, pretium ut lacinia in, elementum id enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula. Nulla quis lorem ut libero malesuada feugiat.",
+			"slug": "nivel-uno"
 		},
 		.
 		.
@@ -52,13 +54,15 @@
 
 /**
  * @api {get} /api/admin/courses/:_id (01) Obtener detalles de un curso.
- * @apiVersion 0.0.27
+ * @apiVersion 0.0.55
  * @apiName detailsCoursesAdmin
  * @apiGroup CoursesAdmin
  *
  * @apiHeader {String} x-access-token Token de la sesión (admin | pastor | supervisor | lider).
  *
- * @apiParam (Path params) {String} _id ID del curso.
+ * @apiParam (Query params) {String} slug Indica que el valor de '_id' será un 'slug'.
+ *
+ * @apiParam (Path params) {String} _id ID o slug del curso del curso.
  *
  * @apiSuccess {String} msg Mensaje del proceso.
  * @apiSuccess {Object} course Datos del curso.

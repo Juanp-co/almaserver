@@ -237,7 +237,7 @@ async function addOrRemoveMembersGroup(req, res) {
             }
             group.members = lodash_1.default.uniq(validate.data.members.concat(group.members));
             if (!group.userid)
-                group.userid = group.members[0];
+                [group.userid] = group.members;
             await group.save();
             // update group value in users
             await (0, UsersActions_1.updateGroupIdInUsers)(group.members, _id);
@@ -251,7 +251,7 @@ async function addOrRemoveMembersGroup(req, res) {
             }
             if (validate.data.members.includes(group.userid)) {
                 if (group.members.length > 0)
-                    group.userid = group.members[0];
+                    [group.userid] = group.members;
                 else
                     group.userid = null;
             }

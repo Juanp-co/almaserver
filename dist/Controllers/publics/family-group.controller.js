@@ -35,7 +35,7 @@ const path = 'Controllers/publics/family-group.controller';
 async function getFamiliesGroups(req, res) {
     try {
         const { tokenId } = req.body;
-        let ret = [];
+        const ret = [];
         const user = await Users_1.default.findOne({ _id: tokenId }, { familyGroupId: 1 }).exec();
         if (!user)
             return (0, FamiliesGroupsActions_1.returnFamilyGroup404)(res);

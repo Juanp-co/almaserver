@@ -301,7 +301,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
     };
     let members: any[] = [];
     let users: any[] = [];
-    let listsMembersDetails: any = []; // generate a new array data
+    const listsMembersDetails: any = []; // generate a new array data
     let listIdsPending: any = []; // generate a new array data
 
     if (initDate && checkDate(initDate)) {

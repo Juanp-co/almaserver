@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { getLimitSkipSortSearch, returnError } from '../../Functions/GlobalFunctions';
-import { getModelDataListDevotionals, getQueryParamsList } from '../../ActionsData/DevotionalsActions';
+import returnDevotionalResponse, { getModelDataListDevotionals, getQueryParamsList } from '../../ActionsData/DevotionalsActions';
 import Devotionals from '../../Models/Devotionals';
-import returnDevotionalResponse from '../../ActionsData/DevotionalsActions';
+
 import { checkObjectId } from '../../Functions/Validations';
 
 const path = 'Controllers/publics/devotionals.controller';

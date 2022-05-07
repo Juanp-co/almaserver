@@ -18,7 +18,7 @@ const path = 'Controllers/publics/family-group.controller';
 export default async function getFamiliesGroups(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
-    let ret: IFamiliesGroupsList[] = [];
+    const ret: IFamiliesGroupsList[] = [];
 
     const user = await Users.findOne({ _id: tokenId }, { familyGroupId: 1 }).exec();
 

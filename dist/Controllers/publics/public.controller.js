@@ -306,7 +306,7 @@ async function getPublicMembers(req, res) {
         const { tokenId } = req.body;
         const query = (0, UsersActions_1.checkFindValueSearch)(req.query, tokenId);
         const { limit, skip, sort } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
-        let members = await Users_1.default.find(query, {
+        const members = await Users_1.default.find(query, {
             names: 1,
             lastNames: 1,
             gender: 1,
@@ -391,10 +391,10 @@ async function getOrganization(req, res) {
                         });
                     });
                 }
-                m.lvls.pastors = lvls[1];
-                m.lvls.supervisors = lvls[2];
-                m.lvls.leaders = lvls[3];
-                m.lvls.peoples = lvls[4];
+                m.lvls.pastors = lvls['1'];
+                m.lvls.supervisors = lvls['2'];
+                m.lvls.leaders = lvls['3'];
+                m.lvls.peoples = lvls['4'];
                 ret.push(m);
             });
         }
@@ -412,7 +412,7 @@ exports.getOrganization = getOrganization;
 async function getPublicResources(req, res) {
     try {
         const { tokenId } = req.body;
-        let group = null;
+        const group = null;
         const ret = [];
         if (!(0, Validations_1.checkObjectId)(tokenId))
             return (0, ResourcesActions_1.returnResourcesMsgErrors)(res, 0);
