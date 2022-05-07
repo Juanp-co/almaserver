@@ -283,7 +283,7 @@ async function getGroupInvitations(req, res) {
     try {
         const { tokenId } = req.body;
         const { limit, skip } = (0, GlobalFunctions_1.getLimitSkipSortSearch)(req.query);
-        let ret = [];
+        const ret = [];
         if (!(0, Validations_1.checkObjectId)(tokenId))
             return (0, GroupsActions_1.returnGroupsMsgErrors)(res, 0);
         let invitations = await GroupsInvitations_1.default.findOne({ _id: tokenId }, { list: 1 }).exec();
@@ -371,7 +371,7 @@ async function approveGroupInvitations(req, res) {
             if (group) {
                 group.members.pull(tokenId);
                 if (group.userid === tokenId && group.members.length > 0)
-                    group.userid = group.members[0];
+                    [group.userid] = group.members;
                 else
                     group.userid = null;
                 await group.save();

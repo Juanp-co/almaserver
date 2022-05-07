@@ -289,7 +289,7 @@ export async function getGroupInvitations(req: Request, res: Response): Promise<
   try {
     const { tokenId } = req.body;
     const { limit, skip } = getLimitSkipSortSearch(req.query);
-    let ret: any[] = [];
+    const ret: any[] = [];
 
     if (!checkObjectId(tokenId)) return returnGroupsMsgErrors(res, 0);
 
@@ -389,7 +389,7 @@ export async function approveGroupInvitations(req: Request, res: Response): Prom
 
       if (group) {
         group.members.pull(tokenId);
-        if (group.userid === tokenId && group.members.length > 0) group.userid = group.members[0];
+        if (group.userid === tokenId && group.members.length > 0) [group.userid] = group.members;
         else group.userid = null;
         await group.save();
       }

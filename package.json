@@ -1,6 +1,6 @@
 {
   "name": "almaserver",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "description": "API to ALMA App.",
   "main": "./dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development nodemon",
     "build": "npm run lint && npm run clean && tsc -p ./",
     "precommit": "npm run build && npm run docs",
-    "lint": "eslint src/**/*.ts --quiet --fix --ignore-pattern \"node_modules/\" && tsc --noEmit",
+    "lint": "eslint src/**/* --quiet --fix --ignore-pattern \"node_modules/\" && tsc --noEmit",
     "docs": "apidoc -i ./Docs -o public/apidoc/",
     "clean": "rimraf dist",
     "migrations": "npx ts-node Migrations/DevMigration.ts",

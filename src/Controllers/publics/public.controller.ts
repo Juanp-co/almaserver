@@ -334,7 +334,7 @@ export async function getPublicMembers(req: Request, res: Response): Promise<Res
     const { tokenId } = req.body;
     const query: any = checkFindValueSearch(req.query, tokenId);
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    let members: IUserSimpleInfo[] = await Users.find(
+    const members: IUserSimpleInfo[] = await Users.find(
       query,
       {
         names: 1,
@@ -430,10 +430,10 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
             });
           });
         }
-        m.lvls.pastors = lvls[1];
-        m.lvls.supervisors = lvls[2];
-        m.lvls.leaders = lvls[3];
-        m.lvls.peoples = lvls[4];
+        m.lvls.pastors = lvls['1'];
+        m.lvls.supervisors = lvls['2'];
+        m.lvls.leaders = lvls['3'];
+        m.lvls.peoples = lvls['4'];
 
         ret.push(m);
       });
@@ -452,7 +452,7 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
 export async function getPublicResources(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
-    let group: any = null;
+    const group: any = null;
     const ret: any[] = [];
 
     if (!checkObjectId(tokenId)) return returnResourcesMsgErrors(res, 0);

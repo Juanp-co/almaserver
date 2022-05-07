@@ -251,7 +251,7 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
       }
 
       group.members = _.uniq(validate.data.members.concat(group.members));
-      if (!group.userid) group.userid = group.members[0];
+      if (!group.userid) [group.userid] = group.members;
       await group.save();
 
       // update group value in users
@@ -265,7 +265,7 @@ export async function addOrRemoveMembersGroup(req: Request, res: Response) : Pro
       }
 
       if (validate.data.members.includes(group.userid)) {
-        if (group.members.length > 0) group.userid = group.members[0];
+        if (group.members.length > 0) [group.userid] = group.members;
         else group.userid = null;
       }
       await group.save();
