@@ -124,10 +124,11 @@ export async function getMemberReferred(req: Request, res: Response): Promise<Re
     }
 
     if (!checkIfExistsRoleInList(tokenRoles, [0, 1, 2])) {
+      const consolidator = await Users.find({ _id: tokenId, consolidator: { $eq: true } }).countDocuments().exec();
       const checkMember = await Referrals.find({ _id: tokenId, members: _id }).countDocuments().exec();
       const checkMember2 = await Users.find({ _id: tokenId, referred: _id }).countDocuments().exec();
 
-      if (checkMember === 0 && checkMember2 === 0) {
+      if (checkMember === 0 && checkMember2 === 0 && consolidator === 0) {
         return res.status(404).json({
           msg: 'Disculpe, pero no está autorizado para visualizar la información de este miembro.'
         });
