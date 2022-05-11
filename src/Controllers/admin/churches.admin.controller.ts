@@ -138,10 +138,7 @@ export async function deleteChurch(req: Request, res: Response): Promise<Respons
     }
 
     // change the church value for all members that own this _id.
-    Users.updateMany(
-      { church: _id },
-      { $set: { church: '624a357644f15f3ce8200c2f' } }
-    ).exec();
+    Users.updateMany({ church: _id },{ $set: { church: '624a357644f15f3ce8200c2f' } }).exec();
 
     // delete church
     await church.delete();

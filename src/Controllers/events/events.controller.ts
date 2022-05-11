@@ -174,7 +174,7 @@ export async function deleteEvent(req: Request, res: Response): Promise<Response
     if (!checkObjectId(_id)) return return404Or422(res, 0);
 
     const query: any = { _id };
-    if (!req.body.superadmin) query.userid = tokenId;
+    if (!req.body.superadmin && !req.query.superadmin) query.userid = tokenId;
 
     const event = await Events.findOne(query, { __v: 0 }).exec();
 

@@ -185,7 +185,7 @@ async function deleteEvent(req, res) {
         if (!(0, Validations_1.checkObjectId)(_id))
             return (0, EventsActions_1.return404Or422)(res, 0);
         const query = { _id };
-        if (!req.body.superadmin)
+        if (!req.body.superadmin && !req.query.superadmin)
             query.userid = tokenId;
         const event = await Events_1.default.findOne(query, { __v: 0 }).exec();
         if (!event)

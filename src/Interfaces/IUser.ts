@@ -178,12 +178,14 @@ export interface IUserReferralSimpleData {
   direction: IUser['direction'];
   group: IUser['group'];
   church?: IUser['church'];
+  referred?: IUser['referred'];
 }
 
 export interface IUserReferralInfo {
   member: IUserReferralSimpleData | null;
   totalCourses: number;
   totalReferrals: number;
+  referred?: IUserSimpleInfo | null;
   courses: ICourseSimpleList[];
   referrals: IUserSimpleInfo[];
   group?: any;
