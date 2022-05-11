@@ -21635,6 +21635,13 @@ define({ "api": [
           },
           {
             "group": "data Object",
+            "type": "Object|Null",
+            "optional": false,
+            "field": "referred",
+            "description": "<p>Datos del padre espiritual.</p>"
+          },
+          {
+            "group": "data Object",
             "type": "Object[]",
             "optional": false,
             "field": "courses",
@@ -21857,65 +21864,65 @@ define({ "api": [
             "description": "<p>Observaciones obtenidas en la visita.</p>"
           }
         ],
-        "referrals and consolidator Object[]": [
+        "referred Object and referrals and consolidator Object[]": [
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "_id",
             "description": "<p>ID del miembro.</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "names",
             "description": "<p>Nombre(s).</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "lastNames",
             "description": "<p>Apellido(s).</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "document",
             "description": "<p>Número de documento.</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "Number|Null",
             "optional": false,
             "field": "gender",
             "description": "<p>ID (array index) del sexo (género).</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "String",
             "optional": false,
             "field": "phone",
             "description": "<p>Teléfono del miembro.</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la foto de perfil.</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "String|Null",
             "optional": false,
             "field": "position",
             "description": "<p>Cargo o posición del miembro.</p>"
           },
           {
-            "group": "referrals and consolidator Object[]",
+            "group": "referred Object and referrals and consolidator Object[]",
             "type": "Numbers",
             "optional": false,
             "field": "totalsReferrals",

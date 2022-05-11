@@ -153,6 +153,7 @@ async function getInfoUserReferred(_id) {
         totalReferrals: 0,
         courses: [],
         group: null,
+        referred: null,
         referrals: [],
     };
     if (_id) {
@@ -176,11 +177,16 @@ async function getInfoUserReferred(_id) {
             group: 1,
             roles: 1,
             church: 1,
+            referred: 1,
             consolidator: 1,
             created_at: 1,
         }).exec();
         if (!ret.member)
             return ret;
+        if (ret.member.referred) {
+            const referred = await getNamesUsersList([ret.member.referred]);
+            ret.referred = (referred === null || referred === void 0 ? void 0 : referred.length) > 0 ? referred[0] : null;
+        }
         if (ret.member.group) {
             const group = await Groups_1.default.findOne({ _id: ret.member.group }, { __v: 0 }).exec();
             if (group) {

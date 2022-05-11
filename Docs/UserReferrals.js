@@ -182,6 +182,7 @@
  * @apiSuccess (data Object) {Object} member Datos del perfil del miembro.
  * @apiSuccess (data Object) {String} totalCourses Total de cursos que ha visualizado.
  * @apiSuccess (data Object) {Number} totalsReferrals Total de hijos espirituales del miembro (este incluye sus hijos y los hijos de sus hijos).
+ * @apiSuccess (data Object) {Object|Null} referred Datos del padre espiritual.
  * @apiSuccess (data Object) {Object[]} courses Listado de cursos.
  * @apiSuccess (data Object) {Object[]} referrals Listado de hijos espirituales.
  * @apiSuccess (data Object) {Object[]} visits Listado de visitas.
@@ -217,15 +218,15 @@
  * @apiSuccess (visits Object[]) {String|Null} action Acción realizada (Visita ó llamada).
  * @apiSuccess (visits Object[]) {String} observation Observaciones obtenidas en la visita.
  *
- * @apiSuccess (referrals and consolidator Object[]) {String} _id ID del miembro.
- * @apiSuccess (referrals and consolidator Object[]) {String} names Nombre(s).
- * @apiSuccess (referrals and consolidator Object[]) {String} lastNames Apellido(s).
- * @apiSuccess (referrals and consolidator Object[]) {String|Null} document Número de documento.
- * @apiSuccess (referrals and consolidator Object[]) {Number|Null} gender ID (array index) del sexo (género).
- * @apiSuccess (referrals and consolidator Object[]) {String} phone Teléfono del miembro.
- * @apiSuccess (referrals and consolidator Object[]) {String|Null} picture URL de la foto de perfil.
- * @apiSuccess (referrals and consolidator Object[]) {String|Null} position Cargo o posición del miembro.
- * @apiSuccess (referrals and consolidator Object[]) {Numbers} totalsReferrals Total de referidos.
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {String} _id ID del miembro.
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {String} names Nombre(s).
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {String} lastNames Apellido(s).
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {String|Null} document Número de documento.
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {Number|Null} gender ID (array index) del sexo (género).
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {String} phone Teléfono del miembro.
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {String|Null} picture URL de la foto de perfil.
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {String|Null} position Cargo o posición del miembro.
+ * @apiSuccess (referred Object and referrals and consolidator Object[]) {Numbers} totalsReferrals Total de referidos.
  *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
