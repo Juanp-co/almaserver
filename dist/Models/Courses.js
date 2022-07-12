@@ -10,11 +10,6 @@ const GlobalFunctions_1 = require("../Functions/GlobalFunctions");
 const pathEnv = path_1.default.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'development'}`);
 dotenv_1.default.config({ path: pathEnv });
 const getPlaceHolder = (value) => value || 'Indica tu respuesta';
-const getBannerUrl = (value) => {
-    if (!value)
-        return value;
-    return `${process.env.URL_API}/${value}`;
-};
 const QuizSchema = new mongoose_1.Schema({
     title: { type: String, require: true, set: GlobalFunctions_1.cleanWhiteSpaces },
     description: { type: String, default: null, set: GlobalFunctions_1.cleanWhiteSpaces },

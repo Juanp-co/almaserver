@@ -8,10 +8,6 @@ const pathEnv = path.resolve(__dirname, `../.env.${process.env.NODE_ENV || 'deve
 dotenv.config({ path: pathEnv });
 
 const getPlaceHolder = (value: string | null) => value || 'Indica tu respuesta';
-const getBannerUrl = (value: string | null) => {
-  if (!value) return value;
-  return `${process.env.URL_API}/${value}`;
-};
 
 const QuizSchema = new Schema(
   {

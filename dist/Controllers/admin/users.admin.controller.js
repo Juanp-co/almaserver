@@ -12,9 +12,15 @@ const GlobalFunctions_1 = require("../../Functions/GlobalFunctions");
 const TokenActions_1 = require("../../Functions/TokenActions");
 const Validations_1 = require("../../Functions/Validations");
 const CoursesUsers_1 = __importDefault(require("../../Models/CoursesUsers"));
+const Devotionals_1 = __importDefault(require("../../Models/Devotionals"));
+const Events_1 = __importDefault(require("../../Models/Events"));
+const FamiliesGroupsReports_1 = __importDefault(require("../../Models/FamiliesGroupsReports"));
 const Groups_1 = __importDefault(require("../../Models/Groups"));
+const GroupsInvitations_1 = __importDefault(require("../../Models/GroupsInvitations"));
 const Referrals_1 = __importDefault(require("../../Models/Referrals"));
 const Users_1 = __importDefault(require("../../Models/Users"));
+const Visits_1 = __importDefault(require("../../Models/Visits"));
+const Resources_1 = __importDefault(require("../../Models/Resources"));
 const path = 'Controllers/admin/users.admin.controller';
 // =====================================================================================================================
 async function getUsers(req, res) {
@@ -282,7 +288,13 @@ async function deleteUser(req, res) {
             }
         }
         await CoursesUsers_1.default.deleteMany({ userid: _id }).exec();
+        await Devotionals_1.default.deleteMany({ userid: _id }).exec();
+        await Events_1.default.deleteMany({ userid: _id }).exec();
+        await FamiliesGroupsReports_1.default.deleteMany({ userid: _id }).exec();
+        await GroupsInvitations_1.default.deleteMany({ _id }).exec();
         await Referrals_1.default.deleteMany({ _id }).exec();
+        await Resources_1.default.deleteMany({ userid: _id }).exec();
+        await Visits_1.default.deleteMany({ userid: _id }).exec();
         await (0, TokenActions_1.disableTokenDBForUserId)([_id]);
         await user.delete();
         return res.json({

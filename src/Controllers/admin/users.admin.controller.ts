@@ -22,9 +22,15 @@ import { disableTokenDBForUserId } from '../../Functions/TokenActions';
 import { checkObjectId } from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
+import Devotionals from '../../Models/Devotionals';
+import Events from '../../Models/Events';
+import FamiliesGroupsReports from '../../Models/FamiliesGroupsReports';
 import Groups from '../../Models/Groups';
+import GroupsInvitations from "../../Models/GroupsInvitations";
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
+import Visits from '../../Models/Visits';
+import Resources from "../../Models/Resources";
 
 const path = 'Controllers/admin/users.admin.controller';
 
@@ -302,7 +308,7 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
     // checking if the user to delete is admin and if the session user also admin
     const check1 = checkIfExistsRoleInList(user.roles, [0]);
     const check2 = checkIfExistsRoleInList(tokenRoles, [0]);
-    if (check1 &&!check2) return responseUsersAdmin(res, 3);
+    if (check1 && !check2) return responseUsersAdmin(res, 3);
 
     // delete all data
     const groups = await Groups.find({ members: _id }).exec();
@@ -326,7 +332,13 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
       }
     }
     await CoursesUsers.deleteMany({ userid: _id }).exec();
+    await Devotionals.deleteMany({ userid: _id }).exec();
+    await Events.deleteMany({ userid: _id }).exec();
+    await FamiliesGroupsReports.deleteMany({ userid: _id }).exec();
+    await GroupsInvitations.deleteMany({ _id }).exec();
     await Referrals.deleteMany({ _id }).exec();
+    await Resources.deleteMany({ userid: _id }).exec();
+    await Visits.deleteMany({ userid: _id }).exec();
     await disableTokenDBForUserId([_id]);
 
     await user.delete();
