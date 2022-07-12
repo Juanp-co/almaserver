@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 import { setDate, getDate, toUpperValue } from '../Functions/GlobalFunctions';
-import IDevotionals from '../Interfaces/IDevotionals';
 import IResources from '../Interfaces/IResources';
 
 const ResourcesSchema = new Schema(

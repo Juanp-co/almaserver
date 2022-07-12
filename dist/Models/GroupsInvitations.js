@@ -23,5 +23,5 @@ GroupsInvitationsListScheme.pre('save', function (next) {
 });
 GroupsInvitationsSchema.set('toJSON', { getters: true });
 GroupsInvitationsListScheme.set('toJSON', { getters: true });
-const Groups = (0, mongoose_1.model)('groups_invitations', GroupsInvitationsSchema);
-exports.default = Groups;
+const GroupsInvitations = (0, mongoose_1.model)('groups_invitations', GroupsInvitationsSchema);
+exports.default = GroupsInvitations;

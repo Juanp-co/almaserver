@@ -34,6 +34,6 @@ GroupsInvitationsListScheme.pre<IGroupsInvitationsList>('save', function (next) 
 GroupsInvitationsSchema.set('toJSON', { getters: true });
 GroupsInvitationsListScheme.set('toJSON', { getters: true });
 
-const Groups = model<IGroupsInvitations>('groups_invitations', GroupsInvitationsSchema);
+const GroupsInvitations = model<IGroupsInvitations>('groups_invitations', GroupsInvitationsSchema);
 
-export default Groups;
+export default GroupsInvitations;
