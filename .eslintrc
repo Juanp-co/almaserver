@@ -9,12 +9,11 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "ignorePatterns": ["./Docs"],
   "rules": {
     "prettier/prettier": "off",
     "no-console":"off",
     "class-methods-use-this":"off",
-    "no-plusplus":"off",
-    "eqeqeq":"off",
     "func-names":"off",
     "no-loop-func":"off",
     "no-await-in-loop":"off",

@@ -12,7 +12,7 @@ import getFamiliesGroups, {
   showFamilyGroup
 } from '../Controllers/publics/family-group.controller';
 import {
-  changePassword,
+  changePassword, deleteAccountRequest,
   get, getCourses, getReports,
   update, updateFamiliesGroups, updatePicture
 } from '../Controllers/User/user.controller';
@@ -35,7 +35,10 @@ const router = Router();
 
 /* Profile */
 
-router.route('/').get(validateUser, get).put(validateUser, update);
+router.route('/')
+  .get(validateUser, get)
+  .post(validateUser, deleteAccountRequest)
+  .put(validateUser, update);
 router.put('/change-password', validateUser, changePassword);
 router.get('/courses', validateUser, getCourses);
 

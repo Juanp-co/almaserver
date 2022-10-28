@@ -231,7 +231,7 @@ async function evaluateQuiz(req, res) {
                 else if (question.require)
                     points += (0, CoursesActions_1.setPointToTest)(question, a);
                 else
-                    pointsIgnored++;
+                    pointsIgnored += 1;
             }
         });
         // get average and check if the user approved the test

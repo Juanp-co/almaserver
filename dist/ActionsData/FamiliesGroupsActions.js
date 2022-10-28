@@ -81,15 +81,15 @@ exports.getModelFamiliesGroupsMembersDetails = getModelFamiliesGroupsMembersDeta
 function checkIfMembersWasChanged(currentMembers, newMembers) {
     let totals = 0;
     if (currentMembers.leaderId !== newMembers.leaderId)
-        totals++;
+        totals += 1;
     if (currentMembers.hostId !== newMembers.hostId)
-        totals++;
+        totals += 1;
     if (currentMembers.helperId !== newMembers.helperId)
-        totals++;
+        totals += 1;
     if (currentMembers.assistantsIds.toString() !== newMembers.assistantsIds.toString())
-        totals++;
+        totals += 1;
     if (currentMembers.masterId !== newMembers.masterId)
-        totals++;
+        totals += 1;
     return totals;
 }
 exports.checkIfMembersWasChanged = checkIfMembersWasChanged;

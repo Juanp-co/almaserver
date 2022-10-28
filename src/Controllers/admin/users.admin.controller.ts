@@ -4,7 +4,7 @@ import { addCoursesToUser, getCoursesSimpleList } from '../../ActionsData/Course
 import {
   checkFindValueSearch,
   checkRoleToActions, getNamesUsersList,
-  getUserData,
+  getUserData, removeAllDataUser,
   responseUsersAdmin
 } from '../../ActionsData/UsersActions';
 import {
@@ -22,15 +22,8 @@ import { disableTokenDBForUserId } from '../../Functions/TokenActions';
 import { checkObjectId } from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
-import Devotionals from '../../Models/Devotionals';
-import Events from '../../Models/Events';
-import FamiliesGroupsReports from '../../Models/FamiliesGroupsReports';
-import Groups from '../../Models/Groups';
-import GroupsInvitations from "../../Models/GroupsInvitations";
 import Referrals from '../../Models/Referrals';
 import Users from '../../Models/Users';
-import Visits from '../../Models/Visits';
-import Resources from "../../Models/Resources";
 
 const path = 'Controllers/admin/users.admin.controller';
 
@@ -40,7 +33,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
   try {
     const { tokenId } = req.body;
     const { limit, skip, sort } = getLimitSkipSortSearch(req.query);
-    const query: any = checkFindValueSearch(req.query, tokenId);
+    const query = checkFindValueSearch(req.query, tokenId);
 
     const users = await Users.find(
       query,
@@ -64,7 +57,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
       msg: `Usuarios.`,
       users
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/getUsers`);
   }
 }
@@ -72,7 +65,7 @@ export default async function getUsers(req: Request, res: Response): Promise<Res
 export async function getUsersCounters(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
-    const query: any = checkFindValueSearch(req.query, tokenId);
+    const query = checkFindValueSearch(req.query, tokenId);
 
     const totals = await Users.find(query).countDocuments().exec();
 
@@ -80,7 +73,7 @@ export async function getUsersCounters(req: Request, res: Response): Promise<Res
       msg: `Total miembros.`,
       totals
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/getUsersCounters`);
   }
 }
@@ -122,7 +115,7 @@ export async function downLoadData(req: Request, res: Response): Promise<Respons
       msg: `Total miembros.`,
       members
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/getUsersCounters`);
   }
 }
@@ -161,7 +154,7 @@ export async function saveUser(req: Request, res: Response): Promise<Response> {
       msg: `Se ha registrado el nuevo miembro exitosamente.`,
       password
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/saveUser`);
   }
 }
@@ -180,7 +173,7 @@ export async function showUser(req: Request, res: Response): Promise<Response> {
       msg: `Detalles del miembro.`,
       user
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/showUser`);
   }
 }
@@ -233,7 +226,7 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
       msg: `Se han actualizado los datos del miembro exitosamente.`,
       user
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/updateUser`);
   }
 }
@@ -263,7 +256,7 @@ export async function changeRoleUser(req: Request, res: Response): Promise<Respo
     return res.json({
       msg: `Se asignado el nuevo rol al miembro exitosamente.`
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/changeRoleUser`);
   }
 }
@@ -287,7 +280,7 @@ export async function setAsConsolidatorUser(req: Request, res: Response): Promis
     return res.json({
       msg: `Se ha ${user.consolidator ? 'asignado' : 'removido'} al miembro como consolidador especial exitosamente.`
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/setAsConsolidatorUser`);
   }
 }
@@ -310,43 +303,14 @@ export async function deleteUser(req: Request, res: Response): Promise<Response>
     const check2 = checkIfExistsRoleInList(tokenRoles, [0]);
     if (check1 && !check2) return responseUsersAdmin(res, 3);
 
-    // delete all data
-    const groups = await Groups.find({ members: _id }).exec();
-    const referrals = await Referrals.find({ members: _id }).exec();
-
-    if (groups.length > 0) {
-      const totalsGroups = groups.length;
-
-      for (let i = 0; i < totalsGroups; i++) {
-        groups[i].members = groups[i].members.filter(m => m !== _id);
-        await groups[i].save();
-      }
-    }
-
-    if (referrals.length > 0) {
-      const totalsGroups = referrals.length;
-
-      for (let i = 0; i < totalsGroups; i++) {
-        referrals[i].members = referrals[i].members.filter(m => m !== _id);
-        await referrals[i].save();
-      }
-    }
-    await CoursesUsers.deleteMany({ userid: _id }).exec();
-    await Devotionals.deleteMany({ userid: _id }).exec();
-    await Events.deleteMany({ userid: _id }).exec();
-    await FamiliesGroupsReports.deleteMany({ userid: _id }).exec();
-    await GroupsInvitations.deleteMany({ _id }).exec();
-    await Referrals.deleteMany({ _id }).exec();
-    await Resources.deleteMany({ userid: _id }).exec();
-    await Visits.deleteMany({ userid: _id }).exec();
-    await disableTokenDBForUserId([_id]);
+    await removeAllDataUser(user);
 
     await user.delete();
 
     return res.json({
       msg: `Se ha eliminado el miembro exitosamente.`
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/deleteUser`);
   }
 }
@@ -395,7 +359,7 @@ export async function getCoursesUser(req: Request, res: Response): Promise<Respo
       msg: `Listado de cursos del miembro.`,
       courses: ret
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/getCoursesUser`);
   }
 }
@@ -447,7 +411,7 @@ export async function getReferralsUser(req: Request, res: Response): Promise<Res
       msg: `Listado de referidos del miembro.`,
       referrals: ret
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/getReferralsUser`);
   }
 }

@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import moment from 'moment-timezone';
 import { return404Or422 } from '../../ActionsData/EventsActions';
-import { getInfoUserReferred, getNamesUsersList } from '../../ActionsData/UsersActions';
-import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
+import {getNamesUsersList, removeAllDataUser, responseUsersAdmin} from '../../ActionsData/UsersActions';
+import {checkIfExistsRoleInList, returnError, returnErrorParams} from '../../Functions/GlobalFunctions';
 import { forceLogout } from '../../Functions/TokenActions';
 import {
   validatePasswords,
@@ -13,6 +13,7 @@ import {
   validateUpdatePictureProfile
 } from '../../FormRequest/UsersRequest';
 import { checkDate, checkObjectId, checkUrl, isBase64 } from '../../Functions/Validations';
+import IUser from "../../Interfaces/IUser";
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Referrals from '../../Models/Referrals';
@@ -30,14 +31,16 @@ export async function get(req: Request, res: Response): Promise<Response> {
       { __v: 0, password: 0, referred: 0 }
     ).exec();
 
-    // logout
-    if (!user) return forceLogout(res, `${req.query.token}`);
+    if (!user)
+      return res.status(404).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+      })
 
     return res.json({
       msg: 'Datos de la sesión',
       data: user
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/get`);
   }
 }
@@ -56,8 +59,10 @@ export async function update(req: Request, res: Response): Promise<Response> {
       }
     ).exec();
 
-    // logout
-    if (!user) return forceLogout(res, `${req.query.token}`);
+    if (!user)
+      return res.status(404).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+      })
 
     const validate = await validateUpdate(req.body, tokenId);
 
@@ -90,7 +95,7 @@ export async function update(req: Request, res: Response): Promise<Response> {
       msg: 'Se ha actualizado la información exitosamente.',
       data: user
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/update`);
   }
 }
@@ -116,7 +121,7 @@ export async function updateFamiliesGroups(req: Request, res: Response): Promise
     return res.json({
       msg: 'Se ha unido al grupo familiar exitosamente.'
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/update`);
   }
 }
@@ -132,10 +137,12 @@ export async function updatePicture(req: Request, res: Response): Promise<Respon
       }
     ).exec();
 
-    // logout
-    if (!user) return forceLogout(res, `${req.query.token}`);
+    if (!user)
+      return res.status(404).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+      })
 
-    const validate = await validateUpdatePictureProfile(req.body);
+    const validate = validateUpdatePictureProfile(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
 
@@ -162,7 +169,7 @@ export async function updatePicture(req: Request, res: Response): Promise<Respon
       msg: 'Se ha actualizado su foto de perfil exitosamente.',
       data: user
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/updatePicture`);
   }
 }
@@ -173,8 +180,10 @@ export async function changePassword(req: Request, res: Response): Promise<Respo
 
     const user = await Users.findOne({ _id: tokenId }, { password: 1 }).exec();
 
-    // logout
-    if (!user) return forceLogout(res, `${req.query.token}`);
+    if (!user)
+      return res.status(404).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+      })
 
     const validate = await validatePasswords(req.body);
 
@@ -192,8 +201,52 @@ export async function changePassword(req: Request, res: Response): Promise<Respo
     return res.json({
       msg: 'Se ha actualizado su contraseña exitosamente.'
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/changePassword`);
+  }
+}
+
+export async function deleteAccountRequest(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenId, tokenRoles, password } = req.body;
+
+    if (typeof password !== 'string' || password?.length < 5)
+      return res.status(422).json({
+        msg: 'Disculpe, pero debe indicar una contraseña válida.'
+      });
+
+    const user = await Users.findOne({ _id: tokenId }).exec();
+
+    if (!user)
+      return res.status(404).json({
+        msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+      });
+
+    if (!bcrypt.compareSync(password, `${user.password}`)) {
+      return res.status(422).json({
+        msg: `Disculpe, la contraseña indicada es incorrecta.`
+      });
+    }
+
+    // checking if the user to delete is admin and if the session user also admin
+    const check1 = checkIfExistsRoleInList(user.roles, [0]);
+    const check2 = checkIfExistsRoleInList(tokenRoles, [0]);
+    if (check1 && !check2)
+      return res.status(422).json({
+        msg: 'Disculpe, pero su cuenta no puede ser eliminada debido a que posee un rol administrativo.' +
+          ' Contacte al administrador del sitio para poder realizar su solicitud.'
+      });
+
+    await removeAllDataUser(user);
+
+    // delete user
+    await user.delete();
+
+    return res.json({
+      msg: 'Se ha eliminado los datos de su cuenta exitosamente.'
+    });
+  } catch (error) {
+    return returnError(res, error, `${path}/deleteAccountRequest`);
   }
 }
 
@@ -244,7 +297,7 @@ export async function getCourses(req: Request, res: Response): Promise<Response>
       msg: `Mis cursos.`,
       courses
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/getCourses`);
   }
 }
@@ -264,7 +317,6 @@ export async function getReports(req: Request, res: Response): Promise<Response>
     }
 
     const { initDate, endDate } = req.query;
-    const query: any = {};
     const query2: any = {};
     const queryReferrals: any = {};
     const ret: any = {
@@ -301,7 +353,6 @@ export async function getReports(req: Request, res: Response): Promise<Response>
     };
     let members: any[] = [];
     let users: any[] = [];
-    const listsMembersDetails: any = []; // generate a new array data
     let listIdsPending: any = []; // generate a new array data
 
     if (initDate && checkDate(initDate)) {
@@ -403,7 +454,7 @@ export async function getReports(req: Request, res: Response): Promise<Response>
       msg: `Mis reportes.`,
       reports: ret
     });
-  } catch (error: any) {
+  } catch (error) {
     return returnError(res, error, `${path}/getReports`);
   }
 }

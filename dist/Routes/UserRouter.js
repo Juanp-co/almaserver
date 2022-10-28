@@ -29,7 +29,10 @@ const resources_controller_1 = require("../Controllers/User/resources.controller
 const router = (0, express_1.Router)();
 // ===================================================================================
 /* Profile */
-router.route('/').get(middleware_1.validateUser, user_controller_1.get).put(middleware_1.validateUser, user_controller_1.update);
+router.route('/')
+    .get(middleware_1.validateUser, user_controller_1.get)
+    .post(middleware_1.validateUser, user_controller_1.deleteAccountRequest)
+    .put(middleware_1.validateUser, user_controller_1.update);
 router.put('/change-password', middleware_1.validateUser, user_controller_1.changePassword);
 router.get('/courses', middleware_1.validateUser, user_controller_1.getCourses);
 /*
