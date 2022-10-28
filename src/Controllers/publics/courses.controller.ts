@@ -237,7 +237,7 @@ export async function evaluateQuiz(req: Request, res: Response) : Promise<Respon
       if (question) {
         if (!question.require && a.answer) points += setPointToTest(question, a);
         else if (question.require) points += setPointToTest(question, a);
-        else pointsIgnored++;
+        else pointsIgnored += 1;
       }
     });
 

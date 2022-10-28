@@ -259,8 +259,6 @@
  *
  * @apiSuccess (data Object) {String|Null} picture URL de la imagen de perfil.
  *
- * @apiSuccess (securityQuestion Object) {String|Null} questionId ID de la pregunta de seguridad.
- *
  * @apiSuccessExample {JSON} Success
  * HTTP/1.1 200 Success
  * {
@@ -279,7 +277,44 @@
  */
 
 /**
- * @api {put} /api/user/change-password (03) Cambiar contraseña.
+ * @api {post} /api/user (03) Eliminar cuenta del usuario.
+ * @apiVersion 0.0.56
+ * @apiName deleteUserAccount
+ * @apiGroup User
+ *
+ * @apiHeader {String} x-access-token Token de la sesión.
+ *
+ * @apiParam {String} password Contraseña actual de la cuenta.
+ *
+ * @apiExample {JSON} Example JSON Request Base64
+ * {
+  "password": "password",
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+	"msg": "Se ha eliminado los datos de su cuenta exitosamente."
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiErrorExample {JSON} User not found
+ * HTTP/1.1 404 Not found
+ * {
+  "msg": "Disculpe, pero no se logró encontrar los datos de su cuenta."
+}
+ *
+ * @apiUse GlobalErrorSystem
+ *
+ */
+
+/**
+ * @api {put} /api/user/change-password (04) Cambiar contraseña.
  * @apiVersion 0.0.2
  * @apiName changePasswordUser
  * @apiGroup User
@@ -334,7 +369,7 @@
  */
 
 /**
- * @api {get} /api/user/courses (04) Obtener cursos de un miembro.
+ * @api {get} /api/user/courses (05) Obtener cursos de un miembro.
  * @apiVersion 0.0.28
  * @apiName getCoursesListUser
  * @apiGroup User
@@ -385,7 +420,7 @@
  */
 
 /**
- * @api {get} /api/user/reports (05) Obtener reportes de la cuenta.
+ * @api {get} /api/user/reports (06) Obtener reportes de la cuenta.
  * @apiVersion 0.0.43
  * @apiName getReportsUser
  * @apiGroup User

@@ -96,7 +96,7 @@ function validateUpdateMembersForm(data) {
             }
             else {
                 const { length } = (members === null || members === void 0 ? void 0 : members.assistantsIds) || [];
-                for (let i = 0; i < length; i++) {
+                for (let i = 0; i < length; i += 1) {
                     if (!(0, Validations_1.checkObjectId)(members.assistantsIds[i])) {
                         errors.push((0, GlobalFunctions_1.setError)(`Disculpe, pero uno de los miembros seleccionados como asistentes es incorrecto.`, 'assistantsIds'));
                         break;

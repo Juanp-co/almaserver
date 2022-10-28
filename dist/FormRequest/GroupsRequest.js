@@ -41,7 +41,7 @@ function validateIdsMembers(data) {
         const listIds = lodash_1.default.uniq(data.members);
         const totals = listIds.length || 0;
         if (totals > 0) {
-            for (let i = 0; i < totals; i++) {
+            for (let i = 0; i < totals; i += 1) {
                 if ((0, Validations_1.checkObjectId)(listIds[i]))
                     ret.members.push(listIds[i]);
                 else {

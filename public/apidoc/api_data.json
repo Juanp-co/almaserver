@@ -22749,7 +22749,7 @@
   {
     "type": "put",
     "url": "/api/user/change-password",
-    "title": "(03) Cambiar contraseña.",
+    "title": "(04) Cambiar contraseña.",
     "version": "0.0.2",
     "name": "changePasswordUser",
     "group": "User",
@@ -22875,9 +22875,125 @@
     "groupTitle": "User"
   },
   {
+    "type": "post",
+    "url": "/api/user",
+    "title": "(03) Eliminar cuenta del usuario.",
+    "version": "0.0.56",
+    "name": "deleteUserAccount",
+    "group": "User",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Contraseña actual de la cuenta.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request Base64",
+        "content": "{\n  \"password\": \"password\",\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n\t\"msg\": \"Se ha eliminado los datos de su cuenta exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "User not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su cuenta.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/User.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "get",
     "url": "/api/user/courses",
-    "title": "(04) Obtener cursos de un miembro.",
+    "title": "(05) Obtener cursos de un miembro.",
     "version": "0.0.28",
     "name": "getCoursesListUser",
     "group": "User",
@@ -23348,7 +23464,7 @@
   {
     "type": "get",
     "url": "/api/user/reports",
-    "title": "(05) Obtener reportes de la cuenta.",
+    "title": "(06) Obtener reportes de la cuenta.",
     "version": "0.0.43",
     "name": "getReportsUser",
     "group": "User",
@@ -24116,15 +24232,6 @@
             "optional": false,
             "field": "picture",
             "description": "<p>URL de la imagen de perfil.</p>"
-          }
-        ],
-        "securityQuestion Object": [
-          {
-            "group": "securityQuestion Object",
-            "type": "String|Null",
-            "optional": false,
-            "field": "questionId",
-            "description": "<p>ID de la pregunta de seguridad.</p>"
           }
         ]
       },

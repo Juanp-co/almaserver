@@ -3,15 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearchForGroups = exports.checkFindValueSearch = exports.checkLeaderUserRole = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
+exports.responseErrorsRecoveryPassword = exports.responseUsersAdmin = exports.checkRoleToActions = exports.checkFindValueSearchForGroups = exports.checkFindValueSearch = exports.removeAllDataUser = exports.checkLeaderUserRole = exports.setFamilyGroupIdValueUsers = exports.getInfoUserReferred = exports.getIdUserFromDocument = exports.getUserData = exports.updateGroupIdInUsers = exports.getUsersSimpleList = exports.getNamesUsersList = exports.getData = exports.checkIfExistPhone = void 0;
 const lodash_1 = __importDefault(require("lodash"));
-const Validations_1 = require("../Functions/Validations");
-const Users_1 = __importDefault(require("../Models/Users"));
-const Referrals_1 = __importDefault(require("../Models/Referrals"));
-const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
 const ReferralsActions_1 = require("./ReferralsActions");
 const CoursesActions_1 = require("./CoursesActions");
+const Validations_1 = require("../Functions/Validations");
+const CoursesUsers_1 = __importDefault(require("../Models/CoursesUsers"));
+const Devotionals_1 = __importDefault(require("../Models/Devotionals"));
+const Events_1 = __importDefault(require("../Models/Events"));
+const FamiliesGroupsReports_1 = __importDefault(require("../Models/FamiliesGroupsReports"));
 const Groups_1 = __importDefault(require("../Models/Groups"));
+const GroupsInvitations_1 = __importDefault(require("../Models/GroupsInvitations"));
+const Referrals_1 = __importDefault(require("../Models/Referrals"));
+const Resources_1 = __importDefault(require("../Models/Resources"));
+const Users_1 = __importDefault(require("../Models/Users"));
+const Visits_1 = __importDefault(require("../Models/Visits"));
+const Whitelist_1 = __importDefault(require("../Models/Whitelist"));
 async function checkIfExistDocument(document, _id) {
     return document ?
         (await Users_1.default.find({ document, _id: { $ne: _id } })
@@ -75,7 +82,7 @@ async function getUsersSimpleList(listIds) {
 }
 exports.getUsersSimpleList = getUsersSimpleList;
 async function updateGroupIdInUsers(listIds, _id = null) {
-    if (listIds.length > 0) {
+    if ((listIds === null || listIds === void 0 ? void 0 : listIds.length) > 0) {
         await Users_1.default.updateMany({ _id: { $in: listIds } }, { $set: { group: _id } }).exec();
     }
 }
@@ -270,6 +277,36 @@ async function checkLeaderUserRole(_id, remove = false) {
     }
 }
 exports.checkLeaderUserRole = checkLeaderUserRole;
+async function removeAllDataUser(user) {
+    const _id = user._id.toString();
+    // delete all data
+    const groups = await Groups_1.default.find({ members: _id }).exec();
+    const referrals = await Referrals_1.default.find({ members: _id }).exec();
+    if (groups.length > 0) {
+        const totalsGroups = groups.length;
+        for (let i = 0; i < totalsGroups; i += 1) {
+            groups[i].members = groups[i].members.filter(m => m !== _id);
+            await groups[i].save();
+        }
+    }
+    if (referrals.length > 0) {
+        const totalsGroups = referrals.length;
+        for (let i = 0; i < totalsGroups; i += 1) {
+            referrals[i].members = referrals[i].members.filter(m => m !== _id);
+            await referrals[i].save();
+        }
+    }
+    await CoursesUsers_1.default.deleteMany({ userid: _id }).exec();
+    await Devotionals_1.default.deleteMany({ userid: _id }).exec();
+    await Events_1.default.deleteMany({ userid: _id }).exec();
+    await FamiliesGroupsReports_1.default.deleteMany({ userid: _id }).exec();
+    await GroupsInvitations_1.default.deleteMany({ _id }).exec();
+    await Referrals_1.default.deleteMany({ _id }).exec();
+    await Resources_1.default.deleteMany({ userid: _id }).exec();
+    await Visits_1.default.deleteMany({ userid: _id }).exec();
+    await Whitelist_1.default.deleteMany({ userid: _id }).exec();
+}
+exports.removeAllDataUser = removeAllDataUser;
 /*
   Static functions
  */

@@ -80,11 +80,11 @@ export async function getModelFamiliesGroupsMembersDetails(data: IFamiliesGroups
 
 export function checkIfMembersWasChanged(currentMembers: IFamiliesGroupsMembers, newMembers: IFamiliesGroupsMembers) : number {
   let totals = 0;
-  if (currentMembers.leaderId !== newMembers.leaderId) totals++;
-  if (currentMembers.hostId !== newMembers.hostId) totals++;
-  if (currentMembers.helperId !== newMembers.helperId) totals++;
-  if (currentMembers.assistantsIds.toString() !== newMembers.assistantsIds.toString()) totals++;
-  if (currentMembers.masterId !== newMembers.masterId) totals++;
+  if (currentMembers.leaderId !== newMembers.leaderId) totals += 1;
+  if (currentMembers.hostId !== newMembers.hostId) totals += 1;
+  if (currentMembers.helperId !== newMembers.helperId) totals += 1;
+  if (currentMembers.assistantsIds.toString() !== newMembers.assistantsIds.toString()) totals += 1;
+  if (currentMembers.masterId !== newMembers.masterId) totals += 1;
   return totals;
 }
 

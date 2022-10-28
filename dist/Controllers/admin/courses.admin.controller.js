@@ -190,7 +190,7 @@ async function enableCourse(req, res) {
                 for (const theme of course.temary || []) {
                     temary.push({ temaryId: theme._id.toString() });
                 }
-                for (let i = 0; i < totals; i++) {
+                for (let i = 0; i < totals; i += 1) {
                     coursesUsers[i].courses.push({
                         courseId: course._id.toString(),
                         temary,

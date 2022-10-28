@@ -192,7 +192,7 @@ export async function enableCourse(req: Request, res: Response) : Promise<Respon
           temary.push({ temaryId: theme._id.toString() });
         }
 
-        for (let i = 0; i < totals; i++) {
+        for (let i = 0; i < totals; i += 1) {
           coursesUsers[i].courses.push({
             courseId: course._id.toString(),
             temary,

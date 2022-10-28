@@ -10,12 +10,12 @@ import { IInfoErrors } from '../Interfaces/IErrorResponse';
 /*
   Console logs
  */
-export function showConsoleError(pathFile: string, error: any) {
+export function showConsoleError(pathFile: string, error: any): void {
   console.error(`${moment().toISOString()} - Error: ${pathFile}`);
   console.error(error);
 }
 
-export function showConsoleLog(type: number, msg: any) {
+export function showConsoleLog(type: number, msg: string): void {
   if (type === 0) console.error(`${moment().toISOString()} - ${msg}`);
   else console.log(`${moment().toISOString()} - ${msg}`);
 }
@@ -27,15 +27,15 @@ export function setError(msg: string, input?: string): IInfoErrors {
   return { input, msg };
 }
 
-export function returnError(res: Response, error: any, pathFile: string) {
+export function returnError(res: Response, error: any, pathFile: string): Response {
   showConsoleError(pathFile, error);
   return res.status(500).json({
     msg: 'Ha ocurrido un error inesperado.',
-    errors: [{ msg: error.toString() }]
+    errors: [{ msg: `${error?.toString()}` }]
   });
 }
 
-export function returnErrorParams(res: Response, errors: any[]) : Response {
+export function returnErrorParams(res: Response, errors: IInfoErrors[]) : Response {
   return res.status(422).json({
     msg: '¡Error en los parámetros!',
     errors
@@ -46,7 +46,7 @@ export function returnErrorParams(res: Response, errors: any[]) : Response {
   Load enviroments
  */
 
-function checkIfExistFile(value: string) {
+function checkIfExistFile(value: string): boolean {
   try {
     return fs.existsSync(value);
   } catch (err) {
@@ -55,7 +55,7 @@ function checkIfExistFile(value: string) {
   }
 }
 
-export function loadEnvironmentVars() {
+export function loadEnvironmentVars(): void {
   const pathEnvFile = process.env.NODE_ENV
     ? `.${process.env.NODE_ENV || 'development'}`
     : '';
@@ -76,12 +76,14 @@ export function loadEnvironmentVars() {
   }
 }
 
+loadEnvironmentVars();
+
 // =================================================================================================
 
 export function upperCaseFirstLettersWords(words: string): string | null {
   let ret = '';
   const arrayWords: string[] = words ? words.trim().split(' ') : [];
-  for (let i = 0; i < arrayWords.length; i++) {
+  for (let i = 0; i < arrayWords.length; i += 1) {
     arrayWords[i] = arrayWords[i].charAt(0).toUpperCase() + arrayWords[i].slice(1);
     ret += ` ${arrayWords[i]}`;
   }
@@ -96,11 +98,11 @@ export function setDate(): number {
   return moment().tz('America/Bogota').unix();
 }
 
-export function getDate(timestamp: number | null | undefined): string | any {
+export function getDate(timestamp: number | null | undefined): string | number | null | undefined {
   return timestamp ? moment.unix(timestamp).tz('America/Bogota').format('YYYY-MM-DD HH:mm:ss') || null : timestamp;
 }
 
-export function getSimpleDate(timestamp: number | null | undefined): string | any {
+export function getSimpleDate(timestamp: number | null | undefined): string | number | null | undefined {
   return timestamp ? moment.unix(timestamp).format('YYYY-MM-DD') || null : timestamp;
 }
 
@@ -112,7 +114,7 @@ export function cleanWhiteSpaces(value: string | null): string | null {
 export function generatePassword(): string {
   let password = '';
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYZ123467890';
-  for (let i = 0; i < 10; i++) password += chars.charAt(Math.floor(Math.random() * chars.length));
+  for (let i = 0; i < 10; i += 1) password += chars.charAt(Math.floor(Math.random() * chars.length));
   return password;
 }
 
@@ -127,6 +129,7 @@ export function calculateAge(birthday: string): boolean {
 }
 
 export function getLimitSkipSortSearch(data: any): any {
+  if (!data) return {};
   const { limit, page, value, input } = data;
   let retLimit = 10;
   let retSkip = 0;
@@ -198,11 +201,11 @@ export async function checkAndUploadPicture(picture: string | null, pathFolder =
   return pathFile;
 }
 
-export function deleteImages(pathFile: any) {
+export function deleteImages(pathFile: string|null|undefined): void {
   try {
     if (pathFile) unlinkSync(pathFile);
   }
-  catch (e: any) {
+  catch (e) {
     showConsoleError('src/Functions/GlobalFunctions/deleteImage', e);
   }
 

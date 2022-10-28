@@ -1,13 +1,20 @@
 import _ from 'lodash';
 import { Response } from 'express';
-import { checkNameOrLastName, checkObjectId } from '../Functions/Validations';
-import IUser, { IUserData, IUserReferralInfo, IUserReferralSimpleData, IUserSimpleInfo } from '../Interfaces/IUser';
-import Users from '../Models/Users';
-import Referrals from '../Models/Referrals';
-import CoursesUsers from '../Models/CoursesUsers';
 import { getTotalsReferrals } from './ReferralsActions';
 import { getCoursesSimpleList } from './CoursesActions';
+import { checkNameOrLastName, checkObjectId } from '../Functions/Validations';
+import IUser, { IUserData, IUserReferralInfo, IUserReferralSimpleData, IUserSimpleInfo } from '../Interfaces/IUser';
+import CoursesUsers from '../Models/CoursesUsers';
+import Devotionals from "../Models/Devotionals";
+import Events from "../Models/Events";
+import FamiliesGroupsReports from "../Models/FamiliesGroupsReports";
 import Groups from '../Models/Groups';
+import GroupsInvitations from "../Models/GroupsInvitations";
+import Referrals from '../Models/Referrals';
+import Resources from "../Models/Resources";
+import Users from '../Models/Users';
+import Visits from "../Models/Visits";
+import Whitelist from "../Models/Whitelist";
 
 export default async function checkIfExistDocument(document?: string, _id?: string | null): Promise<boolean> {
   return document ?
@@ -84,13 +91,13 @@ export async function getUsersSimpleList(listIds: string[]): Promise<any[] | any
   return ret;
 }
 
-export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null) {
-  if (listIds.length > 0) {
+export async function updateGroupIdInUsers(listIds: string|any[], _id: string|null = null): Promise<void> {
+  if (listIds?.length > 0) {
     await Users.updateMany({ _id: { $in: listIds } }, { $set: { group: _id } }).exec();
   }
 }
 
-export async function getUserData(_id: any, projection: any = null): Promise<IUserData | null> {
+export async function getUserData(_id:any, projection: any = null): Promise<IUserData | null> {
   let user: IUserData | null = null;
 
   if (_id) {
@@ -276,7 +283,7 @@ export async function getInfoUserReferred(_id: string|any): Promise<IUserReferra
   return ret;
 }
 
-export async function setFamilyGroupIdValueUsers(listIds: string[], groupId: string, remove = false) {
+export async function setFamilyGroupIdValueUsers(listIds: string[], groupId: string, remove = false): Promise<void> {
   // check the list users
   if (listIds.length > 0) {
     const users = await Users.find({ _id: { $in: listIds } }, { familyGroupId: 1 }).exec();
@@ -286,13 +293,14 @@ export async function setFamilyGroupIdValueUsers(listIds: string[], groupId: str
         // set or remove the familyGroupId
         if (remove) user.familyGroupId = user.familyGroupId.filter(fg => fg !== groupId);
         else user.familyGroupId.push(groupId);
+
         await user.save();
       }
     }
   }
 }
 
-export async function checkLeaderUserRole(_id: string, remove = false) {
+export async function checkLeaderUserRole(_id: string, remove = false): Promise<void> {
   const user: any = await Users.findOne({ _id }, { roles: 1 }).exec();
 
   if (user) {
@@ -305,6 +313,42 @@ export async function checkLeaderUserRole(_id: string, remove = false) {
       await user.save();
     }
   }
+}
+
+export async function removeAllDataUser(user: IUser): Promise<void> {
+
+  const _id = user._id.toString();
+
+  // delete all data
+  const groups = await Groups.find({ members: _id }).exec();
+  const referrals = await Referrals.find({ members: _id }).exec();
+
+  if (groups.length > 0) {
+    const totalsGroups = groups.length;
+
+    for (let i = 0; i < totalsGroups; i += 1) {
+      groups[i].members = groups[i].members.filter(m => m !== _id);
+      await groups[i].save();
+    }
+  }
+
+  if (referrals.length > 0) {
+    const totalsGroups = referrals.length;
+
+    for (let i = 0; i < totalsGroups; i += 1) {
+      referrals[i].members = referrals[i].members.filter(m => m !== _id);
+      await referrals[i].save();
+    }
+  }
+  await CoursesUsers.deleteMany({ userid: _id }).exec();
+  await Devotionals.deleteMany({ userid: _id }).exec();
+  await Events.deleteMany({ userid: _id }).exec();
+  await FamiliesGroupsReports.deleteMany({ userid: _id }).exec();
+  await GroupsInvitations.deleteMany({ _id }).exec();
+  await Referrals.deleteMany({ _id }).exec();
+  await Resources.deleteMany({ userid: _id }).exec();
+  await Visits.deleteMany({ userid: _id }).exec();
+  await Whitelist.deleteMany({ userid: _id }).exec();
 }
 
 /*

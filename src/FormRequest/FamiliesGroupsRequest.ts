@@ -120,7 +120,7 @@ export function validateUpdateMembersForm(data: IFamiliesGroupsUpdateMembersForm
       else {
         const { length } = members?.assistantsIds || [];
 
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < length; i += 1) {
           if (!checkObjectId(members.assistantsIds[i])) {
             errors.push(
               setError(

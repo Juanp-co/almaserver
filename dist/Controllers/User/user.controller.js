@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReports = exports.getCourses = exports.changePassword = exports.updatePicture = exports.updateFamiliesGroups = exports.update = exports.get = void 0;
+exports.getReports = exports.getCourses = exports.deleteAccountRequest = exports.changePassword = exports.updatePicture = exports.updateFamiliesGroups = exports.update = exports.get = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
@@ -43,9 +43,10 @@ async function get(req, res) {
     try {
         const { tokenId } = req.body;
         const user = await Users_1.default.findOne({ _id: tokenId }, { __v: 0, password: 0, referred: 0 }).exec();
-        // logout
         if (!user)
-            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+            return res.status(404).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+            });
         return res.json({
             msg: 'Datos de la sesión',
             data: user
@@ -65,9 +66,10 @@ async function update(req, res) {
             referred: 0,
             __v: 0,
         }).exec();
-        // logout
         if (!user)
-            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+            return res.status(404).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+            });
         const validate = await (0, UsersRequest_1.validateUpdate)(req.body, tokenId);
         if (validate.errors.length > 0)
             return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
@@ -132,10 +134,11 @@ async function updatePicture(req, res) {
         const user = await Users_1.default.findOne({ _id: tokenId }, {
             picture: 1
         }).exec();
-        // logout
         if (!user)
-            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
-        const validate = await (0, UsersRequest_1.validateUpdatePictureProfile)(req.body);
+            return res.status(404).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+            });
+        const validate = (0, UsersRequest_1.validateUpdatePictureProfile)(req.body);
         if (validate.errors.length > 0)
             return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
         if (user.picture !== validate.data.picture) {
@@ -170,9 +173,10 @@ async function changePassword(req, res) {
     try {
         const { tokenId } = req.body;
         const user = await Users_1.default.findOne({ _id: tokenId }, { password: 1 }).exec();
-        // logout
         if (!user)
-            return (0, TokenActions_1.forceLogout)(res, `${req.query.token}`);
+            return res.status(404).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+            });
         const validate = await (0, UsersRequest_1.validatePasswords)(req.body);
         if (validate.errors.length > 0)
             return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);
@@ -192,6 +196,43 @@ async function changePassword(req, res) {
     }
 }
 exports.changePassword = changePassword;
+async function deleteAccountRequest(req, res) {
+    try {
+        const { tokenId, tokenRoles, password } = req.body;
+        if (typeof password !== 'string' || (password === null || password === void 0 ? void 0 : password.length) < 5)
+            return res.status(422).json({
+                msg: 'Disculpe, pero debe indicar una contraseña válida.'
+            });
+        const user = await Users_1.default.findOne({ _id: tokenId }).exec();
+        if (!user)
+            return res.status(404).json({
+                msg: 'Disculpe, pero no se logró encontrar los datos de su cuenta.'
+            });
+        if (!bcrypt_1.default.compareSync(password, `${user.password}`)) {
+            return res.status(422).json({
+                msg: `Disculpe, la contraseña indicada es incorrecta.`
+            });
+        }
+        // checking if the user to delete is admin and if the session user also admin
+        const check1 = (0, GlobalFunctions_1.checkIfExistsRoleInList)(user.roles, [0]);
+        const check2 = (0, GlobalFunctions_1.checkIfExistsRoleInList)(tokenRoles, [0]);
+        if (check1 && !check2)
+            return res.status(422).json({
+                msg: 'Disculpe, pero su cuenta no puede ser eliminada debido a que posee un rol administrativo.' +
+                    ' Contacte al administrador del sitio para poder realizar su solicitud.'
+            });
+        await (0, UsersActions_1.removeAllDataUser)(user);
+        // delete user
+        await user.delete();
+        return res.json({
+            msg: 'Se ha eliminado los datos de su cuenta exitosamente.'
+        });
+    }
+    catch (error) {
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/deleteAccountRequest`);
+    }
+}
+exports.deleteAccountRequest = deleteAccountRequest;
 /*
   COURSES, GROUP & REFERRALS
  */
@@ -246,7 +287,6 @@ async function getReports(req, res) {
             });
         }
         const { initDate, endDate } = req.query;
-        const query = {};
         const query2 = {};
         const queryReferrals = {};
         const ret = {
@@ -283,7 +323,6 @@ async function getReports(req, res) {
         };
         let members = [];
         let users = [];
-        const listsMembersDetails = []; // generate a new array data
         let listIdsPending = []; // generate a new array data
         if (initDate && (0, Validations_1.checkDate)(initDate)) {
             // query['courses.created_at'] = { $gte: moment(`${initDate}`).startOf('d').unix() };

@@ -48,7 +48,7 @@ export function validateIdsMembers(data: IGroupsMembersIdsForm) : { data: IGroup
     const totals = listIds.length || 0;
 
     if (totals > 0) {
-      for (let i = 0; i < totals; i++) {
+      for (let i = 0; i < totals; i += 1) {
         if (checkObjectId(listIds[i]))
           ret.members.push(listIds[i]);
         else {

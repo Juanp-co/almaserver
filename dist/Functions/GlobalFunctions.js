@@ -55,7 +55,7 @@ function returnError(res, error, pathFile) {
     showConsoleError(pathFile, error);
     return res.status(500).json({
         msg: 'Ha ocurrido un error inesperado.',
-        errors: [{ msg: error.toString() }]
+        errors: [{ msg: `${error === null || error === void 0 ? void 0 : error.toString()}` }]
     });
 }
 exports.returnError = returnError;
@@ -96,11 +96,12 @@ function loadEnvironmentVars() {
     }
 }
 exports.loadEnvironmentVars = loadEnvironmentVars;
+loadEnvironmentVars();
 // =================================================================================================
 function upperCaseFirstLettersWords(words) {
     let ret = '';
     const arrayWords = words ? words.trim().split(' ') : [];
-    for (let i = 0; i < arrayWords.length; i++) {
+    for (let i = 0; i < arrayWords.length; i += 1) {
         arrayWords[i] = arrayWords[i].charAt(0).toUpperCase() + arrayWords[i].slice(1);
         ret += ` ${arrayWords[i]}`;
     }
@@ -132,7 +133,7 @@ exports.cleanWhiteSpaces = cleanWhiteSpaces;
 function generatePassword() {
     let password = '';
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWYZ123467890';
-    for (let i = 0; i < 10; i++)
+    for (let i = 0; i < 10; i += 1)
         password += chars.charAt(Math.floor(Math.random() * chars.length));
     return password;
 }
@@ -148,6 +149,8 @@ function calculateAge(birthday) {
 }
 exports.calculateAge = calculateAge;
 function getLimitSkipSortSearch(data) {
+    if (!data)
+        return {};
     const { limit, page, value, input } = data;
     let retLimit = 10;
     let retSkip = 0;

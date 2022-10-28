@@ -203,7 +203,7 @@ function validateTestData(data) {
     }
     else {
         const totalItems = data ? data.length : 0;
-        for (let i = 0; i < totalItems; i++) {
+        for (let i = 0; i < totalItems; i += 1) {
             let stop = false;
             if (!(0, Validations_1.checkObjectId)(data[i].questionId)) {
                 errors.push({
