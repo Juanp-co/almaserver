@@ -5,7 +5,7 @@ import getUsers, {
   deleteUser, downLoadData, getCoursesUser, getReferralsUser,
   getUsersCounters,
   saveUser, setAsConsolidatorUser,
-  showUser,
+  showUser, updatePassword,
   updateUser
 } from '../../Controllers/admin/users.admin.controller';
 
@@ -26,6 +26,7 @@ router.route('/:_id')
 router.get('/:_id/courses', validateAdmin, getCoursesUser);
 router.put('/:_id/consolidator', validateAdmin, setAsConsolidatorUser);
 router.get('/:_id/referrals', validateAdmin, getReferralsUser);
+router.put('/:_id/reset-password', validateAdmin, updatePassword);
 router.put('/:_id/role', validateAdmin, changeRoleUser);
 
 export default router;

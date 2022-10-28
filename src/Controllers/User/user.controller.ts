@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import moment from 'moment-timezone';
 import { return404Or422 } from '../../ActionsData/EventsActions';
-import {getNamesUsersList, removeAllDataUser, responseUsersAdmin} from '../../ActionsData/UsersActions';
-import {checkIfExistsRoleInList, returnError, returnErrorParams} from '../../Functions/GlobalFunctions';
+import { getNamesUsersList, removeAllDataUser } from '../../ActionsData/UsersActions';
+import { checkIfExistsRoleInList, returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { forceLogout } from '../../Functions/TokenActions';
 import {
   validatePasswords,
@@ -13,7 +13,6 @@ import {
   validateUpdatePictureProfile
 } from '../../FormRequest/UsersRequest';
 import { checkDate, checkObjectId, checkUrl, isBase64 } from '../../Functions/Validations';
-import IUser from "../../Interfaces/IUser";
 import Courses from '../../Models/Courses';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Referrals from '../../Models/Referrals';

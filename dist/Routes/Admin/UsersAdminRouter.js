@@ -35,5 +35,6 @@ router.route('/:_id')
 router.get('/:_id/courses', middleware_1.validateAdmin, users_admin_controller_1.getCoursesUser);
 router.put('/:_id/consolidator', middleware_1.validateAdmin, users_admin_controller_1.setAsConsolidatorUser);
 router.get('/:_id/referrals', middleware_1.validateAdmin, users_admin_controller_1.getReferralsUser);
+router.put('/:_id/reset-password', middleware_1.validateAdmin, users_admin_controller_1.updatePassword);
 router.put('/:_id/role', middleware_1.validateAdmin, users_admin_controller_1.changeRoleUser);
 exports.default = router;

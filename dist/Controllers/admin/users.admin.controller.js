@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReferralsUser = exports.getCoursesUser = exports.deleteUser = exports.setAsConsolidatorUser = exports.changeRoleUser = exports.updateUser = exports.showUser = exports.saveUser = exports.downLoadData = exports.getUsersCounters = void 0;
+exports.getReferralsUser = exports.getCoursesUser = exports.deleteUser = exports.setAsConsolidatorUser = exports.changeRoleUser = exports.updatePassword = exports.updateUser = exports.showUser = exports.saveUser = exports.downLoadData = exports.getUsersCounters = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const CoursesActions_1 = require("../../ActionsData/CoursesActions");
 const UsersActions_1 = require("../../ActionsData/UsersActions");
@@ -198,6 +198,30 @@ async function updateUser(req, res) {
     }
 }
 exports.updateUser = updateUser;
+async function updatePassword(req, res) {
+    try {
+        const { tokenRoles, password } = req.body;
+        const { _id } = req.params;
+        if (!(0, UsersActions_1.checkRoleToActions)(tokenRoles))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 3);
+        if (!(0, Validations_1.checkObjectId)(_id))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 0);
+        if (!(0, Validations_1.checkPassword)(password))
+            return (0, UsersActions_1.responseUsersAdmin)(res, 4);
+        const user = await Users_1.default.findOne({ _id }, { password: 1 }).exec();
+        if (!user)
+            return (0, UsersActions_1.responseUsersAdmin)(res, 1);
+        user.password = bcrypt_1.default.hashSync(password, 10);
+        await user.save();
+        return res.json({
+            msg: 'Se han cambiado la contraseña del miembro exitosamente.'
+        });
+    }
+    catch (error) {
+        return (0, GlobalFunctions_1.returnError)(res, error, `${path}/updatePassword`);
+    }
+}
+exports.updatePassword = updatePassword;
 async function changeRoleUser(req, res) {
     try {
         const { tokenRoles } = req.body;

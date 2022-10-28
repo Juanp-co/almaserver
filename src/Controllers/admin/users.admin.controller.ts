@@ -19,7 +19,7 @@ import {
   returnErrorParams
 } from '../../Functions/GlobalFunctions';
 import { disableTokenDBForUserId } from '../../Functions/TokenActions';
-import { checkObjectId } from '../../Functions/Validations';
+import {checkObjectId, checkPassword} from '../../Functions/Validations';
 import { IUserData } from '../../Interfaces/IUser';
 import CoursesUsers from '../../Models/CoursesUsers';
 import Referrals from '../../Models/Referrals';
@@ -228,6 +228,32 @@ export async function updateUser(req: Request, res: Response): Promise<Response>
     });
   } catch (error) {
     return returnError(res, error, `${path}/updateUser`);
+  }
+}
+
+export async function updatePassword(req: Request, res: Response): Promise<Response> {
+  try {
+    const { tokenRoles, password } = req.body;
+    const { _id } = req.params;
+
+    if (!checkRoleToActions(tokenRoles)) return responseUsersAdmin(res, 3);
+
+    if (!checkObjectId(_id)) return responseUsersAdmin(res, 0);
+
+    if (!checkPassword(password)) return responseUsersAdmin(res, 4);
+
+    const user = await Users.findOne({ _id }, { password: 1 }).exec();
+
+    if (!user) return responseUsersAdmin(res, 1);
+
+    user.password = bcrypt.hashSync(password, 10);
+    await user.save();
+
+    return res.json({
+      msg: 'Se han cambiado la contraseña del miembro exitosamente.'
+    });
+  } catch (error) {
+    return returnError(res, error, `${path}/updatePassword`);
   }
 }
 
