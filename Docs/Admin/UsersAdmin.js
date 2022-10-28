@@ -556,7 +556,7 @@
  */
 
 /**
- * @api {put} /api/admin/users/:_id (07) Cambiar rol de un miembro.
+ * @api {put} /api/admin/users/:_id/role (07) Cambiar rol de un miembro.
  * @apiVersion 0.0.33
  * @apiName updateUsersAdmin
  * @apiGroup UsersAdmin
@@ -590,6 +590,47 @@
  * HTTP/1.1 422 Unprocessable Entity
  * {
     "msg": "Disculpe, pero el rol seleccionado es incorrecto."
+}
+ *
+ * @apiUse GlobalErrorSystem
+ *
+ */
+
+/**
+ * @api {put} /api/admin/users/:_id/reset-password (08) Cambiar rol de un miembro.
+ * @apiVersion 0.0.57
+ * @apiName resetPasswordUsersAdmin
+ * @apiGroup UsersAdmin
+ *
+ * @apiHeader {String} x-access-token Token de la sesión (admin).
+ *
+ * @apiParam (Path params) {String} _id ID del miembro.
+ *
+ * @apiParam {String} password Nueva contraseña.
+ *
+ * @apiExample {JSON} Example JSON Request
+ * {
+    "password": "password"
+}
+ *
+ * @apiSuccess {String} msg Mensaje del proceso.
+ *
+ * @apiSuccessExample {JSON} Success
+ * HTTP/1.1 200 Success
+ * {
+    "msg": "Se han cambiado la contraseña del miembro exitosamente."
+}
+ *
+ * @apiUse GlobalParamsErrors
+ *
+ * @apiUse GlobalUnauthorized
+ *
+ * @apiUse UsersErrorIdOrNotFound
+ *
+ * @apiErrorExample {JSON} Invalid role
+ * HTTP/1.1 422 Unprocessable Entity
+ * {
+    "msg": "Disculpe, pero la contraseña indicada es incorrecta. Debe poseer letras (A-Z, a-z), números (0-9) y caracteres especiales (¡!¿?+-*.,$%&#)."
 }
  *
  * @apiUse GlobalErrorSystem

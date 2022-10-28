@@ -26102,7 +26102,142 @@
   },
   {
     "type": "put",
-    "url": "/api/admin/users/:_id",
+    "url": "/api/admin/users/:_id/reset-password",
+    "title": "(08) Cambiar rol de un miembro.",
+    "version": "0.0.57",
+    "name": "resetPasswordUsersAdmin",
+    "group": "UsersAdmin",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "x-access-token",
+            "description": "<p>Token de la sesión (admin).</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Path params": [
+          {
+            "group": "Path params",
+            "type": "String",
+            "optional": false,
+            "field": "_id",
+            "description": "<p>ID del miembro.</p>"
+          }
+        ],
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>Nueva contraseña.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Example JSON Request",
+        "content": "{\n    \"password\": \"password\"\n}",
+        "type": "JSON"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje del proceso.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success",
+          "content": "HTTP/1.1 200 Success\n{\n    \"msg\": \"Se han cambiado la contraseña del miembro exitosamente.\"\n}",
+          "type": "JSON"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Invalid role",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n    \"msg\": \"Disculpe, pero la contraseña indicada es incorrecta. Debe poseer letras (A-Z, a-z), números (0-9) y caracteres especiales (¡!¿?+-*.,$%&#).\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error token",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"msg\": \"Disculpe, pero no se logró encontrar los datos de su sesión.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Not found",
+          "content": "HTTP/1.1 404 Not found\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado no existe o no se encuentra disponible.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Invalid _id",
+          "content": "HTTP/1.1 422 Unprocessable Entity\n{\n  \"msg\": \"Disculpe, pero el miembro seleccionado es incorrecto.\"\n}",
+          "type": "JSON"
+        },
+        {
+          "title": "Error internal server",
+          "content": "HTTP/1.1 500 Internal Error Server\n{\n  \"msg\": \"Ha ocurrido un error inesperado.\",\n  \"errors\": [${err}]\n}",
+          "type": "JSON"
+        }
+      ],
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>Mensaje general.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object[]",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Listado de errores a mostrar.</p>"
+          }
+        ],
+        "errors Object[]": [
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "msg[msg]",
+            "description": "<p>Mensaje de error.</p>"
+          },
+          {
+            "group": "errors Object[]",
+            "type": "String",
+            "optional": false,
+            "field": "input[input]",
+            "description": "<p>Nombre del campo fallo (Solo aplica en validaciones).</p>"
+          }
+        ]
+      }
+    },
+    "filename": "Docs/Admin/UsersAdmin.js",
+    "groupTitle": "UsersAdmin"
+  },
+  {
+    "type": "put",
+    "url": "/api/admin/users/:_id/role",
     "title": "(07) Cambiar rol de un miembro.",
     "version": "0.0.33",
     "name": "updateUsersAdmin",

@@ -430,9 +430,14 @@ export function responseUsersAdmin(res: Response, option: number) : Response {
 
   const ret = [
     { status: 422, msg: 'Disculpe, pero el miembro seleccionado es incorrecto.' },
-    { status: 404, msg: 'Disculpe, pero el miembro seleccionado no existe.' },
+    { status: 404, msg: 'Disculpe, pero el miembro seleccionado no existe o no se encuentra disponible.' },
     { status: 422, msg: 'Disculpe, pero el rol seleccionado es incorrecto.' },
     { status: 403, msg: 'Disculpe, pero no cuenta con privilegios para realizar esta acción.' },
+    {
+      status: 422,
+      msg: 'Disculpe, pero la contraseña indicada es incorrecta.' +
+        ' Debe poseer letras (A-Z, a-z), números (0-9) y caracteres especiales (¡!¿?+-*.,$%&#).'
+    },
   ];
 
   if (ret[option])
