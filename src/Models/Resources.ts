@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { setDate, getDate, toUpperValue } from '../Functions/GlobalFunctions';
+import { setDate, toUpperValue } from '../Functions/GlobalFunctions';
 import IResources from '../Interfaces/IResources';
 
 const ResourcesSchema = new Schema(

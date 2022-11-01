@@ -1,7 +1,5 @@
 import { Document } from 'mongoose';
-import { ICourseSimpleList } from './ICourse';
 import { IUserSimpleInfo } from './IUser';
-import { IFamiliesGroups } from './IFamiliesGroups';
 
 export default interface IResources extends Document {
   _id: any;

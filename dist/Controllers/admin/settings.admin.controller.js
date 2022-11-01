@@ -103,8 +103,9 @@ async function addLogoOrBannerSetting(req, res, type) {
             return (0, SettingsActions_1.return404Or422Settings)(res, 1);
         validate.data.picture = url;
         if (validate.data.active) {
-            for (const [index, _] of settings[type].entries()) {
-                settings[type][index].active = false;
+            const { length } = settings[type];
+            for (let i = 0; i < length; i += 1) {
+                settings[type][i].active = false;
             }
         }
         settings[type].push(validate.data);
@@ -134,11 +135,12 @@ async function changeStatusLogoOrBannerSetting(req, res, type) {
         const indexId = (_a = settings[type]) === null || _a === void 0 ? void 0 : _a.findIndex((l) => l._id.toString() === _id);
         if (indexId === -1)
             return (0, SettingsActions_1.return404Or422Settings)(res, type === 'logos' ? 4 : 6);
-        for (const [index, _] of settings[type].entries()) {
-            if (index !== indexId)
-                settings[type][index].active = false;
+        const { length } = settings[type];
+        for (let i = 0; i < length; i += 1) {
+            if (i !== indexId)
+                settings[type][i].active = false;
             else
-                settings[type][index].active = action === 'active';
+                settings[type][i].active = action === 'active';
         }
         await settings.save();
         return res.json({

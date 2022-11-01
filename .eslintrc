@@ -19,6 +19,10 @@
     "no-loop-func":"off",
     "no-await-in-loop":"off",
     "no-param-reassign":"off",
+    "no-unused-vars": [
+      "error",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false },
+    ],
     "no-useless-escape":"off",
     "no-underscore-dangle":"off",
     "prefer-object-spread":"off",

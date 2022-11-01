@@ -145,7 +145,6 @@ async function showGroup(req, res) {
 exports.showGroup = showGroup;
 async function saveGroup(req, res) {
     try {
-        const { tokenId } = req.body;
         const validate = (0, GroupsRequest_1.default)(req.body);
         if (validate.errors.length > 0)
             return (0, GlobalFunctions_1.returnErrorParams)(res, validate.errors);

@@ -143,7 +143,6 @@ export async function showGroup(req: Request, res: Response) : Promise<Response>
 
 export async function saveGroup(req: Request, res: Response) : Promise<Response> {
   try {
-    const { tokenId } = req.body;
     const validate = validateRegister(req.body);
 
     if (validate.errors.length > 0) return returnErrorParams(res, validate.errors);
