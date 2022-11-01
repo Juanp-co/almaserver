@@ -1,7 +1,6 @@
 import { Response } from 'express';
 import { getNamesUsersList } from './UsersActions';
-import IChurches, { IChurchesList } from '../Interfaces/IChurches';
-import { IUserSimpleInfo } from '../Interfaces/IUser';
+import { IChurchesList } from '../Interfaces/IChurches';
 import Churches from '../Models/Churches';
 
 export async function getChurchData(_id: any = null, withUser = false): Promise<IChurchesList|null> {

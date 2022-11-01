@@ -95,8 +95,10 @@ export async function addLogoOrBannerSetting(req: Request, res: Response, type: 
 
     validate.data.picture = url;
     if (validate.data.active) {
-      for (const [index, _] of settings[type].entries()) {
-        settings[type][index].active = false;
+      const { length } = settings[type];
+
+      for (let i = 0; i < length; i += 1) {
+        settings[type][i].active = false;
       }
     }
     settings[type].push(validate.data);
@@ -126,9 +128,10 @@ export async function changeStatusLogoOrBannerSetting(req: Request, res: Respons
     const indexId = settings[type]?.findIndex((l: any) => l._id.toString() === _id);
     if (indexId === -1) return return404Or422Settings(res, type === 'logos' ? 4 : 6);
 
-    for (const [index, _] of settings[type].entries()) {
-      if (index !== indexId) settings[type][index].active = false;
-      else settings[type][index].active = action === 'active';
+    const { length } = settings[type];
+    for (let i = 0; i < length; i += 1) {
+      if (i !== indexId) settings[type][i].active = false;
+      else settings[type][i].active = action === 'active';
     }
 
     await settings.save();

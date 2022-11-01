@@ -1,8 +1,6 @@
-import _ from 'lodash';
 import { Request, Response } from 'express';
 import moment from 'moment-timezone';
 import { returnResourcesMsgErrors } from '../../ActionsData/ResourcesActions';
-import { getNamesUsersList } from '../../ActionsData/UsersActions';
 import { validateResourceForm } from '../../FormRequest/ResourcesRequest';
 import { returnError, returnErrorParams } from '../../Functions/GlobalFunctions';
 import { checkObjectId } from '../../Functions/Validations';

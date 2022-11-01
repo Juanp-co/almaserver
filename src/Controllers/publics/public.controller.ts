@@ -452,7 +452,6 @@ export async function getOrganization(req: Request, res: Response): Promise<Resp
 export async function getPublicResources(req: Request, res: Response): Promise<Response> {
   try {
     const { tokenId } = req.body;
-    const group: any = null;
     const ret: any[] = [];
 
     if (!checkObjectId(tokenId)) return returnResourcesMsgErrors(res, 0);

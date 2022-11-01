@@ -412,7 +412,6 @@ exports.getOrganization = getOrganization;
 async function getPublicResources(req, res) {
     try {
         const { tokenId } = req.body;
-        const group = null;
         const ret = [];
         if (!(0, Validations_1.checkObjectId)(tokenId))
             return (0, ResourcesActions_1.returnResourcesMsgErrors)(res, 0);
